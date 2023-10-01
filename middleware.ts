@@ -10,6 +10,14 @@ export const config = {
 };
 
 export function middleware(req: any) {
+  if (
+    req.nextUrl.pathname.includes(".png") ||
+    req.nextUrl.pathname.includes(".jpg") ||
+    req.nextUrl.pathname.includes(".jpeg") ||
+    req.nextUrl.pathname.includes(".svg")
+  ) {
+    return NextResponse.next();
+  }
   let lng;
   if (req.cookies.has(cookieName))
     lng = acceptLanguage.get(req.cookies.get(cookieName).value);
