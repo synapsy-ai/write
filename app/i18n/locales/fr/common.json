@@ -9,5 +9,10 @@
   "content-type": "Type",
   "email": "Email",
   "blog-post": "Article de blog",
-  "ideas": "Idées"
+  "ideas": "Idées",
+  "paragraph": "Paragraphe",
+  "create-desc": "Générez du texte à l'aide de l'IA Générative.",
+  "welcome": "Bienvenue !",
+  "welcome-desc": "Bienvenue sur l'IA Générative, pour commencer, entrez votre clé d'API OpenAI.",
+  "confirm": "Confirmer"
 }
