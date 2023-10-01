@@ -15,7 +15,7 @@ export default function Creations({
   let history: HistoryItem[] = [];
   if (typeof window !== "undefined") {
     history = JSON.parse(
-      localStorage.getItem("rativegen_write_history") ?? "[]"
+      localStorage.getItem("rativegen_write_history") ?? "[]",
     );
   }
 
@@ -24,7 +24,7 @@ export default function Creations({
   return (
     <main className="m-2">
       <header>
-        <h2 className="font-bold text-2xl">{t("generations")}</h2>
+        <h2 className="text-2xl font-bold">{t("generations")}</h2>
         <p>{t("no-gen-text")}</p>
       </header>
       {!noItems ? (
@@ -34,7 +34,7 @@ export default function Creations({
           ))}
         </section>
       ) : (
-        <section className="flex flex-col justify-center items-center min-h-[50vh]">
+        <section className="flex min-h-[50vh] flex-col items-center justify-center">
           <Eraser height={48} width={48} />
           <p>{t("no-gen")}</p>
         </section>

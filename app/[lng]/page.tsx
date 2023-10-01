@@ -9,14 +9,14 @@ export default function Home({ params: { lng } }: { params: { lng: any } }) {
 
   return (
     <main>
-      <section className="flex flex-col min-h-screen justify-center items-center p-4 text-center">
+      <section className="flex min-h-screen flex-col items-center justify-center p-4 text-center">
         <Image
           alt="The logo of RativeGen Write"
           src="logo.svg"
           width={256}
           height={256}
         />
-        <h2 className="font-bold text-3xl mt-8">
+        <h2 className="mt-8 text-3xl font-bold">
           {t("introducing-rativegen")}
         </h2>
         <p>{t("introducing-rativegen-text")}</p>

@@ -56,11 +56,11 @@ export function GenerationItem(props: {
           >
             <span
               className={
-                "h-16 border-b border-slate-200 dark:border-slate-700 flex items-start justify-start " +
+                "flex h-16 items-start justify-start border-b border-slate-200 dark:border-slate-700 " +
                 getRandomGradient()
               }
             >
-              <span className="mx-2 mt-2 w-auto border border-[#ffffff55] rounded-full px-1.5 text-sm bg-[#ffffff55] text-white backdrop-blur-md">
+              <span className="mx-2 mt-2 w-auto rounded-full border border-[#ffffff55] bg-[#ffffff55] px-1.5 text-sm text-white backdrop-blur-md">
                 {label}
               </span>
             </span>

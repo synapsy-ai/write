@@ -57,11 +57,11 @@ export default function CreatePage({
   return (
     <main>
       <section className="mx-2">
-        <h2 className="font-bold text-2xl">{t("create")}</h2>
+        <h2 className="text-2xl font-bold">{t("create")}</h2>
         <p>{t("create-desc")}</p>
       </section>
       {!welcome ? (
-        <section className="bg-white dark:bg-slate-900 p-2 flex items-center rounded-md space-x-2 shadow-md m-2">
+        <section className="m-2 flex items-center space-x-2 rounded-md bg-white p-2 shadow-md dark:bg-slate-900">
           <Input onChange={(v) => setPrompt(v.target.value)} />
           <Select onValueChange={(v) => setType(v)} defaultValue={type}>
             <SelectTrigger className="w-[180px]">
@@ -87,17 +87,17 @@ export default function CreatePage({
       ) : (
         <section className="flex flex-col items-center">
           <Hand size={64} />
-          <h2 className="font-bold text-2xl">{t("welcome")}</h2>
+          <h2 className="text-2xl font-bold">{t("welcome")}</h2>
           <p>{t("welcome-desc")}</p>
           <Input
             type="password"
             onChange={(v) => setKeyTxt(v.target.value)}
-            className="max-w-[350px] my-2"
+            className="my-2 max-w-[350px]"
           />
           <Button onClick={setKey}>{t("confirm")}</Button>
         </section>
       )}
-      <section className="bg-white dark:bg-slate-900 shadow-md rounded-md p-2 m-2">
+      <section className="m-2 rounded-md bg-white p-2 shadow-md dark:bg-slate-900">
         {res ? (
           res
         ) : (
@@ -108,9 +108,9 @@ export default function CreatePage({
         )}
       </section>
       {inProgress ? (
-        <section className="min-h-[50vh] flex flex-col justify-center items-center">
+        <section className="flex min-h-[50vh] flex-col items-center justify-center">
           <Loader2 height={48} width={48} className="animate-spin" />
-          <p className="font-bold text-xl">{t("gen-in-progress")}</p>
+          <p className="text-xl font-bold">{t("gen-in-progress")}</p>
         </section>
       ) : (
         <></>

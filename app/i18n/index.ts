@@ -10,8 +10,8 @@ const initI18next = async (lng: any, ns: any) => {
     .use(
       resourcesToBackend(
         (language: any, namespace: any) =>
-          import(`./locales/${language}/${namespace}.json`)
-      )
+          import(`./locales/${language}/${namespace}.json`),
+      ),
     )
     .init(getOptions(lng, ns));
   return i18nInstance;
@@ -23,7 +23,7 @@ export async function useTranslation(lng: any, ns: any, options: any = {}) {
     t: i18nextInstance.getFixedT(
       lng,
       Array.isArray(ns) ? ns[0] : ns,
-      options.keyPrefix
+      options.keyPrefix,
     ),
     i18n: i18nextInstance,
   };
