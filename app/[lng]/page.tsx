@@ -11,13 +11,15 @@ export default function Home({ params: { lng } }: { params: { lng: any } }) {
     <main>
       <section className="flex flex-col min-h-screen justify-center items-center p-4 text-center">
         <Image
-          alt="The logo of Quark Write"
+          alt="The logo of Genairative Write"
           src="logo.svg"
           width={256}
           height={256}
         />
-        <h2 className="font-bold text-3xl mt-8">{t("introducing-quark")}</h2>
-        <p>{t("introducing-quark-text")}</p>
+        <h2 className="font-bold text-3xl mt-8">
+          {t("introducing-genairative")}
+        </h2>
+        <p>{t("introducing-genairative-text")}</p>
         <Link href={lng + "/create"}>
           <Button className="m-2">{t("launch")}</Button>
         </Link>
