@@ -1,5 +1,5 @@
 {
-  "title": "Genairative Write",
+  "title": "Write",
   "introducing-genairative": "Introducing Genairative Write",
   "introducing-genairative-text": "Genairative Write is a new way of writing text, using the power of AI.",
   "launch": "Launch",
@@ -14,5 +14,7 @@
   "create-desc": "Generate text using Generative AI.",
   "welcome": "Welcome!",
   "welcome-desc": "Welcome to AI Generation, to get started, enter your OpenAI API key.",
-  "confirm": "Confirm"
+  "confirm": "Confirm",
+  "gen-in-progress": "Generation is in progress",
+  "please-wait": "Please wait"
 }
