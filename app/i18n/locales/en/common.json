@@ -1,3 +1,13 @@
 {
-  "title": "Quark Write EN"
+  "title": "Quark Write",
+  "introducing-quark": "Introducing Quark Write",
+  "introducing-quark-text": "Quark Write is a new way of writing text, using the power of AI.",
+  "launch": "Launch",
+  "home": "Home",
+  "create": "Create",
+  "openai-api-key": "Enter your OpenAI API Key",
+  "content-type": "Type",
+  "email": "Email",
+  "blog-post": "Blog post",
+  "ideas": "Ideas"
 }
