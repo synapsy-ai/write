@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { dir } from "i18next";
 import { languages } from "../i18n/settings";
+import NavBar from "@/components/navbar";
 
 const inter = Inter({ subsets: ["latin"] });
 export async function generateStaticParams() {
@@ -23,7 +24,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang={lng} dir={dir(lng)}>
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+        <NavBar lng={lng} />
+        {children}
+      </body>
     </html>
   );
 }
