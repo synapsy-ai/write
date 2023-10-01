@@ -13,6 +13,7 @@ import {
 import { useState } from "react";
 import { Settings } from "@/lib/settings";
 import { Template, sendToGpt } from "@/lib/ai-completions";
+import { addToHistory } from "@/lib/history";
 
 export default function CreatePage({
   params: { lng },
@@ -44,6 +45,12 @@ export default function CreatePage({
     setInProgress(true);
     let r = await sendToGpt(prompt, s.key, type, lng);
     setRes(r);
+    addToHistory({
+      prompt: prompt,
+      content: r ?? "",
+      template: type,
+      date: new Date(),
+    });
     setInProgress(false);
   }
 

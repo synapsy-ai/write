@@ -6,3 +6,14 @@ export interface HistoryItem {
   content: string;
   date: Date;
 }
+
+export function addToHistory(item: HistoryItem) {
+  if (typeof window !== "undefined") {
+    let history: HistoryItem[] = [];
+    history = JSON.parse(
+      localStorage.getItem("rativegen_write_history") ?? "[]"
+    );
+    history.push(item);
+    localStorage.setItem("rativegen_write_history", JSON.stringify(history));
+  }
+}

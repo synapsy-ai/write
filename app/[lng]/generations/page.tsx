@@ -1,5 +1,6 @@
 "use client";
 import { useTranslation } from "@/app/i18n/client";
+import { GenerationItem } from "@/components/generation-item";
 import { HistoryItem } from "@/lib/history";
 import { Eraser } from "lucide-react";
 import { useState } from "react";
@@ -27,7 +28,11 @@ export default function Creations({
         <p>{t("no-gen-text")}</p>
       </header>
       {!noItems ? (
-        <section></section>
+        <section className="flex flex-wrap justify-center p-5 md:justify-start">
+          {history.map((el, i) => (
+            <GenerationItem key={i} item={el} lng={lng} />
+          ))}
+        </section>
       ) : (
         <section className="flex flex-col justify-center items-center min-h-[50vh]">
           <Eraser height={48} width={48} />
