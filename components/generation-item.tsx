@@ -10,7 +10,11 @@ import {
 import { HistoryItem } from "@/lib/history";
 import { useTranslation } from "@/app/i18n/client";
 
-export function GenerationItem(props: { item: HistoryItem; lng: string }) {
+export function GenerationItem(props: {
+  item: HistoryItem;
+  lng: string;
+  id: number;
+}) {
   const { t } = useTranslation(props.lng, "common");
   function getRandomGradient() {
     const gradients = [
@@ -47,7 +51,7 @@ export function GenerationItem(props: { item: HistoryItem; lng: string }) {
       <Tooltip>
         <TooltipTrigger>
           <Link
-            href={""}
+            href={"generations/" + props.id.toString()}
             className="m-2 flex w-[380px] flex-col overflow-hidden rounded-md border border-slate-200 shadow-md transition hover:-translate-y-2 hover:shadow-lg dark:border-slate-700"
           >
             <span

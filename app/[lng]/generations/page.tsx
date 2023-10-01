@@ -30,7 +30,7 @@ export default function Creations({
       {!noItems ? (
         <section className="flex flex-wrap justify-center p-5 md:justify-start">
           {history.map((el, i) => (
-            <GenerationItem key={i} item={el} lng={lng} />
+            <GenerationItem id={i} key={i} item={el} lng={lng} />
           ))}
         </section>
       ) : (
