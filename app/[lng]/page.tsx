@@ -11,15 +11,15 @@ export default function Home({ params: { lng } }: { params: { lng: any } }) {
     <main>
       <section className="flex flex-col min-h-screen justify-center items-center p-4 text-center">
         <Image
-          alt="The logo of Genairative Write"
+          alt="The logo of RativeGen Write"
           src="logo.svg"
           width={256}
           height={256}
         />
         <h2 className="font-bold text-3xl mt-8">
-          {t("introducing-genairative")}
+          {t("introducing-rativegen")}
         </h2>
-        <p>{t("introducing-genairative-text")}</p>
+        <p>{t("introducing-rativegen-text")}</p>
         <Link href={lng + "/create"}>
           <Button className="m-2">{t("launch")}</Button>
         </Link>

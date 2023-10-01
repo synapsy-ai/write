@@ -1,7 +1,7 @@
 {
   "title": "Write",
-  "introducing-genairative": "Voici Genairative Write",
-  "introducing-genairative-text": "Genairative Write est une nouvelle manière de rédiger du text, en utilisant la puissance de l'IA.",
+  "introducing-rativegen": "Voici RativeGen Write",
+  "introducing-rativegen-text": "RativeGen Write est une nouvelle manière de rédiger du text, en utilisant la puissance de l'IA.",
   "launch": "Lancer",
   "home": "Accueil",
   "create": "Créer",
@@ -16,5 +16,9 @@
   "welcome-desc": "Bienvenue sur l'IA Générative, pour commencer, entrez votre clé d'API OpenAI.",
   "confirm": "Confirmer",
   "gen-in-progress": "Génération en cours",
-  "please-wait": "Veuillez patienter"
+  "please-wait": "Veuillez patienter",
+  "result-ph": "Le texte généré apparaîtra ici.",
+  "generations": "Mes générations",
+  "no-gen": "Aucune génération n'est disponible",
+  "no-gen-text": "Vous pouvez trouver ici toutes vos générations."
 }

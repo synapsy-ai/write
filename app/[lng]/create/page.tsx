@@ -2,7 +2,7 @@
 import { useTranslation } from "@/app/i18n/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Hand, Loader2 } from "lucide-react";
+import { Hand, Info, Loader2 } from "lucide-react";
 import {
   Select,
   SelectContent,
@@ -24,8 +24,8 @@ export default function CreatePage({
   const [type, setType] = useState("para");
 
   let s: Settings = { key: "" };
-  if (typeof window !== undefined) {
-    s = JSON.parse(localStorage.getItem("quark_settings") ?? "{}");
+  if (typeof window !== "undefined") {
+    s = JSON.parse(localStorage.getItem("rativegen_settings") ?? "{}");
   }
 
   const [welcome, setWelcome] = useState(s.key === undefined);
@@ -36,7 +36,7 @@ export default function CreatePage({
 
   function setKey() {
     s.key = keyTxt;
-    localStorage.setItem("quark_settings", JSON.stringify(s));
+    localStorage.setItem("rativegen_settings", JSON.stringify(s));
     setWelcome(false);
   }
 
@@ -91,47 +91,14 @@ export default function CreatePage({
         </section>
       )}
       <section className="bg-white dark:bg-slate-900 shadow-md rounded-md p-2 m-2">
-        {res}Bonjour à tous ! Nous sommes ravis de vous annoncer le lancement de
-        la toute nouvelle version de ColorPicker Max, l'outil ultime pour
-        choisir et gérer vos palettes de couleurs. ColorPicker Max est un outil
-        de sélection de couleurs puissant qui vous permet de créer, d'explorer
-        et de sauvegarder vos palettes de couleurs préférées en un seul endroit.
-        Avec sa nouvelle interface intuitive et ses fonctionnalités avancées, il
-        deviendra rapidement un compagnon indispensable dans votre arsenal de
-        conception. La nouvelle version de ColorPicker Max offre une expérience
-        utilisateur améliorée avec une interface moderne et élégante. Vous
-        pouvez maintenant naviguer facilement entre vos palettes de couleurs
-        grâce à un menu déroulant pratique et accéder à des outils de
-        personnalisation avancés pour affiner chaque nuance de votre palette.
-        Une des fonctionnalités les plus excitantes de ColorPicker Max est la
-        possibilité d'extraire les couleurs à partir d'images. Vous pouvez
-        simplement charger une image et l'outil analysera automatiquement les
-        couleurs présentes, vous permettant ainsi de créer des palettes
-        cohérentes en harmonie avec votre image de base. En termes d'exploration
-        de couleurs, la nouvelle version de ColorPicker Max offre une variété
-        d'options pour trouver l'inspiration. Vous pouvez parcourir des palettes
-        de couleurs préexistantes et les enregistrer dans votre bibliothèque
-        personnelle. De plus, l'outil propose également des suggestions de
-        couleurs complémentaires pour vous aider à créer des combinaisons
-        harmonieuses. Une autre nouveauté intéressante est la fonctionnalité de
-        gestion de projets. Avec ColorPicker Max, vous pouvez organiser vos
-        palettes de couleurs par projet, ce qui facilite la recherche et
-        l'utilisation des bonnes couleurs pour chaque projet spécifique. Enfin,
-        la nouvelle version de ColorPicker Max propose une intégration plus
-        poussée avec vos applications de conception préférées. Vous pouvez
-        désormais exporter facilement vos palettes de couleurs vers des
-        logiciels tels que Photoshop, Sketch ou Illustrator, ce qui vous permet
-        de gagner du temps et de simplifier votre flux de travail. Nous avons
-        travaillé dur pour vous offrir une version améliorée de ColorPicker Max
-        et nous espérons sincèrement qu'elle répondra à toutes vos attentes.
-        Alors qu'attendez-vous ? Téléchargez dès maintenant la nouvelle version
-        de ColorPicker Max et commencez à créer des palettes de couleurs
-        incroyables dès aujourd'hui ! Nous sommes impatients de voir les
-        magnifiques créations que vous réaliserez avec ColorPicker Max.
-        N'hésitez pas à partager vos créations sur les réseaux sociaux avec le
-        hashtag #ColorPickerMax pour que nous puissions les admirer. Merci
-        encore pour votre soutien continu et votre fidélité. L'équipe de
-        ColorPicker Max
+        {res ? (
+          res
+        ) : (
+          <div className="flex flex-col items-center">
+            <Info height={48} width={48} />
+            <p className="font-bold">{t("result-ph")}</p>
+          </div>
+        )}
       </section>
       {inProgress ? (
         <section className="min-h-[50vh] flex flex-col justify-center items-center">
