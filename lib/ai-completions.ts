@@ -3,7 +3,7 @@ export async function sendToGpt(
   prompt: string,
   key: string,
   template: Template | string,
-  lng: "fr" | "en"
+  lng: "fr" | "en",
 ) {
   const openai = new OpenAI({
     apiKey: key,
@@ -28,7 +28,7 @@ function getPrompt(template: Template | string, lng: "fr" | "en") {
       case "email":
         return "Generate an email about ";
       case "ideas":
-        return "Generate a list of ideas about ";
+        return 'Generate a JSON array of ideas ["Idea1","Idea2"] (EXACTLY THUS FORMAT, no object) about this topic: ';
     }
   } else {
     switch (template) {
@@ -39,7 +39,7 @@ function getPrompt(template: Template | string, lng: "fr" | "en") {
       case "email":
         return "Générer un email à propos de ";
       case "ideas":
-        return "Générer une liste d'idées sur ";
+        return 'Générer un array d\'idées JSON ["Idee1","Idee2"] (EXACTEMENT CE FORMAT, pas d\'objet) sur le sujet : ';
     }
   }
 }

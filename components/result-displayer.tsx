@@ -1,4 +1,5 @@
 import { Template } from "@/lib/ai-completions";
+import { Check } from "lucide-react";
 
 export default function ResultDisplayer(props: {
   res: string;
@@ -6,7 +7,24 @@ export default function ResultDisplayer(props: {
 }) {
   switch (props.type) {
     case "ideas":
-      return <div>{props.res}</div>;
+      try {
+        let json: string[] = JSON.parse(props.res);
+        return (
+          <div>
+            {json.map((el, i) => (
+              <li
+                className="my-2 grid grid-cols-[auto,1fr] space-x-2 rounded-md bg-slate-200 p-1 dark:bg-slate-800"
+                key={i}
+              >
+                <Check className="w-6" /> <p>{el}</p>
+              </li>
+            ))}
+          </div>
+        );
+      } catch {
+        return <div>{props.res}</div>;
+      }
+
     default:
       return <div>{props.res}</div>;
   }
