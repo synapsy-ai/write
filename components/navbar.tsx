@@ -17,7 +17,7 @@ export default function NavBar(props: { lng: string }) {
   const { setTheme } = useTheme();
   return (
     <div className="sticky top-0 z-50 flex items-center justify-center">
-      <nav className="m-2 flex items-center space-x-2 rounded-full bg-white/80 px-4 py-2 shadow-md backdrop-blur-md dark:bg-slate-950/80">
+      <nav className="m-2 flex items-center space-x-2 rounded-full bg-white/50 px-4 py-2 shadow-md backdrop-blur-md dark:bg-slate-900/50">
         <Image alt="SynapsyLogo" height={25} width={25} src={"/logo.svg"} />
         <h2 className="font-bold">{t("title")}</h2>
         <Link href={"/" + props.lng}>
