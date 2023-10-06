@@ -33,6 +33,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { Skeleton } from "@/components/ui/skeleton";
+import ResultDisplayer from "@/components/result-displayer";
 
 export default function CreatePage({
   params: { lng },
@@ -142,7 +143,7 @@ export default function CreatePage({
       )}
       <section className="m-2 rounded-md bg-white p-2 shadow-md dark:bg-slate-900">
         {res ? (
-          res
+          <ResultDisplayer res={res} type={type} />
         ) : (
           <div className="flex flex-col items-center">
             <Info height={48} width={48} />
