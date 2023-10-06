@@ -23,5 +23,8 @@
   "no-gen-text": "You can find here all your generations.",
   "format": "Format",
   "select-format": "Select a generation format",
-  "regular-category": "Regular"
+  "regular-category": "Regular",
+  "light": "Light",
+  "dark": "Dark",
+  "system": "System"
 }

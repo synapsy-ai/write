@@ -4,6 +4,7 @@ import { DM_Sans } from "next/font/google";
 import { dir } from "i18next";
 import { languages } from "../i18n/settings";
 import NavBar from "@/components/navbar";
+import { ThemeProvider } from "@/components/theme-provider";
 
 const inter = DM_Sans({ subsets: ["latin"] });
 export async function generateStaticParams() {
@@ -24,9 +25,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang={lng} dir={dir(lng)}>
-      <body className={inter.className}>
-        <NavBar lng={lng} />
-        {children}
+      <body className={inter.className + " dark:bg-slate-950 dark:text-white"}>
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          <NavBar lng={lng} />
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   );
