@@ -20,5 +20,8 @@
   "result-ph": "Le texte généré apparaîtra ici.",
   "generations": "Mes générations",
   "no-gen": "Aucune génération n'est disponible",
-  "no-gen-text": "Vous pouvez trouver ici toutes vos générations."
+  "no-gen-text": "Vous pouvez trouver ici toutes vos générations.",
+  "format": "Format",
+  "select-format": "Sélectionner un format de génération",
+  "regular-category": "Normal"
 }
