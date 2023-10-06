@@ -10,10 +10,8 @@ export interface HistoryItem {
 export function addToHistory(item: HistoryItem) {
   if (typeof window !== "undefined") {
     let history: HistoryItem[] = [];
-    history = JSON.parse(
-      localStorage.getItem("rativegen_write_history") ?? "[]"
-    );
+    history = JSON.parse(localStorage.getItem("synapsy_write_history") ?? "[]");
     history.push(item);
-    localStorage.setItem("rativegen_write_history", JSON.stringify(history));
+    localStorage.setItem("synapsy_write_history", JSON.stringify(history));
   }
 }

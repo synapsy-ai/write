@@ -14,9 +14,7 @@ export default function Creations({
 
   let history: HistoryItem[] = [];
   if (typeof window !== "undefined") {
-    history = JSON.parse(
-      localStorage.getItem("rativegen_write_history") ?? "[]",
-    );
+    history = JSON.parse(localStorage.getItem("synapsy_write_history") ?? "[]");
   }
 
   const [noItems, setNoItems] = useState(history.length == 0);

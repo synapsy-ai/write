@@ -10,7 +10,7 @@ export default function GenerationViewPage({
       return (
         <p id="contentp">
           {
-            JSON.parse(localStorage.getItem("rativegen_write_history") ?? "[]")[
+            JSON.parse(localStorage.getItem("synapsy_write_history") ?? "[]")[
               id
             ].content
           }

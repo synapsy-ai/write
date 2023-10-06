@@ -26,7 +26,7 @@ export default function CreatePage({
 
   let s: Settings = { key: "" };
   if (typeof window !== "undefined") {
-    s = JSON.parse(localStorage.getItem("rativegen_settings") ?? "{}");
+    s = JSON.parse(localStorage.getItem("synapsy_settings") ?? "{}");
   }
 
   const [welcome, setWelcome] = useState(s.key === undefined);
@@ -37,7 +37,7 @@ export default function CreatePage({
 
   function setKey() {
     s.key = keyTxt;
-    localStorage.setItem("rativegen_settings", JSON.stringify(s));
+    localStorage.setItem("synapsy_settings", JSON.stringify(s));
     setWelcome(false);
   }
 
