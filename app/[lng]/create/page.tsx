@@ -32,6 +32,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default function CreatePage({
   params: { lng },
@@ -151,8 +152,13 @@ export default function CreatePage({
       </section>
       {inProgress ? (
         <section className="flex min-h-[50vh] flex-col items-center justify-center">
-          <Loader2 height={48} width={48} className="animate-spin" />
-          <p className="text-xl font-bold">{t("gen-in-progress")}</p>
+          <p className="mb-2 text-xl font-bold">{t("gen-in-progress")}</p>
+          <div className="space-y-2">
+            <Skeleton className="h-4 w-[250px]" />
+            <Skeleton className="h-4 w-[200px]" />
+            <Skeleton className="h-4 w-[250px]" />
+            <Skeleton className="h-4 w-[200px]" />
+          </div>
         </section>
       ) : (
         <></>
