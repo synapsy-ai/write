@@ -23,8 +23,14 @@
   "no-gen-text": "Vous pouvez trouver ici toutes vos générations.",
   "format": "Format",
   "select-format": "Sélectionner un format de génération",
-  "regular-category": "Normal",
+  "regular-category": "Basique",
   "light": "Clair",
   "dark": "Sombre",
-  "system": "Système"
+  "system": "Système",
+  "philosophy": "Dissertation (philosophie)",
+  "essay": "Dissertation (français)",
+  "introduction": "Introduction",
+  "problematization": "Problématisation",
+  "essay-outline": "Plan",
+  "conclusion": "Conclusion"
 }

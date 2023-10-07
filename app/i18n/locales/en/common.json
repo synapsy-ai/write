@@ -23,8 +23,14 @@
   "no-gen-text": "You can find here all your generations.",
   "format": "Format",
   "select-format": "Select a generation format",
-  "regular-category": "Regular",
+  "regular-category": "Basic",
   "light": "Light",
   "dark": "Dark",
-  "system": "System"
+  "system": "System",
+  "philosophy": "Essay (Philosophy)",
+  "essay": "Essay (English)",
+  "introduction": "Introduction",
+  "problematization": "Problematization",
+  "essay-outline": "Essay outline",
+  "conclusion": "Conclusion"
 }
