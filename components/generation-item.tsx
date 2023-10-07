@@ -39,6 +39,16 @@ export function GenerationItem(props: {
         return t("email");
       case "ideas":
         return t("ideas");
+      case "ph_intro":
+        return t("introduction");
+      case "ph_prob":
+        return t("problematization");
+      case "es_intro":
+        return t("introduction");
+      case "es_conclusion":
+        return t("conclusion");
+      case "es_outline":
+        return t("essay-outline");
       default:
         return t("paragraph");
     }

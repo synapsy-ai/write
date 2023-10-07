@@ -29,6 +29,16 @@ function getPrompt(template: Template | string, lng: "fr" | "en") {
         return "Generate an email about ";
       case "ideas":
         return 'Generate a JSON array of ideas ["Idea1","Idea2"] (EXACTLY THUS FORMAT, no object) about this topic: ';
+      case "es_intro":
+        return "You are an expert who writes essays similar to those required for a high school diploma in the United States. Write the introduction (hook, presentation of the subject, problem statement, and plan announcement) for the following topic: ";
+      case "es_conclusion":
+        return "You are an expert who writes essays similar to those required for a high school diploma in the United States. Write the conclusion (with an opening) for the following topic: ";
+      case "es_outline":
+        return "You are an expert who writes essays similar to those required for a high school diploma in the United States. Write only the outline of the essay organized in at least two main parts (I, II, III etc.) each containing at least two subparts containing examples/quotes (A, B, etc.) for the following topic:";
+      case "ph_intro":
+        return "Write the introduction to the subject essay, including a hook, a provisional and QUICK definition of the main terms, a problem statement with three paragraphs (On the one hand..., on the other hand..., therefore...), the issues (explaining why this question is being answered), and the plan (Nature, Existence, Value OR Meaning 1, meaning 2, meaning 3). Subject : ";
+      case "ph_prob":
+        return 'Write the problematization of the subject with three paragraphs MAX containing two sentences MAX, the first begins imperatively with "on the one hand", the second with "on the other hand" and the third with "therefore". Structure: 1st paragraph: first answer [R1] based on the analysis of the subject\'s concepts. 2nd paragraph: questioning of the first answer. 3rd paragraph: summary [S] of the problem with a question that clearly formulates the fundamental alternative: "R1 or R2?". Bold the ideas. Subject : ';
     }
   } else {
     switch (template) {
@@ -40,6 +50,16 @@ function getPrompt(template: Template | string, lng: "fr" | "en") {
         return "Générer un email à propos de ";
       case "ideas":
         return 'Générer un array d\'idées JSON ["Idee1","Idee2"] (EXACTEMENT CE FORMAT, pas d\'objet) sur le sujet : ';
+      case "es_intro":
+        return "Tu es un expert qui fait des dissertations type bac de français. Rédige l'introduction (amorce, présentation du sujet, problématique et annonce du plan) du sujet suivant : ";
+      case "es_conclusion":
+        return "Tu es un expert qui fait des dissertations type bac de français. Rédige la conclusion (avec ouverture) du sujet suivant : ";
+      case "es_outline":
+        return "Tu es un expert qui fait des dissertations type bac de français. Rédige uniquement le plan de la dissertation organisé en au moins deux grandes parties (I, II, III etc.) contenant chacune au moins deux sous-parties contenant des exemples/citations (A, B, etc.) du sujet suivant : ";
+      case "ph_intro":
+        return "Rédige l'introduction de dissertation du sujet avec accroche, définition provisoire et RAPIDE des termes principaux, problématique avec trois paragraphes (D'une part..., d'autre part..., donc...), enjeux (expliquant pourquoi on répond à cette question), annonce du plan (soit Nature, Existence, Valeur OU Sens 1, sens 2, sens 3). Sujet : ";
+      case "ph_prob":
+        return 'Rédige la problématisation du sujet avec trois paragraphes MAX contenu deux phrases MAX, le premier commence impérativement par "d\'une part", le second par "d\'autre part" et le troisième par "donc". Structure: 1er paragraphe : première réponse [R1] argumentée à partir de l\'analyse des notions du sujet. 2e paragraphe : questionnement de la première réponse. 3e paragraphe : reprise synthétique [S] du problème avec une question qui formule clairement l\'alternative fondamentale : "R1 ou bien R2 ?". Mettre en gras les idées. Sujet : ';
     }
   }
 }
