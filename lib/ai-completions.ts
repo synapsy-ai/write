@@ -107,6 +107,8 @@ export function getPrompt(
         return `Write the introduction to the subject essay, including a hook, a provisional and QUICK definition of the main terms, a problem statement with three paragraphs (On the one hand..., on the other hand..., therefore...), the issues (explaining why this question is being answered), and the plan (Nature, Existence, Value OR Meaning 1, meaning 2, meaning 3). Subject: ${prompt}`;
       case "ph_prob":
         return `Write the problematization of the subject with three paragraphs MAX containing two sentences MAX, the first begins imperatively with "on the one hand", the second with "on the other hand" and the third with "therefore". Structure: 1st paragraph: first answer [R1] based on the analysis of the subject\'s concepts. 2nd paragraph: questioning of the first answer. 3rd paragraph: summary [S] of the problem with a question that clearly formulates the fundamental alternative: "R1 or R2?". Bold the ideas. Subject: ${prompt}`;
+      case "ph_outline":
+        return `Write the essay plan; 2 possible plans: Nature plan (=in theory), Existence plan (=in practice), Value plan (=morally) and Thematic plan (=vary the meaning of one of the terms in the subject). Subject: ${prompt}`;
       default:
         return prompt;
     }
@@ -132,6 +134,8 @@ export function getPrompt(
         return `Rédige l'introduction de dissertation du sujet avec accroche, définition provisoire et RAPIDE des termes principaux, problématique avec trois paragraphes (D'une part..., d'autre part..., donc...), enjeux (expliquant pourquoi on répond à cette question), annonce du plan (soit Nature, Existence, Valeur OU Sens 1, sens 2, sens 3). Sujet : ${prompt}`;
       case "ph_prob":
         return `Rédige la problématisation du sujet avec trois paragraphes MAX contenu deux phrases MAX, le premier commence impérativement par "d\'une part", le second par "d\'autre part" et le troisième par "donc". Structure: 1er paragraphe : première réponse [R1] argumentée à partir de l\'analyse des notions du sujet. 2e paragraphe : questionnement de la première réponse. 3e paragraphe : reprise synthétique [S] du problème avec une question qui formule clairement l\'alternative fondamentale : "R1 ou bien R2 ?". Mettre en gras les idées. Sujet : ${prompt}`;
+      case "ph_outline":
+        return `Rédige le plan de dissertation ; 2 plan possibles : Plan Nature (=en théorie), Existence (=en pratique), Valeur (=moralement) et Plan thématique (=faire varier le sens d'un des termes du sujet). Sujet : ${prompt}`;
       default:
         return prompt;
     }

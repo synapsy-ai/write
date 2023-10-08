@@ -3,17 +3,9 @@ import { useTranslation } from "@/app/i18n/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Hand, Info, Loader2 } from "lucide-react";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { useState } from "react";
 import { Settings } from "@/lib/settings";
 import {
-  Template,
   getComplexEssayPrompts,
   getPrompt,
   getSystem,
@@ -27,12 +19,10 @@ import {
   SheetClose,
   SheetContent,
   SheetDescription,
-  SheetFooter,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { Label } from "@radix-ui/react-select";
 import formats, { typesToString } from "@/lib/formats";
 import {
   Accordion,
