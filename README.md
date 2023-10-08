@@ -1,36 +1,41 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+<center><img src="public/logo.png" height="75"></center>
+
+# Synapsy Write - Generate Text with OpenAI's GPT Generative AI
+
+<center>
+
+[**Launch »**](https://write.peyronnet.group)
+
+</center>
+
+## Overview
+
+Synapsy Write is a Next.js web application that leverages the power of OpenAI's GPT Generative AI models to assist users in effortlessly generating text content. Whether you need paragraphs for your website, blog posts, essays, or any other written content, Synapsy Write has got you covered. With a user-friendly interface and advanced AI capabilities, creating text has never been easier!
+
+## Features
+
+- **OpenAI's GPT Generative AI**: Harness the state-of-the-art AI technology provided by OpenAI to generate high-quality text based on your input.
+- **Versatile Output**: Create paragraphs, blog posts, essays, and more with just a few clicks.
+- **Easy to Use**: The intuitive user interface ensures that even non-technical users can get started quickly.
+- And more to come!
 
 ## Getting Started
 
-First, run the development server:
+To use Synapsy Write, follow these simple steps:
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+1. **Visit the Website**: Go to [https://write.peyronnet.group](https://write.peyronnet.group) to access the application.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. **Choose Your Output**: Select the type of text you want to generate, such as paragraphs, blog posts, or essays.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+3. **Generate Text**: Click the "Create" button, and Synapsy Write will create the text for you, powered by OpenAI's GPT Generative AI.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+4. **View Your Generations**: Click on the "My generations" button on the navigation bar at the top to see your previous generations.
 
-## Learn More
+## System Requirements
 
-To learn more about Next.js, take a look at the following resources:
+- Modern web browser (Chrome, Firefox, Safari, Edge, etc.)
+- Internet connection
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## License
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+Synapsy Write is available under the [MIT License](LICENSE). Feel free to use, modify, and distribute the code as needed, in compliance with the license terms.
