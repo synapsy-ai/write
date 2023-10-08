@@ -1,12 +1,29 @@
-<center><img src="public/logo.png" height="75"></center>
+![GitHub contributors](https://img.shields.io/github/contributors/synapsy-ai/write)
+![GitHub issues](https://img.shields.io/github/issues/synapsy-ai/write)
+![GitHub](https://img.shields.io/github/license/synapsy-ai/write)
+![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/synapsy-ai/write)
 
-# Synapsy Write - Generate Text with OpenAI's GPT Generative AI
+<br />
+<p align="center">
+  <a href="https://github.com/synapsy-ai/write">
+    <img src="public/logo.png" alt="Logo" width="80" height="80">
+  </a>
+  <h1 align="center">Synapsy Write</h1>
 
-<center>
+  <p align="center">
+    A new way to create text, powered by AI.
+    <br />
+    <a href="https://write.peyronnet.gruop"><strong>Launch »</strong></a>
+    <br />
+    <a href="https://github.com/synapsy-ai/write/issues/new?assignees=&labels=bug&template=bug-report.yml&title=%5BBug%5D+">Report Bug</a>
+    ·
+    <a href="https://github.com/synapsy-ai/write/issues/new?assignees=&labels=enhancement&template=feature-request.yml&title=%5BEnhancement%5D+">Request Feature</a>
+    ·
+    <a href="https://github.com/synapsy-ai/write/issues?q=is%3Aopen+is%3Aissue+label%3Abug">Known Issues</a>
 
-[**Launch »**](https://write.peyronnet.group)
+  </p>
+</p>
 
-</center>
 
 ## Overview
 
