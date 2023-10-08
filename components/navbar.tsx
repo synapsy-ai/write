@@ -17,11 +17,13 @@ export default function NavBar(props: { lng: string }) {
   const { setTheme } = useTheme();
   return (
     <div className="sticky top-0 z-50 flex items-center justify-center print:hidden">
-      <nav className="m-2 flex items-center space-x-2 rounded-full bg-white/50 px-4 py-2 shadow-md backdrop-blur-md dark:bg-slate-900/50">
-        <Image alt="SynapsyLogo" height={25} width={25} src={"/logo.svg"} />
-        <h2 className="font-bold">{t("title")}</h2>
-        <Link href={"/" + props.lng}>
-          <Button variant="ghost">{t("home")}</Button>
+      <nav className="m-2 flex items-center rounded-full bg-white/50 px-4 py-2 shadow-md backdrop-blur-md dark:bg-slate-900/50">
+        <Link className="mr-2 flex space-x-2" href={"/" + props.lng}>
+          <Image alt="SynapsyLogo" height={25} width={25} src={"/logo.svg"} />
+          <h2 className="font-bold">{t("title")}</h2>
+        </Link>
+        <Link href={"/" + props.lng + "/create"}>
+          <Button variant="ghost">{t("create")}</Button>
         </Link>
         <Link href={"/" + props.lng + "/generations"}>
           <Button variant="ghost">{t("generations")}</Button>
