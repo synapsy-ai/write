@@ -11,9 +11,10 @@ const formats = [
   {
     category: "essay",
     options: [
+      { text: "essay-outline", val: "es_outline" },
       { text: "introduction", val: "es_intro" },
       { text: "conclusion", val: "es_conclusion" },
-      { text: "essay-outline", val: "es_outline" },
+      { text: "essay-basic", val: "es_basic" },
     ],
   },
   {

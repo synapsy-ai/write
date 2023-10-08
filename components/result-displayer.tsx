@@ -1,5 +1,6 @@
 import { Template } from "@/lib/ai-completions";
 import { Check } from "lucide-react";
+import parse from "html-react-parser";
 
 export default function ResultDisplayer(props: {
   res: string;
@@ -22,10 +23,10 @@ export default function ResultDisplayer(props: {
           </div>
         );
       } catch {
-        return <div>{props.res}</div>;
+        return <p>{parse(props.res)}</p>;
       }
 
     default:
-      return <div>{props.res}</div>;
+      return <p>{parse(props.res)}</p>;
   }
 }

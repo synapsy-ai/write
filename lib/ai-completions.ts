@@ -29,21 +29,21 @@ export function getSystem(
   if (lng === "en") {
     switch (type) {
       case "ph_":
-        return "You are an expert who writes philosophy essays similar to those required for a high school diploma in the United States. Response format: HTML";
+        return "You are an expert who writes philosophy essays similar to those required for a high school diploma in the United States. Response format: HTML (body ONLY)";
       case "es_":
-        return "You are an expert who writes essays similar to those required for a high school diploma in the United States. Response format: HTML";
+        return "You are an expert who writes essays similar to those required for a high school diploma in the United States. Response format: HTML (body ONLY)";
 
       default:
-        return "You help writing documents. Response format: HTML";
+        return "You help writing documents. Response format: HTML (body ONLY)";
     }
   } else {
     switch (type) {
       case "ph_":
-        return "Tu es un expert qui fait des dissertations type bac de philosophie. Format de réponse : HTML";
+        return "Tu es un expert qui fait des dissertations type bac de philosophie. Format de réponse : HTML (SEULEMENT body)";
       case "es_":
-        return "Tu es un expert qui fait des dissertations type bac de français. Format de réponse : HTML";
+        return "Tu es un expert qui fait des dissertations type bac de français. Format de réponse : HTML (SEULEMENT body)";
       default:
-        return "Tu aides à écrire des documents. Format de réponse : HTML";
+        return "Tu aides à écrire des documents. Format de réponse : HTML (SEULEMENT body)";
     }
   }
 }
@@ -69,6 +69,8 @@ export function getPrompt(
         return `Write the conclusion (with an opening) for the following topic: `;
       case "es_outline":
         return `Write only the outline of the essay organized in at least two main parts (I, II, III etc.) each containing at least two subparts containing examples/quotes (A, B, etc.) for the following topic: ${prompt}`;
+      case "es_basic":
+        return `Write the introduction (introduction, presentation of the subject, issues and outline), the content of the essay organized into at least two main parts (I, II, III etc.) each containing at least two sub-parts (A, B, etc.) (with quotations), and the conclusion of the following subject: ${prompt}`;
       case "ph_intro":
         return `Write the introduction to the subject essay, including a hook, a provisional and QUICK definition of the main terms, a problem statement with three paragraphs (On the one hand..., on the other hand..., therefore...), the issues (explaining why this question is being answered), and the plan (Nature, Existence, Value OR Meaning 1, meaning 2, meaning 3). Subject: ${prompt}`;
       case "ph_prob":
@@ -92,6 +94,8 @@ export function getPrompt(
         return `Rédige la conclusion (avec ouverture) du sujet suivant : ${prompt}`;
       case "es_outline":
         return `Rédige uniquement le plan de la dissertation organisé en au moins deux grandes parties (I, II, III etc.) contenant chacune au moins deux sous-parties contenant des exemples/citations (A, B, etc.) du sujet suivant : ${prompt}`;
+      case "es_basic":
+        return `Rédige l'introduction (amorce, présentation du sujet, problématique et annonce du plan), le contenu de la dissertation organisé en au moins deux grandes parties (I, II, III etc.) contenant chacune au moins deux sous-parties (A, B, etc.) (avec des citations), et la conclusion du sujet suivant : ${prompt}`;
       case "ph_intro":
         return `Rédige l'introduction de dissertation du sujet avec accroche, définition provisoire et RAPIDE des termes principaux, problématique avec trois paragraphes (D'une part..., d'autre part..., donc...), enjeux (expliquant pourquoi on répond à cette question), annonce du plan (soit Nature, Existence, Valeur OU Sens 1, sens 2, sens 3). Sujet : ${prompt}`;
       case "ph_prob":

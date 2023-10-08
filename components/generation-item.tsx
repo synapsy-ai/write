@@ -76,8 +76,8 @@ export function GenerationItem(props: {
             </span>
             <span className="flex flex-col items-start">
               <h3 className="m-2 text-left font-bold">
-                {props.item.prompt.length > 40
-                  ? props.item.prompt.substring(0, 40) + "..."
+                {props.item.prompt.length > 30
+                  ? props.item.prompt.substring(0, 30) + "..."
                   : props.item.prompt}
               </h3>
             </span>
