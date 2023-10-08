@@ -26,3 +26,14 @@ const formats = [
   },
 ];
 export default formats;
+
+export function typesToString(type: string): string {
+  for (let i = 0; i < formats.length; i++) {
+    for (let j = 0; j < formats[i].options.length; j++) {
+      if (formats[i].options[j].val === type) {
+        return formats[i].options[j].text;
+      }
+    }
+  }
+  return "";
+}

@@ -25,7 +25,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { Label } from "@radix-ui/react-select";
-import formats from "@/lib/formats";
+import formats, { typesToString } from "@/lib/formats";
 import {
   Accordion,
   AccordionContent,
@@ -76,57 +76,63 @@ export default function CreatePage({
 
   return (
     <main>
-      <section className="mx-2">
+      <section className="mx-2 print:hidden">
         <h2 className="text-2xl font-bold">{t("create")}</h2>
         <p>{t("create-desc")}</p>
       </section>
       {!welcome ? (
-        <section className="m-2 flex items-center space-x-2 rounded-md bg-white p-2 shadow-md dark:bg-slate-900">
-          <Input onChange={(v) => setPrompt(v.target.value)} />
-          <Sheet>
-            <SheetTrigger asChild>
-              <Button variant="outline">{t("format")}</Button>
-            </SheetTrigger>
-            <SheetContent>
-              <SheetHeader>
-                <SheetTitle>{t("format")}</SheetTitle>
-                <SheetDescription>{t("select-format")}</SheetDescription>
-              </SheetHeader>
-              <div className="py-4">
-                {formats.map((el, i) => (
-                  <Accordion key={i} type="single" collapsible>
-                    <AccordionItem value="item-1">
-                      <AccordionTrigger>{t(el.category)}</AccordionTrigger>
-                      <AccordionContent>
-                        <div className="grid">
-                          {el.options.map((op, j) => (
-                            <SheetClose className="grid" key={j}>
-                              <Button
-                                onClick={() => setType(op.val)}
-                                variant="ghost"
-                                className="justify-start"
-                              >
-                                {t(op.text)}
-                              </Button>
-                            </SheetClose>
-                          ))}
-                        </div>
-                      </AccordionContent>
-                    </AccordionItem>
-                  </Accordion>
-                ))}
-              </div>
-            </SheetContent>
-          </Sheet>
-
-          {!inProgress ? (
-            <Button onClick={create}>{t("create")}</Button>
-          ) : (
-            <Button disabled className="cursor-not-allowed">
-              {" "}
-              <Loader2 className="mr-2 animate-spin" /> {t("please-wait")}
-            </Button>
-          )}
+        <section>
+          <div className="m-2 flex items-center space-x-2 print:hidden">
+            <Input onChange={(v) => setPrompt(v.target.value)} />
+            <Sheet>
+              <SheetTrigger asChild>
+                <Button variant="outline">{t("format")}</Button>
+              </SheetTrigger>
+              <SheetContent>
+                <SheetHeader>
+                  <SheetTitle>{t("format")}</SheetTitle>
+                  <SheetDescription>{t("select-format")}</SheetDescription>
+                </SheetHeader>
+                <div className="py-4">
+                  {formats.map((el, i) => (
+                    <Accordion key={i} type="single" collapsible>
+                      <AccordionItem value="item-1">
+                        <AccordionTrigger>{t(el.category)}</AccordionTrigger>
+                        <AccordionContent>
+                          <div className="grid">
+                            {el.options.map((op, j) => (
+                              <SheetClose className="grid" key={j}>
+                                <Button
+                                  onClick={() => setType(op.val)}
+                                  variant="ghost"
+                                  className="justify-start"
+                                >
+                                  {t(op.text)}
+                                </Button>
+                              </SheetClose>
+                            ))}
+                          </div>
+                        </AccordionContent>
+                      </AccordionItem>
+                    </Accordion>
+                  ))}
+                </div>
+              </SheetContent>
+            </Sheet>
+            {!inProgress ? (
+              <Button onClick={create}>{t("create")}</Button>
+            ) : (
+              <Button disabled className="cursor-not-allowed">
+                {" "}
+                <Loader2 className="mr-2 animate-spin" /> {t("please-wait")}
+              </Button>
+            )}
+          </div>
+          <div className="m-2">
+            <p>
+              {t("format")} - {t(typesToString(type))}
+            </p>
+          </div>
         </section>
       ) : (
         <section className="flex flex-col items-center">
@@ -141,7 +147,7 @@ export default function CreatePage({
           <Button onClick={setKey}>{t("confirm")}</Button>
         </section>
       )}
-      <section className="m-2 rounded-md bg-white p-2 shadow-md dark:bg-slate-900">
+      <section className="m-2 rounded-md bg-white p-2 shadow-md dark:bg-slate-900 print:shadow-none">
         {res ? (
           <ResultDisplayer res={res} type={type} />
         ) : (
