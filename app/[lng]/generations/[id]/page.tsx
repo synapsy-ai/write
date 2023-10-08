@@ -16,7 +16,7 @@ export default function GenerationViewPage({
     <main>
       <section className="flex flex-col items-center justify-center">
         <section
-          className="m-2 rounded-md p-4 text-justify shadow-lg dark:bg-slate-900 print:text-black print:shadow-none md:w-[90%] lg:w-[60%] xl:w-[50%]"
+          className="m-2 max-w-[800px] rounded-md p-4 text-justify shadow-lg dark:bg-slate-900 print:text-black print:shadow-none"
           id="ct"
         >
           <ResultDisplayer res={item.content} type={item.template} />

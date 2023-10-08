@@ -27,16 +27,21 @@ export function getSystem(
 ): string {
   const type = template.length > 3 ? template.substring(0, 3) : template;
   if (lng === "en") {
+    if (template === "ideas") {
+      return 'You are a helpful assistant who gives ideas in a JSON array of ideas ["Idea1","Idea2"] (EXACTLY THIS FORMAT, no object)';
+    }
     switch (type) {
       case "ph_":
         return "You are an expert who writes philosophy essays similar to those required for a high school diploma in the United States. Response format: HTML (body ONLY)";
       case "es_":
         return "You are an expert who writes essays similar to those required for a high school diploma in the United States. Response format: HTML (body ONLY)";
-
       default:
         return "You help writing documents. Response format: HTML (body ONLY)";
     }
   } else {
+    if (template === "ideas") {
+      return 'Tu un assistant qui donne des idées dans un array d\'idées JSON ["Idee1","Idee2"] (EXACTEMENT CE FORMAT, pas d\'objet)';
+    }
     switch (type) {
       case "ph_":
         return "Tu es un expert qui fait des dissertations type bac de philosophie. Format de réponse : HTML (SEULEMENT body)";
@@ -62,7 +67,7 @@ export function getPrompt(
       case "email":
         return `Generate an email about ${prompt}`;
       case "ideas":
-        return `Generate a JSON array of ideas ["Idea1","Idea2"] (EXACTLY THUS FORMAT, no object) about this topic: ${prompt}`;
+        return `Generate a JSON array of ideas ["Idea1","Idea2"] (EXACTLY THIS FORMAT, no object) about this topic: ${prompt}`;
       case "es_intro":
         return `Write the introduction (hook, presentation of the subject, problem statement, and plan announcement) for the following topic: ${prompt}`;
       case "es_conclusion":
