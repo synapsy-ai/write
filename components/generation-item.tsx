@@ -51,6 +51,8 @@ export function GenerationItem(props: {
         return t("essay-outline");
       case "es_basic":
         return t("essay-basic");
+      case "es_complex":
+        return t("essay-complex");
       default:
         return t("paragraph");
     }

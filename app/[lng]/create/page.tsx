@@ -12,7 +12,15 @@ import {
 } from "@/components/ui/select";
 import { useState } from "react";
 import { Settings } from "@/lib/settings";
-import { Template, sendToGpt } from "@/lib/ai-completions";
+import {
+  Template,
+  getComplexEssayPrompts,
+  getPrompt,
+  getSystem,
+  sendToGpt,
+  sendToGptCustom,
+  usingPlan,
+} from "@/lib/ai-completions";
 import { addToHistory } from "@/lib/history";
 import {
   Sheet,
@@ -34,6 +42,7 @@ import {
 } from "@/components/ui/accordion";
 import { Skeleton } from "@/components/ui/skeleton";
 import ResultDisplayer from "@/components/result-displayer";
+import { Progress } from "@/components/ui/progress";
 
 export default function CreatePage({
   params: { lng },
@@ -54,6 +63,8 @@ export default function CreatePage({
   const [res, setRes] = useState<string | null>("");
   const [prompt, setPrompt] = useState("");
   const [inProgress, setInProgress] = useState(false);
+  const [progressBarVis, setProgressBarVis] = useState(false);
+  const [progress, setProgress] = useState(0);
 
   function setKey() {
     s.key = keyTxt;
@@ -63,6 +74,7 @@ export default function CreatePage({
 
   async function create() {
     setInProgress(true);
+    setProgressBarVis(false);
     let r = await sendToGpt(prompt, s.key, type, lng);
     setRes(r);
     addToHistory({
@@ -71,6 +83,70 @@ export default function CreatePage({
       template: type,
       date: new Date(),
     });
+    setInProgress(false);
+  }
+
+  function createButton() {
+    if (type === "es_complex") {
+      createComplexEssay();
+    } else {
+      create();
+    }
+  }
+
+  async function createComplexEssay() {
+    setInProgress(true);
+    setProgressBarVis(true);
+    const outline = await sendToGptCustom(
+      getSystem("es_complex_outline", lng),
+      getPrompt("es_outline", lng, prompt),
+      s.key,
+    );
+    setProgress(16);
+    const intro =
+      (await sendToGptCustom(
+        getSystem("es_intro", lng),
+        getPrompt("es_intro", lng, prompt + usingPlan(lng) + outline),
+        s.key,
+      )) ?? "";
+    setProgress(32);
+
+    const p1 = await sendToGptCustom(
+      getSystem("es_basic", lng),
+      getComplexEssayPrompts(1, outline, lng),
+      s.key,
+    );
+    setProgress(48);
+    const p2 = await sendToGptCustom(
+      getSystem("es_basic", lng),
+      getComplexEssayPrompts(2, outline, lng),
+      s.key,
+    );
+    setProgress(64);
+    const p3 = await sendToGptCustom(
+      getSystem("es_basic", lng),
+      getComplexEssayPrompts(3, outline, lng),
+      s.key,
+    );
+    setProgress(82);
+    const ccl = await sendToGptCustom(
+      getSystem("es_conclusion", lng),
+      getPrompt("es_conclusion", lng, prompt + usingPlan(lng) + outline),
+      s.key,
+    );
+    setProgress(100);
+    setRes(intro + p1 + p2 + p3 + ccl);
+    addToHistory({
+      prompt: prompt,
+      content: intro + p1 + p2 + p3 + ccl ?? "",
+      template: type,
+      date: new Date(),
+    });
+    console.log(intro);
+    console.log(p1);
+    console.log(p2);
+    console.log(p3);
+    console.log(ccl);
     setInProgress(false);
   }
 
@@ -120,7 +196,7 @@ export default function CreatePage({
               </SheetContent>
             </Sheet>
             {!inProgress ? (
-              <Button onClick={create}>{t("create")}</Button>
+              <Button onClick={createButton}>{t("create")}</Button>
             ) : (
               <Button disabled className="cursor-not-allowed">
                 {" "}
@@ -166,6 +242,9 @@ export default function CreatePage({
             <Skeleton className="h-4 w-[250px]" />
             <Skeleton className="h-4 w-[200px]" />
           </div>
+          {progressBarVis && (
+            <Progress value={progress} className="m-4 w-[60%]" />
+          )}
         </section>
       ) : (
         <></>

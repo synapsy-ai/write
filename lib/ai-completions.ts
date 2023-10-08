@@ -21,6 +21,27 @@ export async function sendToGpt(
   return chatCompletion.choices[0].message.content;
 }
 
+export async function sendToGptCustom(
+  system: string,
+  prompt: string,
+  key: string,
+) {
+  const openai = new OpenAI({
+    apiKey: key,
+    dangerouslyAllowBrowser: true, // defaults to process.env["OPENAI_API_KEY"]
+  });
+
+  const chatCompletion = await openai.chat.completions.create({
+    messages: [
+      { role: "system", content: system },
+      { role: "user", content: prompt },
+    ],
+    model: "gpt-3.5-turbo",
+  });
+
+  return chatCompletion.choices[0].message.content;
+}
+
 export function getSystem(
   template: Template | string,
   lng: "fr" | "en",
@@ -30,25 +51,31 @@ export function getSystem(
     if (template === "ideas") {
       return 'You are a helpful assistant who gives ideas in a JSON array of ideas ["Idea1","Idea2"] (EXACTLY THIS FORMAT, no object)';
     }
+    if (template === "es_complex_outline") {
+      return "You are an expert who writes essays similar to those required for a high school diploma in the United States.";
+    }
     switch (type) {
       case "ph_":
-        return "You are an expert who writes philosophy essays similar to those required for a high school diploma in the United States. Response format: HTML (body ONLY)";
+        return "You are an expert who writes philosophy essays similar to those required for a high school diploma in the United States. Response format: HTML (body ONLY,no head, no scripts)";
       case "es_":
-        return "You are an expert who writes essays similar to those required for a high school diploma in the United States. Response format: HTML (body ONLY)";
+        return "You are an expert who writes essays similar to those required for a high school diploma in the United States. Response format: HTML (body ONLY,no head, no scripts)";
       default:
-        return "You help writing documents. Response format: HTML (body ONLY)";
+        return "You help writing documents. Response format: HTML (body ONLY,no head, no scripts)";
     }
   } else {
     if (template === "ideas") {
       return 'Tu un assistant qui donne des idées dans un array d\'idées JSON ["Idee1","Idee2"] (EXACTEMENT CE FORMAT, pas d\'objet)';
     }
+    if (template === "es_complex_outline") {
+      return "Tu es un expert qui fait des dissertations type bac de français.";
+    }
     switch (type) {
       case "ph_":
-        return "Tu es un expert qui fait des dissertations type bac de philosophie. Format de réponse : HTML (SEULEMENT body)";
+        return "Tu es un expert qui fait des dissertations type bac de philosophie. Format de réponse : HTML (SEULEMENT body, pas de head, pas de scripts)";
       case "es_":
-        return "Tu es un expert qui fait des dissertations type bac de français. Format de réponse : HTML (SEULEMENT body)";
+        return "Tu es un expert qui fait des dissertations type bac de français. Format de réponse : HTML (SEULEMENT body, pas de head, pas de scripts)";
       default:
-        return "Tu aides à écrire des documents. Format de réponse : HTML (SEULEMENT body)";
+        return "Tu aides à écrire des documents. Format de réponse : HTML (SEULEMENT body, pas de head, pas de scripts)";
     }
   }
 }
@@ -73,7 +100,7 @@ export function getPrompt(
       case "es_conclusion":
         return `Write the conclusion (with an opening) for the following topic: `;
       case "es_outline":
-        return `Write only the outline of the essay organized in at least two main parts (I, II, III etc.) each containing at least two subparts containing examples/quotes (A, B, etc.) for the following topic: ${prompt}`;
+        return `Write only the outline of the essay organized in three main parts (I, II, III etc.) each containing at least two subparts containing examples/quotes (A, B, etc.) for the following topic: ${prompt}`;
       case "es_basic":
         return `Write the introduction (introduction, presentation of the subject, issues and outline), the content of the essay organized into at least two main parts (I, II, III etc.) each containing at least two sub-parts (A, B, etc.) (with quotations), and the conclusion of the following subject: ${prompt}`;
       case "ph_intro":
@@ -98,7 +125,7 @@ export function getPrompt(
       case "es_conclusion":
         return `Rédige la conclusion (avec ouverture) du sujet suivant : ${prompt}`;
       case "es_outline":
-        return `Rédige uniquement le plan de la dissertation organisé en au moins deux grandes parties (I, II, III etc.) contenant chacune au moins deux sous-parties contenant des exemples/citations (A, B, etc.) du sujet suivant : ${prompt}`;
+        return `Rédige uniquement le plan de la dissertation organisé en trois grandes parties (I, II, III etc.) contenant chacune au moins deux sous-parties contenant des exemples/citations (A, B, etc.) du sujet suivant : ${prompt}`;
       case "es_basic":
         return `Rédige l'introduction (amorce, présentation du sujet, problématique et annonce du plan), le contenu de la dissertation organisé en au moins deux grandes parties (I, II, III etc.) contenant chacune au moins deux sous-parties (A, B, etc.) (avec des citations), et la conclusion du sujet suivant : ${prompt}`;
       case "ph_intro":
@@ -107,6 +134,35 @@ export function getPrompt(
         return `Rédige la problématisation du sujet avec trois paragraphes MAX contenu deux phrases MAX, le premier commence impérativement par "d\'une part", le second par "d\'autre part" et le troisième par "donc". Structure: 1er paragraphe : première réponse [R1] argumentée à partir de l\'analyse des notions du sujet. 2e paragraphe : questionnement de la première réponse. 3e paragraphe : reprise synthétique [S] du problème avec une question qui formule clairement l\'alternative fondamentale : "R1 ou bien R2 ?". Mettre en gras les idées. Sujet : ${prompt}`;
       default:
         return prompt;
+    }
+  }
+}
+
+export function usingPlan(lng: "fr" | "en") {
+  if (lng === "en") {
+    return " using this outline: ";
+  } else {
+    return " en utilisant ce plan : ";
+  }
+}
+
+export function getComplexEssayPrompts(
+  part: number,
+  outline: string | null,
+  lng: "fr" | "en",
+) {
+  if (lng === "en") {
+    return `ONLY write part ${part} using this outline: ${outline}`;
+  } else {
+    switch (part) {
+      case 1:
+        return `Rédige SEULEMENT la première grande partie (I) du plan ${outline}`;
+      case 2:
+        return `Rédige SEULEMENT la deuxième grande partie (II) du plan ${outline}`;
+      case 3:
+        return `Rédige SEULEMENT la troisième grande partie (III) du plan ${outline}`;
+      default:
+        return `Rédige SEULEMENT la partie ${part} du plan ${outline}`;
     }
   }
 }

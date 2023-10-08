@@ -1,11 +1,18 @@
 import { Template } from "@/lib/ai-completions";
 import { Check } from "lucide-react";
-import parse from "html-react-parser";
+import parse, { HTMLReactParserOptions, Element } from "html-react-parser";
 
 export default function ResultDisplayer(props: {
   res: string;
   type: Template | string;
 }) {
+  const options: HTMLReactParserOptions = {
+    replace: (domNode) => {
+      if (domNode instanceof Element && domNode.tagName === "body") {
+        return null;
+      }
+    },
+  };
   switch (props.type) {
     case "ideas":
       try {
@@ -23,10 +30,29 @@ export default function ResultDisplayer(props: {
           </div>
         );
       } catch {
-        return <p>{parse(props.res)}</p>;
+        return (
+          <div>
+            {parse(
+              props.res.replaceAll("<body>", "").replaceAll("</body>", ""),
+              options,
+            )}
+          </div>
+        );
       }
 
     default:
-      return <p>{parse(props.res)}</p>;
+      return (
+        <p>
+          {parse(
+            props.res
+              .replaceAll("<body>", "")
+              .replaceAll("</body>", "")
+              .replaceAll("<html>", "")
+              .replaceAll("</html>", "")
+              .replaceAll("<!DOCTYPE html>", ""),
+            options,
+          )}
+        </p>
+      );
   }
 }
