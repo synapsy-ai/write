@@ -24,6 +24,7 @@ const formats = [
       { text: "essay-outline", val: "ph_outline" },
       { text: "introduction", val: "ph_intro" },
       { text: "problematization", val: "ph_prob" },
+      { text: "conclusion", val: "ph_conclusion" },
     ],
   },
 ];
