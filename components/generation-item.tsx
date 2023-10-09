@@ -69,7 +69,7 @@ export function GenerationItem(props: {
       <Tooltip>
         <TooltipTrigger>
           <Link
-            href={"generations/" + props.id.toString()}
+            href={"generations/view?id=" + props.id.toString()}
             className="m-2 flex w-[380px] flex-col overflow-hidden rounded-md border border-slate-200 shadow-md transition hover:-translate-y-2 hover:shadow-lg dark:border-slate-700"
           >
             <span

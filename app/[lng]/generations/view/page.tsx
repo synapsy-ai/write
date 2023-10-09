@@ -2,13 +2,15 @@
 
 import ResultDisplayer from "@/components/result-displayer";
 import { HistoryItem } from "@/lib/history";
+import { useSearchParams } from "next/navigation";
 
 export default function GenerationViewPage({
   params,
 }: {
-  params: { id: string; lng: string };
+  params: { lng: string };
 }) {
-  const id = (params.id as string) ?? 0;
+  const searchParams = useSearchParams();
+  const id = searchParams.get("id") ?? 0;
   let el: HistoryItem = {
     date: new Date(),
     prompt: "",
@@ -18,7 +20,6 @@ export default function GenerationViewPage({
   if (typeof window !== "undefined") {
     el = JSON.parse(localStorage.getItem("synapsy_write_history") ?? "[]")[id];
   }
-
   return (
     <main>
       <section className="flex flex-col items-center justify-center">
