@@ -4,6 +4,7 @@ export async function sendToGpt(
   key: string,
   template: Template | string,
   lng: "fr" | "en",
+  model: string,
 ) {
   const openai = new OpenAI({
     apiKey: key,
@@ -15,7 +16,7 @@ export async function sendToGpt(
       { role: "system", content: getSystem(template, lng) },
       { role: "user", content: getPrompt(template, lng, prompt) },
     ],
-    model: "gpt-3.5-turbo",
+    model: model,
   });
 
   return chatCompletion.choices[0].message.content;
@@ -25,6 +26,7 @@ export async function sendToGptCustom(
   system: string,
   prompt: string,
   key: string,
+  model: string,
 ) {
   const openai = new OpenAI({
     apiKey: key,
@@ -36,7 +38,7 @@ export async function sendToGptCustom(
       { role: "system", content: system },
       { role: "user", content: prompt },
     ],
-    model: "gpt-3.5-turbo",
+    model: model,
   });
 
   return chatCompletion.choices[0].message.content;

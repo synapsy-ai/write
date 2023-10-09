@@ -34,5 +34,8 @@
   "essay-outline": "Plan",
   "conclusion": "Conclusion",
   "essay-basic": "Dissertation (Basique)",
-  "essay-complex": "Dissertation (Complexe)"
+  "essay-complex": "Dissertation (Complexe)",
+  "options": "Options",
+  "model-options": "Options du modèle",
+  "model": "Modèle"
 }

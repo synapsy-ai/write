@@ -2,7 +2,7 @@
 import { useTranslation } from "@/app/i18n/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Hand, Info, Loader2 } from "lucide-react";
+import { Hand, Info, Loader2, Settings as SettingsLogo } from "lucide-react";
 import { useState } from "react";
 import { Settings } from "@/lib/settings";
 import {
@@ -33,6 +33,13 @@ import {
 import { Skeleton } from "@/components/ui/skeleton";
 import ResultDisplayer from "@/components/result-displayer";
 import { Progress } from "@/components/ui/progress";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 export default function CreatePage({
   params: { lng },
@@ -55,6 +62,7 @@ export default function CreatePage({
   const [inProgress, setInProgress] = useState(false);
   const [progressBarVis, setProgressBarVis] = useState(false);
   const [progress, setProgress] = useState(0);
+  const [model, setModel] = useState("gpt-3.5-turbo");
 
   function setKey() {
     s.key = keyTxt;
@@ -65,7 +73,7 @@ export default function CreatePage({
   async function create() {
     setInProgress(true);
     setProgressBarVis(false);
-    let r = await sendToGpt(prompt, s.key, type, lng);
+    let r = await sendToGpt(prompt, s.key, type, lng, model);
     setRes(r);
     addToHistory({
       prompt: prompt,
@@ -93,6 +101,7 @@ export default function CreatePage({
       getSystem("es_complex_outline", lng),
       getPrompt("es_outline", lng, prompt),
       s.key,
+      model,
     );
     setProgress(16);
     const intro =
@@ -100,6 +109,7 @@ export default function CreatePage({
         getSystem("es_intro", lng),
         getPrompt("es_intro", lng, prompt + usingPlan(lng) + outline),
         s.key,
+        model,
       )) ?? "";
     setProgress(32);
 
@@ -107,24 +117,28 @@ export default function CreatePage({
       getSystem("es_basic", lng),
       getComplexEssayPrompts(1, outline, lng),
       s.key,
+      model,
     );
     setProgress(48);
     const p2 = await sendToGptCustom(
       getSystem("es_basic", lng),
       getComplexEssayPrompts(2, outline, lng),
       s.key,
+      model,
     );
     setProgress(64);
     const p3 = await sendToGptCustom(
       getSystem("es_basic", lng),
       getComplexEssayPrompts(3, outline, lng),
       s.key,
+      model,
     );
     setProgress(82);
     const ccl = await sendToGptCustom(
       getSystem("es_conclusion", lng),
       getPrompt("es_conclusion", lng, prompt + usingPlan(lng) + outline),
       s.key,
+      model,
     );
     setProgress(100);
     setRes(intro + p1 + p2 + p3 + ccl);
@@ -149,6 +163,7 @@ export default function CreatePage({
       getSystem("ph_complex_outline", lng),
       getPrompt("ph_outline", lng, prompt),
       s.key,
+      model,
     );
     setProgress(16);
     const intro =
@@ -156,6 +171,7 @@ export default function CreatePage({
         getSystem("ph_intro", lng),
         getPrompt("ph_intro", lng, prompt + usingPlan(lng) + outline),
         s.key,
+        model,
       )) ?? "";
     setProgress(32);
 
@@ -163,24 +179,28 @@ export default function CreatePage({
       getSystem("ph_basic", lng),
       getComplexEssayPrompts(1, outline, lng),
       s.key,
+      model,
     );
     setProgress(48);
     const p2 = await sendToGptCustom(
       getSystem("ph_basic", lng),
       getComplexEssayPrompts(2, outline, lng),
       s.key,
+      model,
     );
     setProgress(64);
     const p3 = await sendToGptCustom(
       getSystem("ph_basic", lng),
       getComplexEssayPrompts(3, outline, lng),
       s.key,
+      model,
     );
     setProgress(82);
     const ccl = await sendToGptCustom(
       getSystem("ph_conclusion", lng),
       getPrompt("ph_conclusion", lng, prompt + usingPlan(lng) + outline),
       s.key,
+      model,
     );
     setProgress(100);
     setRes(intro + p1 + p2 + p3 + ccl);
@@ -242,6 +262,38 @@ export default function CreatePage({
                   ))}
                 </div>
               </SheetContent>
+              <Sheet>
+                <SheetTrigger asChild>
+                  <Button variant="outline">
+                    <SettingsLogo height={16} />
+                  </Button>
+                </SheetTrigger>
+                <SheetContent>
+                  <SheetHeader>
+                    <SheetTitle>{t("options")}</SheetTitle>
+                    <SheetDescription>{t("model-options")}</SheetDescription>
+                  </SheetHeader>
+                  <div className="py-4">
+                    <div className="flex items-center space-x-2">
+                      <p>{t("model")}</p>
+                      <Select
+                        onValueChange={(e) => setModel(e)}
+                        defaultValue={model}
+                      >
+                        <SelectTrigger className="w-[180px]">
+                          <SelectValue placeholder={t("model")} />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="gpt-3.5-turbo">
+                            GPT-3.5 Turbo
+                          </SelectItem>
+                          <SelectItem value="gpt-4">GPT-4</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  </div>
+                </SheetContent>
+              </Sheet>
             </Sheet>
             {!inProgress ? (
               <Button onClick={createButton}>{t("create")}</Button>

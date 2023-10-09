@@ -34,5 +34,8 @@
   "essay-outline": "Essay outline",
   "conclusion": "Conclusion",
   "essay-basic": "Essay (Basic)",
-  "essay-complex": "Essay (Complex)"
+  "essay-complex": "Essay (Complex)",
+  "options": "Options",
+  "model-options": "Model options",
+  "model": "Model"
 }
