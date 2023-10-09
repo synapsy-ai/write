@@ -49,7 +49,9 @@ export default function ResultDisplayer(props: {
               .replaceAll("</body>", "")
               .replaceAll("<html>", "")
               .replaceAll("</html>", "")
-              .replaceAll("<!DOCTYPE html>", ""),
+              .replaceAll("<!DOCTYPE html>", "")
+              .replaceAll("\n\n", "<br>")
+              .replaceAll("\n", "<br>"),
             options,
           )}
         </p>
