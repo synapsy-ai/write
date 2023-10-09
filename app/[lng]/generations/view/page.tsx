@@ -4,6 +4,8 @@ import ResultDisplayer from "@/components/result-displayer";
 import { HistoryItem } from "@/lib/history";
 import { useSearchParams } from "next/navigation";
 import { encode } from "gpt-token-utils";
+import { Button } from "@/components/ui/button";
+import { Copy, Printer } from "lucide-react";
 
 export default function GenerationViewPage({
   params,
@@ -60,6 +62,23 @@ export default function GenerationViewPage({
           id="ct"
         >
           <ResultDisplayer res={el.content} type={el.template} />
+          <div className="mt-2 flex justify-center space-x-2 print:hidden">
+            <Button className="flex space-x-2" onClick={() => window.print()}>
+              <Printer />
+              <p>Imprimer</p>
+            </Button>
+            <Button
+              variant="outline"
+              className="flex space-x-2"
+              onClick={() =>
+                navigator.clipboard.writeText(
+                  document.getElementById("contentp")?.innerText ?? "",
+                )
+              }
+            >
+              <Copy size={16} />
+            </Button>
+          </div>
         </section>
         <section className="m-2 flex flex-wrap items-center justify-center print:hidden">
           <div className="m-2 w-48 rounded-lg bg-white p-4 shadow-md dark:bg-slate-900">
