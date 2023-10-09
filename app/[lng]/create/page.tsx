@@ -79,6 +79,8 @@ export default function CreatePage({
   function createButton() {
     if (type === "es_complex") {
       createComplexEssay();
+    } else if (type == "ph_complex") {
+      createComplexPhiloEssay();
     } else {
       create();
     }
@@ -122,6 +124,62 @@ export default function CreatePage({
     const ccl = await sendToGptCustom(
       getSystem("es_conclusion", lng),
       getPrompt("es_conclusion", lng, prompt + usingPlan(lng) + outline),
+      s.key,
+    );
+    setProgress(100);
+    setRes(intro + p1 + p2 + p3 + ccl);
+    addToHistory({
+      prompt: prompt,
+      content: intro + p1 + p2 + p3 + ccl ?? "",
+      template: type,
+      date: new Date(),
+    });
+    console.log(intro);
+    console.log(p1);
+    console.log(p2);
+    console.log(p3);
+    console.log(ccl);
+    setInProgress(false);
+  }
+
+  async function createComplexPhiloEssay() {
+    setInProgress(true);
+    setProgressBarVis(true);
+    const outline = await sendToGptCustom(
+      getSystem("ph_complex_outline", lng),
+      getPrompt("ph_outline", lng, prompt),
+      s.key,
+    );
+    setProgress(16);
+    const intro =
+      (await sendToGptCustom(
+        getSystem("ph_intro", lng),
+        getPrompt("ph_intro", lng, prompt + usingPlan(lng) + outline),
+        s.key,
+      )) ?? "";
+    setProgress(32);
+
+    const p1 = await sendToGptCustom(
+      getSystem("ph_basic", lng),
+      getComplexEssayPrompts(1, outline, lng),
+      s.key,
+    );
+    setProgress(48);
+    const p2 = await sendToGptCustom(
+      getSystem("ph_basic", lng),
+      getComplexEssayPrompts(2, outline, lng),
+      s.key,
+    );
+    setProgress(64);
+    const p3 = await sendToGptCustom(
+      getSystem("ph_basic", lng),
+      getComplexEssayPrompts(3, outline, lng),
+      s.key,
+    );
+    setProgress(82);
+    const ccl = await sendToGptCustom(
+      getSystem("ph_conclusion", lng),
+      getPrompt("ph_conclusion", lng, prompt + usingPlan(lng) + outline),
       s.key,
     );
     setProgress(100);

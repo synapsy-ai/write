@@ -25,6 +25,8 @@ const formats = [
       { text: "introduction", val: "ph_intro" },
       { text: "problematization", val: "ph_prob" },
       { text: "conclusion", val: "ph_conclusion" },
+      { text: "essay-basic", val: "ph_basic" },
+      { text: "essay-complex", val: "ph_complex" },
     ],
   },
 ];
