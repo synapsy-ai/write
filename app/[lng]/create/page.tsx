@@ -40,6 +40,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Separator } from "@/components/ui/separator";
 
 export default function CreatePage({
   params: { lng },
@@ -290,6 +291,16 @@ export default function CreatePage({
                           <SelectItem value="gpt-4">GPT-4</SelectItem>
                         </SelectContent>
                       </Select>
+                    </div>
+                    <Separator className="my-2" />
+                    <p>{t("api-key")}</p>
+                    <div className="my-2 flex space-x-2">
+                      <Input
+                        type="password"
+                        onChange={(v) => setKeyTxt(v.target.value)}
+                        className="w-full"
+                      />
+                      <Button onClick={setKey}>{t("confirm")}</Button>
                     </div>
                   </div>
                 </SheetContent>

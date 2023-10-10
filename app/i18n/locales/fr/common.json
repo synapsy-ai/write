@@ -37,5 +37,8 @@
   "essay-complex": "Dissertation (Complexe)",
   "options": "Options",
   "model-options": "Options du modèle",
-  "model": "Modèle"
+  "model": "Modèle",
+  "api-key": "Clé d'API",
+  "export": "Exporter",
+  "import": "Importer"
 }
