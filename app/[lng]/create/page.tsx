@@ -299,6 +299,7 @@ export default function CreatePage({
                         type="password"
                         onChange={(v) => setKeyTxt(v.target.value)}
                         className="w-full"
+                        defaultValue={s.key}
                       />
                       <Button onClick={setKey}>{t("confirm")}</Button>
                     </div>
