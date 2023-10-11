@@ -40,5 +40,6 @@
   "model": "Model",
   "api-key": "API Key",
   "export": "Export",
-  "import": "Import"
+  "import": "Import",
+  "error-occured": "An error has occured"
 }
