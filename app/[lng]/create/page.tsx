@@ -2,7 +2,14 @@
 import { useTranslation } from "@/app/i18n/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Hand, Info, Loader2, Settings as SettingsLogo } from "lucide-react";
+
+import {
+  Hand,
+  Info,
+  Loader2,
+  LucideFileWarning,
+  Settings as SettingsLogo,
+} from "lucide-react";
 import { useState } from "react";
 import { Settings } from "@/lib/settings";
 import {
@@ -41,6 +48,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
+import OpenAI from "openai";
 
 export default function CreatePage({
   params: { lng },
@@ -64,6 +72,8 @@ export default function CreatePage({
   const [progressBarVis, setProgressBarVis] = useState(false);
   const [progress, setProgress] = useState(0);
   const [model, setModel] = useState("gpt-3.5-turbo");
+  const [errorMsg, setErrorMsg] = useState<any>({ message: "", name: "" });
+  const [errorVis, setErrorVis] = useState(false);
 
   function setKey() {
     s.key = keyTxt;
@@ -73,8 +83,15 @@ export default function CreatePage({
 
   async function create() {
     setInProgress(true);
+    setErrorVis(false);
     setProgressBarVis(false);
     let r = await sendToGpt(prompt, s.key, type, lng, model);
+    if (r instanceof OpenAI.APIError) {
+      setErrorMsg(r);
+      setErrorVis(true);
+      setInProgress(false);
+      return;
+    }
     setRes(r);
     addToHistory({
       prompt: prompt,
@@ -97,6 +114,7 @@ export default function CreatePage({
 
   async function createComplexEssay() {
     setInProgress(true);
+    setErrorVis(false);
     setProgressBarVis(true);
     const outline = await sendToGptCustom(
       getSystem("es_complex_outline", lng),
@@ -104,6 +122,14 @@ export default function CreatePage({
       s.key,
       model,
     );
+
+    if (outline instanceof OpenAI.APIError) {
+      setErrorMsg(outline);
+      setErrorVis(true);
+      setInProgress(false);
+      return;
+    }
+
     setProgress(16);
     const intro =
       (await sendToGptCustom(
@@ -112,6 +138,13 @@ export default function CreatePage({
         s.key,
         model,
       )) ?? "";
+
+    if (intro instanceof OpenAI.APIError) {
+      setErrorMsg(intro);
+      setErrorVis(true);
+      setInProgress(false);
+      return;
+    }
     setProgress(32);
 
     const p1 = await sendToGptCustom(
@@ -120,6 +153,12 @@ export default function CreatePage({
       s.key,
       model,
     );
+    if (p1 instanceof OpenAI.APIError) {
+      setErrorMsg(p1);
+      setErrorVis(true);
+      setInProgress(false);
+      return;
+    }
     setProgress(48);
     const p2 = await sendToGptCustom(
       getSystem("es_basic", lng),
@@ -127,6 +166,12 @@ export default function CreatePage({
       s.key,
       model,
     );
+    if (p2 instanceof OpenAI.APIError) {
+      setErrorMsg(p2);
+      setErrorVis(true);
+      setInProgress(false);
+      return;
+    }
     setProgress(64);
     const p3 = await sendToGptCustom(
       getSystem("es_basic", lng),
@@ -134,6 +179,12 @@ export default function CreatePage({
       s.key,
       model,
     );
+    if (p3 instanceof OpenAI.APIError) {
+      setErrorMsg(p3);
+      setErrorVis(true);
+      setInProgress(false);
+      return;
+    }
     setProgress(82);
     const ccl = await sendToGptCustom(
       getSystem("es_conclusion", lng),
@@ -141,6 +192,12 @@ export default function CreatePage({
       s.key,
       model,
     );
+    if (ccl instanceof OpenAI.APIError) {
+      setErrorMsg(ccl);
+      setErrorVis(true);
+      setInProgress(false);
+      return;
+    }
     setProgress(100);
     setRes(intro + p1 + p2 + p3 + ccl);
     addToHistory({
@@ -335,16 +392,25 @@ export default function CreatePage({
           <Button onClick={setKey}>{t("confirm")}</Button>
         </section>
       )}
-      <section className="m-2 rounded-md bg-white p-2 shadow-md dark:bg-slate-900 print:shadow-none">
-        {res ? (
-          <ResultDisplayer res={res} type={type} />
-        ) : (
-          <div className="flex flex-col items-center">
-            <Info height={48} width={48} />
-            <p className="font-bold">{t("result-ph")}</p>
-          </div>
-        )}
-      </section>
+      {!errorVis && (
+        <section className="m-2 rounded-md bg-white p-2 shadow-md dark:bg-slate-900 print:shadow-none">
+          {res ? (
+            <ResultDisplayer res={res} type={type} />
+          ) : (
+            <div className="flex flex-col items-center">
+              <Info height={48} width={48} />
+              <p className="font-bold">{t("result-ph")}</p>
+            </div>
+          )}
+        </section>
+      )}
+      {errorVis && (
+        <section className="flex flex-col items-center">
+          <LucideFileWarning height={48} width={48} />
+          <p className="font-bold">{t("error-occured")}</p>
+          <ErrorDisplayer err={errorMsg} />
+        </section>
+      )}
       {inProgress ? (
         <section className="flex min-h-[50vh] flex-col items-center justify-center">
           <p className="mb-2 text-xl font-bold">{t("gen-in-progress")}</p>
@@ -362,5 +428,13 @@ export default function CreatePage({
         <></>
       )}
     </main>
+  );
+}
+function ErrorDisplayer(props: { err: any }) {
+  return (
+    <div className="text-center">
+      <p>{props.err.name.toString()}</p>
+      <p>{props.err.message.toString()}</p>
+    </div>
   );
 }

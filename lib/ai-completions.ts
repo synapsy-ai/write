@@ -1,3 +1,4 @@
+import { error } from "console";
 import OpenAI from "openai";
 export async function sendToGpt(
   prompt: string,
@@ -11,14 +12,21 @@ export async function sendToGpt(
     dangerouslyAllowBrowser: true, // defaults to process.env["OPENAI_API_KEY"]
   });
 
-  const chatCompletion = await openai.chat.completions.create({
-    messages: [
-      { role: "system", content: getSystem(template, lng) },
-      { role: "user", content: getPrompt(template, lng, prompt) },
-    ],
-    model: model,
-  });
-
+  const chatCompletion: OpenAI.Chat.Completions.ChatCompletion | any =
+    await openai.chat.completions
+      .create({
+        messages: [
+          { role: "system", content: getSystem(template, lng) },
+          { role: "user", content: getPrompt(template, lng, prompt) },
+        ],
+        model: model,
+      })
+      .catch((err) => {
+        return err;
+      });
+  if (typeof chatCompletion.choices === "undefined") {
+    return chatCompletion;
+  }
   return chatCompletion.choices[0].message.content;
 }
 
@@ -33,14 +41,17 @@ export async function sendToGptCustom(
     dangerouslyAllowBrowser: true, // defaults to process.env["OPENAI_API_KEY"]
   });
 
-  const chatCompletion = await openai.chat.completions.create({
-    messages: [
-      { role: "system", content: system },
-      { role: "user", content: prompt },
-    ],
-    model: model,
-  });
-
+  const chatCompletion = await openai.chat.completions
+    .create({
+      messages: [
+        { role: "system", content: system },
+        { role: "user", content: prompt },
+      ],
+      model: model,
+    })
+    .catch((err) => {
+      return err;
+    });
   return chatCompletion.choices[0].message.content;
 }
 
