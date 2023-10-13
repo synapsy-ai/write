@@ -41,5 +41,16 @@
   "api-key": "API Key",
   "export": "Export",
   "import": "Import",
-  "error-occured": "An error has occured"
+  "error-occured": "An error has occured",
+  "features": "Features",
+  "feature-ai": "OpenAI's GPT Generative AI",
+  "feature-ai-desc": "Harness the state-of-the-art AI technology provided by OpenAI to generate high-quality text based on your input.",
+  "feature-versatile": "Versatile",
+  "feature-versatile-desc": "Create different types of writing from a single instruction. Write lets you create emails, paragraphs, essays and much more!",
+  "feature-easy": "Easy to use",
+  "feature-easy-desc": "The intuitive user interface ensures that even non-technical users can get started quickly. You can start generating writings in seconds.",
+  "open-source": "Open-source",
+  "open-source-desc": "Synapsy's products follow Peyronnet Group's vision: Open-source as a core value. We want to have this journey with you and the community.",
+  "links": "Links",
+  "socials": "Socials"
 }

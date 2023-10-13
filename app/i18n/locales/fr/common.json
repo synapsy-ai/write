@@ -41,5 +41,16 @@
   "api-key": "Clé d'API",
   "export": "Exporter",
   "import": "Importer",
-  "error-occured": "Une erreur s'est produite"
+  "error-occured": "Une erreur s'est produite",
+  "features": "Fonctionnalités",
+  "feature-ai": "IA GPT Générative d'OpenAI",
+  "feature-ai-desc": "Exploitez la technologie d'IA de pointe fournie par OpenAI pour générer un texte de haute qualité à partir de vos données",
+  "feature-versatile": "Polyvalent",
+  "feature-versatile-desc": "Créez différents types d'écrits à partir d'une seule instruction. Write vous permet de créer des courriels, des paragraphes, des essais et bien plus encore !",
+  "feature-easy": "Facile à utiliser",
+  "feature-easy-desc": "L'interface utilisateur intuitive garantit que même les utilisateurs non techniques peuvent démarrer rapidement. Vous pouvez commencer à générer des écrits en quelques secondes",
+  "open-source": "Open-source",
+  "open-source-desc": "Les produits Synapsy suivent la vision du Groupe Peyronnet : L'open-source comme valeur fondamentale. Nous voulons faire ce voyage avec vous et la communauté.",
+  "links": "Liens",
+  "socials": "Réseaux sociaux"
 }
