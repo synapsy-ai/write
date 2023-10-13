@@ -49,6 +49,7 @@ import {
 } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
 import OpenAI from "openai";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 export default function CreatePage({
   params: { lng },
@@ -296,28 +297,33 @@ export default function CreatePage({
                   <SheetDescription>{t("select-format")}</SheetDescription>
                 </SheetHeader>
                 <div className="py-4">
-                  {formats.map((el, i) => (
-                    <Accordion key={i} type="single" collapsible>
-                      <AccordionItem value="item-1">
-                        <AccordionTrigger>{t(el.category)}</AccordionTrigger>
-                        <AccordionContent>
-                          <div className="grid">
-                            {el.options.map((op, j) => (
-                              <SheetClose className="grid" key={j}>
-                                <Button
-                                  onClick={() => setType(op.val)}
-                                  variant="ghost"
-                                  className="justify-start"
-                                >
-                                  {t(op.text)}
-                                </Button>
-                              </SheetClose>
-                            ))}
-                          </div>
-                        </AccordionContent>
-                      </AccordionItem>
-                    </Accordion>
-                  ))}
+                  <ScrollArea
+                    style={{ height: "calc(100vh - 80px)" }}
+                    className="rounded-md p-2"
+                  >
+                    {formats.map((el, i) => (
+                      <Accordion key={i} type="single" collapsible>
+                        <AccordionItem value="item-1">
+                          <AccordionTrigger>{t(el.category)}</AccordionTrigger>
+                          <AccordionContent>
+                            <div className="grid">
+                              {el.options.map((op, j) => (
+                                <SheetClose className="grid" key={j}>
+                                  <Button
+                                    onClick={() => setType(op.val)}
+                                    variant="ghost"
+                                    className="justify-start"
+                                  >
+                                    {t(op.text)}
+                                  </Button>
+                                </SheetClose>
+                              ))}
+                            </div>
+                          </AccordionContent>
+                        </AccordionItem>
+                      </Accordion>
+                    ))}
+                  </ScrollArea>
                 </div>
               </SheetContent>
               <Sheet>
