@@ -5,6 +5,7 @@ import { dir } from "i18next";
 import { languages } from "../i18n/settings";
 import NavBar from "@/components/navbar";
 import { ThemeProvider } from "@/components/theme-provider";
+import Script from "next/script";
 
 const inter = DM_Sans({ subsets: ["latin"] });
 export async function generateStaticParams() {
@@ -27,6 +28,18 @@ export default function RootLayout({
     <html lang={lng} dir={dir(lng)}>
       <head>
         <link rel="icon" href="/logo.png" />
+        <Script
+          async
+          src="https://www.googletagmanager.com/gtag/js?id=G-W409KSWNWR"
+        ></Script>
+        <Script>
+          {`
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-W409KSWNWR');`}
+        </Script>
       </head>
       <body className={inter.className + " dark:bg-slate-950 dark:text-white"}>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
