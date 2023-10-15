@@ -29,10 +29,11 @@ export default function RootLayout({
       <head>
         <link rel="icon" href="/logo.png" />
         <Script
+          id="gtag"
           async
           src="https://www.googletagmanager.com/gtag/js?id=G-W409KSWNWR"
         ></Script>
-        <Script>
+        <Script id="google-analytics">
           {`
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
