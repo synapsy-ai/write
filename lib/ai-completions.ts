@@ -11,7 +11,6 @@ export async function sendToGpt(
     apiKey: key,
     dangerouslyAllowBrowser: true, // defaults to process.env["OPENAI_API_KEY"]
   });
-
   const chatCompletion: OpenAI.Chat.Completions.ChatCompletion | any =
     await openai.chat.completions
       .create({
@@ -199,6 +198,15 @@ export function getComplexEssayPrompts(
         return `Rédige SEULEMENT la partie ${part} du plan ${outline}`;
     }
   }
+}
+
+export async function getModels(key: string) {
+  const openai = new OpenAI({
+    apiKey: key,
+    dangerouslyAllowBrowser: true, // defaults to process.env["OPENAI_API_KEY"]
+  });
+  let models = await openai.models.list();
+  return models.data;
 }
 
 export type Template = "para" | "email" | "blog" | "ideas";

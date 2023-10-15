@@ -8,12 +8,14 @@ import {
   Info,
   Loader2,
   LucideFileWarning,
+  RefreshCcw,
   Settings as SettingsLogo,
 } from "lucide-react";
 import { useState } from "react";
 import { Settings } from "@/lib/settings";
 import {
   getComplexEssayPrompts,
+  getModels,
   getPrompt,
   getSystem,
   sendToGpt,
@@ -50,6 +52,7 @@ import {
 import { Separator } from "@/components/ui/separator";
 import OpenAI from "openai";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { getModelString } from "@/lib/models";
 
 export default function CreatePage({
   params: { lng },
@@ -63,6 +66,8 @@ export default function CreatePage({
   let s: Settings = { key: "" };
   if (typeof window !== "undefined") {
     s = JSON.parse(localStorage.getItem("synapsy_settings") ?? "{}");
+    s.models ??= ["gpt-3.5-turbo", "gpt-4"];
+    localStorage.setItem("synapsy_settings", JSON.stringify(s));
   }
 
   const [welcome, setWelcome] = useState(s.key === undefined);
@@ -75,6 +80,22 @@ export default function CreatePage({
   const [model, setModel] = useState("gpt-3.5-turbo");
   const [errorMsg, setErrorMsg] = useState<any>({ message: "", name: "" });
   const [errorVis, setErrorVis] = useState(false);
+  const [avModels, setAvModels] = useState(
+    s.models ?? ["gpt-3.5-turbo", "gpt-4"],
+  );
+
+  async function getMs() {
+    let m = await getModels(s.key);
+    let avm: string[] = [];
+    for (let i = 0; i < m.length; i++) {
+      if (m[i].id.startsWith("gpt")) avm.push(m[i].id);
+    }
+    setAvModels(avm);
+    if (typeof window !== "undefined") {
+      s.models = avm;
+      localStorage.setItem("synapsy_settings", JSON.stringify(s));
+    }
+  }
 
   function setKey() {
     s.key = keyTxt;
@@ -348,19 +369,28 @@ export default function CreatePage({
                           <SelectValue placeholder={t("model")} />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="gpt-3.5-turbo">
-                            GPT-3.5 Turbo
-                          </SelectItem>
-                          <SelectItem value="gpt-4">GPT-4</SelectItem>
+                          <ScrollArea className="h-[200px]">
+                            {avModels.map((el, i) => (
+                              <SelectItem key={i} value={el}>
+                                {getModelString(el)}
+                              </SelectItem>
+                            ))}
+                          </ScrollArea>
                         </SelectContent>
                       </Select>
+                      <Button variant="outline" onClick={getMs}>
+                        <RefreshCcw height={14} />
+                      </Button>
                     </div>
                     <Separator className="my-2" />
                     <p>{t("api-key")}</p>
                     <div className="my-2 flex space-x-2">
                       <Input
                         type="password"
-                        onChange={(v) => setKeyTxt(v.target.value)}
+                        onChange={(v) => {
+                          setKeyTxt(v.target.value);
+                          setKey();
+                        }}
                         className="w-full"
                         defaultValue={s.key}
                       />
@@ -381,7 +411,7 @@ export default function CreatePage({
           </div>
           <div className="m-2">
             <p>
-              {t("format")} - {t(typesToString(type))}
+              {t("format")} - {t(typesToString(type))} - {getModelString(model)}
             </p>
           </div>
         </section>
