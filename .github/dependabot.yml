@@ -1,0 +1,12 @@
+version: 2
+updates:
+  - package-ecosystem: "npm" # See documentation for possible values
+    directory: "/" # Location of package manifests
+    schedule:
+      interval: "daily"
+    target-branch: vNext
+    reviewers:
+      - Leo-Peyronnet
+    assignees:
+      - Leo-Peyronnet
+    open-pull-requests-limit: 25
