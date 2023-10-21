@@ -1,0 +1,69 @@
+name: Bug Report
+description: File a bug report.
+title: "[Bug] "
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to fill out this bug report!
+  - type: textarea
+    attributes:
+      label: What is the bug?
+      description: Describe the bug, what is happening?
+      placeholder: Tell us what you see!
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: How to reproduce the bug?
+      description: Tell use how to reproduce the bug.
+      placeholder: How to reproduce the bug?
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Screenshots
+      description: Join a screenshot if you can.
+      placeholder: Drag or paste an image here.
+    validations:
+      required: false
+  - type: dropdown
+    attributes:
+      label: Operating System
+      description: What operating system are you using?
+      options:
+        - Windows
+        - macOS
+        - Linux
+        - Other
+    validations:
+      required: true
+  - type: dropdown
+    attributes:
+      label: Browser
+      description: What browser are you using?
+      options:
+        - Chrome
+        - Firefox
+        - Microsoft Edge (Chromium)
+        - Microsoft Internet Explorer
+        - Opera
+        - Safari
+        - Other
+    validations:
+      required: true
+  - type: input
+    attributes:
+      label: What is the version of the browser?
+      description: Tell us the precise version of your web browser.
+      placeholder: v112.0.1722.48
+    validations:
+      required: false
+  - type: input
+    attributes:
+      label: What is the version of the web app?
+      description: Tell us the precise version of the web app you are using.
+      placeholder: v1.5.0.2108
+    validations:
+      required: true
