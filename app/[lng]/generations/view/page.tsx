@@ -63,8 +63,15 @@ export default function GenerationViewPage({
         >
           <ResultDisplayer res={el.content} type={el.template} />
           <div className="mt-2 flex justify-center space-x-2 print:hidden">
-            <Button className="flex space-x-2" onClick={() => window.print()}>
-              <Printer />
+            <Button
+              className="group flex space-x-2 font-bold"
+              onClick={() => window.print()}
+            >
+              <Printer
+                className="transition group-hover:scale-125"
+                height={16}
+                width={16}
+              />
               <p>Imprimer</p>
             </Button>
             <Button

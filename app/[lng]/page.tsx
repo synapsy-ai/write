@@ -9,6 +9,7 @@ import {
   Github,
   MousePointerClick,
   PenSquare,
+  Rocket,
 } from "lucide-react";
 import Footer from "@/components/footer";
 
@@ -30,7 +31,14 @@ export default function Home({ params: { lng } }: { params: { lng: any } }) {
           </h2>
           <p>{t("introducing-synapsy-text")}</p>
           <Link href={lng + "/create"}>
-            <Button className="m-2">{t("launch")}</Button>
+            <Button className="group m-2 space-x-1 overflow-hidden font-bold">
+              <Rocket
+                className="group-hover:animate-rocket"
+                height={16}
+                width={16}
+              />
+              <p>{t("launch")}</p>
+            </Button>
           </Link>
         </section>
         <section className="flex min-h-[50vh] flex-col justify-center">

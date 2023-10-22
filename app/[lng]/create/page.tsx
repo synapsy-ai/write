@@ -10,6 +10,7 @@ import {
   LucideFileWarning,
   RefreshCcw,
   Settings as SettingsLogo,
+  Sparkles,
 } from "lucide-react";
 import { useState } from "react";
 import { Settings } from "@/lib/settings";
@@ -401,7 +402,14 @@ export default function CreatePage({
               </Sheet>
             </Sheet>
             {!inProgress ? (
-              <Button onClick={createButton}>{t("create")}</Button>
+              <Button className="group space-x-1" onClick={createButton}>
+                <Sparkles
+                  className="group-hover:animate-pulse group-hover:duration-700"
+                  height={16}
+                  width={16}
+                />
+                <p className="font-bold">{t("create")}</p>
+              </Button>
             ) : (
               <Button disabled className="cursor-not-allowed">
                 {" "}
