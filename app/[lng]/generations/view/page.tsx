@@ -6,6 +6,7 @@ import { useSearchParams } from "next/navigation";
 import { encode } from "gpt-token-utils";
 import { Button } from "@/components/ui/button";
 import { Copy, Printer } from "lucide-react";
+import { useEffect, useState } from "react";
 
 export default function GenerationViewPage({
   params,
@@ -23,37 +24,20 @@ export default function GenerationViewPage({
   if (typeof window !== "undefined") {
     el = JSON.parse(localStorage.getItem("synapsy_write_history") ?? "[]")[id];
   }
-
-  function getPrice() {
+  const [nbTokens, setNbTokens] = useState(0);
+  const [nbWords, setNbWords] = useState(el.content.split(" ").length);
+  const [nbChars, setNbChars] = useState(el.content.length);
+  const [price, setPrice] = useState("$0");
+  useEffect(() => {
     try {
       if (typeof window !== "undefined") {
-        let e = encode(
-          JSON.parse(localStorage.getItem("synapsy_write_history") ?? "[]")[id]
-            .content,
-        );
+        let e = encode(el.content);
         let price = `\$${((e.length / 1000) * 0.06).toFixed(4)}`;
-        return price.toString();
+        setNbTokens(e.length);
+        setPrice(price.toString());
       }
-      return "$0";
-    } catch (error) {
-      return "$0";
-    }
-  }
-  function countWords() {
-    if (typeof window !== "undefined") {
-      return JSON.parse(localStorage.getItem("synapsy_write_history") ?? "[]")[
-        id
-      ].content.split(" ").length;
-    }
-  }
-
-  function countChars() {
-    if (typeof window !== "undefined") {
-      return JSON.parse(localStorage.getItem("synapsy_write_history") ?? "[]")[
-        id
-      ].content.length;
-    }
-  }
+    } catch (error) {}
+  }, []);
   return (
     <main className="mt-16">
       <section className="flex flex-col items-center justify-center">
@@ -91,16 +75,22 @@ export default function GenerationViewPage({
           <div className="m-2 w-48 rounded-lg bg-white p-4 shadow-md dark:bg-slate-900">
             <h2 className="font-bold">Prix</h2>
             <p id="price" className="text-2xl font-bold">
-              {getPrice()}
+              {price}
+            </p>
+          </div>
+          <div className="m-2 w-48 rounded-lg bg-white p-4 shadow-md dark:bg-slate-900">
+            <h2 className="font-bold">Tokens</h2>
+            <p id="price" className="text-2xl font-bold">
+              {nbTokens}
             </p>
           </div>
           <div className="m-2 w-48 rounded-lg bg-white p-4 shadow-md dark:bg-slate-900">
             <h2 className="font-bold">Mots</h2>
-            <p className="text-2xl font-bold">{countWords()}</p>
+            <p className="text-2xl font-bold">{nbWords}</p>
           </div>
           <div className="m-2 w-48 rounded-lg bg-white p-4 shadow-md dark:bg-slate-900">
             <h2 className="font-bold">Caractères</h2>
-            <p className="text-2xl font-bold">{countChars()}</p>
+            <p className="text-2xl font-bold">{nbChars}</p>
           </div>
         </section>
       </section>
