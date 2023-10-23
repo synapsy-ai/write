@@ -43,7 +43,7 @@ export default function Home({ params: { lng } }: { params: { lng: any } }) {
           <p>{t("introducing-synapsy-text")}</p>
           <div className="flex items-center">
             <Link href={lng + "/create"}>
-              <Button className="group m-2 space-x-1 overflow-hidden font-bold">
+              <Button className="group m-2 space-x-1 overflow-hidden font-bold transition ease-in-out hover:scale-105">
                 <Rocket
                   className="group-hover:animate-rocket"
                   height={16}
