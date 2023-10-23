@@ -300,7 +300,7 @@ export default function CreatePage({
   }
 
   return (
-    <main>
+    <main className="mt-16 flex min-h-full flex-col print:mt-0">
       <section className="mx-2 print:hidden">
         <h2 className="text-2xl font-bold">{t("create")}</h2>
         <p>{t("create-desc")}</p>
@@ -421,7 +421,7 @@ export default function CreatePage({
               </Button>
             )}
           </div>
-          <div className="m-2">
+          <div className="m-2 print:hidden">
             <p>
               {t("format")} - {t(typesToString(type))} - {getModelString(model)}
             </p>
@@ -440,16 +440,26 @@ export default function CreatePage({
           <Button onClick={setKey}>{t("confirm")}</Button>
         </section>
       )}
-      {!errorVis && (
-        <section className="m-2 rounded-md bg-white p-2 shadow-md dark:bg-slate-900 print:shadow-none">
-          {res ? (
-            <ResultDisplayer res={res} type={type} />
-          ) : (
-            <div className="flex flex-col items-center">
-              <Info height={48} width={48} />
-              <p className="font-bold">{t("result-ph")}</p>
-            </div>
-          )}
+
+      {!errorVis && res && (
+        <section
+          className={
+            "m-2 grow rounded-md bg-white p-2 text-justify shadow-md dark:bg-slate-900 print:shadow-none"
+          }
+        >
+          <ResultDisplayer res={res} type={type} />
+        </section>
+      )}
+      {!errorVis && !res && (
+        <section
+          className={
+            "m-2 flex grow items-center justify-center rounded-md bg-white p-2 shadow-md dark:bg-slate-900 print:shadow-none"
+          }
+        >
+          <div className="flex flex-col items-center justify-center">
+            <Info height={48} width={48} />
+            <p className="font-bold">{t("result-ph")}</p>
+          </div>
         </section>
       )}
       {errorVis && (

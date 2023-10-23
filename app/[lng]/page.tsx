@@ -13,9 +13,16 @@ import {
 } from "lucide-react";
 import Footer from "@/components/footer";
 import { useTheme } from "next-themes";
+import { useRef } from "react";
 
 export default function Home({ params: { lng } }: { params: { lng: any } }) {
   const { t } = useTranslation(lng, "common");
+  const sectionRef = useRef<HTMLElement | null>(null);
+  const handleClick = () => {
+    if (sectionRef.current) {
+      sectionRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  };
   return (
     <>
       <main>
@@ -36,7 +43,7 @@ export default function Home({ params: { lng } }: { params: { lng: any } }) {
           <p>{t("introducing-synapsy-text")}</p>
           <div className="flex items-center">
             <Link href={lng + "/create"}>
-              <Button className="group m-2 space-x-1 overflow-hidden font-bold">
+              <Button className="group m-2 space-x-1 overflow-hidden font-bold transition ease-in-out hover:scale-105">
                 <Rocket
                   className="group-hover:animate-rocket"
                   height={16}
@@ -45,13 +52,14 @@ export default function Home({ params: { lng } }: { params: { lng: any } }) {
                 <p>{t("launch")}</p>
               </Button>
             </Link>
-            <Link href={"#features"}>
-              <Button variant="link">{t("learn-more")}</Button>
-            </Link>
+            <Button onClick={handleClick} variant="link">
+              {t("learn-more")}
+            </Button>
           </div>
         </section>
         <section
           id="features"
+          ref={sectionRef}
           className="flex min-h-[50vh] flex-col justify-center"
         >
           <h2 className="text-center text-3xl font-bold">{t("features")}</h2>

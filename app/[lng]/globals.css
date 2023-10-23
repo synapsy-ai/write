@@ -111,3 +111,10 @@ h3 {
 * {
   scroll-behavior: smooth;
 }
+html {
+  height: 100%;
+}
+
+body {
+  height: calc(100% - 72px);
+}
