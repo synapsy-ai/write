@@ -95,3 +95,19 @@ h3 {
   font-size: 1.125rem; /* 18px */
   line-height: 1.75rem; /* 28px */
 }
+
+.bg-mesh {
+  background: url("/MeshLight.svg");
+  background-size: cover;
+  background-position: center;
+}
+
+.dark .bg-mesh {
+  background: url("/MeshDark.svg");
+  background-size: cover;
+  background-position: center;
+}
+
+* {
+  scroll-behavior: smooth;
+}
