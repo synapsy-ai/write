@@ -402,7 +402,11 @@ export default function CreatePage({
               </Sheet>
             </Sheet>
             {!inProgress ? (
-              <Button className="group space-x-1" onClick={createButton}>
+              <Button
+                disabled={prompt.replace(" ", "") == ""}
+                className="group space-x-1 disabled:cursor-not-allowed"
+                onClick={createButton}
+              >
                 <Sparkles
                   className="group-hover:animate-pulse group-hover:duration-700"
                   height={16}
