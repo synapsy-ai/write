@@ -12,36 +12,48 @@ import {
   Rocket,
 } from "lucide-react";
 import Footer from "@/components/footer";
+import { useTheme } from "next-themes";
 
 export default function Home({ params: { lng } }: { params: { lng: any } }) {
   const { t } = useTranslation(lng, "common");
-
   return (
     <>
       <main>
-        <section className="flex min-h-screen flex-col items-center justify-center p-4 text-center">
-          <Image
-            alt="The logo of Synapsy Write"
-            src="logo.svg"
-            width={256}
-            height={256}
-          />
+        <section className="bg-mesh flex min-h-screen flex-col items-center justify-center rounded-lg p-4 text-center">
+          <div className="rounded-2xl border bg-white/50 p-12 shadow-lg backdrop-blur-md transition hover:border-slate-400 hover:bg-white/70 hover:shadow-xl dark:bg-slate-800/20 dark:shadow-violet-500/20 dark:hover:border-slate-500 dark:hover:bg-slate-400/20">
+            <Image
+              height={96}
+              width={96}
+              alt="Synapsy Logo"
+              src={
+                useTheme().theme === "light" ? "logolight.svg" : "logodark.svg"
+              }
+            />
+          </div>
           <h2 className="mt-8 text-3xl font-bold">
             {t("introducing-synapsy")}
           </h2>
           <p>{t("introducing-synapsy-text")}</p>
-          <Link href={lng + "/create"}>
-            <Button className="group m-2 space-x-1 overflow-hidden font-bold">
-              <Rocket
-                className="group-hover:animate-rocket"
-                height={16}
-                width={16}
-              />
-              <p>{t("launch")}</p>
-            </Button>
-          </Link>
+          <div className="flex items-center">
+            <Link href={lng + "/create"}>
+              <Button className="group m-2 space-x-1 overflow-hidden font-bold">
+                <Rocket
+                  className="group-hover:animate-rocket"
+                  height={16}
+                  width={16}
+                />
+                <p>{t("launch")}</p>
+              </Button>
+            </Link>
+            <Link href={"#features"}>
+              <Button variant="link">{t("learn-more")}</Button>
+            </Link>
+          </div>
         </section>
-        <section className="flex min-h-[50vh] flex-col justify-center">
+        <section
+          id="features"
+          className="flex min-h-[50vh] flex-col justify-center"
+        >
           <h2 className="text-center text-3xl font-bold">{t("features")}</h2>
           <div className="grid grid-cols-1 gap-4 p-4 sm:grid-cols-2">
             <div className="flex h-[200px] flex-col justify-center rounded-xl border border-slate-200 p-4 shadow-md dark:border-slate-700 sm:col-span-2">
