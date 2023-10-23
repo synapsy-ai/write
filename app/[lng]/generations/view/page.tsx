@@ -7,6 +7,7 @@ import { encode } from "gpt-token-utils";
 import { Button } from "@/components/ui/button";
 import { Copy, Printer } from "lucide-react";
 import { useEffect, useState } from "react";
+import { useTranslation } from "@/app/i18n/client";
 
 export default function GenerationViewPage({
   params,
@@ -24,6 +25,9 @@ export default function GenerationViewPage({
   if (typeof window !== "undefined") {
     el = JSON.parse(localStorage.getItem("synapsy_write_history") ?? "[]")[id];
   }
+
+  const { t } = useTranslation(params.lng, "common");
+
   const [nbTokens, setNbTokens] = useState(0);
   const [nbWords, setNbWords] = useState(el.content.split(" ").length);
   const [nbChars, setNbChars] = useState(el.content.length);
@@ -56,7 +60,7 @@ export default function GenerationViewPage({
                 height={16}
                 width={16}
               />
-              <p>Imprimer</p>
+              <p>{t("print")}</p>
             </Button>
             <Button
               variant="outline"
@@ -73,23 +77,23 @@ export default function GenerationViewPage({
         </section>
         <section className="m-2 flex flex-wrap items-center justify-center print:hidden">
           <div className="m-2 w-48 rounded-lg bg-white p-4 shadow-md dark:bg-slate-900">
-            <h2 className="font-bold">Prix</h2>
+            <h2 className="font-bold">{t("price")}</h2>
             <p id="price" className="text-2xl font-bold">
               {price}
             </p>
           </div>
           <div className="m-2 w-48 rounded-lg bg-white p-4 shadow-md dark:bg-slate-900">
-            <h2 className="font-bold">Tokens</h2>
+            <h2 className="font-bold">{t("tokens")}</h2>
             <p id="price" className="text-2xl font-bold">
               {nbTokens}
             </p>
           </div>
           <div className="m-2 w-48 rounded-lg bg-white p-4 shadow-md dark:bg-slate-900">
-            <h2 className="font-bold">Mots</h2>
+            <h2 className="font-bold">{t("words")}</h2>
             <p className="text-2xl font-bold">{nbWords}</p>
           </div>
           <div className="m-2 w-48 rounded-lg bg-white p-4 shadow-md dark:bg-slate-900">
-            <h2 className="font-bold">Caractères</h2>
+            <h2 className="font-bold">{t("characters")}</h2>
             <p className="text-2xl font-bold">{nbChars}</p>
           </div>
         </section>
