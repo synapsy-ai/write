@@ -300,7 +300,7 @@ export default function CreatePage({
   }
 
   return (
-    <main>
+    <main className="mt-16">
       <section className="mx-2 print:hidden">
         <h2 className="text-2xl font-bold">{t("create")}</h2>
         <p>{t("create-desc")}</p>

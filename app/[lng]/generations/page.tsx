@@ -31,7 +31,7 @@ export default function Creations({
     reader.readAsText(file); // read the file as text
   }
   return (
-    <main className="m-2">
+    <main className="m-2 mt-16">
       <header>
         <h2 className="text-2xl font-bold">{t("generations")}</h2>
         <p>{t("no-gen-text")}</p>

@@ -55,7 +55,7 @@ export default function GenerationViewPage({
     }
   }
   return (
-    <main>
+    <main className="mt-16">
       <section className="flex flex-col items-center justify-center">
         <section
           className="m-2 max-w-[800px] rounded-md p-4 text-justify shadow-lg dark:bg-slate-900 print:text-black print:shadow-none"
