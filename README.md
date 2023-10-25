@@ -13,7 +13,7 @@
   <p align="center">
     A new way to create text, powered by AI.
     <br />
-    <a href="https://write.peyronnet.gruop"><strong>Launch »</strong></a>
+    <a href="https://write.peyronnet.group"><strong>Launch »</strong></a>
     <br />
     <a href="https://github.com/synapsy-ai/write/issues/new?assignees=&labels=bug&template=bug-report.yml&title=%5BBug%5D+">Report Bug</a>
     ·
