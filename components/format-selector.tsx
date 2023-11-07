@@ -58,7 +58,7 @@ export function FormatSelector(props: { lng: string; setVal: Function }) {
           <CommandEmpty>{t("no-formats")}</CommandEmpty>
           <CommandList>
             {formats.map((cat) => (
-              <CommandGroup heading={t(cat.category)}>
+              <CommandGroup key={cat.category} heading={t(cat.category)}>
                 {cat.options.map((f) => (
                   <CommandItem
                     key={f.val}
