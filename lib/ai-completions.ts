@@ -127,7 +127,7 @@ export function getPrompt(
       case "ph_prob":
         return `Write the problematization of the subject with three paragraphs MAX containing two sentences MAX, the first begins imperatively with "on the one hand", the second with "on the other hand" and the third with "therefore". Structure: 1st paragraph: first answer [R1] based on the analysis of the subject\'s concepts. 2nd paragraph: questioning of the first answer. 3rd paragraph: summary [S] of the problem with a question that clearly formulates the fundamental alternative: "R1 or R2?". Bold the ideas. Subject: ${prompt}`;
       case "ph_outline":
-        return `Write the essay plan (no intro or conclusion, only the essay plan); 2 possible plans: Nature plan (=in theory), Existence plan (=in practice), Value plan (=morally) and Thematic plan (=vary the meaning of one of the terms in the subject). Subject: ${prompt}`;
+        return `Write the essay plan (no intro or conclusion, only the essay plan); Structure: Nature plan (=in theory), Existence plan (=in practice), Value plan (=morally). Subject: ${prompt}`;
       case "ph_conclusion":
         return `Write the essay conclusion, which should summarize the essay and include an opening. Subject: ${prompt}`;
       case "ph_basic":
@@ -159,7 +159,7 @@ export function getPrompt(
       case "ph_prob":
         return `Rédige la problématisation du sujet avec trois paragraphes MAX contenu deux phrases MAX, le premier commence impérativement par "d\'une part", le second par "d\'autre part" et le troisième par "donc". Structure: 1er paragraphe : première réponse [R1] argumentée à partir de l\'analyse des notions du sujet. 2e paragraphe : questionnement de la première réponse. 3e paragraphe : reprise synthétique [S] du problème avec une question qui formule clairement l\'alternative fondamentale : "R1 ou bien R2 ?". Mettre en gras les idées. Sujet : ${prompt}`;
       case "ph_outline":
-        return `Rédige le plan de dissertation (pas d'intro ou conclusion, seulement le plan) ; 2 plan possibles : Plan Nature (=en théorie), Existence (=en pratique), Valeur (=moralement) et Plan thématique (=faire varier le sens d'un des termes du sujet). Sujet : ${prompt}`;
+        return `Rédige le plan de dissertation (pas d'intro ou conclusion, seulement le plan) ; Structure : Plan Nature (=en théorie), Existence (=en pratique), Valeur (=moralement). Sujet : ${prompt}`;
       case "ph_conclusion":
         return `Rédige la conclusion de dissertation, qui doit récapituler de manière synthétique la dissertation et inclure une ouverture. Sujet : ${prompt}`;
       case "es_basic":
