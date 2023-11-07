@@ -59,5 +59,7 @@
   "words": "Mots",
   "characters": "Caractères",
   "copy": "Copier",
-  "tokens": "Tokens"
+  "tokens": "Tokens",
+  "search-formats": "Rechercher des formats...",
+  "no-formats": "Aucun format trouvé"
 }

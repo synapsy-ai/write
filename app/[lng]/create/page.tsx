@@ -54,6 +54,7 @@ import { Separator } from "@/components/ui/separator";
 import OpenAI from "openai";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { getModelString } from "@/lib/models";
+import { FormatSelector } from "@/components/format-selector";
 
 export default function CreatePage({
   params: { lng },
@@ -307,47 +308,10 @@ export default function CreatePage({
       </section>
       {!welcome ? (
         <section>
-          <div className="m-2 flex items-center space-x-2 print:hidden">
+          <div className="m-2 flex flex-col items-stretch space-y-1 print:hidden sm:flex-row sm:items-center sm:space-x-2 sm:space-y-0">
             <Input onChange={(v) => setPrompt(v.target.value)} />
-            <Sheet>
-              <SheetTrigger asChild>
-                <Button variant="outline">{t("format")}</Button>
-              </SheetTrigger>
-              <SheetContent>
-                <SheetHeader>
-                  <SheetTitle>{t("format")}</SheetTitle>
-                  <SheetDescription>{t("select-format")}</SheetDescription>
-                </SheetHeader>
-                <div className="py-4">
-                  <ScrollArea
-                    style={{ height: "calc(100vh - 80px)" }}
-                    className="rounded-md p-2"
-                  >
-                    {formats.map((el, i) => (
-                      <Accordion key={i} type="single" collapsible>
-                        <AccordionItem value="item-1">
-                          <AccordionTrigger>{t(el.category)}</AccordionTrigger>
-                          <AccordionContent>
-                            <div className="grid">
-                              {el.options.map((op, j) => (
-                                <SheetClose className="grid" key={j}>
-                                  <Button
-                                    onClick={() => setType(op.val)}
-                                    variant="ghost"
-                                    className="justify-start"
-                                  >
-                                    {t(op.text)}
-                                  </Button>
-                                </SheetClose>
-                              ))}
-                            </div>
-                          </AccordionContent>
-                        </AccordionItem>
-                      </Accordion>
-                    ))}
-                  </ScrollArea>
-                </div>
-              </SheetContent>
+            <div className="flex space-x-1 sm:space-x-2">
+              <FormatSelector lng={lng} setVal={setType} />
               <Sheet>
                 <SheetTrigger asChild>
                   <Button variant="outline">
@@ -400,7 +364,7 @@ export default function CreatePage({
                   </div>
                 </SheetContent>
               </Sheet>
-            </Sheet>
+            </div>
             {!inProgress ? (
               <Button
                 disabled={prompt.replace(" ", "") == ""}
