@@ -94,6 +94,7 @@ export default function CreatePage({
   const [temp, setTemp] = useState(1);
   const [topp, setTopP] = useState(1);
   const [freqP, setFreqP] = useState(0);
+  const [presP, setPresP] = useState(0);
 
   async function getMs() {
     let m = await getModels(s.key);
@@ -410,6 +411,21 @@ export default function CreatePage({
                       </HoverCardTrigger>
                       <HoverCardContent>
                         {t("freq-penalty-desc")}
+                      </HoverCardContent>
+                    </HoverCard>
+                    <p>{t("pres-penalty")}</p>
+                    <HoverCard openDelay={200}>
+                      <HoverCardTrigger className="flex space-x-2">
+                        <Slider
+                          onValueChange={(v) => setPresP(v[0])}
+                          defaultValue={[presP]}
+                          max={2}
+                          step={0.01}
+                        />
+                        <p>{presP}</p>
+                      </HoverCardTrigger>
+                      <HoverCardContent>
+                        {t("pres-penalty-desc")}
                       </HoverCardContent>
                     </HoverCard>
                   </div>
