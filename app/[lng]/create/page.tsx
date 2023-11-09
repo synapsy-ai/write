@@ -92,6 +92,7 @@ export default function CreatePage({
     s.models ?? ["gpt-3.5-turbo", "gpt-4"],
   );
   const [temp, setTemp] = useState(1);
+  const [topp, setTopP] = useState(1);
 
   async function getMs() {
     let m = await getModels(s.key);
@@ -381,6 +382,19 @@ export default function CreatePage({
                         <p>{temp}</p>
                       </HoverCardTrigger>
                       <HoverCardContent>{t("temp-desc")}</HoverCardContent>
+                    </HoverCard>
+                    <p>{t("top-p")}</p>
+                    <HoverCard openDelay={200}>
+                      <HoverCardTrigger className="flex space-x-2">
+                        <Slider
+                          onValueChange={(v) => setTopP(v[0])}
+                          defaultValue={[topp]}
+                          max={1}
+                          step={0.01}
+                        />
+                        <p>{topp}</p>
+                      </HoverCardTrigger>
+                      <HoverCardContent>{t("top-p-desc")}</HoverCardContent>
                     </HoverCard>
                   </div>
                 </SheetContent>
