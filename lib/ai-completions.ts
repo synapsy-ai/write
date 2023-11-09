@@ -210,3 +210,10 @@ export async function getModels(key: string) {
 }
 
 export type Template = "para" | "email" | "blog" | "ideas";
+
+export interface OpenAiOptions {
+  topP: number;
+  freqP: number;
+  presP: number;
+  temp: number;
+}
