@@ -55,6 +55,12 @@ import OpenAI from "openai";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { getModelString } from "@/lib/models";
 import { FormatSelector } from "@/components/format-selector";
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "@/components/ui/hover-card";
+import { Slider } from "@/components/ui/slider";
 
 export default function CreatePage({
   params: { lng },
@@ -85,6 +91,7 @@ export default function CreatePage({
   const [avModels, setAvModels] = useState(
     s.models ?? ["gpt-3.5-turbo", "gpt-4"],
   );
+  const [temp, setTemp] = useState(1);
 
   async function getMs() {
     let m = await getModels(s.key);
@@ -361,6 +368,20 @@ export default function CreatePage({
                       />
                       <Button onClick={setKey}>{t("confirm")}</Button>
                     </div>
+                    <Separator className="my-2" />
+                    <p>{t("temp")}</p>
+                    <HoverCard openDelay={200}>
+                      <HoverCardTrigger className="flex space-x-2">
+                        <Slider
+                          onValueChange={(v) => setTemp(v[0])}
+                          defaultValue={[temp]}
+                          max={2}
+                          step={0.01}
+                        />
+                        <p>{temp}</p>
+                      </HoverCardTrigger>
+                      <HoverCardContent>{t("temp-desc")}</HoverCardContent>
+                    </HoverCard>
                   </div>
                 </SheetContent>
               </Sheet>
