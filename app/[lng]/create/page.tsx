@@ -119,7 +119,12 @@ export default function CreatePage({
     setInProgress(true);
     setErrorVis(false);
     setProgressBarVis(false);
-    let r = await sendToGpt(prompt, s.key, type, lng, model);
+    let r = await sendToGpt(prompt, s.key, type, lng, model, {
+      temp: temp,
+      presP: presP,
+      topP: topp,
+      freqP: freqP,
+    });
     if (r instanceof OpenAI.APIError) {
       setErrorMsg(r);
       setErrorVis(true);
@@ -155,6 +160,12 @@ export default function CreatePage({
       getPrompt("es_outline", lng, prompt),
       s.key,
       model,
+      {
+        temp: temp,
+        presP: presP,
+        topP: topp,
+        freqP: freqP,
+      },
     );
 
     if (outline instanceof OpenAI.APIError) {
@@ -171,6 +182,12 @@ export default function CreatePage({
         getPrompt("es_intro", lng, prompt + usingPlan(lng) + outline),
         s.key,
         model,
+        {
+          temp: temp,
+          presP: presP,
+          topP: topp,
+          freqP: freqP,
+        },
       )) ?? "";
 
     if (intro instanceof OpenAI.APIError) {
@@ -186,6 +203,12 @@ export default function CreatePage({
       getComplexEssayPrompts(1, outline, lng),
       s.key,
       model,
+      {
+        temp: temp,
+        presP: presP,
+        topP: topp,
+        freqP: freqP,
+      },
     );
     if (p1 instanceof OpenAI.APIError) {
       setErrorMsg(p1);
@@ -199,6 +222,12 @@ export default function CreatePage({
       getComplexEssayPrompts(2, outline, lng),
       s.key,
       model,
+      {
+        temp: temp,
+        presP: presP,
+        topP: topp,
+        freqP: freqP,
+      },
     );
     if (p2 instanceof OpenAI.APIError) {
       setErrorMsg(p2);
@@ -212,6 +241,12 @@ export default function CreatePage({
       getComplexEssayPrompts(3, outline, lng),
       s.key,
       model,
+      {
+        temp: temp,
+        presP: presP,
+        topP: topp,
+        freqP: freqP,
+      },
     );
     if (p3 instanceof OpenAI.APIError) {
       setErrorMsg(p3);
@@ -225,6 +260,12 @@ export default function CreatePage({
       getPrompt("es_conclusion", lng, prompt + usingPlan(lng) + outline),
       s.key,
       model,
+      {
+        temp: temp,
+        presP: presP,
+        topP: topp,
+        freqP: freqP,
+      },
     );
     if (ccl instanceof OpenAI.APIError) {
       setErrorMsg(ccl);
@@ -256,6 +297,12 @@ export default function CreatePage({
       getPrompt("ph_outline", lng, prompt),
       s.key,
       model,
+      {
+        temp: temp,
+        presP: presP,
+        topP: topp,
+        freqP: freqP,
+      },
     );
     setProgress(16);
     const intro =
@@ -264,6 +311,12 @@ export default function CreatePage({
         getPrompt("ph_intro", lng, prompt + usingPlan(lng) + outline),
         s.key,
         model,
+        {
+          temp: temp,
+          presP: presP,
+          topP: topp,
+          freqP: freqP,
+        },
       )) ?? "";
     setProgress(32);
 
@@ -272,6 +325,12 @@ export default function CreatePage({
       getComplexEssayPrompts(1, outline, lng),
       s.key,
       model,
+      {
+        temp: temp,
+        presP: presP,
+        topP: topp,
+        freqP: freqP,
+      },
     );
     setProgress(48);
     const p2 = await sendToGptCustom(
@@ -279,6 +338,12 @@ export default function CreatePage({
       getComplexEssayPrompts(2, outline, lng),
       s.key,
       model,
+      {
+        temp: temp,
+        presP: presP,
+        topP: topp,
+        freqP: freqP,
+      },
     );
     setProgress(64);
     const p3 = await sendToGptCustom(
@@ -286,6 +351,12 @@ export default function CreatePage({
       getComplexEssayPrompts(3, outline, lng),
       s.key,
       model,
+      {
+        temp: temp,
+        presP: presP,
+        topP: topp,
+        freqP: freqP,
+      },
     );
     setProgress(82);
     const ccl = await sendToGptCustom(
@@ -293,6 +364,12 @@ export default function CreatePage({
       getPrompt("ph_conclusion", lng, prompt + usingPlan(lng) + outline),
       s.key,
       model,
+      {
+        temp: temp,
+        presP: presP,
+        topP: topp,
+        freqP: freqP,
+      },
     );
     setProgress(100);
     setRes(intro + p1 + p2 + p3 + ccl);

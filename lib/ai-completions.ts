@@ -6,6 +6,7 @@ export async function sendToGpt(
   template: Template | string,
   lng: "fr" | "en",
   model: string,
+  options: OpenAiOptions,
 ) {
   const openai = new OpenAI({
     apiKey: key,
@@ -19,6 +20,10 @@ export async function sendToGpt(
           { role: "user", content: getPrompt(template, lng, prompt) },
         ],
         model: model,
+        temperature: options.temp,
+        top_p: options.topP,
+        frequency_penalty: options.freqP,
+        presence_penalty: options.presP,
       })
       .catch((err) => {
         return err;
@@ -34,6 +39,7 @@ export async function sendToGptCustom(
   prompt: string,
   key: string,
   model: string,
+  options: OpenAiOptions,
 ) {
   const openai = new OpenAI({
     apiKey: key,
@@ -47,6 +53,10 @@ export async function sendToGptCustom(
         { role: "user", content: prompt },
       ],
       model: model,
+      temperature: options.temp,
+      top_p: options.topP,
+      frequency_penalty: options.freqP,
+      presence_penalty: options.presP,
     })
     .catch((err) => {
       return err;
