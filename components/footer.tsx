@@ -55,7 +55,7 @@ export default function SiteFooter({
       </div>
       <div className="flex flex-col items-center pb-4">
         <p className="text-center">
-          v1.3.3 - © {new Date().getFullYear()} Peyronnet Group and Synapsy
+          v1.4.0 - © {new Date().getFullYear()} Peyronnet Group and Synapsy
         </p>
       </div>
     </footer>

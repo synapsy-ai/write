@@ -61,5 +61,15 @@
   "copy": "Copier",
   "tokens": "Tokens",
   "search-formats": "Rechercher des formats...",
-  "no-formats": "Aucun format trouvé"
+  "no-formats": "Aucun format trouvé",
+  "temp": "Température",
+  "temp-desc": "Contrôle du caractère : abaisser le résultat en moins de complétions aléatoires. À mesure que la température approche zéro, le modèle deviendra déterministe et répétitif.",
+  "freq-penalty": "Pénalité de fréquence",
+  "freq-penalty-desc": "Combien pénaliser les nouveaux tokens en fonction de leur fréquence existante dans le texte jusqu'à présent. Diminue la probabilité que le modèle répète la même verbalisation.",
+  "pres-penalty": "Pénalité de présence",
+  "pres-penalty-desc": "Combien pénaliser les nouveaux tokens en fonction de leur apparition dans le texte jusqu'à présent. Augmente la probabilité que le modèle parle de nouveaux sujets.",
+  "top-p": "Top P",
+  "top-p-desc": "Contrôle de la diversité via l'échantillonnage du noyau : 0,5 signifie que la moitié de toutes les options pondérées par la probabilité sont prises en compte.",
+  "max-length": "Longueur maximale",
+  "max-length-desc": "Le nombre maximal de tokens à générer. Les demandes peuvent utiliser jusqu'à 2 048 ou 4 000 tokens, partagés entre la requête et la complétion. La limite exacte varie en fonction du modèle."
 }

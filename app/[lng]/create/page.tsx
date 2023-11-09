@@ -55,6 +55,12 @@ import OpenAI from "openai";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { getModelString } from "@/lib/models";
 import { FormatSelector } from "@/components/format-selector";
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "@/components/ui/hover-card";
+import { Slider } from "@/components/ui/slider";
 
 export default function CreatePage({
   params: { lng },
@@ -85,6 +91,10 @@ export default function CreatePage({
   const [avModels, setAvModels] = useState(
     s.models ?? ["gpt-3.5-turbo", "gpt-4"],
   );
+  const [temp, setTemp] = useState(1);
+  const [topp, setTopP] = useState(1);
+  const [freqP, setFreqP] = useState(0);
+  const [presP, setPresP] = useState(0);
 
   async function getMs() {
     let m = await getModels(s.key);
@@ -109,7 +119,12 @@ export default function CreatePage({
     setInProgress(true);
     setErrorVis(false);
     setProgressBarVis(false);
-    let r = await sendToGpt(prompt, s.key, type, lng, model);
+    let r = await sendToGpt(prompt, s.key, type, lng, model, {
+      temp: temp,
+      presP: presP,
+      topP: topp,
+      freqP: freqP,
+    });
     if (r instanceof OpenAI.APIError) {
       setErrorMsg(r);
       setErrorVis(true);
@@ -145,6 +160,12 @@ export default function CreatePage({
       getPrompt("es_outline", lng, prompt),
       s.key,
       model,
+      {
+        temp: temp,
+        presP: presP,
+        topP: topp,
+        freqP: freqP,
+      },
     );
 
     if (outline instanceof OpenAI.APIError) {
@@ -161,6 +182,12 @@ export default function CreatePage({
         getPrompt("es_intro", lng, prompt + usingPlan(lng) + outline),
         s.key,
         model,
+        {
+          temp: temp,
+          presP: presP,
+          topP: topp,
+          freqP: freqP,
+        },
       )) ?? "";
 
     if (intro instanceof OpenAI.APIError) {
@@ -176,6 +203,12 @@ export default function CreatePage({
       getComplexEssayPrompts(1, outline, lng),
       s.key,
       model,
+      {
+        temp: temp,
+        presP: presP,
+        topP: topp,
+        freqP: freqP,
+      },
     );
     if (p1 instanceof OpenAI.APIError) {
       setErrorMsg(p1);
@@ -189,6 +222,12 @@ export default function CreatePage({
       getComplexEssayPrompts(2, outline, lng),
       s.key,
       model,
+      {
+        temp: temp,
+        presP: presP,
+        topP: topp,
+        freqP: freqP,
+      },
     );
     if (p2 instanceof OpenAI.APIError) {
       setErrorMsg(p2);
@@ -202,6 +241,12 @@ export default function CreatePage({
       getComplexEssayPrompts(3, outline, lng),
       s.key,
       model,
+      {
+        temp: temp,
+        presP: presP,
+        topP: topp,
+        freqP: freqP,
+      },
     );
     if (p3 instanceof OpenAI.APIError) {
       setErrorMsg(p3);
@@ -215,6 +260,12 @@ export default function CreatePage({
       getPrompt("es_conclusion", lng, prompt + usingPlan(lng) + outline),
       s.key,
       model,
+      {
+        temp: temp,
+        presP: presP,
+        topP: topp,
+        freqP: freqP,
+      },
     );
     if (ccl instanceof OpenAI.APIError) {
       setErrorMsg(ccl);
@@ -246,6 +297,12 @@ export default function CreatePage({
       getPrompt("ph_outline", lng, prompt),
       s.key,
       model,
+      {
+        temp: temp,
+        presP: presP,
+        topP: topp,
+        freqP: freqP,
+      },
     );
     setProgress(16);
     const intro =
@@ -254,6 +311,12 @@ export default function CreatePage({
         getPrompt("ph_intro", lng, prompt + usingPlan(lng) + outline),
         s.key,
         model,
+        {
+          temp: temp,
+          presP: presP,
+          topP: topp,
+          freqP: freqP,
+        },
       )) ?? "";
     setProgress(32);
 
@@ -262,6 +325,12 @@ export default function CreatePage({
       getComplexEssayPrompts(1, outline, lng),
       s.key,
       model,
+      {
+        temp: temp,
+        presP: presP,
+        topP: topp,
+        freqP: freqP,
+      },
     );
     setProgress(48);
     const p2 = await sendToGptCustom(
@@ -269,6 +338,12 @@ export default function CreatePage({
       getComplexEssayPrompts(2, outline, lng),
       s.key,
       model,
+      {
+        temp: temp,
+        presP: presP,
+        topP: topp,
+        freqP: freqP,
+      },
     );
     setProgress(64);
     const p3 = await sendToGptCustom(
@@ -276,6 +351,12 @@ export default function CreatePage({
       getComplexEssayPrompts(3, outline, lng),
       s.key,
       model,
+      {
+        temp: temp,
+        presP: presP,
+        topP: topp,
+        freqP: freqP,
+      },
     );
     setProgress(82);
     const ccl = await sendToGptCustom(
@@ -283,6 +364,12 @@ export default function CreatePage({
       getPrompt("ph_conclusion", lng, prompt + usingPlan(lng) + outline),
       s.key,
       model,
+      {
+        temp: temp,
+        presP: presP,
+        topP: topp,
+        freqP: freqP,
+      },
     );
     setProgress(100);
     setRes(intro + p1 + p2 + p3 + ccl);
@@ -361,6 +448,63 @@ export default function CreatePage({
                       />
                       <Button onClick={setKey}>{t("confirm")}</Button>
                     </div>
+                    <Separator className="my-2" />
+                    <p>{t("temp")}</p>
+                    <HoverCard openDelay={200}>
+                      <HoverCardTrigger className="flex space-x-2">
+                        <Slider
+                          onValueChange={(v) => setTemp(v[0])}
+                          defaultValue={[temp]}
+                          max={2}
+                          step={0.01}
+                        />
+                        <p>{temp}</p>
+                      </HoverCardTrigger>
+                      <HoverCardContent>{t("temp-desc")}</HoverCardContent>
+                    </HoverCard>
+                    <p>{t("top-p")}</p>
+                    <HoverCard openDelay={200}>
+                      <HoverCardTrigger className="flex space-x-2">
+                        <Slider
+                          onValueChange={(v) => setTopP(v[0])}
+                          defaultValue={[topp]}
+                          max={1}
+                          step={0.01}
+                        />
+                        <p>{topp}</p>
+                      </HoverCardTrigger>
+                      <HoverCardContent>{t("top-p-desc")}</HoverCardContent>
+                    </HoverCard>
+                    <p>{t("freq-penalty")}</p>
+                    <HoverCard openDelay={200}>
+                      <HoverCardTrigger className="flex space-x-2">
+                        <Slider
+                          onValueChange={(v) => setFreqP(v[0])}
+                          defaultValue={[freqP]}
+                          max={2}
+                          step={0.01}
+                        />
+                        <p>{freqP}</p>
+                      </HoverCardTrigger>
+                      <HoverCardContent>
+                        {t("freq-penalty-desc")}
+                      </HoverCardContent>
+                    </HoverCard>
+                    <p>{t("pres-penalty")}</p>
+                    <HoverCard openDelay={200}>
+                      <HoverCardTrigger className="flex space-x-2">
+                        <Slider
+                          onValueChange={(v) => setPresP(v[0])}
+                          defaultValue={[presP]}
+                          max={2}
+                          step={0.01}
+                        />
+                        <p>{presP}</p>
+                      </HoverCardTrigger>
+                      <HoverCardContent>
+                        {t("pres-penalty-desc")}
+                      </HoverCardContent>
+                    </HoverCard>
                   </div>
                 </SheetContent>
               </Sheet>
