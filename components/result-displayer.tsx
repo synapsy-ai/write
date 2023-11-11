@@ -15,7 +15,12 @@ export default function ResultDisplayer(props: {
     },
   };
   if (props.is_generating) {
-    return <p id="contentp">{props.res}</p>;
+    return (
+      <p id="contentp">
+        {props.res}
+        <span className="inline-block h-[14px] w-[7px] animate-pulse self-baseline bg-black duration-500 dark:bg-white"></span>
+      </p>
+    );
   }
   switch (props.type) {
     case "ideas":
