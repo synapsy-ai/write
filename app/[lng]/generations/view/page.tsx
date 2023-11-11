@@ -49,7 +49,11 @@ export default function GenerationViewPage({
           className="m-2 max-w-[800px] rounded-md p-4 text-justify shadow-lg dark:bg-slate-900 print:text-black print:shadow-none"
           id="ct"
         >
-          <ResultDisplayer res={el.content} type={el.template} />
+          <ResultDisplayer
+            is_generating={false}
+            res={el.content}
+            type={el.template}
+          />
           <div className="mt-2 flex justify-center space-x-2 print:hidden">
             <Button
               className="group flex space-x-2 font-bold"
