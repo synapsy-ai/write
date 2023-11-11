@@ -154,6 +154,7 @@ export default function CreatePage({
   }
 
   function createButton() {
+    setRes("");
     if (type === "es_complex") {
       createComplexEssay();
     } else if (type == "ph_complex") {
@@ -626,9 +627,6 @@ export default function CreatePage({
             <Skeleton className="h-4 w-[250px]" />
             <Skeleton className="h-4 w-[200px]" />
           </div>
-          {progressBarVis && (
-            <Progress value={progress} className="m-4 w-[60%]" />
-          )}
         </section>
       ) : (
         <></>

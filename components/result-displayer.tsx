@@ -14,7 +14,7 @@ export default function ResultDisplayer(props: {
       }
     },
   };
-  if (props.is_generating) {
+  if (props.is_generating && props.type === "ideas") {
     return (
       <p id="contentp">
         {props.res}
@@ -62,6 +62,9 @@ export default function ResultDisplayer(props: {
               .replaceAll("\n\n", "<br>")
               .replaceAll("\n", "<br>"),
             options,
+          )}
+          {props.is_generating && (
+            <span className="inline-block h-[14px] w-[7px] animate-pulse self-baseline bg-black duration-500 dark:bg-white"></span>
           )}
         </p>
       );
