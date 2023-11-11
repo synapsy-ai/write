@@ -52,6 +52,49 @@ export async function sendToGptCustom(
   key: string,
   model: string,
   options: OpenAiOptions,
+  content: string,
+  functions: { setContent: Function },
+): Promise<any> {
+  let result = content;
+  let c = "";
+  console.log(result);
+  const openai = new OpenAI({
+    apiKey: key,
+    dangerouslyAllowBrowser: true, // defaults to process.env["OPENAI_API_KEY"]
+  });
+
+  const chatCompletion = await openai.chat.completions
+    .create({
+      messages: [
+        { role: "system", content: system },
+        { role: "user", content: prompt },
+      ],
+      model: model,
+      temperature: options.temp,
+      top_p: options.topP,
+      frequency_penalty: options.freqP,
+      presence_penalty: options.presP,
+      stream: true,
+    })
+    .catch((err) => {
+      return err;
+    });
+  for await (const chunk of chatCompletion) {
+    if (chunk.choices[0].delta.content) {
+      result += chunk.choices[0].delta.content;
+      c += chunk.choices[0].delta.content;
+    }
+    functions.setContent(result);
+  }
+  return c;
+}
+
+export async function getStandardGeneration(
+  system: string,
+  prompt: string,
+  key: string,
+  model: string,
+  options: OpenAiOptions,
 ) {
   const openai = new OpenAI({
     apiKey: key,
