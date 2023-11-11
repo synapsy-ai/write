@@ -95,6 +95,7 @@ export default function CreatePage({
   const [topp, setTopP] = useState(1);
   const [freqP, setFreqP] = useState(0);
   const [presP, setPresP] = useState(0);
+  const [isGen, setIsGen] = useState(false);
 
   async function getMs() {
     let m = await getModels(s.key);
@@ -116,29 +117,32 @@ export default function CreatePage({
   }
 
   async function create() {
-    setInProgress(true);
+    setInProgress(false);
     setErrorVis(false);
     setProgressBarVis(false);
-    let r = await sendToGpt(prompt, s.key, type, lng, model, {
-      temp: temp,
-      presP: presP,
-      topP: topp,
-      freqP: freqP,
-    });
-    if (r instanceof OpenAI.APIError) {
-      setErrorMsg(r);
-      setErrorVis(true);
-      setInProgress(false);
-      return;
-    }
-    setRes(r);
+    setIsGen(true);
+    let r = await sendToGpt(
+      prompt,
+      s.key,
+      type,
+      lng,
+      model,
+      {
+        temp: temp,
+        presP: presP,
+        topP: topp,
+        freqP: freqP,
+      },
+      setRes,
+    );
+
     addToHistory({
       prompt: prompt,
-      content: r ?? "",
+      content: res ?? "",
       template: type,
       date: new Date(),
     });
-    setInProgress(false);
+    setIsGen(false);
   }
 
   function createButton() {
@@ -154,6 +158,7 @@ export default function CreatePage({
   async function createComplexEssay() {
     setInProgress(true);
     setErrorVis(false);
+    setIsGen(false);
     setProgressBarVis(true);
     const outline = await sendToGptCustom(
       getSystem("es_complex_outline", lng),
@@ -291,6 +296,7 @@ export default function CreatePage({
 
   async function createComplexPhiloEssay() {
     setInProgress(true);
+    setIsGen(false);
     setProgressBarVis(true);
     const outline = await sendToGptCustom(
       getSystem("ph_complex_outline", lng),
@@ -555,7 +561,7 @@ export default function CreatePage({
             "m-2 grow rounded-md bg-white p-2 text-justify shadow-md dark:bg-slate-900 print:shadow-none"
           }
         >
-          <ResultDisplayer res={res} type={type} />
+          <ResultDisplayer is_generating={isGen} res={res} type={type} />
         </section>
       )}
       {!errorVis && !res && (

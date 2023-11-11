@@ -5,6 +5,7 @@ import parse, { HTMLReactParserOptions, Element } from "html-react-parser";
 export default function ResultDisplayer(props: {
   res: string;
   type: Template | string;
+  is_generating: boolean;
 }) {
   const options: HTMLReactParserOptions = {
     replace: (domNode) => {
@@ -13,6 +14,9 @@ export default function ResultDisplayer(props: {
       }
     },
   };
+  if (props.is_generating) {
+    return <p id="contentp">{props.res}</p>;
+  }
   switch (props.type) {
     case "ideas":
       try {
@@ -42,7 +46,7 @@ export default function ResultDisplayer(props: {
 
     default:
       return (
-        <p id="contentp">
+        <p className="print:text-black" id="contentp">
           {parse(
             props.res
               .replaceAll("<body>", "")

@@ -7,6 +7,7 @@ export async function sendToGpt(
   lng: "fr" | "en",
   model: string,
   options: OpenAiOptions,
+  setContent: Function,
 ) {
   const openai = new OpenAI({
     apiKey: key,
@@ -24,14 +25,18 @@ export async function sendToGpt(
         top_p: options.topP,
         frequency_penalty: options.freqP,
         presence_penalty: options.presP,
+        stream: true,
       })
       .catch((err) => {
         return err;
       });
-  if (typeof chatCompletion.choices === "undefined") {
-    return chatCompletion;
+
+  let result = "";
+  for await (const chunk of chatCompletion) {
+    if (chunk.choices[0].delta.content)
+      result += chunk.choices[0].delta.content;
+    setContent(result);
   }
-  return chatCompletion.choices[0].message.content;
 }
 
 export async function sendToGptCustom(
