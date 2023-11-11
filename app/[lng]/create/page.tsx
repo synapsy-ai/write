@@ -144,9 +144,10 @@ export default function CreatePage({
 
       return;
     }
+
     addToHistory({
       prompt: prompt,
-      content: res ?? "",
+      content: r,
       template: type,
       date: new Date(),
     });
