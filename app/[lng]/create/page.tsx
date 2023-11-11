@@ -18,6 +18,7 @@ import {
   getComplexEssayPrompts,
   getModels,
   getPrompt,
+  getStandardGeneration,
   getSystem,
   sendToGpt,
   sendToGptCustom,
@@ -95,6 +96,7 @@ export default function CreatePage({
   const [topp, setTopP] = useState(1);
   const [freqP, setFreqP] = useState(0);
   const [presP, setPresP] = useState(0);
+  const [isGen, setIsGen] = useState(false);
 
   async function getMs() {
     let m = await getModels(s.key);
@@ -116,32 +118,43 @@ export default function CreatePage({
   }
 
   async function create() {
-    setInProgress(true);
+    setInProgress(false);
     setErrorVis(false);
     setProgressBarVis(false);
-    let r = await sendToGpt(prompt, s.key, type, lng, model, {
-      temp: temp,
-      presP: presP,
-      topP: topp,
-      freqP: freqP,
-    });
+    setIsGen(true);
+    let r = await sendToGpt(
+      prompt,
+      s.key,
+      type,
+      lng,
+      model,
+      {
+        temp: temp,
+        presP: presP,
+        topP: topp,
+        freqP: freqP,
+      },
+      { setContent: setRes, setLoading: setInProgress },
+    );
     if (r instanceof OpenAI.APIError) {
       setErrorMsg(r);
       setErrorVis(true);
       setInProgress(false);
+      setIsGen(false);
+
       return;
     }
-    setRes(r);
     addToHistory({
       prompt: prompt,
-      content: r ?? "",
+      content: res ?? "",
       template: type,
       date: new Date(),
     });
-    setInProgress(false);
+    setIsGen(false);
   }
 
   function createButton() {
+    setRes("");
     if (type === "es_complex") {
       createComplexEssay();
     } else if (type == "ph_complex") {
@@ -154,8 +167,8 @@ export default function CreatePage({
   async function createComplexEssay() {
     setInProgress(true);
     setErrorVis(false);
-    setProgressBarVis(true);
-    const outline = await sendToGptCustom(
+    setIsGen(false);
+    const outline = await getStandardGeneration(
       getSystem("es_complex_outline", lng),
       getPrompt("es_outline", lng, prompt),
       s.key,
@@ -174,7 +187,9 @@ export default function CreatePage({
       setInProgress(false);
       return;
     }
-
+    setIsGen(true);
+    setInProgress(false);
+    setRes("");
     setProgress(16);
     const intro =
       (await sendToGptCustom(
@@ -188,6 +203,8 @@ export default function CreatePage({
           topP: topp,
           freqP: freqP,
         },
+        "",
+        { setContent: setRes },
       )) ?? "";
 
     if (intro instanceof OpenAI.APIError) {
@@ -209,6 +226,8 @@ export default function CreatePage({
         topP: topp,
         freqP: freqP,
       },
+      intro || "",
+      { setContent: setRes },
     );
     if (p1 instanceof OpenAI.APIError) {
       setErrorMsg(p1);
@@ -228,6 +247,8 @@ export default function CreatePage({
         topP: topp,
         freqP: freqP,
       },
+      intro + p1 || "",
+      { setContent: setRes },
     );
     if (p2 instanceof OpenAI.APIError) {
       setErrorMsg(p2);
@@ -247,6 +268,8 @@ export default function CreatePage({
         topP: topp,
         freqP: freqP,
       },
+      intro + p1 + p2 || "",
+      { setContent: setRes },
     );
     if (p3 instanceof OpenAI.APIError) {
       setErrorMsg(p3);
@@ -266,6 +289,8 @@ export default function CreatePage({
         topP: topp,
         freqP: freqP,
       },
+      intro + p1 + p2 + p3 || "",
+      { setContent: setRes },
     );
     if (ccl instanceof OpenAI.APIError) {
       setErrorMsg(ccl);
@@ -281,6 +306,7 @@ export default function CreatePage({
       template: type,
       date: new Date(),
     });
+    setIsGen(false);
     console.log(intro);
     console.log(p1);
     console.log(p2);
@@ -291,8 +317,9 @@ export default function CreatePage({
 
   async function createComplexPhiloEssay() {
     setInProgress(true);
+    setIsGen(false);
     setProgressBarVis(true);
-    const outline = await sendToGptCustom(
+    const outline = await getStandardGeneration(
       getSystem("ph_complex_outline", lng),
       getPrompt("ph_outline", lng, prompt),
       s.key,
@@ -305,6 +332,9 @@ export default function CreatePage({
       },
     );
     setProgress(16);
+    setInProgress(false);
+    setRes("");
+    setIsGen(true);
     const intro =
       (await sendToGptCustom(
         getSystem("ph_intro", lng),
@@ -317,6 +347,8 @@ export default function CreatePage({
           topP: topp,
           freqP: freqP,
         },
+        "",
+        { setContent: setRes },
       )) ?? "";
     setProgress(32);
 
@@ -331,6 +363,8 @@ export default function CreatePage({
         topP: topp,
         freqP: freqP,
       },
+      intro || "",
+      { setContent: setRes },
     );
     setProgress(48);
     const p2 = await sendToGptCustom(
@@ -344,6 +378,8 @@ export default function CreatePage({
         topP: topp,
         freqP: freqP,
       },
+      intro + p1 || "",
+      { setContent: setRes },
     );
     setProgress(64);
     const p3 = await sendToGptCustom(
@@ -357,6 +393,8 @@ export default function CreatePage({
         topP: topp,
         freqP: freqP,
       },
+      intro + p1 + p2 || "",
+      { setContent: setRes },
     );
     setProgress(82);
     const ccl = await sendToGptCustom(
@@ -370,6 +408,8 @@ export default function CreatePage({
         topP: topp,
         freqP: freqP,
       },
+      intro + p1 + p2 + p3 || "",
+      { setContent: setRes },
     );
     setProgress(100);
     setRes(intro + p1 + p2 + p3 + ccl);
@@ -384,6 +424,7 @@ export default function CreatePage({
     console.log(p2);
     console.log(p3);
     console.log(ccl);
+    setIsGen(false);
     setInProgress(false);
   }
 
@@ -555,7 +596,7 @@ export default function CreatePage({
             "m-2 grow rounded-md bg-white p-2 text-justify shadow-md dark:bg-slate-900 print:shadow-none"
           }
         >
-          <ResultDisplayer res={res} type={type} />
+          <ResultDisplayer is_generating={isGen} res={res} type={type} />
         </section>
       )}
       {!errorVis && !res && (
@@ -586,9 +627,6 @@ export default function CreatePage({
             <Skeleton className="h-4 w-[250px]" />
             <Skeleton className="h-4 w-[200px]" />
           </div>
-          {progressBarVis && (
-            <Progress value={progress} className="m-4 w-[60%]" />
-          )}
         </section>
       ) : (
         <></>

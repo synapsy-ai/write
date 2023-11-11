@@ -5,6 +5,7 @@ import parse, { HTMLReactParserOptions, Element } from "html-react-parser";
 export default function ResultDisplayer(props: {
   res: string;
   type: Template | string;
+  is_generating: boolean;
 }) {
   const options: HTMLReactParserOptions = {
     replace: (domNode) => {
@@ -13,6 +14,14 @@ export default function ResultDisplayer(props: {
       }
     },
   };
+  if (props.is_generating && props.type === "ideas") {
+    return (
+      <p id="contentp">
+        {props.res}
+        <span className="inline-block h-[14px] w-[7px] animate-pulse self-baseline bg-black duration-500 dark:bg-white"></span>
+      </p>
+    );
+  }
   switch (props.type) {
     case "ideas":
       try {
@@ -42,7 +51,7 @@ export default function ResultDisplayer(props: {
 
     default:
       return (
-        <p id="contentp">
+        <p className="print:text-black" id="contentp">
           {parse(
             props.res
               .replaceAll("<body>", "")
@@ -53,6 +62,9 @@ export default function ResultDisplayer(props: {
               .replaceAll("\n\n", "<br>")
               .replaceAll("\n", "<br>"),
             options,
+          )}
+          {props.is_generating && (
+            <span className="inline-block h-[14px] w-[7px] animate-pulse self-baseline bg-black duration-500 dark:bg-white"></span>
           )}
         </p>
       );

@@ -35,7 +35,6 @@ export function FormatSelector(props: { lng: string; setVal: Function }) {
       });
     });
   });
-  console.log(vals);
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
