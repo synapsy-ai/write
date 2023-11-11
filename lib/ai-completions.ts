@@ -7,8 +7,10 @@ export async function sendToGpt(
   lng: "fr" | "en",
   model: string,
   options: OpenAiOptions,
-  setContent: Function,
-) {
+  functions: { setContent: Function; setLoading: Function },
+): Promise<any> {
+  functions.setLoading(true);
+  let loading = true;
   const openai = new OpenAI({
     apiKey: key,
     dangerouslyAllowBrowser: true, // defaults to process.env["OPENAI_API_KEY"]
@@ -35,8 +37,13 @@ export async function sendToGpt(
   for await (const chunk of chatCompletion) {
     if (chunk.choices[0].delta.content)
       result += chunk.choices[0].delta.content;
-    setContent(result);
+    functions.setContent(result);
+    if (loading) {
+      functions.setLoading(false);
+      loading = false;
+    }
   }
+  return result;
 }
 
 export async function sendToGptCustom(

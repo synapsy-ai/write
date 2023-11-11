@@ -133,9 +133,16 @@ export default function CreatePage({
         topP: topp,
         freqP: freqP,
       },
-      setRes,
+      { setContent: setRes, setLoading: setInProgress },
     );
+    if (r instanceof OpenAI.APIError) {
+      setErrorMsg(r);
+      setErrorVis(true);
+      setInProgress(false);
+      setIsGen(false);
 
+      return;
+    }
     addToHistory({
       prompt: prompt,
       content: res ?? "",
