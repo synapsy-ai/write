@@ -71,5 +71,11 @@
   "top-p": "Top P",
   "top-p-desc": "Control diversity via nucleus sampling: 0.5 means half of all likelihood-weighted options are considered.",
   "max-length": "Maximum length",
-  "max-length-desc": "The maximum number of tokens to generate. Requests can use up to 2,048 or 4,000 tokens, shared between prompt and completion. The exact limit varies by model."
+  "max-length-desc": "The maximum number of tokens to generate. Requests can use up to 2,048 or 4,000 tokens, shared between prompt and completion. The exact limit varies by model.",
+  "prompt": "Prompt",
+  "variables": "Variables",
+  "add-variable": "Add variable",
+  "delete-variable": "Delete variable",
+  "name": "Name",
+  "value": "Value"
 }

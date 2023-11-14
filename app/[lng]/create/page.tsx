@@ -2,6 +2,7 @@
 import { useTranslation } from "@/app/i18n/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { v4 as uuidv4 } from "uuid";
 
 import {
   Hand,
@@ -62,6 +63,8 @@ import {
   HoverCardTrigger,
 } from "@/components/ui/hover-card";
 import { Slider } from "@/components/ui/slider";
+import { Variable, getVariableString } from "@/lib/variable";
+import VariableItem from "@/components/variable-item";
 
 export default function CreatePage({
   params: { lng },
@@ -97,6 +100,7 @@ export default function CreatePage({
   const [freqP, setFreqP] = useState(0);
   const [presP, setPresP] = useState(0);
   const [isGen, setIsGen] = useState(false);
+  const [variables, setVariables] = useState<Variable[]>([]);
 
   async function getMs() {
     let m = await getModels(s.key);
@@ -123,7 +127,7 @@ export default function CreatePage({
     setProgressBarVis(false);
     setIsGen(true);
     let r = await sendToGpt(
-      prompt,
+      prompt + getVariableString(variables),
       s.key,
       type,
       lng,
@@ -147,7 +151,7 @@ export default function CreatePage({
 
     addToHistory({
       prompt: prompt,
-      content: r,
+      content: r ?? res ?? "An error occurred when saving the generation",
       template: type,
       date: new Date(),
     });
@@ -308,11 +312,6 @@ export default function CreatePage({
       date: new Date(),
     });
     setIsGen(false);
-    console.log(intro);
-    console.log(p1);
-    console.log(p2);
-    console.log(p3);
-    console.log(ccl);
     setInProgress(false);
   }
 
@@ -420,13 +419,20 @@ export default function CreatePage({
       template: type,
       date: new Date(),
     });
-    console.log(intro);
-    console.log(p1);
-    console.log(p2);
-    console.log(p3);
-    console.log(ccl);
     setIsGen(false);
     setInProgress(false);
+  }
+
+  function removeVariable(i: number) {
+    const updatedVariables = [...variables];
+    updatedVariables.splice(i, 1);
+    setVariables([...updatedVariables]);
+    console.table(updatedVariables);
+  }
+
+  function editVariable(i: number, variable: Variable) {
+    variables[i] = variable;
+    setVariables([...variables]);
   }
 
   return (
@@ -437,6 +443,7 @@ export default function CreatePage({
       </section>
       {!welcome ? (
         <section>
+          <p className="m-2 font-bold">{t("prompt")}</p>
           <div className="m-2 flex flex-col items-stretch space-y-1 print:hidden sm:flex-row sm:items-center sm:space-x-2 sm:space-y-0">
             <Input onChange={(v) => setPrompt(v.target.value)} />
             <div className="flex space-x-1 sm:space-x-2">
@@ -571,6 +578,42 @@ export default function CreatePage({
               </Button>
             )}
           </div>
+          {type !== "ph_complex" && type !== "es_complex" && (
+            <div>
+              <div>
+                <p className="m-2 font-bold">
+                  {t("variables")} ({variables.length})
+                </p>
+                <Button
+                  className="h-auto"
+                  variant="link"
+                  onClick={() =>
+                    setVariables([
+                      ...variables,
+                      { name: "", value: "", id: uuidv4() },
+                    ])
+                  }
+                >
+                  {t("add-variable")}
+                </Button>
+              </div>
+              <div>
+                {variables.length > 0 &&
+                  variables.map((el, i) => (
+                    <VariableItem
+                      functions={{
+                        setVar: editVariable,
+                        removeVar: removeVariable,
+                      }}
+                      key={el.id}
+                      lng={lng}
+                      index={i}
+                      item={el}
+                    />
+                  ))}
+              </div>
+            </div>
+          )}
           <div className="m-2 print:hidden">
             <p>
               {t("format")} - {t(typesToString(type))} - {getModelString(model)}
