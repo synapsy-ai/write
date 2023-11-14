@@ -41,12 +41,14 @@
     "react-i18next": "^13.3.2",
     "styled-jsx": "^5.1.2",
     "tailwind-merge": "^2.0.0",
-    "tailwindcss-animate": "^1.0.7"
+    "tailwindcss-animate": "^1.0.7",
+    "uuid": "^9.0.1"
   },
   "devDependencies": {
     "@types/node": "latest",
     "@types/react": "latest",
     "@types/react-dom": "latest",
+    "@types/uuid": "^9.0.7",
     "autoprefixer": "latest",
     "eslint": "latest",
     "eslint-config-next": "latest",
