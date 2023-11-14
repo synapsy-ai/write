@@ -148,6 +148,7 @@ export default function CreatePage({
 
       return;
     }
+
     addToHistory({
       prompt: prompt,
       content: r ?? res ?? "An error occurred when saving the generation",
