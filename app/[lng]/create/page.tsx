@@ -150,7 +150,7 @@ export default function CreatePage({
     }
     addToHistory({
       prompt: prompt,
-      content: res ?? "",
+      content: r ?? res ?? "An error occurred when saving the generation",
       template: type,
       date: new Date(),
     });
