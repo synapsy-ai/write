@@ -71,5 +71,11 @@
   "top-p": "Top P",
   "top-p-desc": "Contrôle de la diversité via l'échantillonnage du noyau : 0,5 signifie que la moitié de toutes les options pondérées par la probabilité sont prises en compte.",
   "max-length": "Longueur maximale",
-  "max-length-desc": "Le nombre maximal de tokens à générer. Les demandes peuvent utiliser jusqu'à 2 048 ou 4 000 tokens, partagés entre la requête et la complétion. La limite exacte varie en fonction du modèle."
+  "max-length-desc": "Le nombre maximal de tokens à générer. Les demandes peuvent utiliser jusqu'à 2 048 ou 4 000 tokens, partagés entre la requête et la complétion. La limite exacte varie en fonction du modèle.",
+  "prompt": "Instruction",
+  "variables": "Variables",
+  "add-variable": "Ajouter une variable",
+  "delete-variable": "Supprimer une variable",
+  "name": "Nom",
+  "value": "Valeur"
 }
