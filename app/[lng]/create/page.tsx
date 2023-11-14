@@ -63,7 +63,7 @@ import {
   HoverCardTrigger,
 } from "@/components/ui/hover-card";
 import { Slider } from "@/components/ui/slider";
-import { Variable } from "@/lib/variable";
+import { Variable, getVariableString } from "@/lib/variable";
 import VariableItem from "@/components/variable-item";
 
 export default function CreatePage({
@@ -127,7 +127,7 @@ export default function CreatePage({
     setProgressBarVis(false);
     setIsGen(true);
     let r = await sendToGpt(
-      prompt,
+      prompt + getVariableString(variables),
       s.key,
       type,
       lng,
@@ -311,11 +311,6 @@ export default function CreatePage({
       date: new Date(),
     });
     setIsGen(false);
-    console.log(intro);
-    console.log(p1);
-    console.log(p2);
-    console.log(p3);
-    console.log(ccl);
     setInProgress(false);
   }
 
@@ -423,11 +418,6 @@ export default function CreatePage({
       template: type,
       date: new Date(),
     });
-    console.log(intro);
-    console.log(p1);
-    console.log(p2);
-    console.log(p3);
-    console.log(ccl);
     setIsGen(false);
     setInProgress(false);
   }
@@ -587,38 +577,42 @@ export default function CreatePage({
               </Button>
             )}
           </div>
-          <div>
-            <p className="m-2 font-bold">
-              {t("variables")} ({variables.length})
-            </p>
-            <Button
-              className="h-auto"
-              variant="link"
-              onClick={() =>
-                setVariables([
-                  ...variables,
-                  { name: "", value: "", id: uuidv4() },
-                ])
-              }
-            >
-              {t("add-variable")}
-            </Button>
-          </div>
-          <div>
-            {variables.length > 0 &&
-              variables.map((el, i) => (
-                <VariableItem
-                  functions={{
-                    setVar: editVariable,
-                    removeVar: removeVariable,
-                  }}
-                  key={el.id}
-                  lng={lng}
-                  index={i}
-                  item={el}
-                />
-              ))}
-          </div>
+          {type !== "ph_complex" && type !== "es_complex" && (
+            <div>
+              <div>
+                <p className="m-2 font-bold">
+                  {t("variables")} ({variables.length})
+                </p>
+                <Button
+                  className="h-auto"
+                  variant="link"
+                  onClick={() =>
+                    setVariables([
+                      ...variables,
+                      { name: "", value: "", id: uuidv4() },
+                    ])
+                  }
+                >
+                  {t("add-variable")}
+                </Button>
+              </div>
+              <div>
+                {variables.length > 0 &&
+                  variables.map((el, i) => (
+                    <VariableItem
+                      functions={{
+                        setVar: editVariable,
+                        removeVar: removeVariable,
+                      }}
+                      key={el.id}
+                      lng={lng}
+                      index={i}
+                      item={el}
+                    />
+                  ))}
+              </div>
+            </div>
+          )}
           <div className="m-2 print:hidden">
             <p>
               {t("format")} - {t(typesToString(type))} - {getModelString(model)}
