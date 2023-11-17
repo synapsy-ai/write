@@ -38,7 +38,7 @@
     "react": "latest",
     "react-cookie": "^6.1.1",
     "react-dom": "latest",
-    "react-i18next": "^13.4.1",
+    "react-i18next": "^13.5.0",
     "styled-jsx": "^5.1.2",
     "tailwind-merge": "^2.0.0",
     "tailwindcss-animate": "^1.0.7",
