@@ -42,3 +42,12 @@ export function typesToString(type: string): string {
   }
   return "";
 }
+
+export const tones = [
+  "tones-none",
+  "tones-professional",
+  "tones-casual",
+  "tones-enthusiastic",
+  "tones-informative",
+  "tones-funny",
+];

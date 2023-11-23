@@ -8,6 +8,7 @@ export async function sendToGpt(
   model: string,
   options: OpenAiOptions,
   functions: { setContent: Function; setLoading: Function },
+  tone: string,
 ): Promise<any> {
   functions.setLoading(true);
   let loading = true;
@@ -19,7 +20,7 @@ export async function sendToGpt(
     await openai.chat.completions
       .create({
         messages: [
-          { role: "system", content: getSystem(template, lng) },
+          { role: "system", content: getSystem(template, lng, tone) },
           { role: "user", content: getPrompt(template, lng, prompt) },
         ],
         model: model,
@@ -122,44 +123,93 @@ export async function getStandardGeneration(
 export function getSystem(
   template: Template | string,
   lng: "fr" | "en",
+  tone: string,
 ): string {
   const type = template.length > 3 ? template.substring(0, 3) : template;
   if (lng === "en") {
     if (template === "ideas") {
-      return 'You are a helpful assistant who gives ideas in a JSON array of ideas ["Idea1","Idea2"] (EXACTLY THIS FORMAT, no object)';
+      return 'You are a helpful assistant who gives ideas in a JSON array of ideas ["Idea1","Idea2"] (EXACTLY THIS FORMAT, no object)' +
+        tone ===
+        "tones-none"
+        ? ""
+        : " Use the following tone: " + tone;
     }
     if (template === "es_complex_outline") {
-      return "You are an expert who writes essays similar to those required for a high school diploma in the United States.";
+      return "You are an expert who writes essays similar to those required for a high school diploma in the United States." +
+        tone ===
+        "tones-none"
+        ? ""
+        : " Use the following tone: " + tone;
     }
     if (template === "ph_complex_outline") {
-      return "You are an expert who writes philosophy essays similar to those required for a high school diploma in the United States.";
+      return "You are an expert who writes philosophy essays similar to those required for a high school diploma in the United States." +
+        tone ===
+        "tones-none"
+        ? ""
+        : " Use the following tone: " + tone;
     }
 
     switch (type) {
       case "ph_":
-        return "You are an expert who writes philosophy essays similar to those required for a high school diploma in the United States. Response format: HTML (body ONLY,no head, no scripts)";
+        return "You are an expert who writes philosophy essays similar to those required for a high school diploma in the United States. Response format: HTML (body ONLY,no head, no scripts)" +
+          tone ===
+          "tones-none"
+          ? ""
+          : " Use the following tone: " + tone;
       case "es_":
-        return "You are an expert who writes essays similar to those required for a high school diploma in the United States. Response format: HTML (body ONLY,no head, no scripts)";
+        return "You are an expert who writes essays similar to those required for a high school diploma in the United States. Response format: HTML (body ONLY,no head, no scripts)" +
+          tone ===
+          "tones-none"
+          ? ""
+          : " Use the following tone: " + tone;
       default:
-        return "You help writing documents. Response format: HTML (body ONLY,no head, no scripts)";
+        return "You help writing documents. Response format: HTML (body ONLY,no head, no scripts)" +
+          tone ===
+          "tones-none"
+          ? ""
+          : " Use the following tone: " + tone;
     }
   } else {
     if (template === "ideas") {
-      return 'Tu un assistant qui donne des idées dans un array d\'idées JSON ["Idee1","Idee2"] (EXACTEMENT CE FORMAT, pas d\'objet)';
+      return 'Tu un assistant qui donne des idées dans un array d\'idées JSON ["Idee1","Idee2"] (EXACTEMENT CE FORMAT, pas d\'objet)' +
+        tone ===
+        "tones-none"
+        ? ""
+        : " Utilise le ton suivant : " + tone;
     }
     if (template === "es_complex_outline") {
-      return "Tu es un expert qui fait des dissertations type bac de français.";
+      return "Tu es un expert qui fait des dissertations type bac de français." +
+        tone ===
+        "tones-none"
+        ? ""
+        : " Utilise le ton suivant : " + tone;
     }
     if (template === "ph_complex_outline") {
-      return "Tu es un expert qui fait des dissertations type bac de philosophie.";
+      return "Tu es un expert qui fait des dissertations type bac de philosophie." +
+        tone ===
+        "tones-none"
+        ? ""
+        : " Utilise le ton suivant : " + tone;
     }
     switch (type) {
       case "ph_":
-        return "Tu es un expert qui fait des dissertations type bac de philosophie. Format de réponse : HTML (SEULEMENT body, pas de head, pas de scripts)";
+        return "Tu es un expert qui fait des dissertations type bac de philosophie. Format de réponse : HTML (SEULEMENT body, pas de head, pas de scripts)" +
+          tone ===
+          "tones-none"
+          ? ""
+          : " Utilise le ton suivant : " + tone;
       case "es_":
-        return "Tu es un expert qui fait des dissertations type bac de français. Format de réponse : HTML (SEULEMENT body, pas de head, pas de scripts)";
+        return "Tu es un expert qui fait des dissertations type bac de français. Format de réponse : HTML (SEULEMENT body, pas de head, pas de scripts)" +
+          tone ===
+          "tones-none"
+          ? ""
+          : " Utilise le ton suivant : " + tone;
       default:
-        return "Tu aides à écrire des documents. Format de réponse : HTML (SEULEMENT body, pas de head, pas de scripts)";
+        return "Tu aides à écrire des documents. Format de réponse : HTML (SEULEMENT body, pas de head, pas de scripts)" +
+          tone ===
+          "tones-none"
+          ? ""
+          : " Utilise le ton suivant : " + tone;
     }
   }
 }

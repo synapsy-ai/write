@@ -35,7 +35,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import formats, { typesToString } from "@/lib/formats";
+import formats, { tones, typesToString } from "@/lib/formats";
 import {
   Accordion,
   AccordionContent,
@@ -101,6 +101,7 @@ export default function CreatePage({
   const [presP, setPresP] = useState(0);
   const [isGen, setIsGen] = useState(false);
   const [variables, setVariables] = useState<Variable[]>([]);
+  const [tone, setTone] = useState("tones-none");
 
   async function getMs() {
     let m = await getModels(s.key);
@@ -139,6 +140,7 @@ export default function CreatePage({
         freqP: freqP,
       },
       { setContent: setRes, setLoading: setInProgress },
+      tone,
     );
     if (r instanceof OpenAI.APIError) {
       setErrorMsg(r);
@@ -174,7 +176,7 @@ export default function CreatePage({
     setErrorVis(false);
     setIsGen(false);
     const outline = await getStandardGeneration(
-      getSystem("es_complex_outline", lng),
+      getSystem("es_complex_outline", lng, tone),
       getPrompt("es_outline", lng, prompt),
       s.key,
       model,
@@ -198,7 +200,7 @@ export default function CreatePage({
     setProgress(16);
     const intro =
       (await sendToGptCustom(
-        getSystem("es_intro", lng),
+        getSystem("es_intro", lng, tone),
         getPrompt("es_intro", lng, prompt + usingPlan(lng) + outline),
         s.key,
         model,
@@ -221,7 +223,7 @@ export default function CreatePage({
     setProgress(32);
 
     const p1 = await sendToGptCustom(
-      getSystem("es_basic", lng),
+      getSystem("es_basic", lng, tone),
       getComplexEssayPrompts(1, outline, lng),
       s.key,
       model,
@@ -242,7 +244,7 @@ export default function CreatePage({
     }
     setProgress(48);
     const p2 = await sendToGptCustom(
-      getSystem("es_basic", lng),
+      getSystem("es_basic", lng, tone),
       getComplexEssayPrompts(2, outline, lng),
       s.key,
       model,
@@ -263,7 +265,7 @@ export default function CreatePage({
     }
     setProgress(64);
     const p3 = await sendToGptCustom(
-      getSystem("es_basic", lng),
+      getSystem("es_basic", lng, tone),
       getComplexEssayPrompts(3, outline, lng),
       s.key,
       model,
@@ -284,7 +286,7 @@ export default function CreatePage({
     }
     setProgress(82);
     const ccl = await sendToGptCustom(
-      getSystem("es_conclusion", lng),
+      getSystem("es_conclusion", lng, tone),
       getPrompt("es_conclusion", lng, prompt + usingPlan(lng) + outline),
       s.key,
       model,
@@ -320,7 +322,7 @@ export default function CreatePage({
     setIsGen(false);
     setProgressBarVis(true);
     const outline = await getStandardGeneration(
-      getSystem("ph_complex_outline", lng),
+      getSystem("ph_complex_outline", lng, tone),
       getPrompt("ph_outline", lng, prompt),
       s.key,
       model,
@@ -337,7 +339,7 @@ export default function CreatePage({
     setIsGen(true);
     const intro =
       (await sendToGptCustom(
-        getSystem("ph_intro", lng),
+        getSystem("ph_intro", lng, tone),
         getPrompt("ph_intro", lng, prompt + usingPlan(lng) + outline),
         s.key,
         model,
@@ -353,7 +355,7 @@ export default function CreatePage({
     setProgress(32);
 
     const p1 = await sendToGptCustom(
-      getSystem("ph_basic", lng),
+      getSystem("ph_basic", lng, tone),
       getComplexEssayPrompts(1, outline, lng),
       s.key,
       model,
@@ -368,7 +370,7 @@ export default function CreatePage({
     );
     setProgress(48);
     const p2 = await sendToGptCustom(
-      getSystem("ph_basic", lng),
+      getSystem("ph_basic", lng, tone),
       getComplexEssayPrompts(2, outline, lng),
       s.key,
       model,
@@ -383,7 +385,7 @@ export default function CreatePage({
     );
     setProgress(64);
     const p3 = await sendToGptCustom(
-      getSystem("ph_basic", lng),
+      getSystem("ph_basic", lng, tone),
       getComplexEssayPrompts(3, outline, lng),
       s.key,
       model,
@@ -398,7 +400,7 @@ export default function CreatePage({
     );
     setProgress(82);
     const ccl = await sendToGptCustom(
-      getSystem("ph_conclusion", lng),
+      getSystem("ph_conclusion", lng, tone),
       getPrompt("ph_conclusion", lng, prompt + usingPlan(lng) + outline),
       s.key,
       model,
@@ -554,6 +556,27 @@ export default function CreatePage({
                         {t("pres-penalty-desc")}
                       </HoverCardContent>
                     </HoverCard>
+                    <Separator className="my-2" />
+                    <div className="flex items-center space-x-2">
+                      <p>{t("tone")}</p>
+                      <Select
+                        defaultValue={tone}
+                        onValueChange={(v) => setTone(v)}
+                      >
+                        <SelectTrigger className="w-[180px]">
+                          <SelectValue placeholder={t("tone")} />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <ScrollArea className="h-[200px]">
+                            {tones.map((el, i) => (
+                              <SelectItem key={i} value={el}>
+                                {t(el)}
+                              </SelectItem>
+                            ))}
+                          </ScrollArea>
+                        </SelectContent>
+                      </Select>
+                    </div>
                   </div>
                 </SheetContent>
               </Sheet>
