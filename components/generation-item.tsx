@@ -9,6 +9,7 @@ import {
 } from "./ui/tooltip";
 import { HistoryItem } from "@/lib/history";
 import { useTranslation } from "@/app/i18n/client";
+import { Calendar } from "lucide-react";
 
 export function GenerationItem(props: {
   item: HistoryItem;
@@ -87,6 +88,10 @@ export function GenerationItem(props: {
               </span>
             </span>
             <span className="flex flex-col items-start">
+              <p className="mx-1 mt-1 flex items-center text-sm text-slate-500 dark:text-slate-400">
+                <Calendar height={12} />
+                <span>{new Date(props.item.date).toLocaleString()}</span>
+              </p>
               <h3 className="m-2 text-left font-bold">
                 {props.item.prompt.length > 30
                   ? props.item.prompt.substring(0, 30) + "..."
