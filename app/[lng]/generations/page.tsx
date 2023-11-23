@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { HistoryItem } from "@/lib/history";
 import { Download, Eraser, Upload } from "lucide-react";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function Creations({
   params: { lng },
@@ -14,21 +14,27 @@ export default function Creations({
   params: { lng: any };
 }) {
   const { t } = useTranslation(lng, "common");
-
-  let history: HistoryItem[] = [];
+  let histo = [];
   if (typeof window !== "undefined") {
-    history = JSON.parse(localStorage.getItem("synapsy_write_history") ?? "[]");
+    histo = JSON.parse(localStorage.getItem("synapsy_write_history") ?? "[]");
   }
+  const [history, setHistory] = useState<HistoryItem[]>(histo);
 
-  const [noItems, setNoItems] = useState(history.length == 0);
   function Import(event: any) {
     let file = event.target.files[0]; // get the selected file
     let reader = new FileReader(); // create a FileReader object
     reader.onload = function (event) {
       let text: string = event.target?.result as string; // get the file content as text
       localStorage.setItem("synapsy_write_history", text);
+      refresh();
     };
     reader.readAsText(file); // read the file as text
+  }
+
+  function refresh() {
+    setHistory(
+      JSON.parse(localStorage.getItem("synapsy_write_history") ?? "[]"),
+    );
   }
   return (
     <main className="m-2 mt-16">
@@ -44,6 +50,7 @@ export default function Creations({
         ></Input>
         <div className="flex">
           <Link
+            target="_blank"
             href={
               "data:text/plain;charset=UTF-8," +
               encodeURIComponent(
@@ -71,10 +78,16 @@ export default function Creations({
           </Button>
         </div>
       </header>
-      {!noItems ? (
+      {!(history.length == 0) ? (
         <section className="flex flex-wrap justify-center p-5 md:justify-start">
           {history.map((el, i) => (
-            <GenerationItem id={i} key={i} item={el} lng={lng} />
+            <GenerationItem
+              refresh={refresh}
+              id={i}
+              key={i}
+              item={el}
+              lng={lng}
+            />
           ))}
         </section>
       ) : (

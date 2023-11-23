@@ -15,3 +15,12 @@ export function addToHistory(item: HistoryItem) {
     localStorage.setItem("synapsy_write_history", JSON.stringify(history));
   }
 }
+
+export function removeFromHistory(index: number) {
+  if (typeof window !== "undefined") {
+    let history: HistoryItem[] = [];
+    history = JSON.parse(localStorage.getItem("synapsy_write_history") ?? "[]");
+    history.splice(index, 1);
+    localStorage.setItem("synapsy_write_history", JSON.stringify(history));
+  }
+}

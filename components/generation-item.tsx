@@ -7,13 +7,24 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "./ui/tooltip";
-import { HistoryItem } from "@/lib/history";
+import { HistoryItem, removeFromHistory } from "@/lib/history";
 import { useTranslation } from "@/app/i18n/client";
+import { Calendar, MoreVertical } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "./ui/dropdown-menu";
+import { Button } from "./ui/button";
 
 export function GenerationItem(props: {
   item: HistoryItem;
   lng: string;
   id: number;
+  refresh: Function;
 }) {
   const { t } = useTranslation(props.lng, "common");
   function getRandomGradient() {
@@ -72,11 +83,12 @@ export function GenerationItem(props: {
     <TooltipProvider>
       <Tooltip>
         <TooltipTrigger>
-          <Link
-            href={"generations/view?id=" + props.id.toString()}
+          <div
+            onClick={() => {}}
             className="m-2 flex w-[380px] flex-col overflow-hidden rounded-md border border-slate-200 shadow-md transition hover:-translate-y-2 hover:shadow-lg dark:border-slate-700"
           >
-            <span
+            <Link
+              href={"generations/view?id=" + props.id.toString()}
               className={
                 "flex h-16 items-start justify-start border-b border-slate-200 dark:border-slate-700 " +
                 getRandomGradient()
@@ -85,15 +97,44 @@ export function GenerationItem(props: {
               <span className="mx-2 mt-2 w-auto rounded-full border border-[#ffffff55] bg-[#ffffff55] px-1.5 text-sm text-white backdrop-blur-md">
                 {label}
               </span>
+            </Link>
+            <span>
+              <Link
+                href={"generations/view?id=" + props.id.toString()}
+                className="mx-1 mt-1 flex items-center text-sm text-slate-500 dark:text-slate-400"
+              >
+                <Calendar height={12} />
+                <span>{new Date(props.item.date).toLocaleString()}</span>
+              </Link>
+              <span className="grid grid-cols-[1fr,auto]">
+                <Link
+                  href={"generations/view?id=" + props.id.toString()}
+                  className="p-2 text-left font-bold"
+                >
+                  {props.item.prompt.length > 30
+                    ? props.item.prompt.substring(0, 30) + "..."
+                    : props.item.prompt}
+                </Link>
+                <DropdownMenu>
+                  <DropdownMenuTrigger>
+                    <Button className="h-auto" variant="ghost">
+                      <MoreVertical width={16} />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent>
+                    <DropdownMenuItem
+                      onClick={() => {
+                        removeFromHistory(props.id);
+                        props.refresh();
+                      }}
+                    >
+                      Delete
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </span>
             </span>
-            <span className="flex flex-col items-start">
-              <h3 className="m-2 text-left font-bold">
-                {props.item.prompt.length > 30
-                  ? props.item.prompt.substring(0, 30) + "..."
-                  : props.item.prompt}
-              </h3>
-            </span>
-          </Link>
+          </div>
         </TooltipTrigger>
         <TooltipContent className="max-w-[380px]">
           {props.item.prompt}
