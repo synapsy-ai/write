@@ -26,6 +26,7 @@ export default function Creations({
     reader.onload = function (event) {
       let text: string = event.target?.result as string; // get the file content as text
       localStorage.setItem("synapsy_write_history", text);
+      refresh();
     };
     reader.readAsText(file); // read the file as text
   }
@@ -49,6 +50,7 @@ export default function Creations({
         ></Input>
         <div className="flex">
           <Link
+            target="_blank"
             href={
               "data:text/plain;charset=UTF-8," +
               encodeURIComponent(
