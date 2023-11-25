@@ -7,8 +7,10 @@ import { v4 as uuidv4 } from "uuid";
 import {
   Hand,
   Info,
+  Lightbulb,
   Loader2,
   LucideFileWarning,
+  PenBox,
   RefreshCcw,
   Settings as SettingsLogo,
   Sparkles,
@@ -640,8 +642,14 @@ export default function CreatePage({
             </div>
           )}
           <div className="m-2 print:hidden">
-            <p>
-              {t("format")} - {t(typesToString(type))} - {getModelString(model)}
+            <p className="font-bold">{t("gen-settings")}</p>
+            <p className="flex items-center space-x-2">
+              <PenBox height={14} />
+              <span>{t(typesToString(type))}</span>
+            </p>
+            <p className="flex items-center space-x-2">
+              <Lightbulb height={14} />
+              <span>{getModelString(model)}</span>
             </p>
           </div>
         </section>
@@ -671,7 +679,7 @@ export default function CreatePage({
       {!errorVis && !res && (
         <section
           className={
-            "m-2 flex grow items-center justify-center rounded-md bg-white p-2 shadow-md dark:bg-slate-900 print:shadow-none"
+            "m-2 flex grow items-center justify-center rounded-md bg-white p-2 shadow-md dark:bg-slate-900 print:text-black print:shadow-none"
           }
         >
           <div className="flex flex-col items-center justify-center">

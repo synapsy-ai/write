@@ -86,5 +86,6 @@
   "tones-informative": "Informatif",
   "tones-funny": "Drôle",
   "table": "Tableau",
-  "format-desc": "Un format de génération est une manière dont Synapsy Write va générer du texte."
+  "format-desc": "Un format de génération est une manière dont Synapsy Write va générer du texte.",
+  "gen-settings": "Paramètres de génération"
 }
