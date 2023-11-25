@@ -48,7 +48,7 @@ export default function FormatDialog(props: { lng: string; setVal: Function }) {
                       {t(format.text)
                         .toLowerCase()
                         .match(value.toLowerCase()) ? (
-                        <DialogClose className="items-stretch">
+                        <DialogClose className="items-stretch" tabIndex={-1}>
                           <Button
                             className="w-full justify-start"
                             key={j}
