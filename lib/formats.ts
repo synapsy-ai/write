@@ -6,6 +6,7 @@ const formats = [
       { text: "email", val: "email" },
       { text: "blog-post", val: "blog" },
       { text: "ideas", val: "ideas" },
+      { text: "table", val: "table" },
     ],
   },
   {

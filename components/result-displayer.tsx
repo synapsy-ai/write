@@ -48,7 +48,23 @@ export default function ResultDisplayer(props: {
           </div>
         );
       }
-
+    case "table":
+      return (
+        <p className="print:text-black" id="contentp">
+          {parse(
+            props.res
+              .replaceAll("<body>", "")
+              .replaceAll("</body>", "")
+              .replaceAll("<html>", "")
+              .replaceAll("</html>", "")
+              .replaceAll("<!DOCTYPE html>", ""),
+            options,
+          )}
+          {props.is_generating && (
+            <span className="inline-block h-[14px] w-[7px] animate-pulse self-baseline bg-black duration-500 dark:bg-white"></span>
+          )}
+        </p>
+      );
     default:
       return (
         <p className="print:text-black" id="contentp">
