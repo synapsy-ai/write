@@ -11,6 +11,7 @@ import {
   Loader2,
   LucideFileWarning,
   PenBox,
+  PencilRuler,
   RefreshCcw,
   Settings as SettingsLogo,
   Sparkles,
@@ -650,6 +651,10 @@ export default function CreatePage({
             <p className="flex items-center space-x-2">
               <Lightbulb height={14} />
               <span>{getModelString(model)}</span>
+            </p>
+            <p className="flex items-center space-x-2">
+              <PencilRuler height={14} />
+              <span>{t(tone)}</span>
             </p>
           </div>
         </section>
