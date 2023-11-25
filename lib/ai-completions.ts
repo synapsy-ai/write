@@ -148,6 +148,12 @@ export function getSystem(
         ? ""
         : " Use the following tone: " + tone;
     }
+    if (template === "table")
+      return "You are an expert who creates HTML Tables. You help organize data in HTML tables. You ONLY give the code for the HTML Table (body ONLY,no head, no scripts) on a single line." +
+        tone ===
+        "tones-none"
+        ? ""
+        : " Use the following tone: " + tone;
 
     switch (type) {
       case "ph_":
@@ -191,6 +197,12 @@ export function getSystem(
         ? ""
         : " Utilise le ton suivant : " + tone;
     }
+    if (template === "table")
+      return "Tu es un expert qui crée des tableaux HTML. Tu aides à organiser les données dans les tableaux HTML. Tu donnes UNIQUEMENT le code du tableau en HTML  (body SEULEMENT, pas de head, pas de scripts) en une seule ligne." +
+        tone ===
+        "tones-none"
+        ? ""
+        : " Utilise le ton suivant : " + tone;
     switch (type) {
       case "ph_":
         return "Tu es un expert qui fait des dissertations type bac de philosophie. Format de réponse : HTML (SEULEMENT body, pas de head, pas de scripts)" +
@@ -247,7 +259,8 @@ export function getPrompt(
         return `Write the essay conclusion, which should summarize the essay and include an opening. Subject: ${prompt}`;
       case "ph_basic":
         return `Write the introduction (introduction, presentation of the subject, issues and outline), the content of the essay organized into at least three main parts (I, II, III etc.) each containing at least two sub-parts (A, B, etc.) (with examples from life, philosophers), and the conclusion of the following subject: ${prompt}`;
-
+      case "table":
+        return `Give ONLY the corresponding HTML Table about (no other text): ${prompt}`;
       default:
         return prompt;
     }
@@ -279,7 +292,8 @@ export function getPrompt(
         return `Rédige la conclusion de dissertation, qui doit récapituler de manière synthétique la dissertation et inclure une ouverture. Sujet : ${prompt}`;
       case "es_basic":
         return `Rédige l'introduction (amorce, présentation du sujet, problématique et annonce du plan), le contenu de la dissertation organisé en au moins trois grandes parties (I, II, III etc.) contenant chacune au moins deux sous-parties (A, B, etc.) (avec des exemples de la vie courantes, des philosphes), et la conclusion du sujet suivant : ${prompt}`;
-
+      case "table":
+        return `Donne SEULEMENT le tableau HTML correspondant au sujet suivant (pas d'autre texte) : ${prompt}`;
       default:
         return prompt;
     }
