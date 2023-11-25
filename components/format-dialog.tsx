@@ -21,7 +21,9 @@ export default function FormatDialog(props: { lng: string; setVal: Function }) {
   return (
     <Dialog>
       <DialogTrigger>
-        <Button variant="outline">{t("format")}</Button>
+        <Button className="w-full" variant="outline">
+          {t("format")}
+        </Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>

@@ -65,6 +65,7 @@ import {
 import { Slider } from "@/components/ui/slider";
 import { Variable, getVariableString } from "@/lib/variable";
 import VariableItem from "@/components/variable-item";
+import FormatDialog from "@/components/format-dialog";
 
 export default function CreatePage({
   params: { lng },
@@ -448,8 +449,9 @@ export default function CreatePage({
           <p className="m-2 font-bold print:hidden">{t("prompt")}</p>
           <div className="m-2 flex flex-col items-stretch space-y-1 print:hidden sm:flex-row sm:items-center sm:space-x-2 sm:space-y-0">
             <Input onChange={(v) => setPrompt(v.target.value)} />
-            <div className="flex space-x-1 sm:space-x-2">
-              <FormatSelector lng={lng} setVal={setType} />
+            <div className="grid grid-cols-[1fr,auto] space-x-1 sm:flex sm:space-x-2">
+              <FormatDialog lng={lng} setVal={setType} />
+
               <Sheet>
                 <SheetTrigger asChild>
                   <Button variant="outline">
