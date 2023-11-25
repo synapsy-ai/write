@@ -16,7 +16,7 @@ export default function ResultDisplayer(props: {
   };
   if (props.is_generating && props.type === "ideas") {
     return (
-      <p id="contentp">
+      <p id="contentp" className="p-4">
         {props.res}
         <span className="inline-block h-[14px] w-[7px] animate-pulse self-baseline bg-black duration-500 dark:bg-white"></span>
       </p>
@@ -48,10 +48,29 @@ export default function ResultDisplayer(props: {
           </div>
         );
       }
-
+    case "table":
+      return (
+        <p
+          className="max-w-[100vw] overflow-auto p-4 print:text-black"
+          id="contentp"
+        >
+          {parse(
+            props.res
+              .replaceAll("<body>", "")
+              .replaceAll("</body>", "")
+              .replaceAll("<html>", "")
+              .replaceAll("</html>", "")
+              .replaceAll("<!DOCTYPE html>", ""),
+            options,
+          )}
+          {props.is_generating && (
+            <span className="inline-block h-[14px] w-[7px] animate-pulse self-baseline bg-black duration-500 dark:bg-white"></span>
+          )}
+        </p>
+      );
     default:
       return (
-        <p className="print:text-black" id="contentp">
+        <p className="p-4 print:text-black" id="contentp">
           {parse(
             props.res
               .replaceAll("<body>", "")

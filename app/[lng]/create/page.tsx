@@ -7,8 +7,11 @@ import { v4 as uuidv4 } from "uuid";
 import {
   Hand,
   Info,
+  Lightbulb,
   Loader2,
   LucideFileWarning,
+  PenBox,
+  PencilRuler,
   RefreshCcw,
   Settings as SettingsLogo,
   Sparkles,
@@ -65,6 +68,7 @@ import {
 import { Slider } from "@/components/ui/slider";
 import { Variable, getVariableString } from "@/lib/variable";
 import VariableItem from "@/components/variable-item";
+import FormatDialog from "@/components/format-dialog";
 
 export default function CreatePage({
   params: { lng },
@@ -445,11 +449,12 @@ export default function CreatePage({
       </section>
       {!welcome ? (
         <section>
-          <p className="m-2 font-bold">{t("prompt")}</p>
+          <p className="m-2 font-bold print:hidden">{t("prompt")}</p>
           <div className="m-2 flex flex-col items-stretch space-y-1 print:hidden sm:flex-row sm:items-center sm:space-x-2 sm:space-y-0">
             <Input onChange={(v) => setPrompt(v.target.value)} />
-            <div className="flex space-x-1 sm:space-x-2">
-              <FormatSelector lng={lng} setVal={setType} />
+            <div className="grid grid-cols-[1fr,auto] space-x-1 sm:flex sm:space-x-2">
+              <FormatDialog lng={lng} setVal={setType} />
+
               <Sheet>
                 <SheetTrigger asChild>
                   <Button variant="outline">
@@ -602,7 +607,7 @@ export default function CreatePage({
             )}
           </div>
           {type !== "ph_complex" && type !== "es_complex" && (
-            <div>
+            <div className="print:hidden">
               <div>
                 <p className="m-2 font-bold">
                   {t("variables")} ({variables.length})
@@ -638,8 +643,18 @@ export default function CreatePage({
             </div>
           )}
           <div className="m-2 print:hidden">
-            <p>
-              {t("format")} - {t(typesToString(type))} - {getModelString(model)}
+            <p className="font-bold">{t("gen-settings")}</p>
+            <p className="flex items-center space-x-2">
+              <PenBox height={14} />
+              <span>{t(typesToString(type))}</span>
+            </p>
+            <p className="flex items-center space-x-2">
+              <Lightbulb height={14} />
+              <span>{getModelString(model)}</span>
+            </p>
+            <p className="flex items-center space-x-2">
+              <PencilRuler height={14} />
+              <span>{t(tone)}</span>
             </p>
           </div>
         </section>
@@ -669,7 +684,7 @@ export default function CreatePage({
       {!errorVis && !res && (
         <section
           className={
-            "m-2 flex grow items-center justify-center rounded-md bg-white p-2 shadow-md dark:bg-slate-900 print:shadow-none"
+            "m-2 flex grow items-center justify-center rounded-md bg-white p-2 shadow-md dark:bg-slate-900 print:text-black print:shadow-none"
           }
         >
           <div className="flex flex-col items-center justify-center">

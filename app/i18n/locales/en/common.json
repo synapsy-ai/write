@@ -84,5 +84,8 @@
   "tones-casual": "Casual",
   "tones-enthusiastic": "Enthusiastic",
   "tones-informative": "Informative",
-  "tones-funny": "Funny"
+  "tones-funny": "Funny",
+  "table": "Table",
+  "format-desc": "A generation format is a mode in which Synapsy Write generates text.",
+  "gen-settings": "Generation Settings"
 }

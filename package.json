@@ -1,6 +1,6 @@
 {
   "name": "write",
-  "version": "1.7.0",
+  "version": "1.8.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -31,7 +31,7 @@
     "i18next": "^23.7.6",
     "i18next-browser-languagedetector": "^7.2.0",
     "i18next-resources-to-backend": "^1.2.0",
-    "lucide-react": "^0.292.0",
+    "lucide-react": "^0.293.0",
     "next": "14.0.1",
     "next-themes": "^0.2.1",
     "openai": "^4.20.0",

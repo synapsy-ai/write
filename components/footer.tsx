@@ -3,6 +3,7 @@ import Link from "next/link";
 
 import Logo from "./logo";
 import { useTranslation } from "@/app/i18n/client";
+import { version } from "@/lib/version";
 
 export default function SiteFooter({
   params: { lng },
@@ -55,7 +56,7 @@ export default function SiteFooter({
       </div>
       <div className="flex flex-col items-center pb-4">
         <p className="text-center">
-          v1.7.0 - © {new Date().getFullYear()} Peyronnet Group and Synapsy
+          v{version} - © {new Date().getFullYear()} Peyronnet Group and Synapsy
         </p>
       </div>
     </footer>
