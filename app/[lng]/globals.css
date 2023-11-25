@@ -157,18 +157,16 @@ table {
   border-radius: 5px;
   overflow: hidden;
 }
-@media (prefers-color-scheme: dark) {
-  table {
-    color: white;
-  }
+html.dark table {
+  color: white;
+}
 
-  table td {
-    background: #1e293b;
-    border-bottom: 1px solid #334155;
-  }
-  table td:not(:first-child) {
-    border-left: 1px solid #334155;
-  }
+html.dark table td {
+  background: #1e293b;
+  border-bottom: 1px solid #334155;
+}
+html.dark table td:not(:first-child) {
+  border-left: 1px solid #334155;
 }
 
 @media print {
