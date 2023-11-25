@@ -445,7 +445,7 @@ export default function CreatePage({
       </section>
       {!welcome ? (
         <section>
-          <p className="m-2 font-bold">{t("prompt")}</p>
+          <p className="m-2 font-bold print:hidden">{t("prompt")}</p>
           <div className="m-2 flex flex-col items-stretch space-y-1 print:hidden sm:flex-row sm:items-center sm:space-x-2 sm:space-y-0">
             <Input onChange={(v) => setPrompt(v.target.value)} />
             <div className="flex space-x-1 sm:space-x-2">
@@ -602,7 +602,7 @@ export default function CreatePage({
             )}
           </div>
           {type !== "ph_complex" && type !== "es_complex" && (
-            <div>
+            <div className="print:hidden">
               <div>
                 <p className="m-2 font-bold">
                   {t("variables")} ({variables.length})
