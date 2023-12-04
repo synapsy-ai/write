@@ -40,7 +40,7 @@
     "react-dom": "latest",
     "react-i18next": "^13.5.0",
     "styled-jsx": "^5.1.2",
-    "tailwind-merge": "^2.0.0",
+    "tailwind-merge": "^2.1.0",
     "tailwindcss-animate": "^1.0.7",
     "uuid": "^9.0.1"
   },
