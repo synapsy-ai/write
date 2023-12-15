@@ -34,7 +34,7 @@
     "lucide-react": "^0.294.0",
     "next": "14.0.1",
     "next-themes": "^0.2.1",
-    "openai": "^4.20.1",
+    "openai": "^4.22.0",
     "react": "latest",
     "react-cookie": "^6.1.1",
     "react-dom": "latest",
