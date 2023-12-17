@@ -654,7 +654,7 @@ export default function CreatePage({
           </div>
           {type.startsWith("ph_analysis_") && (
             <div className="p-2">
-              <p className="my-2 font-bold print:hidden">
+              <p className="mb-2 font-bold print:hidden">
                 {t("text-to-analyse")}
               </p>
               <Textarea
