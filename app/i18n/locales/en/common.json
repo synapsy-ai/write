@@ -87,5 +87,9 @@
   "tones-funny": "Funny",
   "table": "Table",
   "format-desc": "A generation format is a mode in which Synapsy Write generates text.",
-  "gen-settings": "Generation Settings"
+  "gen-settings": "Generation Settings",
+  "text-to-analyse": "Text to analyse",
+  "text-philosophy": "Text analysis (Philosophy)",
+  "text-analysis-introduction": "Analysis introduction",
+  "text-analysis-conclusion": "Analysis conclusion"
 }
