@@ -69,6 +69,7 @@ import { Slider } from "@/components/ui/slider";
 import { Variable, getVariableString } from "@/lib/variable";
 import VariableItem from "@/components/variable-item";
 import FormatDialog from "@/components/format-dialog";
+import { Textarea } from "@/components/ui/textarea";
 
 export default function CreatePage({
   params: { lng },
@@ -106,6 +107,7 @@ export default function CreatePage({
   const [isGen, setIsGen] = useState(false);
   const [variables, setVariables] = useState<Variable[]>([]);
   const [tone, setTone] = useState("tones-none");
+  const [textToAnalyse, setTextToAnalyse] = useState("");
 
   async function getMs() {
     let m = await getModels(s.key);
@@ -164,12 +166,52 @@ export default function CreatePage({
     setIsGen(false);
   }
 
+  async function createAnalysis() {
+    setInProgress(false);
+    setErrorVis(false);
+    setProgressBarVis(false);
+    setIsGen(true);
+    let r = await sendToGpt(
+      textToAnalyse + "\n" + prompt + getVariableString(variables),
+      s.key,
+      type,
+      lng,
+      model,
+      {
+        temp: temp,
+        presP: presP,
+        topP: topp,
+        freqP: freqP,
+      },
+      { setContent: setRes, setLoading: setInProgress },
+      tone,
+    );
+    if (r instanceof OpenAI.APIError) {
+      setErrorMsg(r);
+      setErrorVis(true);
+      setInProgress(false);
+      setIsGen(false);
+
+      return;
+    }
+
+    addToHistory({
+      prompt: textToAnalyse,
+      content: r ?? res ?? "An error occurred when saving the generation",
+      template: type,
+      date: new Date(),
+    });
+    setIsGen(false);
+  }
+
   function createButton() {
     setRes("");
     if (type === "es_complex") {
       createComplexEssay();
     } else if (type == "ph_complex") {
       createComplexPhiloEssay();
+    } else if (type.startsWith("ph_analysis_")) {
+      createAnalysis();
     } else {
       create();
     }
@@ -588,7 +630,11 @@ export default function CreatePage({
             </div>
             {!inProgress ? (
               <Button
-                disabled={prompt.replace(" ", "") == ""}
+                disabled={
+                  type.startsWith("ph_analysis_")
+                    ? textToAnalyse.replace(" ", "") == ""
+                    : prompt.replace(" ", "") == ""
+                }
                 className="group space-x-1 disabled:cursor-not-allowed"
                 onClick={createButton}
               >
@@ -606,6 +652,18 @@ export default function CreatePage({
               </Button>
             )}
           </div>
+          {type.startsWith("ph_analysis_") && (
+            <div className="p-2">
+              <p className="my-2 font-bold print:hidden">
+                {t("text-to-analyse")}
+              </p>
+              <Textarea
+                className="print:hidden"
+                value={textToAnalyse}
+                onChange={(v) => setTextToAnalyse(v.target.value)}
+              />
+            </div>
+          )}
           {type !== "ph_complex" && type !== "es_complex" && (
             <div className="print:hidden">
               <div>

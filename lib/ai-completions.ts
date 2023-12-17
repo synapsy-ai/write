@@ -259,6 +259,11 @@ export function getPrompt(
         return `Write the essay conclusion, which should summarize the essay and include an opening. Subject: ${prompt}`;
       case "ph_basic":
         return `Write the introduction (introduction, presentation of the subject, issues and outline), the content of the essay organized into at least three main parts (I, II, III etc.) each containing at least two sub-parts (A, B, etc.) (with examples from life, philosophers), and the conclusion of the following subject: ${prompt}`;
+      case "ph_analysis_intro":
+        return `Write the introduction of the text analysis using the following structure: introduction, presentation of the text's theme, problematic (on the one hand, on the other, therefore), presentation of the author's thesis, announcement of the text's plan, using the author's arguments for each part. Text: ${prompt}`;
+      case "ph_analysis_conclusion":
+        return `Write the conclusion of the text analysis, recall the most the most important elements of the development, clearly explaining how the development showed how the author demonstrated his thesis. Text: ${prompt}`;
+
       case "table":
         return `Give ONLY the corresponding HTML Table about (no other text): ${prompt}`;
       default:
@@ -292,6 +297,11 @@ export function getPrompt(
         return `Rédige la conclusion de dissertation, qui doit récapituler de manière synthétique la dissertation et inclure une ouverture. Sujet : ${prompt}`;
       case "es_basic":
         return `Rédige l'introduction (amorce, présentation du sujet, problématique et annonce du plan), le contenu de la dissertation organisé en au moins trois grandes parties (I, II, III etc.) contenant chacune au moins deux sous-parties (A, B, etc.) (avec des exemples de la vie courantes, des philosphes), et la conclusion du sujet suivant : ${prompt}`;
+      case "ph_analysis_intro":
+        return `Rédige l'introduction de l'analyse du texte en utilisant la structure suivante : amorce, présentation du thème du texte, problématique (d'une part, d'autre part, donc), présentation de la thèse de l'auteur, annonce du plan du texte, en utilisant les arguments de l'auteur pour chaque partie. Texte : ${prompt}`;
+      case "ph_analysis_conclusion":
+        return `Rédigez la conclusion de l'analyse du texte, en rappelant les éléments les plus importants du développement, en expliquant clairement comment le développement a montré comment l'auteur a démontré sa thèse. Texte : ${prompt}`;
+
       case "table":
         return `Donne SEULEMENT le tableau HTML correspondant au sujet suivant (pas d'autre texte) : ${prompt}`;
       default:

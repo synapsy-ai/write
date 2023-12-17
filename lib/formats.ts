@@ -30,6 +30,13 @@ const formats = [
       { text: "essay-complex", val: "ph_complex" },
     ],
   },
+  {
+    category: "text-philosophy",
+    options: [
+      { text: "text-analysis-introduction", val: "ph_analysis_intro" },
+      { text: "text-analysis-conclusion", val: "ph_analysis_conclusion" },
+    ],
+  },
 ];
 export default formats;
 
