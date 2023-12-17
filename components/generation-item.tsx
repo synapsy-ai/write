@@ -78,6 +78,8 @@ export function GenerationItem(props: {
         return t("text-analysis-conclusion");
       case "ph_analysis_basic":
         return t("text-analysis-basic");
+      case "ph_analysis_dev":
+        return t("text-analysis-dev");
       case "table":
         return t("table");
       default:
