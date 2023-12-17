@@ -72,6 +72,14 @@ export function GenerationItem(props: {
         return t("essay-basic");
       case "ph_complex":
         return t("essay-complex");
+      case "ph_analysis_intro":
+        return t("text-analysis-introduction");
+      case "ph_analysis_conclusion":
+        return t("text-analysis-conclusion");
+      case "ph_analysis_basic":
+        return t("text-analysis-basic");
+      case "ph_analysis_dev":
+        return t("text-analysis-dev");
       case "table":
         return t("table");
       default:
