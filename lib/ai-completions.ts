@@ -148,6 +148,13 @@ export function getSystem(
         ? ""
         : " Use the following tone: " + tone;
     }
+    if (template === "ph_analysis_outline") {
+      return "You are an expert who writes philosophy text analysis similar to those required for a high school diploma in the United States." +
+        tone ===
+        "tones-none"
+        ? ""
+        : " Use the following tone: " + tone;
+    }
     if (template === "table")
       return "You are an expert who creates HTML Tables. You help organize data in HTML tables. You ONLY give the code for the HTML Table (body ONLY,no head, no scripts) on a single line." +
         tone ===
@@ -192,6 +199,13 @@ export function getSystem(
     }
     if (template === "ph_complex_outline") {
       return "Tu es un expert qui fait des dissertations type bac de philosophie." +
+        tone ===
+        "tones-none"
+        ? ""
+        : " Utilise le ton suivant : " + tone;
+    }
+    if (template === "ph_analysis_outline") {
+      return "Tu es un expert qui fait des explications de texte type bac de philosophie." +
         tone ===
         "tones-none"
         ? ""
@@ -367,4 +381,32 @@ export interface OpenAiOptions {
   freqP: number;
   presP: number;
   temp: number;
+}
+
+export function getPromptComplexAnalysis(
+  text: string,
+  outline: string,
+  template: string,
+  lng: "fr" | "en",
+): string {
+  if (lng === "en") {
+    switch (template) {
+      case "ph_analysis_intro":
+        return `Write ONLY the introduction of the text analysis using the following structure: introduction, presentation of the text's theme, problematic (on the one hand, on the other, therefore [question]), quick presentation of the author's thesis, announcement of the text's plan, using the provided outline. OUTLINE=[[${outline}]]\nTEXT=[[${text}]]`;
+      case "ph_analysis_dev":
+        return `Write the text explanation development (note that the intro and conclusion were previously written using the provided OUTLINE) using sentences, no list, don't show the different parts letters and numbers. The explanation is linear, i.e. the assignment must follow the order of the text. Each part corresponds to a part of the extract, and within the part, the various specific explanations (of terms, of sentences in themselves) follow one another as in the text. Start from the broadest to the most precise: - For each part, start by giving the main idea. - For each sentence, give its function (premise, explanation, example...) and content expressed in your own words. An explanation may follow if the sentence is very complex. - Explain the philosophical terms in the sentence by giving definitions, and make explicit any implied meaning or underlying references (you may wish to mention other authors). - End with a concrete example illustrating the author's idea. TEXT=[[${text}]]\nOUTLINE=[[${outline}]]`;
+      case "ph_analysis_conclusion":
+        return `Write ONLY the conclusion of the text analysis (which was based on the provided OUTLINE), recall the most the most important elements of the development, clearly explaining how the development showed how the author demonstrated his thesis. OUTLINE=[[${outline}]]\nTEXT=[[${text}]]`;
+    }
+  } else {
+    switch (template) {
+      case "ph_analysis_intro":
+        return `Rédiger UNIQUEMENT l'introduction de l'analyse de texte selon la structure suivante (pas de développement) : amorce, présentation du thème du texte, problématique (paragraphe avec : d'une part, d'autre part, donc [question]), présentation très rapide en une phrase de la thèse de l'auteur, annonce du plan du texte, en utilisant le plan fourni. PLAN=[[${outline}]]\nTEXTE=[[${text}]]`;
+      case "ph_analysis_dev":
+        return `Rédiger UNIQUEMENT le développement de l'explication de texte (notez que l'introduction et la conclusion ont été rédigées au préalable à l'aide du schéma fourni) en utilisant des phrases, pas de liste, ne montrez pas les différentes parties sous forme de lettres et de chiffres. L'explication est linéaire, c'est-à-dire que le travail doit suivre l'ordre du texte. Chaque partie correspond à une partie de l'extrait, et à l'intérieur de la partie, les différentes explications spécifiques (des termes, des phrases en elles-mêmes) se succèdent comme dans le texte. Partez du plus large au plus précis : - Pour chaque partie, commencez par donner l'idée principale. - Pour chaque phrase, donnez sa fonction (prémisse, explication, exemple...) et son contenu exprimé avec vos propres mots. Une explication peut suivre si la phrase est très complexe. - Expliquez les termes philosophiques de la phrase en donnant des définitions, et explicitez les sous-entendus ou les références sous-jacentes (vous pouvez citer d'autres auteurs). - Terminez par un exemple concret illustrant l'idée de l'auteur. TEXTE=[[${text}]]\nPLAN=[[${outline}]]`;
+      case "ph_analysis_conclusion":
+        return `Rédiger UNIQUEMENT la conclusion de l'analyse du texte (qui était basée sur le PLAN fourni), en rappelant les éléments les plus importants du développement, en expliquant clairement comment le développement a montré comment l'auteur a démontré sa thèse. PLAN=[[${outline}]]\nTEXTE=[[${text}]]`;
+    }
+  }
+  return "";
 }
