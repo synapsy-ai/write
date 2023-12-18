@@ -33,10 +33,12 @@ const formats = [
   {
     category: "text-philosophy",
     options: [
+      { text: "text-analysis-outline", val: "ph_analysis_outline" },
       { text: "text-analysis-introduction", val: "ph_analysis_intro" },
       { text: "text-analysis-dev", val: "ph_analysis_dev" },
       { text: "text-analysis-conclusion", val: "ph_analysis_conclusion" },
       { text: "text-analysis-basic", val: "ph_analysis_basic" },
+      { text: "text-analysis-complex", val: "ph_analysis_complex" },
     ],
   },
 ];

@@ -93,5 +93,7 @@
   "text-analysis-introduction": "Analysis introduction",
   "text-analysis-conclusion": "Analysis conclusion",
   "text-analysis-basic": "Text analysis (Basic)",
+  "text-analysis-complex": "Text analysis (Complex)",
+  "text-analysis-outline": "Analysis outline",
   "text-analysis-dev": "Analysis development"
 }

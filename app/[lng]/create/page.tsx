@@ -22,6 +22,7 @@ import {
   getComplexEssayPrompts,
   getModels,
   getPrompt,
+  getPromptComplexAnalysis,
   getStandardGeneration,
   getSystem,
   sendToGpt,
@@ -210,11 +211,119 @@ export default function CreatePage({
       createComplexEssay();
     } else if (type == "ph_complex") {
       createComplexPhiloEssay();
+    } else if (type === "ph_analysis_complex") {
+      createComplexPhiloAnalysis();
     } else if (type.startsWith("ph_analysis_")) {
       createAnalysis();
     } else {
       create();
     }
+  }
+
+  async function createComplexPhiloAnalysis() {
+    setInProgress(true);
+    setErrorVis(false);
+    setIsGen(false);
+
+    // 1. Generate the outline
+    const outline = await getStandardGeneration(
+      getSystem("ph_analysis_outline", lng, tone),
+      getPrompt("ph_analysis_outline", lng, textToAnalyse) + "\n" + prompt,
+      s.key,
+      model,
+      {
+        temp: temp,
+        presP: presP,
+        topP: topp,
+        freqP: freqP,
+      },
+    );
+
+    if (outline instanceof OpenAI.APIError) {
+      setErrorMsg(outline);
+      setErrorVis(true);
+      setInProgress(false);
+      return;
+    }
+
+    setIsGen(true);
+    setInProgress(false);
+    setRes("");
+
+    // 2. Generate the intro
+    const intro =
+      (await sendToGptCustom(
+        getSystem("ph_analysis_outline", lng, tone),
+        getPromptComplexAnalysis(
+          textToAnalyse,
+          outline,
+          "ph_analysis_intro",
+          lng,
+        ),
+        s.key,
+        model,
+        {
+          temp: temp,
+          presP: presP,
+          topP: topp,
+          freqP: freqP,
+        },
+        "",
+        { setContent: setRes },
+      )) ?? "";
+
+    if (intro instanceof OpenAI.APIError) {
+      setErrorMsg(intro);
+      setErrorVis(true);
+      setInProgress(false);
+      return;
+    }
+
+    // 3. Generate dev part
+    const p1 = await sendToGptCustom(
+      getSystem("ph_analysis_outline", lng, tone),
+      getPromptComplexAnalysis(textToAnalyse, outline, "ph_analysis_dev", lng),
+      s.key,
+      model,
+      {
+        temp: temp,
+        presP: presP,
+        topP: topp,
+        freqP: freqP,
+      },
+      intro + "\n" || "",
+      { setContent: setRes },
+    );
+
+    // 4. Generate conclusion
+    const ccl = await sendToGptCustom(
+      getSystem("ph_analysis_outline", lng, tone),
+      getPromptComplexAnalysis(
+        textToAnalyse,
+        outline,
+        "ph_analysis_conclusion",
+        lng,
+      ),
+      s.key,
+      model,
+      {
+        temp: temp,
+        presP: presP,
+        topP: topp,
+        freqP: freqP,
+      },
+      intro + "\n" + p1 + "\n" || "",
+      { setContent: setRes },
+    );
+    setRes(intro + p1 + ccl);
+    addToHistory({
+      prompt: textToAnalyse,
+      content: intro + "\n" + p1 + "\n" + ccl ?? "",
+      template: type,
+      date: new Date(),
+    });
+    setIsGen(false);
+    setInProgress(false);
   }
 
   async function createComplexEssay() {
