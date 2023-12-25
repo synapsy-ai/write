@@ -31,7 +31,7 @@
     "i18next": "^23.7.11",
     "i18next-browser-languagedetector": "^7.2.0",
     "i18next-resources-to-backend": "^1.2.0",
-    "lucide-react": "^0.299.0",
+    "lucide-react": "^0.302.0",
     "next": "14.0.1",
     "next-themes": "^0.2.1",
     "openai": "^4.24.0",
