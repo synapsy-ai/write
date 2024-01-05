@@ -24,7 +24,7 @@
     "@radix-ui/react-tooltip": "^1.0.7",
     "accept-language": "^3.0.18",
     "class-variance-authority": "^0.7.0",
-    "clsx": "^2.0.0",
+    "clsx": "^2.1.0",
     "cmdk": "^0.2.0",
     "gpt-token-utils": "^1.2.0",
     "html-react-parser": "^5.0.11",
