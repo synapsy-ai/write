@@ -36,7 +36,7 @@
     "next-themes": "^0.2.1",
     "openai": "^4.24.1",
     "react": "latest",
-    "react-cookie": "^6.1.1",
+    "react-cookie": "^7.0.1",
     "react-dom": "latest",
     "react-i18next": "^14.0.0",
     "styled-jsx": "^5.1.2",
