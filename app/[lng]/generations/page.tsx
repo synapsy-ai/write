@@ -3,8 +3,9 @@ import { useTranslation } from "@/app/i18n/client";
 import { GenerationItem } from "@/components/generation-item";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Separator } from "@/components/ui/separator";
 import { HistoryItem } from "@/lib/history";
-import { Download, Eraser, Upload } from "lucide-react";
+import { Download, Eraser, List, Upload } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
@@ -39,8 +40,13 @@ export default function Creations({
   return (
     <main className="m-2 mt-16">
       <header>
-        <h2 className="text-2xl font-bold">{t("generations")}</h2>
-        <p>{t("no-gen-text")}</p>
+        <section className="ml-4 flex items-center space-x-2">
+          <List />
+          <span>
+            <h2 className="text-2xl font-bold">{t("generations")}</h2>
+            <p>{t("no-gen-text")}</p>
+          </span>
+        </section>
         <Input
           type="file"
           id="FileSelector"
@@ -78,6 +84,8 @@ export default function Creations({
           </Button>
         </div>
       </header>
+      <Separator className="my-2" />
+
       {!(history.length == 0) ? (
         <section className="flex flex-wrap justify-center p-5 md:justify-start">
           {history.map((el, i) => (

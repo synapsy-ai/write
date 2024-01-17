@@ -594,14 +594,19 @@ export default function CreatePage({
 
   return (
     <main className="mt-16 flex min-h-full flex-col print:mt-0">
-      <section className="mx-2 print:hidden">
-        <h2 className="text-2xl font-bold">{t("create")}</h2>
-        <p>{t("create-desc")}</p>
+      <section className="ml-4 flex items-center space-x-2">
+        <PenBox />
+        <span>
+          <h2 className="text-2xl font-bold">{t("create")}</h2>
+          <p>{t("create-desc")}</p>
+        </span>
       </section>
+      <Separator className="my-2" />
+
       {!welcome ? (
         <section>
           <p className="m-2 font-bold print:hidden">{t("prompt")}</p>
-          <div className="m-2 flex flex-col items-stretch space-y-1 print:hidden sm:flex-row sm:items-center sm:space-x-2 sm:space-y-0">
+          <div className="m-2 flex flex-col items-stretch space-y-1 sm:flex-row sm:items-center sm:space-x-2 sm:space-y-0 print:hidden">
             <Input onChange={(v) => setPrompt(v.target.value)} />
             <div className="grid grid-cols-[1fr,auto] space-x-1 sm:flex sm:space-x-2">
               <FormatDialog lng={lng} setVal={setType} />
