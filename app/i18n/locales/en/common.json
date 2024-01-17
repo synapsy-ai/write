@@ -95,5 +95,14 @@
   "text-analysis-basic": "Text analysis (Basic)",
   "text-analysis-complex": "Text analysis (Complex)",
   "text-analysis-outline": "Analysis outline",
-  "text-analysis-dev": "Analysis development"
+  "text-analysis-dev": "Analysis development",
+  "settings": "Settings",
+  "settings-desc": "Manage the configuration of Synapsy Write.",
+  "theme": "Theme",
+  "theme-desc": "Set the appearance of Synapsy Write",
+  "show-key": "Show key",
+  "language": "Language",
+  "language-desc": "Change Synapsy Write's language.",
+  "openai-options": "OpenAI options",
+  "openai-options-desc": "Set your settings with the OpenAI integration."
 }
