@@ -594,7 +594,7 @@ export default function CreatePage({
 
   return (
     <main className="mt-16 flex min-h-full flex-col print:mt-0">
-      <section className="ml-4 flex items-center space-x-2">
+      <section className="ml-2 flex items-center space-x-2">
         <PenBox />
         <span>
           <h2 className="text-2xl font-bold">{t("create")}</h2>

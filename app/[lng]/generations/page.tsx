@@ -40,7 +40,7 @@ export default function Creations({
   return (
     <main className="m-2 mt-16">
       <header>
-        <section className="ml-4 flex items-center space-x-2">
+        <section className="flex items-center space-x-2">
           <List />
           <span>
             <h2 className="text-2xl font-bold">{t("generations")}</h2>
@@ -54,7 +54,7 @@ export default function Creations({
           className="hidden"
           onChange={Import}
         ></Input>
-        <div className="flex">
+        <div className="flex space-x-2">
           <Link
             target="_blank"
             href={
@@ -67,7 +67,7 @@ export default function Creations({
             }
             download={"generations.json"}
           >
-            <Button variant="link" className="space-x-2">
+            <Button variant="link" className="space-x-2 px-0">
               <Upload height={16} /> <p>{t("export")}</p>
             </Button>
           </Link>
@@ -78,7 +78,7 @@ export default function Creations({
                 document.getElementById("FileSelector") as HTMLInputElement
               ).click()
             }
-            className="space-x-2"
+            className="space-x-2 px-0"
           >
             <Download height={16} /> <p>{t("import")}</p>
           </Button>
