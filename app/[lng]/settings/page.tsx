@@ -55,12 +55,14 @@ export default function SettingsPage({
   async function refreshModels() {
     let m = await getModels(s.key);
     let avm: string[] = [];
+    let avm2: string[] = [];
     for (let i = 0; i < m.length; i++) {
       if (m[i].id.startsWith("gpt")) avm.push(getModelString(m[i].id));
+      if (m[i].id.startsWith("gpt")) avm2.push(m[i].id);
     }
     setModels(avm);
     if (typeof window !== "undefined") {
-      s.models = avm;
+      s.models = avm2;
       localStorage.setItem("synapsy_settings", JSON.stringify(s));
     }
   }
