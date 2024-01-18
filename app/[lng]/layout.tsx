@@ -37,6 +37,8 @@ export default function RootLayout({
         <meta name="twitter:site" content="@PeyronnetGroup" />
         <meta name="twitter:title" content="Synapsy Write" />
         <meta name="twitter:card" content="summary_large_image" />
+        <link rel="manifest" href="/manifest.json" />
+
         <meta
           name="twitter:image"
           content="https://peyronnet.group/synapsy_write_social.png"
