@@ -593,7 +593,7 @@ export default function CreatePage({
   }
 
   return (
-    <main className="mb-16 mt-2 flex min-h-full flex-col sm:mt-16 print:mt-0">
+    <main className="mt-2 flex min-h-full flex-col pb-16 sm:mt-16 sm:pb-0 print:mt-0">
       <section className="ml-2 flex items-center space-x-2">
         <PenBox />
         <span>
