@@ -1,4 +1,3 @@
-import { error } from "console";
 import OpenAI from "openai";
 export async function sendToGpt(
   prompt: string,

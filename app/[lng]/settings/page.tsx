@@ -1,5 +1,11 @@
 "use client";
-import { Laptop, Moon, Settings as SettingsLogo, Sun } from "lucide-react";
+import {
+  Laptop,
+  Moon,
+  RefreshCcw,
+  Settings as SettingsLogo,
+  Sun,
+} from "lucide-react";
 import { useTranslation } from "../../i18n/client";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
@@ -16,6 +22,9 @@ import { changeLanguage } from "i18next";
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { useRouter } from "next/navigation";
+import { getModelString } from "@/lib/models";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { getModels } from "@/lib/ai-completions";
 
 export default function SettingsPage({
   params: { lng },
@@ -31,11 +40,31 @@ export default function SettingsPage({
     localStorage.setItem("synapsy_settings", JSON.stringify(s));
   }
   const [keyTxt, setKeyTxt] = useState(s.key);
+  const [models, setModels] = useState(
+    s.models?.map((m) => {
+      return getModelString(m);
+    }),
+  );
+  const [modelQuery, setModelQuery] = useState("");
 
   function setKey() {
     s.key = keyTxt;
     localStorage.setItem("synapsy_settings", JSON.stringify(s));
   }
+
+  async function refreshModels() {
+    let m = await getModels(s.key);
+    let avm: string[] = [];
+    for (let i = 0; i < m.length; i++) {
+      if (m[i].id.startsWith("gpt")) avm.push(getModelString(m[i].id));
+    }
+    setModels(avm);
+    if (typeof window !== "undefined") {
+      s.models = avm;
+      localStorage.setItem("synapsy_settings", JSON.stringify(s));
+    }
+  }
+
   const router = useRouter();
   return (
     <main className="mt-16 min-h-full space-y-2 px-2">
@@ -120,7 +149,37 @@ export default function SettingsPage({
             onChange={(v) => setKeyTxt(v.target.value)}
             className="max-w-[350px]"
           />
-          <Button onClick={setKey}>{t("confirm")}</Button>
+          <Button variant="outline" onClick={setKey}>
+            {t("confirm")}
+          </Button>
+        </div>
+        <p>
+          {t("models")} ({models?.length})
+        </p>
+        <div className="mt-2 max-w-[550px] rounded-md border p-2">
+          <div className="flex space-x-2">
+            <Input
+              placeholder={t("search-models")}
+              value={modelQuery}
+              onChange={(v) => setModelQuery(v.target.value)}
+            />
+            <Button onClick={refreshModels} variant="outline">
+              <RefreshCcw height={14} />
+            </Button>
+          </div>
+          <ScrollArea className="h-[200px]">
+            <div>
+              {models
+                ?.filter((s) =>
+                  s.toLowerCase().includes(modelQuery.toLowerCase()),
+                )
+                .map((m) => (
+                  <p className="m-1 rounded-md p-2 hover:bg-slate-200 dark:hover:bg-slate-800">
+                    {m}
+                  </p>
+                ))}
+            </div>
+          </ScrollArea>
         </div>
       </section>
     </main>
