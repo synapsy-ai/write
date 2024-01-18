@@ -29,7 +29,7 @@ export default function RootLayout({
     <html lang={lng} dir={dir(lng)}>
       <head>
         <link rel="icon" href="/logo.png" />
-
+        <link rel="shortcut icon" href="/favicon.ico" />
         <meta
           name="twitter:description"
           content="A new way to write text, powered by AI."
@@ -37,13 +37,26 @@ export default function RootLayout({
         <meta name="twitter:site" content="@PeyronnetGroup" />
         <meta name="twitter:title" content="Synapsy Write" />
         <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:url" content="write.peyronnet.group/" />
         <link rel="manifest" href="/manifest.json" />
-
+        <meta name="application-name" content="Synapsy Write" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+        <meta name="apple-mobile-web-app-title" content="Synapsy Write" />
         <meta
           name="twitter:image"
           content="https://peyronnet.group/synapsy_write_social.png"
         />
-
+        <meta
+          name="theme-color"
+          content="#ffffff"
+          media="(prefers-color-scheme: light)"
+        />
+        <meta
+          name="theme-color"
+          content="#000014"
+          media="(prefers-color-scheme: dark)"
+        />
         <meta name="og:title" content="Synapsy Write" />
         <meta
           name="og:description"
