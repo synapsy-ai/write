@@ -16,13 +16,13 @@ export default function NavBar(props: { lng: string }) {
           <Image alt="SynapsyLogo" height={25} width={25} src={"/logo.svg"} />
           <h2 className="font-bold">{t("title")}</h2>
         </Link>
-        <Link href={"/create"}>
+        <Link href={"/" + props.lng + "/create"}>
           <Button variant="ghost">{t("create")}</Button>
         </Link>
-        <Link href={"/generations"}>
+        <Link href={"/" + props.lng + "/generations"}>
           <Button variant="ghost">{t("generations")}</Button>
         </Link>
-        <Link href={"/settings"} className="group">
+        <Link href={"/" + props.lng + "/settings"} className="group">
           <Button variant="ghost" size="icon">
             <Settings className="h-[1.2rem] w-[1.2rem] transition-all group-hover:rotate-90" />
           </Button>

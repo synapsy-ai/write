@@ -15,6 +15,8 @@ import {
 import { changeLanguage } from "i18next";
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
+import { useRouter } from "next/navigation";
+
 export default function SettingsPage({
   params: { lng },
 }: {
@@ -34,6 +36,7 @@ export default function SettingsPage({
     s.key = keyTxt;
     localStorage.setItem("synapsy_settings", JSON.stringify(s));
   }
+  const router = useRouter();
   return (
     <main className="mt-16 min-h-full space-y-2 px-2">
       <section className="flex items-center space-x-2">
@@ -90,7 +93,12 @@ export default function SettingsPage({
         <Separator className="my-2" />
         <div className="flex items-center space-x-2">
           <p>{t("language")}</p>
-          <Select defaultValue={lng} onValueChange={(v) => changeLanguage(v)}>
+          <Select
+            defaultValue={lng}
+            onValueChange={(v) => {
+              router.push(`/${v}/settings`);
+            }}
+          >
             <SelectTrigger className="w-[180px]">
               <SelectValue placeholder={t("language")} />
             </SelectTrigger>
