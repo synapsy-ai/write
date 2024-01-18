@@ -175,8 +175,11 @@ export default function SettingsPage({
                 ?.filter((s) =>
                   s.toLowerCase().includes(modelQuery.toLowerCase()),
                 )
-                .map((m) => (
-                  <p className="m-1 rounded-md p-2 hover:bg-slate-200 dark:hover:bg-slate-800">
+                .map((m, i) => (
+                  <p
+                    key={i}
+                    className="m-1 rounded-md p-2 hover:bg-slate-200 dark:hover:bg-slate-800"
+                  >
                     {m}
                   </p>
                 ))}
