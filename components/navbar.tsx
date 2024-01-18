@@ -10,7 +10,7 @@ export default function NavBar(props: { lng: string }) {
   const { t } = useTranslation(props.lng, "common");
   const { setTheme } = useTheme();
   return (
-    <div className="fixed top-0 z-50 flex w-full items-center justify-center print:hidden">
+    <div className="fixed top-0 z-50 hidden w-full items-center justify-center sm:flex print:hidden">
       <nav className="m-2 flex items-center rounded-full bg-white/50 px-4 py-2 shadow-md backdrop-blur-md dark:bg-slate-900/50">
         <Link className="mr-2 flex space-x-2" href={"/" + props.lng}>
           <Image alt="SynapsyLogo" height={25} width={25} src={"/logo.svg"} />

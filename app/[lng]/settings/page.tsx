@@ -67,7 +67,7 @@ export default function SettingsPage({
 
   const router = useRouter();
   return (
-    <main className="mt-16 min-h-full space-y-2 px-2">
+    <main className="mt-2 min-h-full space-y-2 px-2 pb-20 sm:mt-16 sm:pb-0">
       <section className="flex items-center space-x-2">
         <SettingsLogo />
         <span>

@@ -6,6 +6,7 @@ import { languages } from "../i18n/settings";
 import NavBar from "@/components/navbar";
 import { ThemeProvider } from "@/components/theme-provider";
 import Script from "next/script";
+import MobileNavBar from "@/components/mobile-nav";
 
 const inter = DM_Sans({ subsets: ["latin"] });
 export async function generateStaticParams() {
@@ -68,6 +69,7 @@ export default function RootLayout({
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <NavBar lng={lng} />
           {children}
+          <MobileNavBar lng={lng} />
         </ThemeProvider>
       </body>
     </html>

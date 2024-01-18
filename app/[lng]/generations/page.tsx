@@ -38,7 +38,7 @@ export default function Creations({
     );
   }
   return (
-    <main className="m-2 mt-16">
+    <main className="m-2 pb-14 sm:mb-2 sm:mt-16 sm:pb-0">
       <header>
         <section className="flex items-center space-x-2">
           <List />
