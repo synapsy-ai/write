@@ -155,7 +155,7 @@ export default function SettingsPage({
             {t("confirm")}
           </Button>
         </div>
-        <p>
+        <p className="mt-2">
           {t("models")} ({models?.length})
         </p>
         <div className="mt-2 max-w-[550px] rounded-md border p-2">
