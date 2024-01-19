@@ -5,9 +5,11 @@ import { HistoryItem } from "@/lib/history";
 import { useSearchParams } from "next/navigation";
 import { encode } from "gpt-token-utils";
 import { Button } from "@/components/ui/button";
-import { Copy, Printer } from "lucide-react";
+import { Book, Calendar, Copy, Edit, Printer, Text } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useTranslation } from "@/app/i18n/client";
+import { Separator } from "@/components/ui/separator";
+import { typesToString } from "@/lib/formats";
 
 export default function GenerationViewPage({
   params,
@@ -44,6 +46,25 @@ export default function GenerationViewPage({
   }, []);
   return (
     <main className="mt-2 pb-16 sm:mt-16 sm:pb-0 print:mt-0">
+      <section className="mx-2 flex items-center space-x-2 print:hidden">
+        <Book />
+        <span>
+          <h2 className="text-2xl font-bold">{t("generation")}</h2>
+          <p>{t("generation-desc")}</p>
+        </span>
+      </section>
+      <Separator className="my-2 print:hidden" />
+      <section className="mx-2 grid grid-cols-[auto,1fr] items-center gap-2 print:hidden">
+        <Text size={16} />
+        <p>{el.prompt}</p>
+
+        <Edit size={16} />
+        <p>{t(typesToString(el.template))}</p>
+
+        <Calendar size={16} />
+        <p>{new Date(el.date).toLocaleString()}</p>
+      </section>
+      <Separator className="my-2 print:hidden" />
       <section className="flex flex-col items-center justify-center">
         <section
           className="m-2 max-w-[800px] rounded-md pb-4 text-justify shadow-lg dark:bg-slate-900 print:text-black print:shadow-none"

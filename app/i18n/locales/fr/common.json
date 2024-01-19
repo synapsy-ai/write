@@ -107,5 +107,7 @@
   "language-desc": "Changer la langue de Synapsy Write.",
   "openai-options": "Options OpenAI",
   "openai-options-desc": "Définir vos préférences avec l'intégration d'OpenAI.",
-  "search-history": "Rechercher dans votre historique"
+  "search-history": "Rechercher dans votre historique",
+  "generation": "Génération",
+  "generation-desc": "Afficher et imprimer votre génération."
 }
