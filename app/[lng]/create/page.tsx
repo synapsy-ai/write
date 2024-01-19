@@ -831,14 +831,14 @@ export default function CreatePage({
           </div>
         </section>
       ) : (
-        <section className="flex flex-col items-center">
+        <section className="flex min-h-[calc(100vh_-_160px)] flex-col items-center justify-center rounded-t-md bg-gradient-to-b from-indigo-200 to-transparent text-center dark:from-indigo-600">
           <Hand size={64} />
           <h2 className="text-2xl font-bold">{t("welcome")}</h2>
           <p>{t("welcome-desc")}</p>
           <Input
             type="password"
             onChange={(v) => setKeyTxt(v.target.value)}
-            className="my-2 max-w-[350px]"
+            className="my-2 max-w-[350px] border border-black/15 bg-white/5 backdrop-blur-md dark:border-slate-500"
           />
           <Button onClick={setKey}>{t("confirm")}</Button>
         </section>
@@ -853,7 +853,7 @@ export default function CreatePage({
           <ResultDisplayer is_generating={isGen} res={res} type={type} />
         </section>
       )}
-      {!errorVis && !res && (
+      {!welcome && !errorVis && !res && (
         <section
           className={
             "m-2 flex grow items-center justify-center rounded-md bg-white p-2 shadow-md dark:bg-slate-900 print:text-black print:shadow-none"
