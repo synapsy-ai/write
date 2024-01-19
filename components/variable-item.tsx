@@ -20,7 +20,7 @@ export default function VariableItem(props: {
   const [name, setName] = useState<string>();
   const [value, setValue] = useState<string>();
   return (
-    <div className="m-2 grid grid-cols-[1fr,auto] items-center space-x-2 rounded-md border border-slate-200 p-2 dark:border-slate-700">
+    <div className="m-2 grid grid-cols-[1fr,auto] items-center space-x-2 rounded-md border border-slate-200 p-2 dark:border-slate-800">
       <div className="items-center sm:flex sm:space-x-2">
         <p>{t("name")}</p>
         <Input
