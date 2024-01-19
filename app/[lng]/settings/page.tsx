@@ -178,7 +178,7 @@ export default function SettingsPage({
                 .map((m, i) => (
                   <p
                     key={i}
-                    className="m-1 rounded-md p-2 hover:bg-slate-200 dark:hover:bg-slate-800"
+                    className="m-1 rounded-md border border-transparent p-2 hover:border-slate-300 hover:bg-slate-200/50 dark:hover:border-accent dark:hover:bg-slate-800/50"
                   >
                     {m}
                   </p>
