@@ -20,6 +20,7 @@ export default function Creations({
     histo = JSON.parse(localStorage.getItem("synapsy_write_history") ?? "[]");
   }
   const [history, setHistory] = useState<HistoryItem[]>(histo);
+  const [query, setQuery] = useState("");
 
   function Import(event: any) {
     let file = event.target.files[0]; // get the selected file
@@ -85,18 +86,29 @@ export default function Creations({
         </div>
       </header>
       <Separator className="my-2" />
-
+      <span className="flex justify-center sm:block">
+        <Input
+          className="sm:max-w-[350px]"
+          placeholder={t("search-history")}
+          value={query}
+          onChange={(v) => setQuery(v.target.value)}
+        />
+      </span>
       {!(history.length == 0) ? (
         <section className="flex flex-wrap justify-center p-5 md:justify-start">
-          {history.map((el, i) => (
-            <GenerationItem
-              refresh={refresh}
-              id={i}
-              key={i}
-              item={el}
-              lng={lng}
-            />
-          ))}
+          {history.map((el, i) =>
+            el.prompt.toLowerCase().includes(query.toLowerCase()) ? (
+              <GenerationItem
+                refresh={refresh}
+                id={i}
+                key={i}
+                item={el}
+                lng={lng}
+              />
+            ) : (
+              <></>
+            ),
+          )}
         </section>
       ) : (
         <section className="flex min-h-[50vh] flex-col items-center justify-center">
