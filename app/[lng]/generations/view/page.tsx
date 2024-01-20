@@ -136,31 +136,33 @@ export default function GenerationViewPage({
           </div>
         </section>
         {variables && variables.length > 0 ? (
-          <section className="mb-2 w-full max-w-[800px] rounded-md border pb-4 text-justify shadow-sm dark:bg-slate-900/50 print:hidden">
-            <p className="m-2 font-bold">
-              {t("variables")} ({variables && variables.length})
-            </p>
-            <div>
-              {variables &&
-                variables.length > 0 &&
-                variables?.map((el, i) => (
-                  <VariableItemView
-                    functions={{
-                      setVar: editVariable,
-                    }}
-                    key={i}
-                    lng={params.lng}
-                    index={i}
-                    item={el}
-                  />
-                ))}
-            </div>
-            <span className="flex justify-center">
-              <Button onClick={updateVariables} variant="outline">
-                {t("apply")}
-              </Button>
-            </span>
-          </section>
+          <span className="flex w-full justify-center px-2">
+            <section className="mb-2 w-full max-w-[800px] rounded-md border pb-4 text-justify shadow-sm dark:bg-slate-900/50 print:hidden">
+              <p className="m-4 mb-0 text-sm font-normal text-slate-400 dark:text-slate-500">
+                {t("variables")} ({variables && variables.length})
+              </p>
+              <div>
+                {variables &&
+                  variables.length > 0 &&
+                  variables?.map((el, i) => (
+                    <VariableItemView
+                      functions={{
+                        setVar: editVariable,
+                      }}
+                      key={i}
+                      lng={params.lng}
+                      index={i}
+                      item={el}
+                    />
+                  ))}
+              </div>
+              <span className="flex justify-center">
+                <Button onClick={updateVariables} variant="outline">
+                  {t("apply")}
+                </Button>
+              </span>
+            </section>
+          </span>
         ) : (
           <></>
         )}
