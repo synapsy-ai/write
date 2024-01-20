@@ -163,6 +163,7 @@ export default function SettingsPage({
           <Input
             type={!apiVis ? "password" : "text"}
             onChange={(v) => setKeyTxt(v.target.value)}
+            value={keyTxt}
             className="max-w-[350px]"
           />
           <Button
