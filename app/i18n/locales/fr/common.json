@@ -110,5 +110,10 @@
   "search-history": "Rechercher dans votre historique",
   "generation": "Génération",
   "generation-desc": "Afficher et imprimer votre génération.",
-  "apply": "Appliquer"
+  "apply": "Appliquer",
+  "misc": "Divers",
+  "other-settings": "Autres paramètres de Synapsy Write.",
+  "about": "A propos",
+  "about-long": "A propos de Synapsy Write",
+  "close": "Fermer"
 }

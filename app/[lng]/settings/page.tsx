@@ -1,5 +1,6 @@
 "use client";
 import {
+  ArrowUpRightFromSquare,
   Laptop,
   Moon,
   RefreshCcw,
@@ -18,13 +19,23 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { changeLanguage } from "i18next";
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { useRouter } from "next/navigation";
 import { getModelString } from "@/lib/models";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { getModels } from "@/lib/ai-completions";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { DialogClose } from "@radix-ui/react-dialog";
+import { version } from "@/lib/version";
 
 export default function SettingsPage({
   params: { lng },
@@ -186,6 +197,42 @@ export default function SettingsPage({
             </div>
           </ScrollArea>
         </div>
+      </section>
+      <section>
+        <h3 className="text-xl font-semibold">{t("misc")}</h3>
+        <p>{t("other-settings")}</p>
+        <Separator className="my-2" />
+        <Dialog>
+          <DialogTrigger>
+            <Button variant="link" className="space-x-2">
+              <ArrowUpRightFromSquare size={16} />
+              <span>{t("about")}</span>
+            </Button>
+          </DialogTrigger>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>{t("about-long")}</DialogTitle>
+              <p>
+                Version {version} <br />© {new Date().getFullYear()} Synapsy by
+                Peyronnet
+              </p>
+              <p>
+                NextJS - MIT License - © 2023 Vercel, Inc.
+                <br />
+                RadixUI - MIT License - © 2022 WorkOS
+                <br />
+                shadcn/ui - MIT License - © 2023 shadcn
+                <br />
+                Lucide - ISC License - © 2024 Lucide Contributors
+              </p>
+            </DialogHeader>
+            <DialogFooter>
+              <DialogClose>
+                <Button variant="outline">{t("close")}</Button>
+              </DialogClose>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       </section>
     </main>
   );
