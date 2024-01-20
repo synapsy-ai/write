@@ -49,5 +49,61 @@
       "sizes": "512x512",
       "type": "image/png"
     }
+  ],
+  "screenshots": [
+    {
+      "src": "images/screens/1.png",
+      "sizes": "1080x1920",
+      "type": "image/png",
+      "label": "A new way to generate text"
+    },
+    {
+      "src": "images/screens/2.png",
+      "sizes": "1080x1920",
+      "type": "image/png",
+      "label": "Saved generations"
+    },
+    {
+      "src": "images/screens/3.png",
+      "sizes": "1080x1920",
+      "type": "image/png",
+      "label": "An intuitive interface"
+    },
+    {
+      "src": "images/screens/4.png",
+      "sizes": "1080x1920",
+      "type": "image/png",
+      "label": "Customizable experience"
+    },
+    {
+      "src": "images/screens/5.png",
+      "sizes": "1080x1920",
+      "type": "image/png",
+      "label": "Dark theme"
+    },
+    {
+      "src": "images/screens/6.png",
+      "sizes": "1080x1920",
+      "type": "image/png",
+      "label": "A new way to generate text",
+      "form_factor": "wide"
+    },
+    {
+      "src": "images/screens/7.png",
+      "sizes": "1080x1920",
+      "type": "image/png",
+      "label": "Saved generations",
+      "form_factor": "wide"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Create",
+      "url": "/create"
+    },
+    {
+      "name": "My Generations",
+      "url": "/generations"
+    }
   ]
 }
