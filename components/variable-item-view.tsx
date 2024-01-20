@@ -6,11 +6,11 @@ import { Button } from "./ui/button";
 import { Delete, Trash2 } from "lucide-react";
 import { useEffect, useState } from "react";
 
-export default function VariableItem(props: {
+export default function VariableItemView(props: {
   lng: string;
   item: Variable;
   index: number;
-  functions: { setVar: Function; removeVar: Function };
+  functions: { setVar: Function };
 }) {
   const { t } = useTranslation(props.lng, "common");
   useEffect(() => {
@@ -20,21 +20,10 @@ export default function VariableItem(props: {
   const [name, setName] = useState<string>();
   const [value, setValue] = useState<string>();
   return (
-    <div className="m-2 grid grid-cols-[1fr,auto] items-center space-x-2 rounded-md border border-slate-200 p-2 dark:border-slate-800">
+    <div className="m-2 grid grid-cols-[1fr,auto] items-center space-x-2 rounded-md p-2">
       <div className="items-center sm:flex sm:space-x-2">
         <p>{t("name")}</p>
-        <Input
-          className="h-auto"
-          value={name}
-          onChange={(v) => {
-            const newName = v.target.value;
-            setName(newName);
-            props.functions.setVar(props.index, {
-              name: newName,
-              value: value,
-            });
-          }}
-        />
+        <Input className="h-auto" disabled value={name} />
         <p>{t("value")}</p>
         <Input
           className="h-auto"
@@ -49,15 +38,6 @@ export default function VariableItem(props: {
           }}
         />
       </div>
-      <Button
-        onClick={() => {
-          props.functions.removeVar(props.index);
-        }}
-        className="border-0"
-        variant="outline"
-      >
-        <Trash2 height={16} />
-      </Button>
     </div>
   );
 }

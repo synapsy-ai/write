@@ -3,8 +3,9 @@ import { useTranslation } from "@/app/i18n/client";
 import { GenerationItem } from "@/components/generation-item";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Separator } from "@/components/ui/separator";
 import { HistoryItem } from "@/lib/history";
-import { Download, Eraser, Upload } from "lucide-react";
+import { Download, Eraser, List, Upload } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
@@ -19,6 +20,7 @@ export default function Creations({
     histo = JSON.parse(localStorage.getItem("synapsy_write_history") ?? "[]");
   }
   const [history, setHistory] = useState<HistoryItem[]>(histo);
+  const [query, setQuery] = useState("");
 
   function Import(event: any) {
     let file = event.target.files[0]; // get the selected file
@@ -37,10 +39,15 @@ export default function Creations({
     );
   }
   return (
-    <main className="m-2 mt-16">
-      <header>
-        <h2 className="text-2xl font-bold">{t("generations")}</h2>
-        <p>{t("no-gen-text")}</p>
+    <main className="pb-14 pt-0 sm:mb-2 sm:mt-16 sm:p-2 sm:pb-0 sm:pt-0">
+      <header className="bg-white-25 fixed z-50 w-full p-2 shadow-sm backdrop-blur-md dark:bg-slate-900/25 sm:static sm:bg-transparent sm:p-0 sm:shadow-none sm:dark:bg-transparent">
+        <section className="flex items-center space-x-2">
+          <List />
+          <span>
+            <h2 className="text-2xl font-bold">{t("generations")}</h2>
+            <p>{t("no-gen-text")}</p>
+          </span>
+        </section>
         <Input
           type="file"
           id="FileSelector"
@@ -48,7 +55,7 @@ export default function Creations({
           className="hidden"
           onChange={Import}
         ></Input>
-        <div className="flex">
+        <div className="flex space-x-2">
           <Link
             target="_blank"
             href={
@@ -61,7 +68,7 @@ export default function Creations({
             }
             download={"generations.json"}
           >
-            <Button variant="link" className="space-x-2">
+            <Button variant="link" className="space-x-2 px-0">
               <Upload height={16} /> <p>{t("export")}</p>
             </Button>
           </Link>
@@ -72,26 +79,41 @@ export default function Creations({
                 document.getElementById("FileSelector") as HTMLInputElement
               ).click()
             }
-            className="space-x-2"
+            className="space-x-2 px-0"
           >
             <Download height={16} /> <p>{t("import")}</p>
           </Button>
         </div>
+
+        <Separator className="my-2" />
+        <span className="flex justify-center sm:block">
+          <Input
+            className="bg-transparent sm:max-w-[350px]"
+            placeholder={t("search-history")}
+            value={query}
+            onChange={(v) => setQuery(v.target.value)}
+          />
+        </span>
       </header>
+
       {!(history.length == 0) ? (
-        <section className="flex flex-wrap justify-center p-5 md:justify-start">
-          {history.map((el, i) => (
-            <GenerationItem
-              refresh={refresh}
-              id={i}
-              key={i}
-              item={el}
-              lng={lng}
-            />
-          ))}
+        <section className="flex flex-wrap justify-center p-5 pt-44 sm:pt-0 md:justify-start">
+          {history.map((el, i) =>
+            el.prompt.toLowerCase().includes(query.toLowerCase()) ? (
+              <GenerationItem
+                refresh={refresh}
+                id={i}
+                key={i}
+                item={el}
+                lng={lng}
+              />
+            ) : (
+              <></>
+            ),
+          )}
         </section>
       ) : (
-        <section className="flex min-h-[50vh] flex-col items-center justify-center">
+        <section className="flex min-h-[50vh] flex-col items-center justify-center pt-48 sm:pt-0">
           <Eraser height={48} width={48} />
           <p>{t("no-gen")}</p>
         </section>

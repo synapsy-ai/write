@@ -1,0 +1,109 @@
+{
+  "name": "Synapsy Write",
+  "short_name": "Write",
+  "description": "Synapsy Write is a new way of writing text, using the power of AI.",
+  "theme_color": "#fff",
+  "background_color": "#fff",
+  "display": "standalone",
+  "orientation": "",
+  "scope": "/",
+  "start_url": "/create",
+  "icons": [
+    {
+      "src": "images/icons/icon-72x72.png",
+      "sizes": "72x72",
+      "type": "image/png"
+    },
+    {
+      "src": "images/icons/icon-96x96.png",
+      "sizes": "96x96",
+      "type": "image/png"
+    },
+    {
+      "src": "images/icons/icon-128x128.png",
+      "sizes": "128x128",
+      "type": "image/png"
+    },
+    {
+      "src": "images/icons/icon-144x144.png",
+      "sizes": "144x144",
+      "type": "image/png"
+    },
+    {
+      "src": "images/icons/icon-152x152.png",
+      "sizes": "152x152",
+      "type": "image/png"
+    },
+    {
+      "src": "images/icons/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "images/icons/icon-384x384.png",
+      "sizes": "384x384",
+      "type": "image/png"
+    },
+    {
+      "src": "images/icons/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "images/screens/1.png",
+      "sizes": "1080x1920",
+      "type": "image/png",
+      "label": "A new way to generate text"
+    },
+    {
+      "src": "images/screens/2.png",
+      "sizes": "1080x1920",
+      "type": "image/png",
+      "label": "Saved generations"
+    },
+    {
+      "src": "images/screens/3.png",
+      "sizes": "1080x1920",
+      "type": "image/png",
+      "label": "An intuitive interface"
+    },
+    {
+      "src": "images/screens/4.png",
+      "sizes": "1080x1920",
+      "type": "image/png",
+      "label": "Customizable experience"
+    },
+    {
+      "src": "images/screens/5.png",
+      "sizes": "1080x1920",
+      "type": "image/png",
+      "label": "Dark theme"
+    },
+    {
+      "src": "images/screens/6.png",
+      "sizes": "1080x1920",
+      "type": "image/png",
+      "label": "A new way to generate text",
+      "form_factor": "wide"
+    },
+    {
+      "src": "images/screens/7.png",
+      "sizes": "1080x1920",
+      "type": "image/png",
+      "label": "Saved generations",
+      "form_factor": "wide"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Create",
+      "url": "/create"
+    },
+    {
+      "name": "My Generations",
+      "url": "/generations"
+    }
+  ]
+}

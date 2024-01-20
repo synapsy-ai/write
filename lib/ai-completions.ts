@@ -1,4 +1,3 @@
-import { error } from "console";
 import OpenAI from "openai";
 export async function sendToGpt(
   prompt: string,
@@ -30,7 +29,7 @@ export async function sendToGpt(
         presence_penalty: options.presP,
         stream: true,
       })
-      .catch((err) => {
+      .catch((err: any) => {
         return err;
       });
 
@@ -77,7 +76,7 @@ export async function sendToGptCustom(
       presence_penalty: options.presP,
       stream: true,
     })
-    .catch((err) => {
+    .catch((err: any) => {
       return err;
     });
   for await (const chunk of chatCompletion) {
@@ -114,7 +113,7 @@ export async function getStandardGeneration(
       frequency_penalty: options.freqP,
       presence_penalty: options.presP,
     })
-    .catch((err) => {
+    .catch((err: any) => {
       return err;
     });
   return chatCompletion.choices[0].message.content;

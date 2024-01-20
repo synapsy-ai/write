@@ -593,15 +593,20 @@ export default function CreatePage({
   }
 
   return (
-    <main className="mt-16 flex min-h-full flex-col print:mt-0">
-      <section className="mx-2 print:hidden">
-        <h2 className="text-2xl font-bold">{t("create")}</h2>
-        <p>{t("create-desc")}</p>
+    <main className="mt-2 flex min-h-full flex-col pb-16 sm:mt-16 sm:pb-0 print:mt-0">
+      <section className="ml-2 flex items-center space-x-2">
+        <PenBox />
+        <span>
+          <h2 className="text-2xl font-bold">{t("create")}</h2>
+          <p>{t("create-desc")}</p>
+        </span>
       </section>
+      <Separator className="my-2" />
+
       {!welcome ? (
         <section>
           <p className="m-2 font-bold print:hidden">{t("prompt")}</p>
-          <div className="m-2 flex flex-col items-stretch space-y-1 print:hidden sm:flex-row sm:items-center sm:space-x-2 sm:space-y-0">
+          <div className="m-2 flex flex-col items-stretch space-y-1 sm:flex-row sm:items-center sm:space-x-2 sm:space-y-0 print:hidden">
             <Input onChange={(v) => setPrompt(v.target.value)} />
             <div className="grid grid-cols-[1fr,auto] space-x-1 sm:flex sm:space-x-2">
               <FormatDialog lng={lng} setVal={setType} />
@@ -826,14 +831,14 @@ export default function CreatePage({
           </div>
         </section>
       ) : (
-        <section className="flex flex-col items-center">
+        <section className="flex min-h-[calc(100vh_-_160px)] flex-col items-center justify-center rounded-t-md bg-gradient-to-b from-indigo-200 to-transparent text-center dark:from-indigo-600">
           <Hand size={64} />
           <h2 className="text-2xl font-bold">{t("welcome")}</h2>
           <p>{t("welcome-desc")}</p>
           <Input
             type="password"
             onChange={(v) => setKeyTxt(v.target.value)}
-            className="my-2 max-w-[350px]"
+            className="my-2 max-w-[350px] border border-black/15 bg-white/5 backdrop-blur-md dark:border-slate-500"
           />
           <Button onClick={setKey}>{t("confirm")}</Button>
         </section>
@@ -842,16 +847,16 @@ export default function CreatePage({
       {!errorVis && res && (
         <section
           className={
-            "m-2 grow rounded-md bg-white p-2 text-justify shadow-md dark:bg-slate-900 print:shadow-none"
+            "m-2 grow rounded-md border bg-white p-2 text-justify shadow-sm dark:bg-slate-900/50 print:shadow-none"
           }
         >
           <ResultDisplayer is_generating={isGen} res={res} type={type} />
         </section>
       )}
-      {!errorVis && !res && (
+      {!welcome && !errorVis && !res && (
         <section
           className={
-            "m-2 flex grow items-center justify-center rounded-md bg-white p-2 shadow-md dark:bg-slate-900 print:text-black print:shadow-none"
+            "m-2 flex grow items-center justify-center rounded-md border bg-white p-2 shadow-sm dark:bg-slate-900/50 print:text-black print:shadow-none"
           }
         >
           <div className="flex flex-col items-center justify-center">

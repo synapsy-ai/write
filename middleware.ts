@@ -14,7 +14,8 @@ export function middleware(req: any) {
     req.nextUrl.pathname.includes(".png") ||
     req.nextUrl.pathname.includes(".jpg") ||
     req.nextUrl.pathname.includes(".jpeg") ||
-    req.nextUrl.pathname.includes(".svg")
+    req.nextUrl.pathname.includes(".svg") ||
+    req.nextUrl.pathname.includes(".json")
   ) {
     return NextResponse.next();
   }
@@ -30,14 +31,14 @@ export function middleware(req: any) {
     !req.nextUrl.pathname.startsWith("/_next")
   ) {
     return NextResponse.redirect(
-      new URL(`/${lng}${req.nextUrl.pathname}`, req.url)
+      new URL(`/${lng}${req.nextUrl.pathname}`, req.url),
     );
   }
 
   if (req.headers.has("referer")) {
     const refererUrl = new URL(req.headers.get("referer"));
     const lngInReferer = languages.find((l) =>
-      refererUrl.pathname.startsWith(`/${l}`)
+      refererUrl.pathname.startsWith(`/${l}`),
     );
     const response = NextResponse.next();
     if (lngInReferer) response.cookies.set(cookieName, lngInReferer);
