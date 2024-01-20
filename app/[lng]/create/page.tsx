@@ -847,7 +847,7 @@ export default function CreatePage({
       {!errorVis && res && (
         <section
           className={
-            "m-2 grow rounded-md bg-white p-2 text-justify shadow-md dark:bg-slate-900 print:shadow-none"
+            "m-2 grow rounded-md border bg-white p-2 text-justify shadow-sm dark:bg-slate-900/50 print:shadow-none"
           }
         >
           <ResultDisplayer is_generating={isGen} res={res} type={type} />
@@ -856,7 +856,7 @@ export default function CreatePage({
       {!welcome && !errorVis && !res && (
         <section
           className={
-            "m-2 flex grow items-center justify-center rounded-md bg-white p-2 shadow-md dark:bg-slate-900 print:text-black print:shadow-none"
+            "m-2 flex grow items-center justify-center rounded-md border bg-white p-2 shadow-sm dark:bg-slate-900/50 print:text-black print:shadow-none"
           }
         >
           <div className="flex flex-col items-center justify-center">
