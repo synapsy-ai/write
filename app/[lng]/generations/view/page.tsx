@@ -10,6 +10,9 @@ import { useEffect, useState } from "react";
 import { useTranslation } from "@/app/i18n/client";
 import { Separator } from "@/components/ui/separator";
 import { typesToString } from "@/lib/formats";
+import VariableItem from "@/components/variable-item";
+import { Variable } from "@/lib/variable";
+import VariableItemView from "@/components/variable-item-view";
 
 export default function GenerationViewPage({
   params,
@@ -33,7 +36,9 @@ export default function GenerationViewPage({
   const [nbTokens, setNbTokens] = useState(0);
   const [nbWords, setNbWords] = useState(el.content.split(" ").length);
   const [nbChars, setNbChars] = useState(el.content.length);
+  const [variables, setVariables] = useState<Variable[]>([]);
   const [price, setPrice] = useState("$0");
+  const [content, setContent] = useState(el.content);
   useEffect(() => {
     try {
       if (typeof window !== "undefined") {
@@ -42,8 +47,38 @@ export default function GenerationViewPage({
         setNbTokens(e.length);
         setPrice(price.toString());
       }
+      getVariables();
     } catch (error) {}
   }, []);
+
+  function getVariables() {
+    let regex = /\[(.*?)\]/g;
+    let matches = el.content.match(regex);
+    setVariables(
+      matches?.map((m) => {
+        return {
+          name: m.replaceAll("[", "").replaceAll("]", ""),
+          id: m,
+          value: "",
+        };
+      }) || [],
+    );
+  }
+
+  function editVariable(i: number, variable: Variable) {
+    variables[i] = variable;
+    setVariables([...variables]);
+  }
+
+  function updateVariables() {
+    let c = el.content;
+    for (let i = 0; i < variables.length; i++) {
+      c = c.replaceAll(`[${variables[i].name}]`, variables[i].value);
+      console.log(`[${variables[i].name}]`);
+    }
+    console.log(c);
+    setContent(c);
+  }
   return (
     <main className="mt-2 pb-16 sm:mt-16 sm:pb-0 print:mt-0">
       <section className="mx-2 flex items-center space-x-2 print:hidden">
@@ -72,7 +107,7 @@ export default function GenerationViewPage({
         >
           <ResultDisplayer
             is_generating={false}
-            res={el.content}
+            res={content}
             type={el.template}
           />
           <div className="mt-2 flex justify-center space-x-2 print:hidden">
@@ -100,6 +135,36 @@ export default function GenerationViewPage({
             </Button>
           </div>
         </section>
+        {variables && variables.length > 0 ? (
+          <section className="mb-2 w-full max-w-[800px] rounded-md border pb-4 text-justify shadow-sm dark:bg-slate-900/50 print:hidden">
+            <p className="m-2 font-bold">
+              {t("variables")} ({variables && variables.length})
+            </p>
+            <div>
+              {variables &&
+                variables.length > 0 &&
+                variables?.map((el, i) => (
+                  <VariableItemView
+                    functions={{
+                      setVar: editVariable,
+                    }}
+                    key={i}
+                    lng={params.lng}
+                    index={i}
+                    item={el}
+                  />
+                ))}
+            </div>
+            <span className="flex justify-center">
+              <Button onClick={updateVariables} variant="outline">
+                {t("apply")}
+              </Button>
+            </span>
+          </section>
+        ) : (
+          <></>
+        )}
+
         <section className="grid w-full max-w-[800px] grid-cols-2 items-center justify-center gap-2 px-2 pb-5 md:grid-cols-4 md:p-0 print:hidden">
           <div className="rounded-lg border bg-white/50 p-4 shadow-sm transition-all hover:bg-slate-100/75 dark:bg-slate-900/50 dark:hover:bg-slate-900/90">
             <h2 className="text-sm font-normal text-slate-400 dark:text-slate-500">

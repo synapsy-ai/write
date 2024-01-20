@@ -109,5 +109,6 @@
   "openai-options-desc": "Set your settings with the OpenAI integration.",
   "search-history": "Search through your history",
   "generation": "Generation",
-  "generation-desc": "View and print your generation."
+  "generation-desc": "View and print your generation.",
+  "apply": "Apply"
 }

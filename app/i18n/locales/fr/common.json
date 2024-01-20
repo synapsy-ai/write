@@ -109,5 +109,6 @@
   "openai-options-desc": "Définir vos préférences avec l'intégration d'OpenAI.",
   "search-history": "Rechercher dans votre historique",
   "generation": "Génération",
-  "generation-desc": "Afficher et imprimer votre génération."
+  "generation-desc": "Afficher et imprimer votre génération.",
+  "apply": "Appliquer"
 }
