@@ -1,6 +1,8 @@
 "use client";
 import {
   ArrowUpRightFromSquare,
+  Eye,
+  EyeOff,
   Laptop,
   Moon,
   RefreshCcw,
@@ -57,6 +59,7 @@ export default function SettingsPage({
     }),
   );
   const [modelQuery, setModelQuery] = useState("");
+  const [apiVis, setApiVis] = useState(false);
 
   function setKey() {
     s.key = keyTxt;
@@ -158,10 +161,19 @@ export default function SettingsPage({
         <div className="flex items-center space-x-2">
           <p>{t("api-key")}</p>
           <Input
-            type="password"
+            type={!apiVis ? "password" : "text"}
             onChange={(v) => setKeyTxt(v.target.value)}
             className="max-w-[350px]"
           />
+          <Button
+            onClick={() => {
+              setApiVis(!apiVis);
+            }}
+            variant="ghost"
+            className="px-1"
+          >
+            {apiVis ? <EyeOff size={16} /> : <Eye size={16} />}
+          </Button>
           <Button variant="outline" onClick={setKey}>
             {t("confirm")}
           </Button>
