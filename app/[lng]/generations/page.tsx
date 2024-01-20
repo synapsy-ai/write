@@ -113,7 +113,7 @@ export default function Creations({
           )}
         </section>
       ) : (
-        <section className="flex min-h-[50vh] flex-col items-center justify-center">
+        <section className="flex min-h-[50vh] flex-col items-center justify-center pt-48 sm:pt-0">
           <Eraser height={48} width={48} />
           <p>{t("no-gen")}</p>
         </section>
