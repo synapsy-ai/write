@@ -39,8 +39,8 @@ export default function Creations({
     );
   }
   return (
-    <main className="m-2 pb-14 sm:mb-2 sm:mt-16 sm:pb-0">
-      <header>
+    <main className="pb-14 pt-0 sm:mb-2 sm:mt-16 sm:p-2 sm:pb-0 sm:pt-0">
+      <header className="bg-white-25 fixed z-50 w-full p-2 backdrop-blur-md dark:bg-slate-900/25 sm:static sm:bg-transparent sm:p-0 sm:dark:bg-transparent">
         <section className="flex items-center space-x-2">
           <List />
           <span>
@@ -84,18 +84,20 @@ export default function Creations({
             <Download height={16} /> <p>{t("import")}</p>
           </Button>
         </div>
+
+        <Separator className="my-2" />
+        <span className="flex justify-center sm:block">
+          <Input
+            className="bg-transparent sm:max-w-[350px]"
+            placeholder={t("search-history")}
+            value={query}
+            onChange={(v) => setQuery(v.target.value)}
+          />
+        </span>
       </header>
-      <Separator className="my-2" />
-      <span className="flex justify-center sm:block">
-        <Input
-          className="sm:max-w-[350px]"
-          placeholder={t("search-history")}
-          value={query}
-          onChange={(v) => setQuery(v.target.value)}
-        />
-      </span>
+
       {!(history.length == 0) ? (
-        <section className="flex flex-wrap justify-center p-5 md:justify-start">
+        <section className="flex flex-wrap justify-center p-5 pt-44 sm:pt-0 md:justify-start">
           {history.map((el, i) =>
             el.prompt.toLowerCase().includes(query.toLowerCase()) ? (
               <GenerationItem
