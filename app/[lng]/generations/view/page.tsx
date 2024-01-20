@@ -67,7 +67,7 @@ export default function GenerationViewPage({
       <Separator className="my-2 print:hidden" />
       <section className="flex flex-col items-center justify-center">
         <section
-          className="m-2 max-w-[800px] rounded-md pb-4 text-justify shadow-lg dark:bg-slate-900 print:text-black print:shadow-none"
+          className="m-2 max-w-[800px] rounded-md border pb-4 text-justify shadow-sm dark:bg-slate-900/50 print:border-0 print:text-black print:shadow-none"
           id="ct"
         >
           <ResultDisplayer
@@ -100,26 +100,34 @@ export default function GenerationViewPage({
             </Button>
           </div>
         </section>
-        <section className="m-2 flex flex-wrap items-center justify-center print:hidden">
-          <div className="m-2 w-48 rounded-lg bg-white p-4 shadow-md dark:bg-slate-900">
-            <h2 className="font-bold">{t("price")}</h2>
-            <p id="price" className="text-2xl font-bold">
+        <section className="grid w-full max-w-[800px] grid-cols-2 items-center justify-center gap-2 px-2 pb-5 md:grid-cols-4 md:p-0 print:hidden">
+          <div className="rounded-lg border bg-white/50 p-4 shadow-sm transition-all hover:bg-slate-100/75 dark:bg-slate-900/50 dark:hover:bg-slate-900/90">
+            <h2 className="text-sm font-normal text-slate-400 dark:text-slate-500">
+              {t("price")}
+            </h2>
+            <p id="price" className="text-xl font-semibold">
               {price}
             </p>
           </div>
-          <div className="m-2 w-48 rounded-lg bg-white p-4 shadow-md dark:bg-slate-900">
-            <h2 className="font-bold">{t("tokens")}</h2>
-            <p id="price" className="text-2xl font-bold">
+          <div className="hover:bg-whit rounded-lg border bg-white/50 p-4 shadow-sm transition-all hover:bg-slate-100/75 dark:bg-slate-900/50 dark:hover:bg-slate-900/90">
+            <h2 className="text-sm font-normal text-slate-400 dark:text-slate-500">
+              {t("tokens")}
+            </h2>
+            <p id="price" className="text-xl font-semibold">
               {nbTokens}
             </p>
           </div>
-          <div className="m-2 w-48 rounded-lg bg-white p-4 shadow-md dark:bg-slate-900">
-            <h2 className="font-bold">{t("words")}</h2>
-            <p className="text-2xl font-bold">{nbWords}</p>
+          <div className="hover:bg-whit rounded-lg border bg-white/50 p-4 shadow-sm transition-all hover:bg-slate-100/75 dark:bg-slate-900/50 dark:hover:bg-slate-900/90">
+            <h2 className="text-sm font-normal text-slate-400 dark:text-slate-500">
+              {t("words")}
+            </h2>
+            <p className="text-xl font-semibold">{nbWords}</p>
           </div>
-          <div className="m-2 w-48 rounded-lg bg-white p-4 shadow-md dark:bg-slate-900">
-            <h2 className="font-bold">{t("characters")}</h2>
-            <p className="text-2xl font-bold">{nbChars}</p>
+          <div className="hover:bg-whit rounded-lg border bg-white/50 p-4 shadow-sm transition-all hover:bg-slate-100/75 dark:bg-slate-900/50 dark:hover:bg-slate-900/90">
+            <h2 className="text-sm font-normal text-slate-400 dark:text-slate-500">
+              {t("characters")}
+            </h2>
+            <p className="text-xl font-semibold">{nbChars}</p>
           </div>
         </section>
       </section>
