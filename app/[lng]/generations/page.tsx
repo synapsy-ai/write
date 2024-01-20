@@ -40,7 +40,7 @@ export default function Creations({
   }
   return (
     <main className="pb-14 pt-0 sm:mb-2 sm:mt-16 sm:p-2 sm:pb-0 sm:pt-0">
-      <header className="bg-white-25 fixed z-50 w-full p-2 backdrop-blur-md dark:bg-slate-900/25 sm:static sm:bg-transparent sm:p-0 sm:dark:bg-transparent">
+      <header className="bg-white-25 fixed z-50 w-full p-2 shadow-sm backdrop-blur-md dark:bg-slate-900/25 sm:static sm:bg-transparent sm:p-0 sm:shadow-none sm:dark:bg-transparent">
         <section className="flex items-center space-x-2">
           <List />
           <span>
