@@ -41,7 +41,7 @@
     "react-dom": "latest",
     "react-i18next": "^14.0.1",
     "styled-jsx": "^5.1.2",
-    "tailwind-merge": "^2.2.0",
+    "tailwind-merge": "^2.2.1",
     "tailwindcss-animate": "^1.0.7",
     "uuid": "^9.0.1"
   },
