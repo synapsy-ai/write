@@ -115,5 +115,21 @@
   "other-settings": "Autres paramètres de Synapsy Write.",
   "about": "A propos",
   "about-long": "A propos de Synapsy Write",
-  "close": "Fermer"
+  "close": "Fermer",
+  "welcome-back": "Bon retour",
+  "username": "Nom d'utilisateur",
+  "full-name": "Nom complet",
+  "account-desc": "Bienvenue sur le compte Peyronnet - où commence votre aventure ! Unifiez votre expérience numérique avec nous et débloquez un monde de connectivité fluide. Connectez-vous pour accéder à des fonctionnalités exclusives, des services personnalisés et une plateforme conçue pour élever vos interactions en ligne.",
+  "account-tip": "Découvrez la puissance de l'intégration transparente avec la suite de produits d'intelligence artificielle de Synapsy. Notre technologie de pointe s'intègre de manière transparente à diverses plateformes, offrant une compatibilité et une efficacité inégalées.",
+  "account-msg": "Bienvenue, [[user]].",
+  "your-info": "Vos informations",
+  "your-info-desc": "Gérer et modifier les informations relatives à votre compte.",
+  "products": "Produits",
+  "products-desc": "Gérer vos abonnements.",
+  "no-products": "Aucun produit n'est disponible.",
+  "session": "Session",
+  "sign-in": "Se connecter",
+  "sign-up": "S'inscrire",
+  "sign-out": "Se déconnecter",
+  "my-account": "Mon compte"
 }

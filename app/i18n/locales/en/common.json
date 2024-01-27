@@ -115,5 +115,21 @@
   "other-settings": "Other settings of Synapsy Write.",
   "about": "About",
   "about-long": "About Synapsy Write",
-  "close": "Close"
+  "close": "Close",
+  "welcome-back": "Welcome back",
+  "username": "Username",
+  "full-name": "Full name",
+  "account-desc": "Welcome to Peyronnet Account – where your journey begins! Unify your digital experience with us and unlock a world of seamless connectivity. Sign in to access exclusive features, personalized services, and a platform designed to elevate your online interactions.",
+  "account-tip": "Experience the power of seamless integration with Synapsy's suite of AI products. Our cutting-edge technology seamlessly integrates with various platforms, offering unparalleled compatibility and efficiency",
+  "welcome-msg": "Welcome, [[user]].",
+  "your-info": "Your information",
+  "your-info-desc": "Manage and edit information about your account.",
+  "products": "Products",
+  "products-desc": "Manage your subscriptions.",
+  "no-products": "No products are available.",
+  "session": "Session",
+  "sign-in": "Sign-in",
+  "sign-up": "Sign-up",
+  "sign-out": "Sign out",
+  "my-account": "My account"
 }

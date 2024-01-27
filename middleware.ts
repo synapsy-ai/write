@@ -15,7 +15,8 @@ export function middleware(req: any) {
     req.nextUrl.pathname.includes(".jpg") ||
     req.nextUrl.pathname.includes(".jpeg") ||
     req.nextUrl.pathname.includes(".svg") ||
-    req.nextUrl.pathname.includes(".json")
+    req.nextUrl.pathname.includes(".json") ||
+    req.nextUrl.pathname.includes("auth")
   ) {
     return NextResponse.next();
   }
