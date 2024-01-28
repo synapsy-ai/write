@@ -7,7 +7,12 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-
+      - name: Create .env with Github Secrets
+        run: |
+          touch .env
+          echo $ENV_VAR_1 >> .env
+        env:
+          ENV_VAR_1: ${{ secrets.ENV_FILE }}
       - name: Setup Node.js
         uses: actions/setup-node@v2
         with:
