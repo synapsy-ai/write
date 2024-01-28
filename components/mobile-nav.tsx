@@ -1,10 +1,16 @@
-import { Home, List, Pen, Settings } from "lucide-react";
+import { Home, List, Pen, Settings, User2 } from "lucide-react";
 import Link from "next/link";
 
 export default function MobileNavBar(props: { lng: string }) {
   return (
     <div className="fixed bottom-0 z-50 block w-full sm:hidden print:hidden">
-      <nav className="grid grid-cols-3 items-center rounded-t-md bg-white/50 shadow-[0px_-5px_20px_1px_#00000012] backdrop-blur-md dark:bg-slate-900/50">
+      <nav className="grid grid-cols-5 items-center rounded-t-md bg-white/50 shadow-[0px_-5px_20px_1px_#00000012] backdrop-blur-md dark:bg-slate-900/50">
+        <Link
+          className="flex items-center justify-center rounded-md border border-transparent p-5 hover:border-slate-200 hover:bg-slate-100/25 dark:hover:border-slate-700 dark:hover:bg-slate-800/25"
+          href={"/" + props.lng}
+        >
+          <Home />
+        </Link>
         <Link
           className="flex items-center justify-center rounded-md border border-transparent p-5 hover:border-slate-200 hover:bg-slate-100/25 dark:hover:border-slate-700 dark:hover:bg-slate-800/25"
           href={"/" + props.lng + "/generations"}
@@ -22,6 +28,12 @@ export default function MobileNavBar(props: { lng: string }) {
             />
           </Link>
         </div>
+        <Link
+          className="flex items-center justify-center rounded-md border border-transparent p-5 hover:border-slate-200 hover:bg-slate-100/25 dark:hover:border-slate-700 dark:hover:bg-slate-800/25"
+          href={"/" + props.lng + "/me"}
+        >
+          <User2 />
+        </Link>
         <Link
           className="flex items-center justify-center rounded-md border border-transparent p-5 hover:border-slate-200 hover:bg-slate-100/25 dark:hover:border-slate-700 dark:hover:bg-slate-800/25"
           href={"/" + props.lng + "/settings"}

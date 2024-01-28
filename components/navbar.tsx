@@ -3,7 +3,7 @@ import { useTranslation } from "@/app/i18n/client";
 import Image from "next/image";
 import { Button } from "./ui/button";
 import Link from "next/link";
-import { Settings } from "lucide-react";
+import { Settings, UserCircle2 } from "lucide-react";
 import { useTheme } from "next-themes";
 
 export default function NavBar(props: { lng: string }) {
@@ -21,6 +21,11 @@ export default function NavBar(props: { lng: string }) {
         </Link>
         <Link href={"/" + props.lng + "/generations"}>
           <Button variant="ghost">{t("generations")}</Button>
+        </Link>
+        <Link href={"/" + props.lng + "/me"} className="group">
+          <Button variant="ghost" size="icon">
+            <UserCircle2 className="h-[1.2rem] w-[1.2rem] transition-all group-hover:scale-105" />
+          </Button>
         </Link>
         <Link href={"/" + props.lng + "/settings"} className="group">
           <Button variant="ghost" size="icon">
