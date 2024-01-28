@@ -131,5 +131,22 @@
   "sign-in": "Se connecter",
   "sign-up": "S'inscrire",
   "sign-out": "Se déconnecter",
-  "my-account": "Mon compte"
+  "my-account": "Mon compte",
+  "update-name": "Mettre à jour votre nom",
+  "update-email": "Mettre à jour votre email",
+  "name-desc": "Veuillez saisir votre nom complet ou un nom d'affichage avec lequel vous vous sentez à l'aise.",
+  "email-desc": "Veuillez saisir l'adresse électronique que vous souhaitez utiliser pour vous connecter.",
+  "name-char": "64 caractères maximum",
+  "email-notify": "Nous vous enverrons un courriel pour vérifier le changement.",
+  "products-available": "Vous avez acheté/souscrit à certains de nos produits.",
+  "available-products": "Produits disponibles",
+  "available-products-desc": "Trouver tous les produits et abonnements disponibles du Groupe Peyronnet",
+  "subscribe": "Subscribe",
+  "manage": "Gérer",
+  "monthly-billing": "Facturation mensuelle",
+  "yearly-billing": "Facturation annuelle",
+  "manage-stripe": "Gérez votre abonnement sur Stripe",
+  "open-portal": "Ouvrir le portail client",
+  "account-read-only-1": "Vous ne pouvez pas modifier vos informations sur ce site web. Veuillez visiter",
+  "account-read-only-2": "pour gérer votre compte."
 }

@@ -7,6 +7,7 @@ import NavBar from "@/components/navbar";
 import { ThemeProvider } from "@/components/theme-provider";
 import Script from "next/script";
 import MobileNavBar from "@/components/mobile-nav";
+import SupabaseProvider from "../supabase-provider";
 
 const inter = DM_Sans({ subsets: ["latin"] });
 export async function generateStaticParams() {
@@ -81,11 +82,13 @@ export default function RootLayout({
         </Script>
       </head>
       <body className={inter.className + " dark:bg-slate-950 dark:text-white"}>
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <NavBar lng={lng} />
-          {children}
-          <MobileNavBar lng={lng} />
-        </ThemeProvider>
+        <SupabaseProvider>
+          <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+            <NavBar lng={lng} />
+            {children}
+            <MobileNavBar lng={lng} />
+          </ThemeProvider>
+        </SupabaseProvider>
       </body>
     </html>
   );

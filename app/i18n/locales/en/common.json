@@ -131,5 +131,22 @@
   "sign-in": "Sign-in",
   "sign-up": "Sign-up",
   "sign-out": "Sign out",
-  "my-account": "My account"
+  "my-account": "My account",
+  "update-name": "Update Name",
+  "update-email": "Update Email",
+  "name-desc": "Please enter your full name, or a display name you are comfortable with.",
+  "email-desc": "Please enter the email address you want to use to login.",
+  "name-char": "64 characters maximum",
+  "email-notify": "We will email you to verify the change.",
+  "products-available": "You have bought/subscribed to some of our products.",
+  "available-products": "Available products",
+  "available-products-desc": "Find all available products and plans of Peyronnet Group.",
+  "subscribe": "Subscribe",
+  "manage": "Manage",
+  "monthly-billing": "Monthly billing",
+  "yearly-billing": "Yearly billing",
+  "manage-stripe": "Manage your subscription on Stripe.",
+  "open-portal": "Open customer portal",
+  "account-read-only-1": "You can not edit your information in this website. Please visit",
+  "account-read-only-2": "to manage your account."
 }

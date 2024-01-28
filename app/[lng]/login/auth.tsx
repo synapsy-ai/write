@@ -1,7 +1,7 @@
 "use client";
 
 import { ThemeSupa } from "@supabase/auth-ui-shared";
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { useSupabase } from "@/app/supabase-provider";
 import { Auth } from "@supabase/auth-ui-react";
 import { useTheme } from "next-themes";
 import { useTranslation } from "@/app/i18n/client";
@@ -10,7 +10,7 @@ import { CircleUser } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 
 export default function LoginPage(props: { lng: string }) {
-  const supabase = createClientComponentClient();
+  const { supabase } = useSupabase();
   const { theme } = useTheme();
   const { t } = useTranslation(props.lng, "common");
   const customTheme = {
@@ -92,6 +92,7 @@ export default function LoginPage(props: { lng: string }) {
               variables: customTheme,
             }}
             redirectTo={`https://write.peyronnet.group/auth/callback`}
+            socialLayout="horizontal"
             providers={["github", "google"]}
             dark={theme === "dark"}
           />

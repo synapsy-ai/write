@@ -16,7 +16,7 @@ export async function POST(req: any) {
   }
 
   return NextResponse.redirect(
-    new URL(`https://write.peyronnet.group/auth/callback`, req.url),
+    new URL("https://write.peyronnet.group/", req.url),
     {
       status: 302,
     },
