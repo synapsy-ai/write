@@ -129,7 +129,7 @@
   "no-products": "Aucun produit n'est disponible.",
   "session": "Session",
   "sign-in": "Se connecter",
-  "sign-up": "S'inscrire",
+  "sign-up": "Créer un compte",
   "sign-out": "Se déconnecter",
   "my-account": "Mon compte",
   "update-name": "Mettre à jour votre nom",
@@ -148,5 +148,6 @@
   "manage-stripe": "Gérez votre abonnement sur Stripe",
   "open-portal": "Ouvrir le portail client",
   "account-read-only-1": "Vous ne pouvez pas modifier vos informations sur ce site web. Veuillez visiter",
-  "account-read-only-2": "pour gérer votre compte."
+  "account-read-only-2": "pour gérer votre compte.",
+  "unlock-power-ai": "Débloquez le pouvoir de l'AI avec le compte Peyronnet."
 }
