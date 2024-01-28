@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { useTheme } from "next-themes";
 import Image from "next/image";
 import Link from "next/link";
-export default function (props: { lng: string }) {
+export default function NoSession(props: { lng: string }) {
   const { t } = useTranslation(props.lng, "common");
   return (
     <main className="mt-2 flex min-h-full flex-col justify-center pb-16 sm:mt-16 sm:pb-0">
