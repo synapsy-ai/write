@@ -25,6 +25,9 @@ export default function (props: { lng: string }) {
           </div>
           <PeyronnetLogo width={250} />
         </div>
+        <span className="rounded-full border border-violet-600 px-2 text-sm font-bold text-violet-600 dark:bg-violet-600/10">
+          {t("new")}
+        </span>
         <h2 className="text-center">{t("unlock-power-ai")}</h2>
         <p className="max-w-3xl text-center">{t("account-desc")}</p>
       </section>
