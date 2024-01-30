@@ -150,5 +150,7 @@
   "account-read-only-1": "Vous ne pouvez pas modifier vos informations sur ce site web. Veuillez visiter",
   "account-read-only-2": "pour gérer votre compte.",
   "unlock-power-ai": "Débloquez le pouvoir de l'IA avec le compte Peyronnet.",
-  "new": "Nouveau"
+  "new": "Nouveau",
+  "see-plans": "Voir les tarifs",
+  "unlock-ai-sub": "Exploitez la puissance de l'IA en choisissant une formule d'abonnement."
 }

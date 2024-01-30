@@ -150,5 +150,7 @@
   "account-read-only-1": "You can not edit your information in this website. Please visit",
   "account-read-only-2": "to manage your account.",
   "unlock-power-ai": "Unlock the power of AI with the Peyronnet Account.",
-  "new": "New"
+  "new": "New",
+  "see-plans": "See plans",
+  "unlock-ai-sub": "Unlock the power of AI by choosing a subscription plan."
 }
