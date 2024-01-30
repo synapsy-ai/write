@@ -101,10 +101,12 @@ export default function Pricing({
 
   return (
     <section>
-      <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6 sm:py-24 lg:px-8">
+      <div className="mx-auto max-w-6xl px-4 py-8">
         <div className="sm:align-center sm:flex sm:flex-col">
-          <h2 className="text-2xl font-bold">{t("available-products")}</h2>
-          <p>{t("available-products-desc")}</p>
+          <h2 className="text-center text-2xl font-bold">
+            {t("available-products")}
+          </h2>
+          <p className="text-center">{t("available-products-desc")}</p>
           <div className="relative mt-6 flex self-center rounded-lg border p-0.5 dark:border-slate-800 dark:bg-slate-900 sm:mt-8">
             {intervals.includes("month") && (
               <button
