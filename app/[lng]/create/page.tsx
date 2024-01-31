@@ -6,6 +6,7 @@ import {
 } from "@/app/supabase-server";
 import NoSession from "./no-session";
 import BuySubscription from "./buy-subscription";
+import SiteFooter from "@/components/footer";
 
 export default async function CreatePage({
   params: { lng },
@@ -23,12 +24,15 @@ export default async function CreatePage({
 
   if (!subscriptions || subscriptions.length < 1) {
     return (
-      <BuySubscription
-        session={session}
-        products={products}
-        subscriptions={subscriptions}
-        lng={lng}
-      />
+      <>
+        <BuySubscription
+          session={session}
+          products={products}
+          subscriptions={subscriptions}
+          lng={lng}
+        />
+        <SiteFooter params={{ lng: lng }} />
+      </>
     );
   }
   for (let i = 0; i < subscriptions?.length; i++) {
@@ -39,12 +43,15 @@ export default async function CreatePage({
         .includes("write")
     ) {
       return (
-        <BuySubscription
-          session={session}
-          products={products}
-          subscriptions={subscriptions}
-          lng={lng}
-        />
+        <>
+          <BuySubscription
+            session={session}
+            products={products}
+            subscriptions={subscriptions}
+            lng={lng}
+          />
+          <SiteFooter params={{ lng: lng }} />
+        </>
       );
     }
   }
