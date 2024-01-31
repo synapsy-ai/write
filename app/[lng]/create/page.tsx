@@ -21,7 +21,7 @@ export default async function CreatePage({
   if (!session) {
     return <NoSession lng={lng} />;
   }
-  /*
+
   if (!subscriptions || subscriptions.length < 1) {
     return (
       <>
@@ -54,7 +54,7 @@ export default async function CreatePage({
         </>
       );
     }
-  }*/
+  }
 
   return <Create lng={lng} />;
 }
