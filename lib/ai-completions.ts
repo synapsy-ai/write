@@ -11,38 +11,42 @@ export async function sendToGpt(
 ): Promise<any> {
   functions.setLoading(true);
   let loading = true;
-  const openai = new OpenAI({
-    apiKey: process.env.OPENAI_API_KEY,
-    dangerouslyAllowBrowser: true, // defaults to process.env["OPENAI_API_KEY"]
-  });
-  const chatCompletion: OpenAI.Chat.Completions.ChatCompletion | any =
-    await openai.chat.completions
-      .create({
-        messages: [
-          { role: "system", content: getSystem(template, lng, tone) },
-          { role: "user", content: getPrompt(template, lng, prompt) },
-        ],
-        model: model,
-        temperature: options.temp,
-        top_p: options.topP,
-        frequency_penalty: options.freqP,
-        presence_penalty: options.presP,
-        stream: true,
-      })
-      .catch((err: any) => {
-        return err;
-      });
 
+  const res = await fetch("/api/chat", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      messages: [
+        { role: "system", content: getSystem(template, lng, tone) },
+        { role: "user", content: getPrompt(template, lng, prompt) },
+      ],
+      model: model,
+      temperature: options.temp,
+      top_p: options.topP,
+      frequency_penalty: options.freqP,
+      presence_penalty: options.presP,
+    }),
+  });
+  const reader = res.body?.getReader();
   let result = "";
-  for await (const chunk of chatCompletion) {
-    if (chunk.choices[0].delta.content)
-      result += chunk.choices[0].delta.content;
-    functions.setContent(result);
-    if (loading) {
-      functions.setLoading(false);
-      loading = false;
-    }
+  if (loading) {
+    functions.setLoading(false);
+    loading = false;
   }
+
+  if (!reader) return "";
+
+  while (true) {
+    const { done, value } = await reader.read();
+
+    if (done) {
+      break;
+    }
+
+    result += new TextDecoder("utf-8").decode(value);
+    functions.setContent(result);
+  }
+
   return result;
 }
 
@@ -57,14 +61,11 @@ export async function sendToGptCustom(
 ): Promise<any> {
   let result = content;
   let c = "";
-  console.log(result);
-  const openai = new OpenAI({
-    apiKey: process.env.OPENAI_API_KEY,
-    dangerouslyAllowBrowser: true, // defaults to process.env["OPENAI_API_KEY"]
-  });
 
-  const chatCompletion = await openai.chat.completions
-    .create({
+  const res = await fetch("/api/chat", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
       messages: [
         { role: "system", content: system },
         { role: "user", content: prompt },
@@ -74,18 +75,23 @@ export async function sendToGptCustom(
       top_p: options.topP,
       frequency_penalty: options.freqP,
       presence_penalty: options.presP,
-      stream: true,
-    })
-    .catch((err: any) => {
-      return err;
-    });
-  for await (const chunk of chatCompletion) {
-    if (chunk.choices[0].delta.content) {
-      result += chunk.choices[0].delta.content;
-      c += chunk.choices[0].delta.content;
+    }),
+  });
+  const reader = res.body?.getReader();
+  if (!reader) return "";
+
+  while (true) {
+    const { done, value } = await reader.read();
+
+    if (done) {
+      break;
     }
+
+    result += new TextDecoder("utf-8").decode(value);
+    c += new TextDecoder("utf-8").decode(value);
     functions.setContent(result);
   }
+
   return c;
 }
 
@@ -96,13 +102,10 @@ export async function getStandardGeneration(
   model: string,
   options: OpenAiOptions,
 ) {
-  const openai = new OpenAI({
-    apiKey: process.env.OPENAI_API_KEY,
-    dangerouslyAllowBrowser: true, // defaults to process.env["OPENAI_API_KEY"]
-  });
-
-  const chatCompletion = await openai.chat.completions
-    .create({
+  return await fetch("/api/completions", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
       messages: [
         { role: "system", content: system },
         { role: "user", content: prompt },
@@ -112,11 +115,8 @@ export async function getStandardGeneration(
       top_p: options.topP,
       frequency_penalty: options.freqP,
       presence_penalty: options.presP,
-    })
-    .catch((err: any) => {
-      return err;
-    });
-  return chatCompletion.choices[0].message.content;
+    }),
+  });
 }
 
 export function getSystem(
@@ -365,12 +365,12 @@ export function getComplexEssayPrompts(
 }
 
 export async function getModels(key: string) {
-  const openai = new OpenAI({
-    apiKey: process.env.OPENAI_API_KEY,
-    dangerouslyAllowBrowser: true, // defaults to process.env["OPENAI_API_KEY"]
-  });
-  let models = await openai.models.list();
-  return models.data;
+  return (
+    await fetch("/api/models", {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    })
+  ).json();
 }
 
 export type Template = "para" | "email" | "blog" | "ideas";

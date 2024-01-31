@@ -5,10 +5,6 @@ const withPWA = require("next-pwa")({
   disable: process.env.NODE_ENV === "development",
 });
 /** @type {import('next').NextConfig} */
-const nextConfig = {
-  env: {
-    OPENAI_API_KEY: process.env.OPENAI_API_KEY,
-  },
-};
+const nextConfig = {};
 
 module.exports = withPWA(nextConfig);
