@@ -12,7 +12,7 @@ export async function sendToGpt(
   functions.setLoading(true);
   let loading = true;
   const openai = new OpenAI({
-    apiKey: key,
+    apiKey: process.env.OPENAI_API_KEY,
     dangerouslyAllowBrowser: true, // defaults to process.env["OPENAI_API_KEY"]
   });
   const chatCompletion: OpenAI.Chat.Completions.ChatCompletion | any =
@@ -59,7 +59,7 @@ export async function sendToGptCustom(
   let c = "";
   console.log(result);
   const openai = new OpenAI({
-    apiKey: key,
+    apiKey: process.env.OPENAI_API_KEY,
     dangerouslyAllowBrowser: true, // defaults to process.env["OPENAI_API_KEY"]
   });
 
@@ -97,7 +97,7 @@ export async function getStandardGeneration(
   options: OpenAiOptions,
 ) {
   const openai = new OpenAI({
-    apiKey: key,
+    apiKey: process.env.OPENAI_API_KEY,
     dangerouslyAllowBrowser: true, // defaults to process.env["OPENAI_API_KEY"]
   });
 
@@ -366,7 +366,7 @@ export function getComplexEssayPrompts(
 
 export async function getModels(key: string) {
   const openai = new OpenAI({
-    apiKey: key,
+    apiKey: process.env.OPENAI_API_KEY,
     dangerouslyAllowBrowser: true, // defaults to process.env["OPENAI_API_KEY"]
   });
   let models = await openai.models.list();

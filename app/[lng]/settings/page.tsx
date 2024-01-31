@@ -1,8 +1,6 @@
 "use client";
 import {
   ArrowUpRightFromSquare,
-  Eye,
-  EyeOff,
   Laptop,
   Moon,
   RefreshCcw,
@@ -30,7 +28,6 @@ import { getModels } from "@/lib/ai-completions";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
@@ -52,22 +49,15 @@ export default function SettingsPage({
     s.models ??= ["gpt-3.5-turbo", "gpt-4"];
     localStorage.setItem("synapsy_settings", JSON.stringify(s));
   }
-  const [keyTxt, setKeyTxt] = useState(s.key);
   const [models, setModels] = useState(
     s.models?.map((m) => {
       return getModelString(m);
     }),
   );
   const [modelQuery, setModelQuery] = useState("");
-  const [apiVis, setApiVis] = useState(false);
-
-  function setKey() {
-    s.key = keyTxt;
-    localStorage.setItem("synapsy_settings", JSON.stringify(s));
-  }
-
+  const apiKey = process?.env?.OPENAI_API_KEY || "";
   async function refreshModels() {
-    let m = await getModels(s.key);
+    let m = await getModels(apiKey);
     let avm: string[] = [];
     let avm2: string[] = [];
     for (let i = 0; i < m.length; i++) {
@@ -158,27 +148,7 @@ export default function SettingsPage({
         <h3 className="text-xl font-semibold">{t("openai-options")}</h3>
         <p>{t("openai-options-desc")}</p>
         <Separator className="my-2" />
-        <div className="flex items-center space-x-2">
-          <p>{t("api-key")}</p>
-          <Input
-            type={!apiVis ? "password" : "text"}
-            onChange={(v) => setKeyTxt(v.target.value)}
-            value={keyTxt}
-            className="max-w-[350px]"
-          />
-          <Button
-            onClick={() => {
-              setApiVis(!apiVis);
-            }}
-            variant="ghost"
-            className="px-1"
-          >
-            {apiVis ? <EyeOff size={16} /> : <Eye size={16} />}
-          </Button>
-          <Button variant="outline" onClick={setKey}>
-            {t("confirm")}
-          </Button>
-        </div>
+
         <p className="mt-2">
           {t("models")} ({models?.length})
         </p>
