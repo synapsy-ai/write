@@ -33,7 +33,7 @@ export default async function Account({
   const user = session?.user;
 
   if (!session) {
-    return redirect("/login");
+    return redirect("/" + lng + "/login");
   }
 
   const updateName = async (formData: FormData) => {
