@@ -4,7 +4,7 @@ import { cookies } from "next/headers";
 import { cache } from "react";
 
 export const createServerSupabaseClient = cache(() =>
-  createServerComponentClient<Database>({ cookies })
+  createServerComponentClient<Database>({ cookies }),
 );
 
 export async function getSession() {
@@ -34,14 +34,13 @@ export async function getUserDetails() {
   }
 }
 
-export async function getSubscription() {
+export async function getSubscriptions() {
   const supabase = createServerSupabaseClient();
   try {
     const { data: subscription } = await supabase
       .from("subscriptions")
       .select("*, prices(*, products(*))")
       .in("status", ["trialing", "active"])
-      .maybeSingle()
       .throwOnError();
     return subscription;
   } catch (error) {

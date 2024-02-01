@@ -44,6 +44,7 @@
   "import": "Importer",
   "error-occured": "Une erreur s'est produite",
   "features": "Fonctionnalités",
+  "features-desc": "Découvrez les fonctionalités polyvalentes Synapsy Write.",
   "feature-ai": "IA GPT Générative d'OpenAI",
   "feature-ai-desc": "Exploitez la technologie d'IA de pointe fournie par OpenAI pour générer un texte de haute qualité à partir de vos données",
   "feature-versatile": "Polyvalent",
@@ -150,5 +151,17 @@
   "account-read-only-1": "Vous ne pouvez pas modifier vos informations sur ce site web. Veuillez visiter",
   "account-read-only-2": "pour gérer votre compte.",
   "unlock-power-ai": "Débloquez le pouvoir de l'IA avec le compte Peyronnet.",
-  "new": "Nouveau"
+  "new": "Nouveau",
+  "see-plans": "Voir les tarifs",
+  "unlock-ai-sub": "Exploitez la puissance de l'IA en choisissant une formule d'abonnement.",
+  "privacy-policy": "Politique de confidentialité",
+  "terms-sell": "Conditions générales de vente",
+  "tables": "Tableaux",
+  "tables-desc": "Générez des tableaux complexes qui répondent à vos besoins à partir d'une seule invite",
+  "essays": "Essais",
+  "essays-desc": "Générez des dissertations avancées et réalistes en utilisant le moteur de génération personnalisé de Write",
+  "unlimited-access": "Accès illimité",
+  "unlimited-access-desc": "Obtenez un accès illimité et des générations infinies en souscrivant à un plan.",
+  "github-desc": "Le dépôt de Write est publiquement disponible sur GitHub",
+  "synapsy-browse": "Parcourir les autres projets de Synapsy."
 }

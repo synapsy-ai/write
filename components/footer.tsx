@@ -23,6 +23,8 @@ export default function SiteFooter({
           <h3 className="text-lg">{t("links")}</h3>
           <div className="flex flex-col">
             <Link
+              target="_blank"
+              rel="noreferrer"
               className="hover:underline"
               href={"https://blog.peyronnet.group"}
             >
@@ -30,9 +32,19 @@ export default function SiteFooter({
             </Link>
             <Link
               className="hover:underline"
+              target="_blank"
+              rel="noreferrer"
               href={"https://peyronnet.group/privacy"}
             >
-              Privacy policy
+              {t("privacy-policy")}
+            </Link>
+            <Link
+              className="hover:underline"
+              target="_blank"
+              rel="noreferrer"
+              href={"https://peyronnet.group/cgv"}
+            >
+              {t("terms-sell")}
             </Link>
           </div>
         </div>
@@ -40,12 +52,16 @@ export default function SiteFooter({
           <h3 className="text-lg">{t("socials")}</h3>
           <div className="flex flex-col">
             <Link
+              target="_blank"
+              rel="noreferrer"
               className="hover:underline"
               href={"https://twitter.com/PeyronnetGroup"}
             >
               Twitter
             </Link>
             <Link
+              target="_blank"
+              rel="noreferrer"
               className="hover:underline"
               href={"https://www.youtube.com/@PeyronnetGroup"}
             >

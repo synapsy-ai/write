@@ -5,7 +5,6 @@ import { Input } from "@/components/ui/input";
 import { v4 as uuidv4 } from "uuid";
 
 import {
-  Hand,
   Info,
   Lightbulb,
   Loader2,
@@ -39,16 +38,10 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import formats, { tones, typesToString } from "@/lib/formats";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
+import { tones, typesToString } from "@/lib/formats";
+
 import { Skeleton } from "@/components/ui/skeleton";
 import ResultDisplayer from "@/components/result-displayer";
-import { Progress } from "@/components/ui/progress";
 import {
   Select,
   SelectContent,
@@ -60,7 +53,6 @@ import { Separator } from "@/components/ui/separator";
 import OpenAI from "openai";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { getModelString } from "@/lib/models";
-import { FormatSelector } from "@/components/format-selector";
 import {
   HoverCard,
   HoverCardContent,
@@ -78,14 +70,13 @@ export default function Create(props: { lng: string }) {
   const [type, setType] = useState("para");
 
   let s: Settings = { key: "" };
+  const apiKey: string = process?.env?.OPENAI_API_KEY || "";
   if (typeof window !== "undefined") {
     s = JSON.parse(localStorage.getItem("synapsy_settings") ?? "{}");
     s.models ??= ["gpt-3.5-turbo", "gpt-4"];
     localStorage.setItem("synapsy_settings", JSON.stringify(s));
   }
 
-  const [welcome, setWelcome] = useState(s.key === undefined);
-  const [keyTxt, setKeyTxt] = useState(s.key);
   const [res, setRes] = useState<string | null>("");
   const [prompt, setPrompt] = useState("");
   const [inProgress, setInProgress] = useState(false);
@@ -107,7 +98,7 @@ export default function Create(props: { lng: string }) {
   const [textToAnalyse, setTextToAnalyse] = useState("");
 
   async function getMs() {
-    let m = await getModels(s.key);
+    let m = await getModels(apiKey);
     let avm: string[] = [];
     for (let i = 0; i < m.length; i++) {
       if (m[i].id.startsWith("gpt")) avm.push(m[i].id);
@@ -119,12 +110,6 @@ export default function Create(props: { lng: string }) {
     }
   }
 
-  function setKey() {
-    s.key = keyTxt;
-    localStorage.setItem("synapsy_settings", JSON.stringify(s));
-    setWelcome(false);
-  }
-
   async function create() {
     setInProgress(false);
     setErrorVis(false);
@@ -132,7 +117,7 @@ export default function Create(props: { lng: string }) {
     setIsGen(true);
     let r = await sendToGpt(
       prompt + getVariableString(variables),
-      s.key,
+      apiKey,
       type,
       lng,
       model,
@@ -170,7 +155,7 @@ export default function Create(props: { lng: string }) {
     setIsGen(true);
     let r = await sendToGpt(
       textToAnalyse + "\n" + prompt + getVariableString(variables),
-      s.key,
+      apiKey,
       type,
       lng,
       model,
@@ -222,10 +207,10 @@ export default function Create(props: { lng: string }) {
     setIsGen(false);
 
     // 1. Generate the outline
-    const outline = await getStandardGeneration(
+    const outline_res = await getStandardGeneration(
       getSystem("ph_analysis_outline", lng, tone),
       getPrompt("ph_analysis_outline", lng, textToAnalyse) + "\n" + prompt,
-      s.key,
+      apiKey,
       model,
       {
         temp: temp,
@@ -234,8 +219,8 @@ export default function Create(props: { lng: string }) {
         freqP: freqP,
       },
     );
-
-    if (outline instanceof OpenAI.APIError) {
+    const outline = await outline_res.text();
+    if (outline_res instanceof OpenAI.APIError) {
       setErrorMsg(outline);
       setErrorVis(true);
       setInProgress(false);
@@ -256,7 +241,7 @@ export default function Create(props: { lng: string }) {
           "ph_analysis_intro",
           lng,
         ),
-        s.key,
+        apiKey,
         model,
         {
           temp: temp,
@@ -279,7 +264,7 @@ export default function Create(props: { lng: string }) {
     const p1 = await sendToGptCustom(
       getSystem("ph_analysis_outline", lng, tone),
       getPromptComplexAnalysis(textToAnalyse, outline, "ph_analysis_dev", lng),
-      s.key,
+      apiKey,
       model,
       {
         temp: temp,
@@ -300,7 +285,7 @@ export default function Create(props: { lng: string }) {
         "ph_analysis_conclusion",
         lng,
       ),
-      s.key,
+      apiKey,
       model,
       {
         temp: temp,
@@ -326,10 +311,10 @@ export default function Create(props: { lng: string }) {
     setInProgress(true);
     setErrorVis(false);
     setIsGen(false);
-    const outline = await getStandardGeneration(
+    const outline_res = await getStandardGeneration(
       getSystem("es_complex_outline", lng, tone),
       getPrompt("es_outline", lng, prompt),
-      s.key,
+      apiKey,
       model,
       {
         temp: temp,
@@ -338,8 +323,9 @@ export default function Create(props: { lng: string }) {
         freqP: freqP,
       },
     );
+    const outline = await outline_res.text();
 
-    if (outline instanceof OpenAI.APIError) {
+    if (outline_res instanceof OpenAI.APIError) {
       setErrorMsg(outline);
       setErrorVis(true);
       setInProgress(false);
@@ -353,7 +339,7 @@ export default function Create(props: { lng: string }) {
       (await sendToGptCustom(
         getSystem("es_intro", lng, tone),
         getPrompt("es_intro", lng, prompt + usingPlan(lng) + outline),
-        s.key,
+        apiKey,
         model,
         {
           temp: temp,
@@ -376,7 +362,7 @@ export default function Create(props: { lng: string }) {
     const p1 = await sendToGptCustom(
       getSystem("es_basic", lng, tone),
       getComplexEssayPrompts(1, outline, lng),
-      s.key,
+      apiKey,
       model,
       {
         temp: temp,
@@ -397,7 +383,7 @@ export default function Create(props: { lng: string }) {
     const p2 = await sendToGptCustom(
       getSystem("es_basic", lng, tone),
       getComplexEssayPrompts(2, outline, lng),
-      s.key,
+      apiKey,
       model,
       {
         temp: temp,
@@ -418,7 +404,7 @@ export default function Create(props: { lng: string }) {
     const p3 = await sendToGptCustom(
       getSystem("es_basic", lng, tone),
       getComplexEssayPrompts(3, outline, lng),
-      s.key,
+      apiKey,
       model,
       {
         temp: temp,
@@ -439,7 +425,7 @@ export default function Create(props: { lng: string }) {
     const ccl = await sendToGptCustom(
       getSystem("es_conclusion", lng, tone),
       getPrompt("es_conclusion", lng, prompt + usingPlan(lng) + outline),
-      s.key,
+      apiKey,
       model,
       {
         temp: temp,
@@ -472,10 +458,10 @@ export default function Create(props: { lng: string }) {
     setInProgress(true);
     setIsGen(false);
     setProgressBarVis(true);
-    const outline = await getStandardGeneration(
+    const outline_res = await getStandardGeneration(
       getSystem("ph_complex_outline", lng, tone),
       getPrompt("ph_outline", lng, prompt),
-      s.key,
+      apiKey,
       model,
       {
         temp: temp,
@@ -484,6 +470,7 @@ export default function Create(props: { lng: string }) {
         freqP: freqP,
       },
     );
+    const outline = await outline_res.text();
     setProgress(16);
     setInProgress(false);
     setRes("");
@@ -492,7 +479,7 @@ export default function Create(props: { lng: string }) {
       (await sendToGptCustom(
         getSystem("ph_intro", lng, tone),
         getPrompt("ph_intro", lng, prompt + usingPlan(lng) + outline),
-        s.key,
+        apiKey,
         model,
         {
           temp: temp,
@@ -508,7 +495,7 @@ export default function Create(props: { lng: string }) {
     const p1 = await sendToGptCustom(
       getSystem("ph_basic", lng, tone),
       getComplexEssayPrompts(1, outline, lng),
-      s.key,
+      apiKey,
       model,
       {
         temp: temp,
@@ -523,7 +510,7 @@ export default function Create(props: { lng: string }) {
     const p2 = await sendToGptCustom(
       getSystem("ph_basic", lng, tone),
       getComplexEssayPrompts(2, outline, lng),
-      s.key,
+      apiKey,
       model,
       {
         temp: temp,
@@ -538,7 +525,7 @@ export default function Create(props: { lng: string }) {
     const p3 = await sendToGptCustom(
       getSystem("ph_basic", lng, tone),
       getComplexEssayPrompts(3, outline, lng),
-      s.key,
+      apiKey,
       model,
       {
         temp: temp,
@@ -553,7 +540,7 @@ export default function Create(props: { lng: string }) {
     const ccl = await sendToGptCustom(
       getSystem("ph_conclusion", lng, tone),
       getPrompt("ph_conclusion", lng, prompt + usingPlan(lng) + outline),
-      s.key,
+      apiKey,
       model,
       {
         temp: temp,
@@ -599,246 +586,219 @@ export default function Create(props: { lng: string }) {
       </section>
       <Separator className="my-2" />
 
-      {!welcome ? (
-        <section>
-          <p className="m-2 font-bold print:hidden">{t("prompt")}</p>
-          <div className="m-2 flex flex-col items-stretch space-y-1 sm:flex-row sm:items-center sm:space-x-2 sm:space-y-0 print:hidden">
-            <Input onChange={(v) => setPrompt(v.target.value)} />
-            <div className="grid grid-cols-[1fr,auto] space-x-1 sm:flex sm:space-x-2">
-              <FormatDialog lng={lng} setVal={setType} />
+      <section>
+        <p className="m-2 font-bold print:hidden">{t("prompt")}</p>
+        <div className="m-2 flex flex-col items-stretch space-y-1 sm:flex-row sm:items-center sm:space-x-2 sm:space-y-0 print:hidden">
+          <Input onChange={(v) => setPrompt(v.target.value)} />
+          <div className="grid grid-cols-[1fr,auto] space-x-1 sm:flex sm:space-x-2">
+            <FormatDialog lng={lng} setVal={setType} />
 
-              <Sheet>
-                <SheetTrigger asChild>
-                  <Button variant="outline">
-                    <SettingsLogo height={16} />
-                  </Button>
-                </SheetTrigger>
-                <SheetContent>
-                  <SheetHeader>
-                    <SheetTitle>{t("options")}</SheetTitle>
-                    <SheetDescription>{t("model-options")}</SheetDescription>
-                  </SheetHeader>
-                  <div className="py-4">
-                    <div className="flex items-center space-x-2">
-                      <p>{t("model")}</p>
-                      <Select
-                        onValueChange={(e) => setModel(e)}
-                        defaultValue={model}
-                      >
-                        <SelectTrigger className="w-[180px]">
-                          <SelectValue placeholder={t("model")} />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <ScrollArea className="h-[200px]">
-                            {avModels.map((el, i) => (
-                              <SelectItem key={i} value={el}>
-                                {getModelString(el)}
-                              </SelectItem>
-                            ))}
-                          </ScrollArea>
-                        </SelectContent>
-                      </Select>
-                      <Button variant="outline" onClick={getMs}>
-                        <RefreshCcw height={14} />
-                      </Button>
-                    </div>
-                    <Separator className="my-2" />
-                    <p>{t("api-key")}</p>
-                    <div className="my-2 flex space-x-2">
-                      <Input
-                        type="password"
-                        onChange={(v) => {
-                          setKeyTxt(v.target.value);
-                          setKey();
-                        }}
-                        className="w-full"
-                        defaultValue={s.key}
-                      />
-                      <Button onClick={setKey}>{t("confirm")}</Button>
-                    </div>
-                    <Separator className="my-2" />
-                    <p>{t("temp")}</p>
-                    <HoverCard openDelay={200}>
-                      <HoverCardTrigger className="flex space-x-2">
-                        <Slider
-                          onValueChange={(v) => setTemp(v[0])}
-                          defaultValue={[temp]}
-                          max={2}
-                          step={0.01}
-                        />
-                        <p>{temp}</p>
-                      </HoverCardTrigger>
-                      <HoverCardContent>{t("temp-desc")}</HoverCardContent>
-                    </HoverCard>
-                    <p>{t("top-p")}</p>
-                    <HoverCard openDelay={200}>
-                      <HoverCardTrigger className="flex space-x-2">
-                        <Slider
-                          onValueChange={(v) => setTopP(v[0])}
-                          defaultValue={[topp]}
-                          max={1}
-                          step={0.01}
-                        />
-                        <p>{topp}</p>
-                      </HoverCardTrigger>
-                      <HoverCardContent>{t("top-p-desc")}</HoverCardContent>
-                    </HoverCard>
-                    <p>{t("freq-penalty")}</p>
-                    <HoverCard openDelay={200}>
-                      <HoverCardTrigger className="flex space-x-2">
-                        <Slider
-                          onValueChange={(v) => setFreqP(v[0])}
-                          defaultValue={[freqP]}
-                          max={2}
-                          step={0.01}
-                        />
-                        <p>{freqP}</p>
-                      </HoverCardTrigger>
-                      <HoverCardContent>
-                        {t("freq-penalty-desc")}
-                      </HoverCardContent>
-                    </HoverCard>
-                    <p>{t("pres-penalty")}</p>
-                    <HoverCard openDelay={200}>
-                      <HoverCardTrigger className="flex space-x-2">
-                        <Slider
-                          onValueChange={(v) => setPresP(v[0])}
-                          defaultValue={[presP]}
-                          max={2}
-                          step={0.01}
-                        />
-                        <p>{presP}</p>
-                      </HoverCardTrigger>
-                      <HoverCardContent>
-                        {t("pres-penalty-desc")}
-                      </HoverCardContent>
-                    </HoverCard>
-                    <Separator className="my-2" />
-                    <div className="flex items-center space-x-2">
-                      <p>{t("tone")}</p>
-                      <Select
-                        defaultValue={tone}
-                        onValueChange={(v) => setTone(v)}
-                      >
-                        <SelectTrigger className="w-[180px]">
-                          <SelectValue placeholder={t("tone")} />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <ScrollArea className="h-[200px]">
-                            {tones.map((el, i) => (
-                              <SelectItem key={i} value={el}>
-                                {t(el)}
-                              </SelectItem>
-                            ))}
-                          </ScrollArea>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                  </div>
-                </SheetContent>
-              </Sheet>
-            </div>
-            {!inProgress ? (
-              <Button
-                disabled={
-                  type.startsWith("ph_analysis_")
-                    ? textToAnalyse.replace(" ", "") == ""
-                    : prompt.replace(" ", "") == ""
-                }
-                className="group space-x-1 disabled:cursor-not-allowed"
-                onClick={createButton}
-              >
-                <Sparkles
-                  className="group-hover:animate-pulse group-hover:duration-700"
-                  height={16}
-                  width={16}
-                />
-                <p className="font-bold">{t("create")}</p>
-              </Button>
-            ) : (
-              <Button disabled className="cursor-not-allowed">
-                {" "}
-                <Loader2 className="mr-2 animate-spin" /> {t("please-wait")}
-              </Button>
-            )}
-          </div>
-          {type.startsWith("ph_analysis_") && (
-            <div className="p-2">
-              <p className="mb-2 font-bold print:hidden">
-                {t("text-to-analyse")}
-              </p>
-              <Textarea
-                className="print:hidden"
-                value={textToAnalyse}
-                onChange={(v) => setTextToAnalyse(v.target.value)}
-              />
-            </div>
-          )}
-          {type !== "ph_complex" && type !== "es_complex" && (
-            <div className="print:hidden">
-              <div>
-                <p className="m-2 font-bold">
-                  {t("variables")} ({variables.length})
-                </p>
-                <Button
-                  className="h-auto"
-                  variant="link"
-                  onClick={() =>
-                    setVariables([
-                      ...variables,
-                      { name: "", value: "", id: uuidv4() },
-                    ])
-                  }
-                >
-                  {t("add-variable")}
+            <Sheet>
+              <SheetTrigger asChild>
+                <Button variant="outline">
+                  <SettingsLogo height={16} />
                 </Button>
-              </div>
-              <div>
-                {variables.length > 0 &&
-                  variables.map((el, i) => (
-                    <VariableItem
-                      functions={{
-                        setVar: editVariable,
-                        removeVar: removeVariable,
-                      }}
-                      key={el.id}
-                      lng={lng}
-                      index={i}
-                      item={el}
-                    />
-                  ))}
-              </div>
-            </div>
-          )}
-          <div className="m-2 print:hidden">
-            <p className="font-bold">{t("gen-settings")}</p>
-            <p className="flex items-center space-x-2">
-              <PenBox height={14} />
-              <span>{t(typesToString(type))}</span>
-            </p>
-            <p className="flex items-center space-x-2">
-              <Lightbulb height={14} />
-              <span>{getModelString(model)}</span>
-            </p>
-            <p className="flex items-center space-x-2">
-              <PencilRuler height={14} />
-              <span>{t(tone)}</span>
-            </p>
+              </SheetTrigger>
+              <SheetContent>
+                <SheetHeader>
+                  <SheetTitle>{t("options")}</SheetTitle>
+                  <SheetDescription>{t("model-options")}</SheetDescription>
+                </SheetHeader>
+                <div className="py-4">
+                  <div className="flex items-center space-x-2">
+                    <p>{t("model")}</p>
+                    <Select
+                      onValueChange={(e) => setModel(e)}
+                      defaultValue={model}
+                    >
+                      <SelectTrigger className="w-[180px]">
+                        <SelectValue placeholder={t("model")} />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <ScrollArea className="h-[200px]">
+                          {avModels.map((el, i) => (
+                            <SelectItem key={i} value={el}>
+                              {getModelString(el)}
+                            </SelectItem>
+                          ))}
+                        </ScrollArea>
+                      </SelectContent>
+                    </Select>
+                    <Button variant="outline" onClick={getMs}>
+                      <RefreshCcw height={14} />
+                    </Button>
+                  </div>
+
+                  <Separator className="my-2" />
+                  <p>{t("temp")}</p>
+                  <HoverCard openDelay={200}>
+                    <HoverCardTrigger className="flex space-x-2">
+                      <Slider
+                        onValueChange={(v) => setTemp(v[0])}
+                        defaultValue={[temp]}
+                        max={2}
+                        step={0.01}
+                      />
+                      <p>{temp}</p>
+                    </HoverCardTrigger>
+                    <HoverCardContent>{t("temp-desc")}</HoverCardContent>
+                  </HoverCard>
+                  <p>{t("top-p")}</p>
+                  <HoverCard openDelay={200}>
+                    <HoverCardTrigger className="flex space-x-2">
+                      <Slider
+                        onValueChange={(v) => setTopP(v[0])}
+                        defaultValue={[topp]}
+                        max={1}
+                        step={0.01}
+                      />
+                      <p>{topp}</p>
+                    </HoverCardTrigger>
+                    <HoverCardContent>{t("top-p-desc")}</HoverCardContent>
+                  </HoverCard>
+                  <p>{t("freq-penalty")}</p>
+                  <HoverCard openDelay={200}>
+                    <HoverCardTrigger className="flex space-x-2">
+                      <Slider
+                        onValueChange={(v) => setFreqP(v[0])}
+                        defaultValue={[freqP]}
+                        max={2}
+                        step={0.01}
+                      />
+                      <p>{freqP}</p>
+                    </HoverCardTrigger>
+                    <HoverCardContent>
+                      {t("freq-penalty-desc")}
+                    </HoverCardContent>
+                  </HoverCard>
+                  <p>{t("pres-penalty")}</p>
+                  <HoverCard openDelay={200}>
+                    <HoverCardTrigger className="flex space-x-2">
+                      <Slider
+                        onValueChange={(v) => setPresP(v[0])}
+                        defaultValue={[presP]}
+                        max={2}
+                        step={0.01}
+                      />
+                      <p>{presP}</p>
+                    </HoverCardTrigger>
+                    <HoverCardContent>
+                      {t("pres-penalty-desc")}
+                    </HoverCardContent>
+                  </HoverCard>
+                  <Separator className="my-2" />
+                  <div className="flex items-center space-x-2">
+                    <p>{t("tone")}</p>
+                    <Select
+                      defaultValue={tone}
+                      onValueChange={(v) => setTone(v)}
+                    >
+                      <SelectTrigger className="w-[180px]">
+                        <SelectValue placeholder={t("tone")} />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <ScrollArea className="h-[200px]">
+                          {tones.map((el, i) => (
+                            <SelectItem key={i} value={el}>
+                              {t(el)}
+                            </SelectItem>
+                          ))}
+                        </ScrollArea>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+              </SheetContent>
+            </Sheet>
           </div>
-        </section>
-      ) : (
-        <section className="flex min-h-[calc(100vh_-_160px)] flex-col items-center justify-center rounded-t-md bg-gradient-to-b from-indigo-200 to-transparent text-center dark:from-indigo-600">
-          <Hand size={64} />
-          <h2 className="text-2xl font-bold">{t("welcome")}</h2>
-          <p>{t("welcome-desc")}</p>
-          <Input
-            type="password"
-            onChange={(v) => setKeyTxt(v.target.value)}
-            className="my-2 max-w-[350px] border border-black/15 bg-white/5 backdrop-blur-md dark:border-slate-500"
-          />
-          <Button onClick={setKey}>{t("confirm")}</Button>
-        </section>
-      )}
+          {!inProgress ? (
+            <Button
+              disabled={
+                type.startsWith("ph_analysis_")
+                  ? textToAnalyse.replace(" ", "") == ""
+                  : prompt.replace(" ", "") == ""
+              }
+              className="group space-x-1 disabled:cursor-not-allowed"
+              onClick={createButton}
+            >
+              <Sparkles
+                className="group-hover:animate-pulse group-hover:duration-700"
+                height={16}
+                width={16}
+              />
+              <p className="font-bold">{t("create")}</p>
+            </Button>
+          ) : (
+            <Button disabled className="cursor-not-allowed">
+              {" "}
+              <Loader2 className="mr-2 animate-spin" /> {t("please-wait")}
+            </Button>
+          )}
+        </div>
+        {type.startsWith("ph_analysis_") && (
+          <div className="p-2">
+            <p className="mb-2 font-bold print:hidden">
+              {t("text-to-analyse")}
+            </p>
+            <Textarea
+              className="print:hidden"
+              value={textToAnalyse}
+              onChange={(v) => setTextToAnalyse(v.target.value)}
+            />
+          </div>
+        )}
+        {type !== "ph_complex" && type !== "es_complex" && (
+          <div className="print:hidden">
+            <div>
+              <p className="m-2 font-bold">
+                {t("variables")} ({variables.length})
+              </p>
+              <Button
+                className="h-auto"
+                variant="link"
+                onClick={() =>
+                  setVariables([
+                    ...variables,
+                    { name: "", value: "", id: uuidv4() },
+                  ])
+                }
+              >
+                {t("add-variable")}
+              </Button>
+            </div>
+            <div>
+              {variables.length > 0 &&
+                variables.map((el, i) => (
+                  <VariableItem
+                    functions={{
+                      setVar: editVariable,
+                      removeVar: removeVariable,
+                    }}
+                    key={el.id}
+                    lng={lng}
+                    index={i}
+                    item={el}
+                  />
+                ))}
+            </div>
+          </div>
+        )}
+        <div className="m-2 print:hidden">
+          <p className="font-bold">{t("gen-settings")}</p>
+          <p className="flex items-center space-x-2">
+            <PenBox height={14} />
+            <span>{t(typesToString(type))}</span>
+          </p>
+          <p className="flex items-center space-x-2">
+            <Lightbulb height={14} />
+            <span>{getModelString(model)}</span>
+          </p>
+          <p className="flex items-center space-x-2">
+            <PencilRuler height={14} />
+            <span>{t(tone)}</span>
+          </p>
+        </div>
+      </section>
 
       {!errorVis && res && (
         <section
@@ -849,7 +809,7 @@ export default function Create(props: { lng: string }) {
           <ResultDisplayer is_generating={isGen} res={res} type={type} />
         </section>
       )}
-      {!welcome && !errorVis && !res && (
+      {!errorVis && !res && (
         <section
           className={
             "m-2 flex grow items-center justify-center rounded-md border bg-white p-2 shadow-sm dark:bg-slate-900/50 print:text-black print:shadow-none"

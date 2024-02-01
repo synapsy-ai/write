@@ -69,11 +69,16 @@ module.exports = {
           "0%": { transform: "translateY(2rem) translateX(-1.5rem)" },
           "100%": { transform: "translateY(0) translateX(0)" },
         },
+        background: {
+          "0%, 100%": { backgroundPosition: "0% 50%" },
+          "50%": { backgroundPosition: "100% 50%" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
         rocket: "rocket-launch 0.7s ease-in-out",
+        border: "background ease infinite",
       },
     },
   },

@@ -18,6 +18,10 @@ export function getModelString(id: string) {
       return "GPT-4V";
     case "gpt-4-vision-preview":
       return "GPT-4V (Preview)";
+    case "gpt-4-0125-preview":
+      return "GPT-4 Preview (January 2024)";
+    case "gpt-4-turbo-preview":
+      return "GPT-4 Turbo (Preview)";
     case "gpt-3.5-turbo-16k":
       return "GPT-3.5 Turbo (16k)";
     case "gpt-3.5-turbo-0613":
