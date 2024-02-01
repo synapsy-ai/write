@@ -1,4 +1,3 @@
-import { NextResponse } from "next/server";
 import OpenAI from "openai";
 import { OpenAIStream, StreamingTextResponse } from "ai";
 
@@ -20,7 +19,7 @@ export async function POST(req: Request) {
 
   const res = await openai.chat.completions.create({
     model: model,
-    messages,
+    messages: messages,
     temperature: temperature,
     top_p: top_p,
     frequency_penalty: frequency_penalty,
