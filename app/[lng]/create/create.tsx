@@ -207,7 +207,7 @@ export default function Create(props: { lng: string }) {
     setIsGen(false);
 
     // 1. Generate the outline
-    const outline_res = await getStandardGeneration(
+    const outline = await getStandardGeneration(
       getSystem("ph_analysis_outline", lng, tone),
       getPrompt("ph_analysis_outline", lng, textToAnalyse) + "\n" + prompt,
       apiKey,
@@ -219,8 +219,8 @@ export default function Create(props: { lng: string }) {
         freqP: freqP,
       },
     );
-    const outline = await outline_res.text();
-    if (outline_res instanceof OpenAI.APIError) {
+
+    if (outline instanceof OpenAI.APIError) {
       setErrorMsg(outline);
       setErrorVis(true);
       setInProgress(false);
@@ -311,7 +311,7 @@ export default function Create(props: { lng: string }) {
     setInProgress(true);
     setErrorVis(false);
     setIsGen(false);
-    const outline_res = await getStandardGeneration(
+    const outline = await getStandardGeneration(
       getSystem("es_complex_outline", lng, tone),
       getPrompt("es_outline", lng, prompt),
       apiKey,
@@ -323,9 +323,8 @@ export default function Create(props: { lng: string }) {
         freqP: freqP,
       },
     );
-    const outline = await outline_res.text();
 
-    if (outline_res instanceof OpenAI.APIError) {
+    if (outline instanceof OpenAI.APIError) {
       setErrorMsg(outline);
       setErrorVis(true);
       setInProgress(false);
@@ -458,7 +457,7 @@ export default function Create(props: { lng: string }) {
     setInProgress(true);
     setIsGen(false);
     setProgressBarVis(true);
-    const outline_res = await getStandardGeneration(
+    const outline = await getStandardGeneration(
       getSystem("ph_complex_outline", lng, tone),
       getPrompt("ph_outline", lng, prompt),
       apiKey,
@@ -470,7 +469,6 @@ export default function Create(props: { lng: string }) {
         freqP: freqP,
       },
     );
-    const outline = await outline_res.text();
     setProgress(16);
     setInProgress(false);
     setRes("");
