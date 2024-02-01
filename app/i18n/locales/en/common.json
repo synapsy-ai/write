@@ -44,6 +44,7 @@
   "import": "Import",
   "error-occured": "An error has occured",
   "features": "Features",
+  "features-desc": "Discover the versatile features of Synapsy Write.",
   "feature-ai": "OpenAI's GPT Generative AI",
   "feature-ai-desc": "Harness the state-of-the-art AI technology provided by OpenAI to generate high-quality text based on your input.",
   "feature-versatile": "Versatile",
@@ -154,5 +155,14 @@
   "see-plans": "See plans",
   "unlock-ai-sub": "Unlock the power of AI by choosing a subscription plan.",
   "privacy-policy": "Privacy policy",
-  "terms-sell": "Terms and conditions of sale"
+  "terms-sell": "Terms and conditions of sale",
+  "variables-desc": "Use variables to create interactive and reusable generations.",
+  "tables": "Tables",
+  "tables-desc": "Generate complex tables that fit your needs from a single prompt.",
+  "essays": "Essays",
+  "essays-desc": "Generate complex and realist essays using Write's custom generation engine.",
+  "unlimited-access": "Unlimited access",
+  "unlimited-access-desc": "Get unlimited access and infinite generations by subscribing to a plan.",
+  "github-desc": "Write's repo is publicly available on GitHub.",
+  "synapsy-browse": "Browse other projects of Synapsy."
 }
