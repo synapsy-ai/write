@@ -13,10 +13,12 @@ jobs:
           echo NEXT_PUBLIC_SUPABASE_ANON_KEY=$ENV_VAR_1 >> .env
           echo NEXT_PUBLIC_SUPABASE_URL=$ENV_VAR_2 >> .env
           echo SUPABASE_SERVICE_ROLE_KEY=$ENV_VAR_3 >> .env
+          echo OPENAI_API_KEY=$ENV_VAR_4 >> .env
         env:
           ENV_VAR_1: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
           ENV_VAR_2: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
           ENV_VAR_3: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          ENV_VAR_4: ${{ secrets.OPENAI_API_KEY }}
       - name: Setup Node.js
         uses: actions/setup-node@v2
         with:
