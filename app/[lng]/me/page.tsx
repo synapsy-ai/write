@@ -66,7 +66,7 @@ export default async function Account({
   };
 
   return (
-    <section className="px-2 pb-16 sm:pb-16 sm:pt-16">
+    <main className="mt-2 min-h-full space-y-2 px-2 pb-20 sm:mt-16 sm:pb-0">
       <section className="flex items-center space-x-2">
         <CircleUser />
         <span>
@@ -203,7 +203,7 @@ export default async function Account({
           </form>
         </Card>
       </div>
-    </section>
+    </main>
   );
 }
 
