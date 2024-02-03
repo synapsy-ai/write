@@ -9,6 +9,7 @@ import { useState } from "react";
 import { Button } from "./ui/button";
 import { cn } from "@/lib/utils";
 import { useTranslation } from "@/app/i18n/client";
+import PricingFeatures from "./features";
 
 type Subscription = Database["public"]["Tables"]["subscriptions"]["Row"];
 type Product = Database["public"]["Tables"]["products"]["Row"];
@@ -28,6 +29,7 @@ interface Props {
   user: User | null | undefined;
   products: ProductWithPrices[];
   subscriptions: SubscriptionWithProduct[] | null;
+  lng: string;
 }
 
 type BillingInterval = "lifetime" | "year" | "month";
@@ -37,8 +39,9 @@ export default function Pricing({
   user,
   products,
   subscriptions,
+  lng,
 }: Props) {
-  const { t } = useTranslation("fr", "common");
+  const { t } = useTranslation(lng, "common");
   const intervals = Array.from(
     new Set(
       products.flatMap((product) =>
@@ -106,7 +109,7 @@ export default function Pricing({
           <h2 className="text-center text-2xl font-bold">
             {t("available-products")}
           </h2>
-          <p className="text-center">{t("available-products-desc")}</p>
+          <p className="text-center">{t("synapsy-available-products-desc")}</p>
           <div className="relative mt-6 flex self-center rounded-lg border p-0.5 dark:border-slate-800 dark:bg-slate-900 sm:mt-8">
             {intervals.includes("month") && (
               <button
@@ -116,7 +119,7 @@ export default function Pricing({
                   billingInterval === "month"
                     ? "relative w-1/2 border-slate-200 bg-slate-100 shadow-sm dark:border-slate-800 dark:bg-slate-700 dark:text-white"
                     : "relative ml-0.5 w-1/2 border border-transparent text-slate-400"
-                } m-1 whitespace-nowrap rounded-md py-2 text-sm font-medium focus:z-10 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 sm:w-auto sm:px-8`}
+                } m-1 whitespace-nowrap rounded-md py-2 text-sm font-medium focus:z-10 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50 sm:w-auto sm:px-8`}
               >
                 {t("monthly-billing")}
               </button>
@@ -129,7 +132,7 @@ export default function Pricing({
                   billingInterval === "year"
                     ? "relative w-1/2 border-slate-200 bg-slate-100 shadow-sm dark:border-slate-800 dark:bg-slate-700 dark:text-white"
                     : "relative ml-0.5 w-1/2 border border-transparent text-slate-400"
-                } m-1 whitespace-nowrap rounded-md py-2 text-sm font-medium focus:z-10 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 sm:w-auto sm:px-8`}
+                } m-1 whitespace-nowrap rounded-md py-2 text-sm font-medium focus:z-10 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50 sm:w-auto sm:px-8`}
               >
                 {t("yearly-billing")}
               </button>
@@ -144,18 +147,21 @@ export default function Pricing({
               (price) => price.interval === billingInterval,
             );
             if (!price) return null;
-            const priceString = new Intl.NumberFormat("en-US", {
-              style: "currency",
-              currency: price.currency!,
-              minimumFractionDigits: 0,
-            }).format((price?.unit_amount || 0) / 100);
+            const priceString = new Intl.NumberFormat(
+              lng === "fr" ? "fr-FR" : "en-US",
+              {
+                style: "currency",
+                currency: price.currency!,
+                minimumFractionDigits: 2,
+              },
+            ).format((price?.unit_amount || 0) / 100);
             return (
               <div
                 key={product.id}
                 className={cn(
                   "divide-y divide-slate-100 rounded-lg border border-slate-300 bg-white shadow-sm dark:divide-slate-600 dark:border-slate-700 dark:bg-slate-900",
                   {
-                    "border border-blue-500": subscriptions
+                    "border border-indigo-500": subscriptions
                       ? isSubscribedToProduct(product.id)
                       : product.name === "Freelancer",
                   },
@@ -173,9 +179,10 @@ export default function Pricing({
                       {priceString}
                     </span>
                     <span className="text-base font-medium dark:text-slate-100">
-                      /{billingInterval}
+                      /{t(billingInterval)}
                     </span>
                   </p>
+                  <PricingFeatures lng={lng} productName={product.name} />
                   <Button
                     type="button"
                     onClick={() => handleCheckout(price)}

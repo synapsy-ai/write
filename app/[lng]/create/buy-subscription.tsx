@@ -43,6 +43,7 @@ export default function BuySubscription(props: {
       </section>
       <section className="flex justify-center space-x-2">
         <Pricing
+          lng={props.lng}
           user={props.session?.user}
           products={props.products}
           session={props.session}

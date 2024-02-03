@@ -54,7 +54,7 @@ export default function Home({ params: { lng } }: { params: { lng: any } }) {
             </Button>
           </div>
 
-          <div className="animate-border m-5 inline-block rounded-[10px] bg-gradient-to-r from-indigo-500 via-purple-500 to-indigo-500 bg-[length:_400%_400%] p-[1px] shadow-xl [animation-duration:_3s;]">
+          <div className="m-5 inline-block animate-border rounded-[10px] bg-gradient-to-r from-indigo-500 via-purple-500 to-indigo-500 bg-[length:_400%_400%] p-[1px] shadow-xl [animation-duration:_3s;]">
             <picture>
               <source
                 media="(prefers-color-scheme: dark)"
@@ -83,6 +83,9 @@ export default function Home({ params: { lng } }: { params: { lng: any } }) {
           <p className="text-lg text-slate-700 dark:text-slate-300">
             {t("features-desc")}
           </p>
+          <Link href="/pricing">
+            <Button variant="link">{t("pricing")}</Button>
+          </Link>
           <Spotlight className="grid max-w-6xl grid-cols-1 gap-4 p-4 sm:grid-cols-2">
             <SpotlightCard className="flex h-[200px] flex-col justify-center border border-slate-200 shadow-md dark:border-slate-700">
               <div className="p-4">
