@@ -45,7 +45,7 @@
   "error-occured": "An error has occured",
   "features": "Features",
   "features-desc": "Discover the versatile features of Synapsy Write.",
-  "feature-ai": "OpenAI's GPT Generative AI",
+  "feature-ai": "OpenAI's GPT-4 Generative AI",
   "feature-ai-desc": "Harness the state-of-the-art AI technology provided by OpenAI to generate high-quality text based on your input.",
   "feature-versatile": "Versatile",
   "feature-versatile-desc": "Create different types of writing from a single instruction. Write lets you create emails, paragraphs, essays and much more!",
@@ -142,6 +142,7 @@
   "products-available": "You have bought/subscribed to some of our products.",
   "available-products": "Available products",
   "available-products-desc": "Find all available products and plans of Peyronnet Group.",
+  "synapsy-available-products-desc": "Find all available plans of Synapsy Write.",
   "subscribe": "Subscribe",
   "manage": "Manage",
   "monthly-billing": "Monthly billing",
@@ -179,5 +180,12 @@
   "password-button-label": "Send reset password instructions",
   "password-loading-button-label": "Sending reset instructions ...",
   "password-link-text": "Forgot your password?",
-  "password-confirmation-text": "Check your email for the password reset link"
+  "password-confirmation-text": "Check your email for the password reset link",
+  "pricing": "Pricing",
+  "text-analysis": "Text analysis",
+  "variable-editor": "Variable editor",
+  "table-generator": "Table generator",
+  "advanced-instructions": "Advanced model instructions",
+  "year": "year",
+  "month": "month"
 }

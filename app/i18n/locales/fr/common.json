@@ -45,7 +45,7 @@
   "error-occured": "Une erreur s'est produite",
   "features": "Fonctionnalités",
   "features-desc": "Découvrez les fonctionalités polyvalentes Synapsy Write.",
-  "feature-ai": "IA GPT Générative d'OpenAI",
+  "feature-ai": "IA GPT-4 Générative d'OpenAI",
   "feature-ai-desc": "Exploitez la technologie d'IA de pointe fournie par OpenAI pour générer un texte de haute qualité à partir de vos données",
   "feature-versatile": "Polyvalent",
   "feature-versatile-desc": "Créez différents types d'écrits à partir d'une seule instruction. Write vous permet de créer des courriels, des paragraphes, des essais et bien plus encore !",
@@ -141,7 +141,8 @@
   "email-notify": "Nous vous enverrons un courriel pour vérifier le changement.",
   "products-available": "Vous avez acheté/souscrit à certains de nos produits.",
   "available-products": "Produits disponibles",
-  "available-products-desc": "Trouver tous les produits et abonnements disponibles du Groupe Peyronnet",
+  "available-products-desc": "Trouvez tous les produits et abonnements disponibles du Groupe Peyronnet",
+  "synapsy-available-products-desc": "Trouvez tous les abonnements disponibles de Synapsy Write.",
   "subscribe": "Subscribe",
   "manage": "Gérer",
   "monthly-billing": "Facturation mensuelle",
@@ -176,5 +177,12 @@
   "password-button-label": "Envoyer les instructions de réinitialisation du mot de passe",
   "password-loading-button-label": "Envoi des instructions de réinitialisation en cours...",
   "password-link-text": "Mot de passe oublié ?",
-  "password-confirmation-text": "Vérifiez votre mail pour le lien de réinitialisation du mot de passe"
+  "password-confirmation-text": "Vérifiez votre mail pour le lien de réinitialisation du mot de passe",
+  "pricing": "Tarifs",
+  "text-analysis": "Analyse de texte",
+  "variable-editor": "Editeur de variables",
+  "table-generator": "Générateur de tableaux",
+  "advanced-instructions": "Instructions de modèle avancées",
+  "year": "an",
+  "month": "mois"
 }
