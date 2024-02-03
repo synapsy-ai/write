@@ -67,13 +67,13 @@ export default function Pricing({
   const handleCheckout = async (price: Price) => {
     setPriceIdLoading(price.id);
     if (!user) {
-      return router.push("/login");
+      return router.push(`/${lng}/login`);
     }
 
     if (subscriptions) {
       for (let i = 0; i < subscriptions?.length; i++) {
         if (subscriptions[i]?.prices?.product_id === price.product_id) {
-          return router.push("/me");
+          return router.push("`/${lng}/me`");
         }
       }
     }
