@@ -83,7 +83,7 @@ export default function Home({ params: { lng } }: { params: { lng: any } }) {
           <p className="text-lg text-slate-700 dark:text-slate-300">
             {t("features-desc")}
           </p>
-          <Link href="/pricing">
+          <Link href={`/${lng}/pricing`}>
             <Button variant="link">{t("pricing")}</Button>
           </Link>
           <Spotlight className="grid max-w-6xl grid-cols-1 gap-4 p-4 sm:grid-cols-2">
