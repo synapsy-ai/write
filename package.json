@@ -43,7 +43,7 @@
     "next-themes": "^0.2.1",
     "openai": "^4.26.0",
     "react": "latest",
-    "react-cookie": "^7.0.1",
+    "react-cookie": "^7.0.2",
     "react-dom": "latest",
     "react-i18next": "^14.0.1",
     "stripe": "^14.14.0",
