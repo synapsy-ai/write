@@ -5,6 +5,7 @@ export interface Variable {
 }
 
 export function getVariableString(variables: Variable[]): string {
+  if (variables.length === 0) return "";
   let result: string = " Data: ";
   for (let i = 0; i < variables.length; i++) {
     if (
