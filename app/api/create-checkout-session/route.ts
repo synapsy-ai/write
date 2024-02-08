@@ -8,7 +8,12 @@ import { Database } from "@/types_db";
 export async function POST(req: Request) {
   if (req.method === "POST") {
     // 1. Destructure the price and quantity from the POST body
-    const { price, quantity = 1, metadata = {} } = await req.json();
+    const {
+      price,
+      trial = false,
+      quantity = 1,
+      metadata = {},
+    } = await req.json();
 
     try {
       // 2. Get the user from Supabase auth
@@ -27,7 +32,6 @@ export async function POST(req: Request) {
       let session;
       if (price.type === "recurring") {
         session = await stripe.checkout.sessions.create({
-          payment_method_types: ["card"],
           billing_address_collection: "required",
           customer,
           customer_update: {
@@ -41,9 +45,12 @@ export async function POST(req: Request) {
           ],
           mode: "subscription",
           allow_promotion_codes: true,
-          subscription_data: {
-            metadata,
-          },
+          subscription_data: trial
+            ? {
+                trial_period_days: 2,
+                metadata,
+              }
+            : { metadata },
           success_url: `${getURL()}/me`,
           cancel_url: `${getURL()}/`,
         });
@@ -77,7 +84,7 @@ export async function POST(req: Request) {
           JSON.stringify({
             error: { statusCode: 500, message: "Session is not defined" },
           }),
-          { status: 500 }
+          { status: 500 },
         );
       }
     } catch (err: any) {
