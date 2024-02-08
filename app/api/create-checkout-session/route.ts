@@ -33,6 +33,7 @@ export async function POST(req: Request) {
       if (price.type === "recurring") {
         session = await stripe.checkout.sessions.create({
           billing_address_collection: "required",
+          payment_method_configuration: "pmc_1MyIY4IQ9vVwtUkdSG7KXCye",
           customer,
           customer_update: {
             address: "auto",
