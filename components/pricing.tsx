@@ -73,15 +73,23 @@ export default function Pricing({
     if (subscriptions) {
       for (let i = 0; i < subscriptions?.length; i++) {
         if (subscriptions[i]?.prices?.product_id === price.product_id) {
-          return router.push("`/${lng}/me`");
+          return router.push(`/${lng}/me`);
         }
       }
     }
-
+    let trial = true;
+    if (subscriptions) {
+      for (let i = 0; i < subscriptions.length; i++) {
+        if (subscriptions[i].trial_end) {
+          trial = false;
+          return;
+        }
+      }
+    }
     try {
       const { sessionId } = await postData({
         url: "/api/create-checkout-session",
-        data: { price },
+        data: { price, trial },
       });
 
       const stripe = await getStripe();
