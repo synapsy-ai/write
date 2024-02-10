@@ -98,7 +98,7 @@ export default function Create(props: { lng: string }) {
   const [textToAnalyse, setTextToAnalyse] = useState("");
 
   async function getMs() {
-    let m = await getModels(apiKey);
+    let m = await getModels();
     let avm: string[] = [];
     for (let i = 0; i < m.length; i++) {
       if (m[i].id.startsWith("gpt")) avm.push(m[i].id);
