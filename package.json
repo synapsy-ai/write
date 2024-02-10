@@ -41,7 +41,7 @@
     "next": "14.0.1",
     "next-pwa": "^5.6.0",
     "next-themes": "^0.2.1",
-    "openai": "^4.26.1",
+    "openai": "^4.27.0",
     "react": "latest",
     "react-cookie": "^7.0.2",
     "react-dom": "latest",
