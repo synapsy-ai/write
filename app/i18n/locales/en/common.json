@@ -188,5 +188,12 @@
   "advanced-instructions": "Advanced model instructions",
   "year": "year",
   "month": "month",
-  "free-trial": "Free trial"
+  "free-trial": "Free trial",
+  "formats": "Generation Formats",
+  "dynamic-gens": "Dynamic Generations",
+  "gens": "Generations",
+  "history": "History",
+  "export-gens": "Export Generations",
+  "import-gens": "Import Generations",
+  "print-generations": "Print Generations"
 }

@@ -185,5 +185,12 @@
   "advanced-instructions": "Instructions de modèle avancées",
   "year": "an",
   "month": "mois",
-  "free-trial": "Essai gratuit"
+  "free-trial": "Essai gratuit",
+  "formats": "Formats de Génération",
+  "dynamic-gens": "Générations dynamiques",
+  "gens": "Générations",
+  "history": "Historique",
+  "export-gens": "Exporter des Générations",
+  "import-gens": "Importer des Générations",
+  "print-generations": "Impression des Générations"
 }
