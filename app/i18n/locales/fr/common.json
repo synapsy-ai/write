@@ -143,7 +143,7 @@
   "available-products": "Produits disponibles",
   "available-products-desc": "Trouvez tous les produits et abonnements disponibles du Groupe Peyronnet",
   "synapsy-available-products-desc": "Trouvez tous les abonnements disponibles de Synapsy Write.",
-  "subscribe": "Subscribe",
+  "subscribe": "Souscrire",
   "manage": "Gérer",
   "monthly-billing": "Facturation mensuelle",
   "yearly-billing": "Facturation annuelle",
@@ -184,5 +184,6 @@
   "table-generator": "Générateur de tableaux",
   "advanced-instructions": "Instructions de modèle avancées",
   "year": "an",
-  "month": "mois"
+  "month": "mois",
+  "free-trial": "Essai gratuit"
 }

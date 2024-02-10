@@ -176,9 +176,18 @@ export default function Pricing({
                 )}
               >
                 <div className="p-6">
-                  <h2 className="text-2xl font-semibold leading-6 dark:text-white">
-                    {product.name}
-                  </h2>
+                  <span className="flex items-center space-x-2">
+                    <h2 className="text-2xl font-semibold leading-6 dark:text-white">
+                      {product.name}
+                    </h2>
+                    {subscriptions?.length === 0 ? (
+                      <p className="rounded-full bg-indigo-500 px-2 text-sm text-white">
+                        {t("free-trial")}
+                      </p>
+                    ) : (
+                      <></>
+                    )}
+                  </span>
                   <p className="mt-4 dark:text-slate-300">
                     {product.description}
                   </p>
