@@ -195,5 +195,7 @@
   "history": "History",
   "export-gens": "Export Generations",
   "import-gens": "Import Generations",
-  "print-generations": "Print Generations"
+  "print-generations": "Print Generations",
+  "pricing-desc": "You need a subscription plan to use Synapsy Write.",
+  "see-pricing": "See plans"
 }

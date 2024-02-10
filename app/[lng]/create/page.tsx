@@ -18,43 +18,14 @@ export default async function CreatePage({
     getActiveProductsWithPrices(),
     getSubscriptions(),
   ]);
-  if (!session) {
-    return <NoSession lng={lng} />;
-  }
 
-  if (!subscriptions || subscriptions.length < 1) {
-    return (
-      <>
-        <BuySubscription
-          session={session}
-          products={products}
-          subscriptions={subscriptions}
-          lng={lng}
-        />
-        <SiteFooter params={{ lng: lng }} />
-      </>
-    );
-  }
-  for (let i = 0; i < subscriptions?.length; i++) {
-    if (
-      !subscriptions[i].prices?.products?.name
-        ?.toString()
-        .toLowerCase()
-        .includes("write")
-    ) {
-      return (
-        <>
-          <BuySubscription
-            session={session}
-            products={products}
-            subscriptions={subscriptions}
-            lng={lng}
-          />
-          <SiteFooter params={{ lng: lng }} />
-        </>
-      );
-    }
-  }
-
-  return <Create lng={lng} />;
+  return (
+    <Create
+      session={session}
+      products={products}
+      subscriptions={subscriptions}
+      user={session?.user}
+      lng={lng}
+    />
+  );
 }

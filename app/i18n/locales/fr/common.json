@@ -192,5 +192,7 @@
   "history": "Historique",
   "export-gens": "Exporter des Générations",
   "import-gens": "Importer des Générations",
-  "print-generations": "Impression des Générations"
+  "print-generations": "Impression des Générations",
+  "pricing-desc": "Vous avez besoins d'un abonnement pour utiliser Synapsy Write.",
+  "see-pricing": "Voir les tarifs"
 }

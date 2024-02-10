@@ -63,8 +63,41 @@ import { Variable, getVariableString } from "@/lib/variable";
 import VariableItem from "@/components/variable-item";
 import FormatDialog from "@/components/format-dialog";
 import { Textarea } from "@/components/ui/textarea";
+import { Database } from "@/types_db";
+import { Session, User } from "@supabase/supabase-js";
+import Link from "next/link";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { DialogClose } from "@radix-ui/react-dialog";
+import PeyronnetLogo from "@/components/peyronnet-logo";
 
-export default function Create(props: { lng: string }) {
+type Subscription = Database["public"]["Tables"]["subscriptions"]["Row"];
+type Product = Database["public"]["Tables"]["products"]["Row"];
+type Price = Database["public"]["Tables"]["prices"]["Row"];
+interface ProductWithPrices extends Product {
+  prices: Price[];
+}
+interface PriceWithProduct extends Price {
+  products: Product | null;
+}
+interface SubscriptionWithProduct extends Subscription {
+  prices: PriceWithProduct | null;
+}
+interface Props {
+  session: Session | null;
+  user: User | null | undefined;
+  products: ProductWithPrices[];
+  subscriptions: SubscriptionWithProduct[] | null;
+  lng: string;
+}
+export default function Create(props: Props) {
   const lng: any = props.lng;
   const { t } = useTranslation(lng, "common");
   const [type, setType] = useState("para");
@@ -573,6 +606,20 @@ export default function Create(props: { lng: string }) {
     setVariables([...variables]);
   }
 
+  function isSubscribed(): boolean {
+    if (!props.session || !props.subscriptions) return false;
+    for (let i = 0; i < props.subscriptions?.length; i++) {
+      if (
+        props.subscriptions[i].prices?.products?.name
+          ?.toLowerCase()
+          .includes("write")
+      ) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   return (
     <main className="mt-2 flex min-h-full flex-col pb-16 sm:mt-16 sm:pb-0 print:mt-0">
       <section className="ml-2 flex items-center space-x-2">
@@ -709,28 +756,95 @@ export default function Create(props: { lng: string }) {
               </SheetContent>
             </Sheet>
           </div>
-          {!inProgress ? (
-            <Button
-              disabled={
-                type.startsWith("ph_analysis_")
-                  ? textToAnalyse.replace(" ", "") == ""
-                  : prompt.replace(" ", "") == ""
-              }
-              className="group space-x-1 disabled:cursor-not-allowed"
-              onClick={createButton}
-            >
-              <Sparkles
-                className="group-hover:animate-pulse group-hover:duration-700"
-                height={16}
-                width={16}
-              />
-              <p className="font-bold">{t("create")}</p>
-            </Button>
+          {isSubscribed() ? (
+            <>
+              {!inProgress ? (
+                <Button
+                  disabled={
+                    type.startsWith("ph_analysis_")
+                      ? textToAnalyse.replace(" ", "") == ""
+                      : prompt.replace(" ", "") == ""
+                  }
+                  className="group space-x-1 disabled:cursor-not-allowed"
+                  onClick={createButton}
+                >
+                  <Sparkles
+                    className="group-hover:animate-pulse group-hover:duration-700"
+                    height={16}
+                    width={16}
+                  />
+                  <p className="font-bold">{t("create")}</p>
+                </Button>
+              ) : (
+                <Button disabled className="cursor-not-allowed">
+                  {" "}
+                  <Loader2 className="mr-2 animate-spin" /> {t("please-wait")}
+                </Button>
+              )}
+            </>
           ) : (
-            <Button disabled className="cursor-not-allowed">
-              {" "}
-              <Loader2 className="mr-2 animate-spin" /> {t("please-wait")}
-            </Button>
+            <Dialog>
+              <DialogTrigger className="w-auto">
+                <Button className="group w-full space-x-1 disabled:cursor-not-allowed sm:w-auto">
+                  <Sparkles
+                    className="group-hover:animate-pulse group-hover:duration-700"
+                    height={16}
+                    width={16}
+                  />
+                  <p className="font-bold">{t("create")}</p>
+                </Button>
+              </DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
+                  {props.session ? (
+                    <section className="m-4">
+                      <div className="flex justify-center">
+                        <PeyronnetLogo width={250} />
+                      </div>
+                      <h2 className="text-center">{t("products-desc")}</h2>
+                      <p className="max-w-3xl text-center">
+                        {t("pricing-desc")}
+                      </p>
+                    </section>
+                  ) : (
+                    <section className="m-4 flex flex-col items-center space-y-2">
+                      <div className="flex items-center">
+                        <PeyronnetLogo width={250} />
+                      </div>
+                      <span className="rounded-full border border-violet-600 px-2 text-sm font-bold text-violet-600 dark:bg-violet-600/10">
+                        {t("new")}
+                      </span>
+                      <h2 className="text-center">{t("unlock-power-ai")}</h2>
+                      <p className="max-w-3xl text-center">
+                        {t("account-desc")}
+                      </p>
+                    </section>
+                  )}
+                </DialogHeader>
+                <DialogFooter>
+                  <section className="space-x-2">
+                    <DialogClose>
+                      <Button variant="link">{t("close")}</Button>
+                    </DialogClose>
+                    {props.session ? (
+                      <Link href={`/${lng}/pricing`}>
+                        <Button>{t("see-pricing")}</Button>
+                      </Link>
+                    ) : (
+                      <>
+                        {" "}
+                        <Link href="login">
+                          <Button variant="outline">{t("sign-in")}</Button>
+                        </Link>
+                        <Link href="https://account.peyronnet.group/login">
+                          <Button>{t("sign-up")}</Button>
+                        </Link>
+                      </>
+                    )}
+                  </section>
+                </DialogFooter>
+              </DialogContent>
+            </Dialog>
           )}
         </div>
         {type.startsWith("ph_analysis_") && (
