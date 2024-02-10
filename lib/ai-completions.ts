@@ -364,13 +364,13 @@ export function getComplexEssayPrompts(
   }
 }
 
-export async function getModels(key: string) {
-  const openai = new OpenAI({
-    apiKey: process.env.OPENAI_API_KEY,
-    dangerouslyAllowBrowser: true, // defaults to process.env["OPENAI_API_KEY"]
-  });
-  let models = await openai.models.list();
-  return models.data;
+export async function getModels() {
+  return (
+    await fetch("/api/models", {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    })
+  ).json();
 }
 
 export type Template = "para" | "email" | "blog" | "ideas";

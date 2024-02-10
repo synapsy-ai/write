@@ -12,7 +12,7 @@ export default function SiteFooter({
 }) {
   const { t } = useTranslation(lng, "common");
   return (
-    <footer>
+    <footer className="pb-16 sm:pb-0">
       <div className="flex flex-col justify-center space-y-2 px-5 py-10 sm:grid sm:grid-cols-3">
         <div className="flex items-center justify-center sm:justify-normal">
           <Link href="/">

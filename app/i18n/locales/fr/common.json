@@ -1,6 +1,6 @@
 {
   "title": "Write",
-  "introducing-synapsy": "Voici Synapsy Write",
+  "introducing-synapsy": "Votre copilote d'écriture",
   "introducing-synapsy-text": "Synapsy Write est une nouvelle manière de rédiger du texte, en utilisant la puissance de l'IA.",
   "launch": "Lancer",
   "home": "Accueil",
@@ -143,7 +143,7 @@
   "available-products": "Produits disponibles",
   "available-products-desc": "Trouvez tous les produits et abonnements disponibles du Groupe Peyronnet",
   "synapsy-available-products-desc": "Trouvez tous les abonnements disponibles de Synapsy Write.",
-  "subscribe": "Subscribe",
+  "subscribe": "Souscrire",
   "manage": "Gérer",
   "monthly-billing": "Facturation mensuelle",
   "yearly-billing": "Facturation annuelle",
@@ -184,5 +184,15 @@
   "table-generator": "Générateur de tableaux",
   "advanced-instructions": "Instructions de modèle avancées",
   "year": "an",
-  "month": "mois"
+  "month": "mois",
+  "free-trial": "Essai gratuit",
+  "formats": "Formats de Génération",
+  "dynamic-gens": "Générations dynamiques",
+  "gens": "Générations",
+  "history": "Historique",
+  "export-gens": "Exporter des Générations",
+  "import-gens": "Importer des Générations",
+  "print-generations": "Impression des Générations",
+  "pricing-desc": "Vous avez besoins d'un abonnement pour utiliser Synapsy Write.",
+  "see-pricing": "Voir les tarifs"
 }

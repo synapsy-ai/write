@@ -1,6 +1,6 @@
 {
   "title": "Write",
-  "introducing-synapsy": "Introducing Synapsy Write",
+  "introducing-synapsy": "Your writing copilot",
   "introducing-synapsy-text": "Synapsy Write is a new way of writing text, using the power of AI.",
   "launch": "Launch",
   "home": "Home",
@@ -187,5 +187,15 @@
   "table-generator": "Table generator",
   "advanced-instructions": "Advanced model instructions",
   "year": "year",
-  "month": "month"
+  "month": "month",
+  "free-trial": "Free trial",
+  "formats": "Generation Formats",
+  "dynamic-gens": "Dynamic Generations",
+  "gens": "Generations",
+  "history": "History",
+  "export-gens": "Export Generations",
+  "import-gens": "Import Generations",
+  "print-generations": "Print Generations",
+  "pricing-desc": "You need a subscription plan to use Synapsy Write.",
+  "see-pricing": "See plans"
 }

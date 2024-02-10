@@ -32,6 +32,8 @@ export function getModelString(id: string) {
       return "GPT-3.5 Turbo (March 2023)";
     case "gpt-3.5-turbo-1106":
       return "GPT-3.5 Turbo (November 2023)";
+    case "gpt-3.5-turbo-0125":
+      return "GPT-3.5 Turbo (January 2024)";
     case "gpt-3.5-turbo-instruct":
       return "GPT-3.5 Turbo Instruct";
     case "gpt-3.5-turbo-instruct-0914":

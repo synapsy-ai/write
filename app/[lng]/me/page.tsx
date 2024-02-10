@@ -133,7 +133,7 @@ export default async function Account({
                 <Link
                   target="_blank"
                   rel="noopener noreferrer"
-                  href="https://account.peyronnet.group/products"
+                  href="https://write.peyronnet.group/pricing"
                 >
                   {t("products-desc")}
                 </Link>

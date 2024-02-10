@@ -179,3 +179,36 @@ html.dark table td:not(:first-child) {
     border-bottom: 1px solid black;
   }
 }
+
+table.features {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  border: 1px solid #e8e8e8;
+}
+
+html.dark table.features {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  border: 1px solid rgb(15 23 42);
+}
+
+table.features td {
+  padding: 10px 15px;
+  background: transparent;
+  text-align: left;
+  vertical-align: middle;
+  border-bottom: 1px solid #e8e8e8;
+}
+html.dark table.features td {
+  background: transparent;
+  border-bottom: 1px solid rgb(15 23 42);
+}
+
+table.features tr:first-child {
+  background: transparent;
+}
+html.dark table.features td:not(:first-child) {
+  border-left: 1px solid rgb(15 23 42);
+}

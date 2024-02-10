@@ -57,7 +57,7 @@ export default function SettingsPage({
   const [modelQuery, setModelQuery] = useState("");
   const apiKey = process?.env?.OPENAI_API_KEY || "";
   async function refreshModels() {
-    let m = await getModels(apiKey);
+    let m = await getModels();
     let avm: string[] = [];
     let avm2: string[] = [];
     for (let i = 0; i < m.length; i++) {
