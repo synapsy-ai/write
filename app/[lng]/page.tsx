@@ -49,11 +49,14 @@ export default function Home({ params: { lng } }: { params: { lng: any } }) {
                 <p>{t("launch")}</p>
               </Button>
             </Link>
-            <Button onClick={handleClick} variant="link">
-              {t("learn-more")}
-            </Button>
-          </div>
 
+            <Link href={lng + "/pricing"}>
+              <Button variant="link">{t("pricing")}</Button>
+            </Link>
+          </div>
+          <Button onClick={handleClick} variant="link">
+            {t("learn-more")}
+          </Button>
           <div className="m-5 inline-block animate-border rounded-[10px] bg-gradient-to-r from-indigo-500 via-purple-500 to-indigo-500 bg-[length:_400%_400%] p-[1px] shadow-xl [animation-duration:_3s;]">
             <picture>
               <source
