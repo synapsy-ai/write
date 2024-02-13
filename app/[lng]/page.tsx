@@ -83,7 +83,7 @@ export default function Home({ params: { lng } }: { params: { lng: any } }) {
           <h2 className="mt-8 text-center text-4xl font-normal sm:text-5xl">
             {t("features")}
           </h2>
-          <p className="text-lg text-slate-700 dark:text-slate-300">
+          <p className="text-center text-lg text-slate-700 dark:text-slate-300">
             {t("features-desc")}
           </p>
           <Link href={`/${lng}/pricing`}>

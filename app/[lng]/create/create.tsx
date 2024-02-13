@@ -822,7 +822,7 @@ export default function Create(props: Props) {
                   )}
                 </DialogHeader>
                 <DialogFooter>
-                  <section className="space-x-2">
+                  <section className="flex flex-col-reverse space-x-2 sm:flex-row">
                     <DialogClose>
                       <Button variant="link">{t("close")}</Button>
                     </DialogClose>
@@ -831,7 +831,7 @@ export default function Create(props: Props) {
                         <Button>{t("see-pricing")}</Button>
                       </Link>
                     ) : (
-                      <>
+                      <div className="flex justify-center space-x-2">
                         {" "}
                         <Link href="login">
                           <Button variant="outline">{t("sign-in")}</Button>
@@ -839,7 +839,7 @@ export default function Create(props: Props) {
                         <Link href="https://account.peyronnet.group/login">
                           <Button>{t("sign-up")}</Button>
                         </Link>
-                      </>
+                      </div>
                     )}
                   </section>
                 </DialogFooter>

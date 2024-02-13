@@ -70,7 +70,7 @@ export default function SiteFooter({
           </div>
         </div>
       </div>
-      <div className="flex flex-col items-center pb-4">
+      <div className="mx-4 flex flex-col items-center pb-4 sm:mx-0">
         <p className="text-center">
           v{version} - © {new Date().getFullYear()} Peyronnet Group and Synapsy
         </p>
