@@ -34,7 +34,7 @@
     "clsx": "^2.1.0",
     "cmdk": "^0.2.1",
     "gpt-token-utils": "^1.2.0",
-    "html-react-parser": "^5.1.2",
+    "html-react-parser": "^5.1.5",
     "i18next": "^23.8.2",
     "i18next-browser-languagedetector": "^7.2.0",
     "i18next-resources-to-backend": "^1.2.0",
