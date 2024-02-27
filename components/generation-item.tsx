@@ -136,13 +136,23 @@ export function GenerationItem(props: {
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent>
+                    {props.item.template !== "ideas" &&
+                    props.item.template !== "table" ? (
+                      <Link
+                        href={`/${props.lng}/generations/edit?id=${props.id}`}
+                      >
+                        <DropdownMenuItem>{t("edit")}</DropdownMenuItem>
+                      </Link>
+                    ) : (
+                      <></>
+                    )}
                     <DropdownMenuItem
                       onClick={() => {
                         removeFromHistory(props.id);
                         props.refresh();
                       }}
                     >
-                      Delete
+                      {t("delete")}
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>

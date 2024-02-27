@@ -197,5 +197,8 @@
   "import-gens": "Import Generations",
   "print-generations": "Print Generations",
   "pricing-desc": "You need a subscription plan to use Synapsy Write.",
-  "see-pricing": "See plans"
+  "see-pricing": "See plans",
+  "delete": "Delete",
+  "edit": "Edit",
+  "save": "Save"
 }

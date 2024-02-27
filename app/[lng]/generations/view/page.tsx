@@ -13,6 +13,7 @@ import { typesToString } from "@/lib/formats";
 import VariableItem from "@/components/variable-item";
 import { Variable } from "@/lib/variable";
 import VariableItemView from "@/components/variable-item-view";
+import Link from "next/link";
 
 export default function GenerationViewPage({
   params,
@@ -133,6 +134,11 @@ export default function GenerationViewPage({
             >
               <Copy size={16} />
             </Button>
+            <Link href={`/${params.lng}/generations/edit?id=${id}`}>
+              <Button variant="outline">
+                <Edit size={16} />
+              </Button>
+            </Link>
           </div>
         </section>
         {variables && variables.length > 0 ? (
