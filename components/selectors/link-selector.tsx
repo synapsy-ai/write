@@ -1,3 +1,4 @@
+"use client";
 import { cn } from "@/lib/utils";
 import { useEditor } from "novel";
 import { Check, Trash } from "lucide-react";
@@ -10,6 +11,7 @@ import {
 } from "react";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { Button } from "../ui/button";
+import { useTranslation } from "@/app/i18n/client";
 
 export function isValidUrl(url: string) {
   try {
@@ -32,9 +34,15 @@ export function getUrlFromString(str: string) {
 interface LinkSelectorProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  lng: string;
 }
 
-export const LinkSelector = ({ open, onOpenChange }: LinkSelectorProps) => {
+export const LinkSelector = ({
+  open,
+  onOpenChange,
+  lng,
+}: LinkSelectorProps) => {
+  const { t } = useTranslation(lng, "common");
   const inputRef = useRef<HTMLInputElement>(null);
   const { editor } = useEditor();
 
@@ -51,10 +59,10 @@ export const LinkSelector = ({ open, onOpenChange }: LinkSelectorProps) => {
           <p className="text-base">↗</p>
           <p
             className={cn("underline decoration-stone-400 underline-offset-4", {
-              "text-blue-500": editor.isActive("link"),
+              "text-indigo-500": editor.isActive("link"),
             })}
           >
-            Link
+            {t("link")}
           </p>
         </Button>
       </PopoverTrigger>

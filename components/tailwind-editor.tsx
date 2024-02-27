@@ -41,7 +41,7 @@ import {
   Tooltip,
 } from "./ui/tooltip";
 import { useTranslation } from "@/app/i18n/client";
-import { HistoryItem, getHistory } from "@/lib/history";
+import { HistoryItem } from "@/lib/history";
 
 interface EditorProps {
   content: JSONContent;
@@ -100,24 +100,24 @@ export default function TailwindEditor(props: EditorProps) {
             setContent(json);
           }}
         >
-          <EditorCommand className="z-50 h-auto max-h-[330px]  w-72 overflow-y-auto rounded-md border border-muted bg-background px-1 py-2 shadow-md transition-all">
+          <EditorCommand className="z-50 h-auto max-h-[330px] w-72 overflow-y-auto rounded-md border border-muted bg-background px-1 py-2 shadow-md transition-all">
             <EditorCommandEmpty className="px-2 text-muted-foreground">
-              No results
+              {t("no-results")}
             </EditorCommandEmpty>
             {suggestionItems.map((item) => (
               <EditorCommandItem
                 value={item.title}
                 onCommand={(val) => item.command?.(val)}
-                className={`flex w-full items-center space-x-2 rounded-md px-2 py-1 text-left text-sm hover:bg-accent aria-selected:bg-accent `}
+                className={`grid w-full grid-cols-[auto,1fr] items-center space-x-2 rounded-md px-2 py-1 text-left text-sm hover:bg-accent aria-selected:bg-accent `}
                 key={item.title}
               >
-                <div className="flex h-10 w-10 items-center justify-center rounded-md border border-muted bg-background">
+                <div className="flex size-10 items-center justify-center rounded-md border border-muted bg-background">
                   {item.icon}
                 </div>
                 <div>
-                  <p className="font-medium">{item.title}</p>
+                  <p className="font-medium">{t(item.translation)}</p>
                   <p className="text-xs text-muted-foreground">
-                    {item.description}
+                    {t(item.translation + "-desc")}
                   </p>
                 </div>
               </EditorCommandItem>
@@ -129,10 +129,22 @@ export default function TailwindEditor(props: EditorProps) {
             }}
             className="flex w-fit max-w-[90vw] overflow-hidden rounded-md border border-muted bg-background shadow-xl"
           >
-            <NodeSelector open={openNode} onOpenChange={setOpenNode} />
-            <LinkSelector open={openLink} onOpenChange={setOpenLink} />
+            <NodeSelector
+              lng={props.lng}
+              open={openNode}
+              onOpenChange={setOpenNode}
+            />
+            <LinkSelector
+              lng={props.lng}
+              open={openLink}
+              onOpenChange={setOpenLink}
+            />
             <TextButtons />
-            <ColorSelector open={openColor} onOpenChange={setOpenColor} />
+            <ColorSelector
+              lng={props.lng}
+              open={openColor}
+              onOpenChange={setOpenColor}
+            />
           </EditorBubble>
         </EditorContent>
       </EditorRoot>
@@ -142,19 +154,11 @@ export default function TailwindEditor(props: EditorProps) {
 
 export const suggestionItems = createSuggestionItems([
   {
-    title: "Send Feedback",
-    description: "Let us know how we can improve.",
-    icon: <MessageSquarePlus size={18} />,
-    command: ({ editor, range }) => {
-      editor.chain().focus().deleteRange(range).run();
-      window.open("/feedback", "_blank");
-    },
-  },
-  {
     title: "Text",
     description: "Just start typing with plain text.",
     searchTerms: ["p", "paragraph"],
     icon: <Text size={18} />,
+    translation: "text",
     command: ({ editor, range }) => {
       editor
         .chain()
@@ -167,8 +171,9 @@ export const suggestionItems = createSuggestionItems([
   {
     title: "To-do List",
     description: "Track tasks with a to-do list.",
-    searchTerms: ["todo", "task", "list", "check", "checkbox"],
+    searchTerms: ["todo", "task", "list", "check", "checkbox", "case", "coche"],
     icon: <CheckSquare size={18} />,
+    translation: "todo",
     command: ({ editor, range }) => {
       editor.chain().focus().deleteRange(range).toggleTaskList().run();
     },
@@ -178,6 +183,7 @@ export const suggestionItems = createSuggestionItems([
     description: "Big section heading.",
     searchTerms: ["title", "big", "large"],
     icon: <Heading1 size={18} />,
+    translation: "h1",
     command: ({ editor, range }) => {
       editor
         .chain()
@@ -192,6 +198,7 @@ export const suggestionItems = createSuggestionItems([
     description: "Medium section heading.",
     searchTerms: ["subtitle", "medium"],
     icon: <Heading2 size={18} />,
+    translation: "h2",
     command: ({ editor, range }) => {
       editor
         .chain()
@@ -206,6 +213,7 @@ export const suggestionItems = createSuggestionItems([
     description: "Small section heading.",
     searchTerms: ["subtitle", "small"],
     icon: <Heading3 size={18} />,
+    translation: "h3",
     command: ({ editor, range }) => {
       editor
         .chain()
@@ -218,8 +226,9 @@ export const suggestionItems = createSuggestionItems([
   {
     title: "Bullet List",
     description: "Create a simple bullet list.",
-    searchTerms: ["unordered", "point"],
+    searchTerms: ["unordered", "point", "puce"],
     icon: <List size={18} />,
+    translation: "bullet-list",
     command: ({ editor, range }) => {
       editor.chain().focus().deleteRange(range).toggleBulletList().run();
     },
@@ -229,6 +238,7 @@ export const suggestionItems = createSuggestionItems([
     description: "Create a list with numbering.",
     searchTerms: ["ordered"],
     icon: <ListOrdered size={18} />,
+    translation: "number-list",
     command: ({ editor, range }) => {
       editor.chain().focus().deleteRange(range).toggleOrderedList().run();
     },
@@ -236,8 +246,9 @@ export const suggestionItems = createSuggestionItems([
   {
     title: "Quote",
     description: "Capture a quote.",
-    searchTerms: ["blockquote"],
+    searchTerms: ["blockquote", "citation"],
     icon: <TextQuote size={18} />,
+    translation: "quote",
     command: ({ editor, range }) =>
       editor
         .chain()
@@ -252,6 +263,7 @@ export const suggestionItems = createSuggestionItems([
     description: "Capture a code snippet.",
     searchTerms: ["codeblock"],
     icon: <Code size={18} />,
+    translation: "code",
     command: ({ editor, range }) =>
       editor.chain().focus().deleteRange(range).toggleCodeBlock().run(),
   },
@@ -260,6 +272,7 @@ export const suggestionItems = createSuggestionItems([
     description: "Upload an image from your computer.",
     searchTerms: ["photo", "picture", "media"],
     icon: <ImageIcon size={18} />,
+    translation: "image",
     command: ({ editor, range }) => {
       editor.chain().focus().deleteRange(range).run();
       // upload image

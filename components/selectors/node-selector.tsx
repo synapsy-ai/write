@@ -1,3 +1,4 @@
+"use client";
 import {
   Check,
   ChevronDown,
@@ -16,9 +17,11 @@ import { Editor, EditorBubbleItem, useEditor } from "novel";
 import { Popover } from "@radix-ui/react-popover";
 import { PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
+import { useTranslation } from "@/app/i18n/client";
 
 export type SelectorItem = {
   name: string;
+  translation: string;
   icon: LucideIcon;
   command: (editor: Editor) => void;
   isActive: (editor: Editor) => boolean;
@@ -28,6 +31,7 @@ const items: SelectorItem[] = [
   {
     name: "Text",
     icon: TextIcon,
+    translation: "text",
     command: (editor) =>
       editor?.chain().focus().toggleNode("paragraph", "paragraph").run(),
     // I feel like there has to be a more efficient way to do this – feel free to PR if you know how!
@@ -39,6 +43,7 @@ const items: SelectorItem[] = [
   {
     name: "Heading 1",
     icon: Heading1,
+    translation: "h1",
     command: (editor) =>
       editor?.chain().focus().toggleHeading({ level: 1 }).run(),
     isActive: (editor) => editor.isActive("heading", { level: 1 }),
@@ -46,6 +51,7 @@ const items: SelectorItem[] = [
   {
     name: "Heading 2",
     icon: Heading2,
+    translation: "h2",
     command: (editor) =>
       editor?.chain().focus().toggleHeading({ level: 2 }).run(),
     isActive: (editor) => editor.isActive("heading", { level: 2 }),
@@ -53,6 +59,7 @@ const items: SelectorItem[] = [
   {
     name: "Heading 3",
     icon: Heading3,
+    translation: "h3",
     command: (editor) =>
       editor.chain().focus().toggleHeading({ level: 3 }).run(),
     isActive: (editor) => editor.isActive("heading", { level: 3 }),
@@ -60,24 +67,28 @@ const items: SelectorItem[] = [
   {
     name: "To-do List",
     icon: CheckSquare,
+    translation: "todo",
     command: (editor) => editor.chain().focus().toggleTaskList().run(),
     isActive: (editor) => editor.isActive("taskItem"),
   },
   {
     name: "Bullet List",
     icon: ListOrdered,
+    translation: "bullet-list",
     command: (editor) => editor.chain().focus().toggleBulletList().run(),
     isActive: (editor) => editor.isActive("bulletList"),
   },
   {
     name: "Numbered List",
     icon: ListOrdered,
+    translation: "number-list",
     command: (editor) => editor.chain().focus().toggleOrderedList().run(),
     isActive: (editor) => editor.isActive("orderedList"),
   },
   {
     name: "Quote",
     icon: TextQuote,
+    translation: "quote",
     command: (editor) =>
       editor
         .chain()
@@ -90,6 +101,7 @@ const items: SelectorItem[] = [
   {
     name: "Code",
     icon: Code,
+    translation: "code",
     command: (editor) => editor.chain().focus().toggleCodeBlock().run(),
     isActive: (editor) => editor.isActive("codeBlock"),
   },
@@ -97,20 +109,25 @@ const items: SelectorItem[] = [
 interface NodeSelectorProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  lng: string;
 }
 
-export const NodeSelector = ({ open, onOpenChange }: NodeSelectorProps) => {
+export function NodeSelector({ open, onOpenChange, lng }: NodeSelectorProps) {
+  const { t } = useTranslation(lng, "common");
   const { editor } = useEditor();
   if (!editor) return null;
   const activeItem = items.filter((item) => item.isActive(editor)).pop() ?? {
     name: "Multiple",
+    translation: "multiple",
   };
 
   return (
     <Popover modal={true} open={open} onOpenChange={onOpenChange}>
       <PopoverTrigger asChild className="gap-2 focus:ring-0">
         <Button variant="ghost" className="gap-2">
-          <span className="whitespace-nowrap text-sm">{activeItem.name}</span>
+          <span className="whitespace-nowrap text-sm">
+            {t(activeItem.translation)}
+          </span>
           <ChevronDown className="h-4 w-4" />
         </Button>
       </PopoverTrigger>
@@ -128,7 +145,7 @@ export const NodeSelector = ({ open, onOpenChange }: NodeSelectorProps) => {
               <div className="rounded-sm border p-1">
                 <item.icon className="h-3 w-3" />
               </div>
-              <span>{item.name}</span>
+              <span>{t(item.translation)}</span>
             </div>
             {activeItem.name === item.name && <Check className="h-4 w-4" />}
           </EditorBubbleItem>
@@ -136,4 +153,4 @@ export const NodeSelector = ({ open, onOpenChange }: NodeSelectorProps) => {
       </PopoverContent>
     </Popover>
   );
-};
+}

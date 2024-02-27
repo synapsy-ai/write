@@ -16,30 +16,35 @@ export const TextButtons = () => {
   const items: SelectorItem[] = [
     {
       name: "bold",
+      translation: "bold",
       isActive: (editor) => editor.isActive("bold"),
       command: (editor) => editor.chain().focus().toggleBold().run(),
       icon: BoldIcon,
     },
     {
       name: "italic",
+      translation: "italic",
       isActive: (editor) => editor.isActive("italic"),
       command: (editor) => editor.chain().focus().toggleItalic().run(),
       icon: ItalicIcon,
     },
     {
       name: "underline",
+      translation: "underline",
       isActive: (editor) => editor.isActive("underline"),
       command: (editor) => editor.chain().focus().toggleUnderline().run(),
       icon: UnderlineIcon,
     },
     {
       name: "strike",
+      translation: "strike",
       isActive: (editor) => editor.isActive("strike"),
       command: (editor) => editor.chain().focus().toggleStrike().run(),
       icon: StrikethroughIcon,
     },
     {
       name: "code",
+      translation: "code-inline",
       isActive: (editor) => editor.isActive("code"),
       command: (editor) => editor.chain().focus().toggleCode().run(),
       icon: CodeIcon,
