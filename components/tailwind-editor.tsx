@@ -21,6 +21,7 @@ import {
   List,
   ListOrdered,
   MessageSquarePlus,
+  Save,
   Text,
   TextQuote,
 } from "lucide-react";
@@ -32,9 +33,20 @@ import { NodeSelector } from "./selectors/node-selector";
 import { LinkSelector } from "./selectors/link-selector";
 import { ColorSelector } from "./selectors/color-selector";
 import { TextButtons } from "./selectors/text-buttons";
+import { Button } from "./ui/button";
+import {
+  TooltipProvider,
+  TooltipTrigger,
+  TooltipContent,
+  Tooltip,
+} from "./ui/tooltip";
+import { useTranslation } from "@/app/i18n/client";
+import { HistoryItem, getHistory } from "@/lib/history";
 
 interface EditorProps {
   content: JSONContent;
+  lng: string;
+  id: number;
 }
 
 export default function TailwindEditor(props: EditorProps) {
@@ -44,60 +56,87 @@ export default function TailwindEditor(props: EditorProps) {
   const [openNode, setOpenNode] = useState<boolean>(false);
   const [openLink, setOpenLink] = useState<boolean>(false);
   const [openColor, setOpenColor] = useState<boolean>(false);
+  const [htmlContent, setHtmlContent] = useState("");
+  const { t } = useTranslation(props.lng, "common");
 
+  function saveContent() {
+    if (typeof window !== "undefined") {
+      let history: HistoryItem[] = [];
+      history = JSON.parse(
+        localStorage.getItem("synapsy_write_history") ?? "[]",
+      );
+      history[props.id].content = htmlContent;
+      localStorage.setItem("synapsy_write_history", JSON.stringify(history));
+    }
+  }
   return (
-    <EditorRoot>
-      <EditorContent
-        className="relative min-h-[500px] w-full max-w-screen-lg border-muted bg-background sm:mb-[calc(20vh)] sm:rounded-lg sm:border sm:shadow-lg"
-        extensions={extensions}
-        editorProps={{
-          ...defaultEditorProps,
-          attributes: {
-            class: `prose-lg prose-stone dark:prose-invert prose-headings:font-title font-default focus:outline-none max-w-full`,
-          },
-        }}
-        initialContent={content}
-        onUpdate={({ editor }) => {
-          const json = editor.getJSON();
-          setContent(json);
-        }}
-      >
-        <EditorCommand className="z-50 h-auto max-h-[330px]  w-72 overflow-y-auto rounded-md border border-muted bg-background px-1 py-2 shadow-md transition-all">
-          <EditorCommandEmpty className="px-2 text-muted-foreground">
-            No results
-          </EditorCommandEmpty>
-          {suggestionItems.map((item) => (
-            <EditorCommandItem
-              value={item.title}
-              onCommand={(val) => item.command?.(val)}
-              className={`flex w-full items-center space-x-2 rounded-md px-2 py-1 text-left text-sm hover:bg-accent aria-selected:bg-accent `}
-              key={item.title}
-            >
-              <div className="flex h-10 w-10 items-center justify-center rounded-md border border-muted bg-background">
-                {item.icon}
-              </div>
-              <div>
-                <p className="font-medium">{item.title}</p>
-                <p className="text-xs text-muted-foreground">
-                  {item.description}
-                </p>
-              </div>
-            </EditorCommandItem>
-          ))}
-        </EditorCommand>
-        <EditorBubble
-          tippyOptions={{
-            placement: openAI ? "bottom-start" : "top",
+    <div className="space-y-2">
+      <div className="mx-2 flex rounded-md border sm:mx-0 sm:rounded-lg">
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger>
+              <Button onClick={saveContent} variant="ghost">
+                <Save size={15} />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>{t("save")}</TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+      </div>
+      <EditorRoot>
+        <EditorContent
+          className="relative min-h-[500px] w-full max-w-screen-lg border-muted bg-background sm:mb-[calc(20vh)] sm:rounded-lg sm:border sm:shadow-lg"
+          extensions={extensions}
+          editorProps={{
+            ...defaultEditorProps,
+            attributes: {
+              class: `prose-lg prose-stone dark:prose-invert prose-headings:font-title font-default focus:outline-none max-w-full`,
+            },
           }}
-          className="flex w-fit max-w-[90vw] overflow-hidden rounded-md border border-muted bg-background shadow-xl"
+          initialContent={content}
+          onUpdate={({ editor }) => {
+            const json = editor.getJSON();
+            setHtmlContent(editor.getHTML());
+            setContent(json);
+          }}
         >
-          <NodeSelector open={openNode} onOpenChange={setOpenNode} />
-          <LinkSelector open={openLink} onOpenChange={setOpenLink} />
-          <TextButtons />
-          <ColorSelector open={openColor} onOpenChange={setOpenColor} />
-        </EditorBubble>
-      </EditorContent>
-    </EditorRoot>
+          <EditorCommand className="z-50 h-auto max-h-[330px]  w-72 overflow-y-auto rounded-md border border-muted bg-background px-1 py-2 shadow-md transition-all">
+            <EditorCommandEmpty className="px-2 text-muted-foreground">
+              No results
+            </EditorCommandEmpty>
+            {suggestionItems.map((item) => (
+              <EditorCommandItem
+                value={item.title}
+                onCommand={(val) => item.command?.(val)}
+                className={`flex w-full items-center space-x-2 rounded-md px-2 py-1 text-left text-sm hover:bg-accent aria-selected:bg-accent `}
+                key={item.title}
+              >
+                <div className="flex h-10 w-10 items-center justify-center rounded-md border border-muted bg-background">
+                  {item.icon}
+                </div>
+                <div>
+                  <p className="font-medium">{item.title}</p>
+                  <p className="text-xs text-muted-foreground">
+                    {item.description}
+                  </p>
+                </div>
+              </EditorCommandItem>
+            ))}
+          </EditorCommand>
+          <EditorBubble
+            tippyOptions={{
+              placement: openAI ? "bottom-start" : "top",
+            }}
+            className="flex w-fit max-w-[90vw] overflow-hidden rounded-md border border-muted bg-background shadow-xl"
+          >
+            <NodeSelector open={openNode} onOpenChange={setOpenNode} />
+            <LinkSelector open={openLink} onOpenChange={setOpenLink} />
+            <TextButtons />
+            <ColorSelector open={openColor} onOpenChange={setOpenColor} />
+          </EditorBubble>
+        </EditorContent>
+      </EditorRoot>
+    </div>
   );
 }
 

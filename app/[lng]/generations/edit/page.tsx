@@ -58,7 +58,7 @@ export default function GenerationViewPage({
       </section>
       <Separator className="my-2 print:hidden" />
       <section className="flex flex-col items-center justify-center">
-        <TailwindEditor content={c} />
+        <TailwindEditor id={+id} lng={params.lng} content={c} />
       </section>
     </main>
   );
