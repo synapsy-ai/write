@@ -25,7 +25,7 @@ import {
   Text,
   TextQuote,
 } from "lucide-react";
-import { createSuggestionItems } from "novel/extensions";
+import { SuggestionItem, createSuggestionItems } from "novel/extensions";
 import { startImageUpload } from "novel/plugins";
 import { Command, renderItems } from "novel/extensions";
 import { defaultExtensions } from "@/lib/editor-extensions";
@@ -152,7 +152,11 @@ export default function TailwindEditor(props: EditorProps) {
   );
 }
 
-export const suggestionItems = createSuggestionItems([
+interface CustomSuggestionItem extends SuggestionItem {
+  translation: string;
+}
+
+export const suggestionItems: CustomSuggestionItem[] = [
   {
     title: "Text",
     description: "Just start typing with plain text.",
@@ -289,7 +293,7 @@ export const suggestionItems = createSuggestionItems([
       input.click();
     },
   },
-]);
+];
 
 export const slashCommand = Command.configure({
   suggestion: {
