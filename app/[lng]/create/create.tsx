@@ -622,7 +622,7 @@ export default function Create(props: Props) {
 
   return (
     <main className="mt-2 flex min-h-full flex-col pb-16 sm:mt-16 sm:pb-0 print:mt-0">
-      <section className="ml-2 flex items-center space-x-2">
+      <section className="ml-2 flex items-center space-x-2 print:hidden">
         <PenBox />
         <span>
           <h2 className="text-2xl font-bold">{t("create")}</h2>
@@ -915,7 +915,7 @@ export default function Create(props: Props) {
       {!errorVis && res && (
         <section
           className={
-            "m-2 grow rounded-md border bg-white p-2 text-justify shadow-sm dark:bg-slate-900/50 print:shadow-none"
+            "m-2 grow rounded-md border bg-white p-2 text-justify shadow-sm dark:bg-slate-900/50 print:border-0 print:shadow-none"
           }
         >
           <ResultDisplayer is_generating={isGen} res={res} type={type} />
