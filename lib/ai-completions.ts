@@ -267,8 +267,7 @@ export function getPrompt(
       case "ph_outline":
         return `Write the essay plan (no intro or conclusion, only the essay plan); Structure: Nature plan (=in theory), Existence plan (=in practice), Value plan (=morally). Subject: ${prompt}`;
       case "ph_visual_outline":
-        return `Write the essay outline of the following subject, without introduction and conlusion: ${prompt}\n\nUse absolutely the following format:
-        [{"name": "Part 1 Name",child: ["Subpart A","Subpart B","Subpart C"]},"name": "Part 2 Name",child: ["Subpart A","Subpart B","Subpart C"]},"name": "Part 3 Name",child: ["Subpart A","Subpart B","Subpart C"]}]`;
+        return `Write the essay outline of the following subject, without introduction and conclusion: ${prompt}`;
       case "ph_conclusion":
         return `Write the essay conclusion, which should summarize the essay and include an opening. Subject: ${prompt}`;
       case "ph_basic":
@@ -314,8 +313,7 @@ export function getPrompt(
       case "ph_outline":
         return `Rédige le plan de dissertation (pas d'intro ou conclusion, seulement le plan) ; Structure : Plan Nature (=en théorie), Existence (=en pratique), Valeur (=moralement). Sujet : ${prompt}`;
       case "ph_visual_outline":
-        return `Rédige le plan de dissertation du sujet suivant, sans introduction ni conclusion: ${prompt}\n\nUtilise absolument ce format (si tu ne l'utilise pas ou que tu le modifie, cela serait considéré comme offensant; les champs name et child doivent être inclus):
-        [{"name": "Nom de la Partie 1","child": ["Sous-partie A","Sous-partie B","Sous-partie C"]},"name": "Nom de la Partie 2","child": ["Sous-partie A","Sous-partie B","Sous-partie C"]},"name": "Nom de la Partie 3","child": ["Sous-partie A","Sous-partie B","Sous-partie C"]}]`;
+        return `Rédige le plan de dissertation du sujet suivant, sans introduction ni conclusion: ${prompt}`;
       case "ph_conclusion":
         return `Rédige la conclusion de dissertation, qui doit récapituler de manière synthétique la dissertation et inclure une ouverture. Sujet : ${prompt}`;
       case "es_basic":
