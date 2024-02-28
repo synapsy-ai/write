@@ -491,8 +491,8 @@ export default function Create(props: Props) {
     setIsGen(false);
     setProgressBarVis(true);
     const outline = await getStandardGeneration(
-      getSystem("ph_complex_outline", lng, tone),
-      getPrompt("ph_outline", lng, prompt),
+      getSystem("ph_visual_outline", lng, tone),
+      getPrompt("ph_visual_outline", lng, prompt),
       apiKey,
       model,
       {
