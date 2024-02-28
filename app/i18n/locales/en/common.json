@@ -239,5 +239,6 @@
   "number-list-desc": "Create a list with numbering.",
   "quote-desc": "Capture a quote.",
   "code-desc": "Capture a code snippet.",
-  "image-desc": "Upload an image from your computer."
+  "image-desc": "Upload an image from your computer.",
+  "ph-visual-outline": "Essay outline (visual)"
 }

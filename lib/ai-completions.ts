@@ -147,6 +147,14 @@ export function getSystem(
         ? ""
         : " Use the following tone: " + tone;
     }
+    if (template === "ph_visual_outline") {
+      return `You are an expert who writes philosophy essays similar to those required for a high school diploma in the United States. You write outlines. Response format: JSON. Use the following format:
+      [{"name": "Part 1 Name",child: ["Subpart A","Subpart B","Subpart C"]},"name": "Part 2 Name",child: ["Subpart A","Subpart B","Subpart C"]},"name": "Part 3 Name",child: ["Subpart A","Subpart B","Subpart C"]}]` +
+        tone ===
+        "tones-none"
+        ? ""
+        : "\n\nUse the following tone: " + tone;
+    }
     if (template === "ph_analysis_outline") {
       return "You are an expert who writes philosophy text analysis similar to those required for a high school diploma in the United States." +
         tone ===
@@ -202,6 +210,14 @@ export function getSystem(
         "tones-none"
         ? ""
         : " Utilise le ton suivant : " + tone;
+    }
+    if (template === "ph_visual_outline") {
+      return `Tu es un expert qui fait des dissertations type bac de philosophie. Tu rédiges des plans de devoir. Format de réponse: JSON. Utilise absolument ce format (si tu ne l'utilise pas ou que tu le modifie, cela serait considéré comme offensant; les champs name et child doivent être inclus):
+      [{"name": "Nom de la Partie 1","child": ["Sous-partie A","Sous-partie B","Sous-partie C"]},"name": "Nom de la Partie 2","child": ["Sous-partie A","Sous-partie B","Sous-partie C"]},"name": "Nom de la Partie 3","child": ["Sous-partie A","Sous-partie B","Sous-partie C"]}]` +
+        tone ===
+        "tones-none"
+        ? ""
+        : "\n\nUse the following tone: " + tone;
     }
     if (template === "ph_analysis_outline") {
       return "Tu es un expert qui fait des explications de texte type bac de philosophie." +
@@ -268,6 +284,9 @@ export function getPrompt(
         return `Write the problematization of the subject with three paragraphs MAX containing two sentences MAX, the first begins imperatively with "on the one hand", the second with "on the other hand" and the third with "therefore". Structure: 1st paragraph: first answer [R1] based on the analysis of the subject\'s concepts. 2nd paragraph: questioning of the first answer. 3rd paragraph: summary [S] of the problem with a question that clearly formulates the fundamental alternative: "R1 or R2?". Bold the ideas. Subject: ${prompt}`;
       case "ph_outline":
         return `Write the essay plan (no intro or conclusion, only the essay plan); Structure: Nature plan (=in theory), Existence plan (=in practice), Value plan (=morally). Subject: ${prompt}`;
+      case "ph_visual_outline":
+        return `Write the essay outline of the following subject: ${prompt}\n\nUse absolutely the following format:
+        [{"name": "Part 1 Name",child: ["Subpart A","Subpart B","Subpart C"]},"name": "Part 2 Name",child: ["Subpart A","Subpart B","Subpart C"]},"name": "Part 3 Name",child: ["Subpart A","Subpart B","Subpart C"]}]`;
       case "ph_conclusion":
         return `Write the essay conclusion, which should summarize the essay and include an opening. Subject: ${prompt}`;
       case "ph_basic":
@@ -312,6 +331,9 @@ export function getPrompt(
         return `Rédige la problématisation du sujet avec trois paragraphes MAX contenu deux phrases MAX, le premier commence impérativement par "d\'une part", le second par "d\'autre part" et le troisième par "donc". Structure: 1er paragraphe : première réponse [R1] argumentée à partir de l\'analyse des notions du sujet. 2e paragraphe : questionnement de la première réponse. 3e paragraphe : reprise synthétique [S] du problème avec une question qui formule clairement l\'alternative fondamentale : "R1 ou bien R2 ?". Mettre en gras les idées. Sujet : ${prompt}`;
       case "ph_outline":
         return `Rédige le plan de dissertation (pas d'intro ou conclusion, seulement le plan) ; Structure : Plan Nature (=en théorie), Existence (=en pratique), Valeur (=moralement). Sujet : ${prompt}`;
+      case "ph_visual_outline":
+        return `Rédige le plan de dissertation du sujet suivant: ${prompt}\n\nUtilise absolument ce format (si tu ne l'utilise pas ou que tu le modifie, cela serait considéré comme offensant; les champs name et child doivent être inclus):
+        [{"name": "Nom de la Partie 1","child": ["Sous-partie A","Sous-partie B","Sous-partie C"]},"name": "Nom de la Partie 2","child": ["Sous-partie A","Sous-partie B","Sous-partie C"]},"name": "Nom de la Partie 3","child": ["Sous-partie A","Sous-partie B","Sous-partie C"]}]`;
       case "ph_conclusion":
         return `Rédige la conclusion de dissertation, qui doit récapituler de manière synthétique la dissertation et inclure une ouverture. Sujet : ${prompt}`;
       case "es_basic":

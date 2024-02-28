@@ -68,6 +68,8 @@ export function GenerationItem(props: {
         return t("conclusion");
       case "ph_outline":
         return t("essay-outline");
+      case "ph_visual_outline":
+        return t("ph-visual-outline");
       case "ph_basic":
         return t("essay-basic");
       case "ph_complex":
@@ -137,7 +139,8 @@ export function GenerationItem(props: {
                   </DropdownMenuTrigger>
                   <DropdownMenuContent>
                     {props.item.template !== "ideas" &&
-                    props.item.template !== "table" ? (
+                    props.item.template !== "table" &&
+                    props.item.template !== "ph_visual_outline" ? (
                       <Link
                         href={`/${props.lng}/generations/edit?id=${props.id}`}
                       >

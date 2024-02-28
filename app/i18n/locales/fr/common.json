@@ -237,5 +237,6 @@
   "number-list-desc": "Créer une liste avec numérotation.",
   "quote-desc": "Saisir une citation.",
   "code-desc": "Saisir un extrait de code.",
-  "image-desc": "Téléverser une image depuis votre ordinateur."
+  "image-desc": "Téléverser une image depuis votre ordinateur.",
+  "ph-visual-outline": "Plan (visuel)"
 }
