@@ -491,8 +491,8 @@ export default function Create(props: Props) {
     setIsGen(false);
     setProgressBarVis(true);
     const outline = await getStandardGeneration(
-      getSystem("ph_complex_outline", lng, tone),
-      getPrompt("ph_outline", lng, prompt),
+      getSystem("ph_visual_outline", lng, tone),
+      getPrompt("ph_visual_outline", lng, prompt),
       apiKey,
       model,
       {
@@ -520,7 +520,7 @@ export default function Create(props: Props) {
         },
         "",
         { setContent: setRes },
-      )) ?? "";
+      )) + "\n" ?? "";
     setProgress(32);
 
     const p1 = await sendToGptCustom(
@@ -538,35 +538,37 @@ export default function Create(props: Props) {
       { setContent: setRes },
     );
     setProgress(48);
-    const p2 = await sendToGptCustom(
-      getSystem("ph_basic", lng, tone),
-      getComplexEssayPrompts(2, outline, lng),
-      apiKey,
-      model,
-      {
-        temp: temp,
-        presP: presP,
-        topP: topp,
-        freqP: freqP,
-      },
-      intro + p1 || "",
-      { setContent: setRes },
-    );
+    const p2 =
+      (await sendToGptCustom(
+        getSystem("ph_basic", lng, tone),
+        getComplexEssayPrompts(2, outline, lng),
+        apiKey,
+        model,
+        {
+          temp: temp,
+          presP: presP,
+          topP: topp,
+          freqP: freqP,
+        },
+        intro + p1 || "",
+        { setContent: setRes },
+      )) + "\n";
     setProgress(64);
-    const p3 = await sendToGptCustom(
-      getSystem("ph_basic", lng, tone),
-      getComplexEssayPrompts(3, outline, lng),
-      apiKey,
-      model,
-      {
-        temp: temp,
-        presP: presP,
-        topP: topp,
-        freqP: freqP,
-      },
-      intro + p1 + p2 || "",
-      { setContent: setRes },
-    );
+    const p3 =
+      (await sendToGptCustom(
+        getSystem("ph_basic", lng, tone),
+        getComplexEssayPrompts(3, outline, lng),
+        apiKey,
+        model,
+        {
+          temp: temp,
+          presP: presP,
+          topP: topp,
+          freqP: freqP,
+        },
+        intro + p1 + p2 || "",
+        { setContent: setRes },
+      )) + "\n";
     setProgress(82);
     const ccl = await sendToGptCustom(
       getSystem("ph_conclusion", lng, tone),
@@ -622,7 +624,7 @@ export default function Create(props: Props) {
 
   return (
     <main className="mt-2 flex min-h-full flex-col pb-16 sm:mt-16 sm:pb-0 print:mt-0">
-      <section className="ml-2 flex items-center space-x-2">
+      <section className="ml-2 flex items-center space-x-2 print:hidden">
         <PenBox />
         <span>
           <h2 className="text-2xl font-bold">{t("create")}</h2>
@@ -915,7 +917,7 @@ export default function Create(props: Props) {
       {!errorVis && res && (
         <section
           className={
-            "m-2 grow rounded-md border bg-white p-2 text-justify shadow-sm dark:bg-slate-900/50 print:shadow-none"
+            "m-2 grow rounded-md border bg-white p-2 text-justify shadow-sm dark:bg-slate-900/50 print:border-0 print:shadow-none"
           }
         >
           <ResultDisplayer is_generating={isGen} res={res} type={type} />

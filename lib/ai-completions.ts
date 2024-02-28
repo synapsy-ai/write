@@ -127,114 +127,112 @@ export function getSystem(
   const type = template.length > 3 ? template.substring(0, 3) : template;
   if (lng === "en") {
     if (template === "ideas") {
-      return 'You are a helpful assistant who gives ideas in a JSON array of ideas ["Idea1","Idea2"] (EXACTLY THIS FORMAT, no object)' +
-        tone ===
-        "tones-none"
-        ? ""
-        : " Use the following tone: " + tone;
+      return (
+        'You are a helpful assistant who gives ideas in a JSON array of ideas ["Idea1","Idea2"] (EXACTLY THIS FORMAT, no object)' +
+        (tone === "tones-none" ? "" : " Use the following tone: " + tone)
+      );
     }
     if (template === "es_complex_outline") {
-      return "You are an expert who writes essays similar to those required for a high school diploma in the United States." +
-        tone ===
-        "tones-none"
-        ? ""
-        : " Use the following tone: " + tone;
+      return (
+        "You are an expert who writes essays similar to those required for a high school diploma in the United States." +
+        (tone === "tones-none" ? "" : " Use the following tone: " + tone)
+      );
     }
     if (template === "ph_complex_outline") {
-      return "You are an expert who writes philosophy essays similar to those required for a high school diploma in the United States." +
-        tone ===
-        "tones-none"
-        ? ""
-        : " Use the following tone: " + tone;
+      return (
+        "You are an expert who writes philosophy essays similar to those required for a high school diploma in the United States." +
+        (tone === "tones-none" ? "" : " Use the following tone: " + tone)
+      );
+    }
+    if (template === "ph_visual_outline") {
+      return (
+        `You are an expert who writes philosophy essays similar to those required for a high school diploma in the United States. You write outlines without introductions and conclusions. Response format: JSON. Use the following format:
+      [{"name": "Part 1 Name",child: ["Subpart A","Subpart B","Subpart C"]},"name": "Part 2 Name",child: ["Subpart A","Subpart B","Subpart C"]},"name": "Part 3 Name",child: ["Subpart A","Subpart B","Subpart C"]}]` +
+        (tone === "tones-none" ? "" : "\n\nUse the following tone: " + tone)
+      );
     }
     if (template === "ph_analysis_outline") {
-      return "You are an expert who writes philosophy text analysis similar to those required for a high school diploma in the United States." +
-        tone ===
-        "tones-none"
-        ? ""
-        : " Use the following tone: " + tone;
+      return (
+        "You are an expert who writes philosophy text analysis similar to those required for a high school diploma in the United States." +
+        (tone === "tones-none" ? "" : " Use the following tone: " + tone)
+      );
     }
     if (template === "table")
-      return "You are an expert who creates HTML Tables. You help organize data in HTML tables. You ONLY give the code for the HTML Table (body ONLY,no head, no scripts) on a single line." +
-        tone ===
-        "tones-none"
-        ? ""
-        : " Use the following tone: " + tone;
+      return (
+        "You are an expert who creates HTML Tables. You help organize data in HTML tables. You ONLY give the code for the HTML Table (body ONLY,no head, no scripts) on a single line." +
+        (tone === "tones-none" ? "" : " Use the following tone: " + tone)
+      );
 
     switch (type) {
       case "ph_":
-        return "You are an expert who writes philosophy essays similar to those required for a high school diploma in the United States. Response format: HTML (body ONLY,no head, no scripts)" +
-          tone ===
-          "tones-none"
-          ? ""
-          : " Use the following tone: " + tone;
+        return (
+          "You are an expert who writes philosophy essays similar to those required for a high school diploma in the United States. Response format: HTML (body ONLY,no head, no scripts)" +
+          (tone === "tones-none" ? "" : " Use the following tone: " + tone)
+        );
       case "es_":
-        return "You are an expert who writes essays similar to those required for a high school diploma in the United States. Response format: HTML (body ONLY,no head, no scripts)" +
-          tone ===
-          "tones-none"
-          ? ""
-          : " Use the following tone: " + tone;
+        return (
+          "You are an expert who writes essays similar to those required for a high school diploma in the United States. Response format: HTML (body ONLY,no head, no scripts)" +
+          (tone === "tones-none" ? "" : " Use the following tone: " + tone)
+        );
       default:
-        return "You help writing documents. Response format: HTML (body ONLY,no head, no scripts)" +
-          tone ===
-          "tones-none"
-          ? ""
-          : " Use the following tone: " + tone;
+        return (
+          "You help writing documents. Response format: HTML (body ONLY,no head, no scripts)" +
+          (tone === "tones-none" ? "" : " Use the following tone: " + tone)
+        );
     }
   } else {
     if (template === "ideas") {
-      return 'Tu un assistant qui donne des idées dans un array d\'idées JSON ["Idee1","Idee2"] (EXACTEMENT CE FORMAT, pas d\'objet)' +
-        tone ===
-        "tones-none"
-        ? ""
-        : " Utilise le ton suivant : " + tone;
+      return (
+        'Tu un assistant qui donne des idées dans un array d\'idées JSON ["Idee1","Idee2"] (EXACTEMENT CE FORMAT, pas d\'objet)' +
+        (tone === "tones-none" ? "" : " Utilise le ton suivant : " + tone)
+      );
     }
     if (template === "es_complex_outline") {
-      return "Tu es un expert qui fait des dissertations type bac de français." +
-        tone ===
-        "tones-none"
-        ? ""
-        : " Utilise le ton suivant : " + tone;
+      return (
+        "Tu es un expert qui fait des dissertations type bac de français." +
+        (tone === "tones-none" ? "" : " Utilise le ton suivant : " + tone)
+      );
     }
     if (template === "ph_complex_outline") {
-      return "Tu es un expert qui fait des dissertations type bac de philosophie." +
-        tone ===
-        "tones-none"
-        ? ""
-        : " Utilise le ton suivant : " + tone;
+      return (
+        "Tu es un expert qui fait des dissertations type bac de philosophie." +
+        (tone === "tones-none" ? "" : " Utilise le ton suivant : " + tone)
+      );
+    }
+    if (template === "ph_visual_outline") {
+      return (
+        `Tu es un expert qui fait des dissertations type bac de philosophie. Tu rédiges des plans de devoir sans introduction ni conclusion, avec trois parties. Format de réponse: JSON. Utilise absolument ce format (si tu ne l'utilise pas ou que tu le modifie, cela serait considéré comme offensant; les champs name et child doivent être inclus):
+      [{"name": "Nom de la Partie 1","child": ["Sous-partie A","Sous-partie B","Sous-partie C"]},"name": "Nom de la Partie 2","child": ["Sous-partie A","Sous-partie B","Sous-partie C"]},"name": "Nom de la Partie 3","child": ["Sous-partie A","Sous-partie B","Sous-partie C"]}]` +
+        (tone === "tones-none" ? "" : "\n\nUse the following tone: " + tone)
+      );
     }
     if (template === "ph_analysis_outline") {
-      return "Tu es un expert qui fait des explications de texte type bac de philosophie." +
-        tone ===
-        "tones-none"
-        ? ""
-        : " Utilise le ton suivant : " + tone;
+      return (
+        "Tu es un expert qui fait des explications de texte type bac de philosophie." +
+        (tone === "tones-none" ? "" : " Utilise le ton suivant : " + tone)
+      );
     }
     if (template === "table")
-      return "Tu es un expert qui crée des tableaux HTML. Tu aides à organiser les données dans les tableaux HTML. Tu donnes UNIQUEMENT le code du tableau en HTML  (body SEULEMENT, pas de head, pas de scripts) en une seule ligne." +
-        tone ===
-        "tones-none"
-        ? ""
-        : " Utilise le ton suivant : " + tone;
+      return (
+        "Tu es un expert qui crée des tableaux HTML. Tu aides à organiser les données dans les tableaux HTML. Tu donnes UNIQUEMENT le code du tableau en HTML  (body SEULEMENT, pas de head, pas de scripts) en une seule ligne." +
+        (tone === "tones-none" ? "" : " Utilise le ton suivant : " + tone)
+      );
     switch (type) {
       case "ph_":
-        return "Tu es un expert qui fait des dissertations type bac de philosophie. Format de réponse : HTML (SEULEMENT body, pas de head, pas de scripts)" +
-          tone ===
-          "tones-none"
-          ? ""
-          : " Utilise le ton suivant : " + tone;
+        return (
+          "Tu es un expert qui fait des dissertations type bac de philosophie. Format de réponse : HTML (SEULEMENT body, pas de head, pas de scripts)" +
+          (tone === "tones-none" ? "" : " Utilise le ton suivant : " + tone)
+        );
       case "es_":
-        return "Tu es un expert qui fait des dissertations type bac de français. Format de réponse : HTML (SEULEMENT body, pas de head, pas de scripts)" +
-          tone ===
-          "tones-none"
-          ? ""
-          : " Utilise le ton suivant : " + tone;
+        return (
+          "Tu es un expert qui fait des dissertations type bac de français. Format de réponse : HTML (SEULEMENT body, pas de head, pas de scripts)" +
+          (tone === "tones-none" ? "" : " Utilise le ton suivant : " + tone)
+        );
       default:
-        return "Tu aides à écrire des documents. Format de réponse : HTML (SEULEMENT body, pas de head, pas de scripts)" +
-          tone ===
-          "tones-none"
-          ? ""
-          : " Utilise le ton suivant : " + tone;
+        return (
+          "Tu aides à écrire des documents. Format de réponse : HTML (SEULEMENT body, pas de head, pas de scripts)" +
+          (tone === "tones-none" ? "" : " Utilise le ton suivant : " + tone)
+        );
     }
   }
 }
@@ -268,6 +266,8 @@ export function getPrompt(
         return `Write the problematization of the subject with three paragraphs MAX containing two sentences MAX, the first begins imperatively with "on the one hand", the second with "on the other hand" and the third with "therefore". Structure: 1st paragraph: first answer [R1] based on the analysis of the subject\'s concepts. 2nd paragraph: questioning of the first answer. 3rd paragraph: summary [S] of the problem with a question that clearly formulates the fundamental alternative: "R1 or R2?". Bold the ideas. Subject: ${prompt}`;
       case "ph_outline":
         return `Write the essay plan (no intro or conclusion, only the essay plan); Structure: Nature plan (=in theory), Existence plan (=in practice), Value plan (=morally). Subject: ${prompt}`;
+      case "ph_visual_outline":
+        return `Write the essay outline of the following subject, without introduction and conclusion: ${prompt}`;
       case "ph_conclusion":
         return `Write the essay conclusion, which should summarize the essay and include an opening. Subject: ${prompt}`;
       case "ph_basic":
@@ -312,6 +312,8 @@ export function getPrompt(
         return `Rédige la problématisation du sujet avec trois paragraphes MAX contenu deux phrases MAX, le premier commence impérativement par "d\'une part", le second par "d\'autre part" et le troisième par "donc". Structure: 1er paragraphe : première réponse [R1] argumentée à partir de l\'analyse des notions du sujet. 2e paragraphe : questionnement de la première réponse. 3e paragraphe : reprise synthétique [S] du problème avec une question qui formule clairement l\'alternative fondamentale : "R1 ou bien R2 ?". Mettre en gras les idées. Sujet : ${prompt}`;
       case "ph_outline":
         return `Rédige le plan de dissertation (pas d'intro ou conclusion, seulement le plan) ; Structure : Plan Nature (=en théorie), Existence (=en pratique), Valeur (=moralement). Sujet : ${prompt}`;
+      case "ph_visual_outline":
+        return `Rédige le plan de dissertation du sujet suivant, sans introduction ni conclusion: ${prompt}`;
       case "ph_conclusion":
         return `Rédige la conclusion de dissertation, qui doit récapituler de manière synthétique la dissertation et inclure une ouverture. Sujet : ${prompt}`;
       case "es_basic":
@@ -349,15 +351,15 @@ export function getComplexEssayPrompts(
   lng: "fr" | "en",
 ) {
   if (lng === "en") {
-    return `ONLY write part ${part} using this outline: ${outline}`;
+    return `ONLY write part ${part} using this outline (no intro nor conclusion): ${outline}`;
   } else {
     switch (part) {
       case 1:
-        return `Rédige SEULEMENT la première grande partie (I) du plan ${outline}`;
+        return `Rédige SEULEMENT la première grande partie (I) du plan (ne pas rédiger d'intro ni de conclusion et fait des phrases complètes) ${outline}`;
       case 2:
-        return `Rédige SEULEMENT la deuxième grande partie (II) du plan ${outline}`;
+        return `Rédige SEULEMENT la deuxième grande partie (II) du plan (ne pas rédiger d'intro ni de conclusion et fait des phrases complètes) ${outline}`;
       case 3:
-        return `Rédige SEULEMENT la troisième grande partie (III) du plan ${outline}`;
+        return `Rédige SEULEMENT la troisième grande partie (III) du plan (ne pas rédiger d'intro ni de conclusion et fait des phrases complètes) ${outline}`;
       default:
         return `Rédige SEULEMENT la partie ${part} du plan ${outline}`;
     }

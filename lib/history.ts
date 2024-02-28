@@ -24,3 +24,12 @@ export function removeFromHistory(index: number) {
     localStorage.setItem("synapsy_write_history", JSON.stringify(history));
   }
 }
+
+export function getHistory(): HistoryItem[] {
+  if (typeof window !== "undefined") {
+    let history: HistoryItem[] = [];
+    history = JSON.parse(localStorage.getItem("synapsy_write_history") ?? "[]");
+    return history;
+  }
+  return [];
+}

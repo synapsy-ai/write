@@ -23,6 +23,7 @@ const formats = [
     category: "philosophy",
     options: [
       { text: "essay-outline", val: "ph_outline" },
+      { text: "ph-visual-outline", val: "ph_visual_outline" },
       { text: "introduction", val: "ph_intro" },
       { text: "problematization", val: "ph_prob" },
       { text: "conclusion", val: "ph_conclusion" },
@@ -63,3 +64,8 @@ export const tones = [
   "tones-informative",
   "tones-funny",
 ];
+
+export interface OutlineItem {
+  name: string;
+  child: string[];
+}

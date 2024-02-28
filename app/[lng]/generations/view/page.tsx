@@ -13,6 +13,7 @@ import { typesToString } from "@/lib/formats";
 import VariableItem from "@/components/variable-item";
 import { Variable } from "@/lib/variable";
 import VariableItemView from "@/components/variable-item-view";
+import Link from "next/link";
 
 export default function GenerationViewPage({
   params,
@@ -133,9 +134,17 @@ export default function GenerationViewPage({
             >
               <Copy size={16} />
             </Button>
+            <Link href={`/${params.lng}/generations/edit?id=${id}`}>
+              <Button variant="outline">
+                <Edit size={16} />
+              </Button>
+            </Link>
           </div>
         </section>
-        {variables && variables.length > 0 ? (
+        {el.template !== "ideas" &&
+        el.template !== "ph_visual_outline" &&
+        variables &&
+        variables.length > 0 ? (
           <span className="flex w-full justify-center px-2">
             <section className="mb-2 w-full max-w-[800px] rounded-md border pb-4 text-justify shadow-sm dark:bg-slate-900/50 print:hidden">
               <p className="m-4 mb-0 text-sm font-normal text-slate-400 dark:text-slate-500">
