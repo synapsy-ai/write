@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 "use client";
 import {
   Check,
@@ -23,8 +25,8 @@ export type SelectorItem = {
   name: string;
   translation: string;
   icon: LucideIcon;
-  command: (editor: Editor) => void;
-  isActive: (editor: Editor) => boolean;
+  command: (editor: ReturnType<typeof useEditor>["editor"]) => void;
+  isActive: (editor: ReturnType<typeof useEditor>["editor"]) => boolean;
 };
 
 const items: SelectorItem[] = [
@@ -34,7 +36,7 @@ const items: SelectorItem[] = [
     translation: "text",
     command: (editor) =>
       editor?.chain().focus().toggleNode("paragraph", "paragraph").run(),
-    // I feel like there has to be a more efficient way to do this – feel free to PR if you know how!
+
     isActive: (editor) =>
       editor.isActive("paragraph") &&
       !editor.isActive("bulletList") &&

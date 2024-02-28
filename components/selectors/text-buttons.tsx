@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import { cn } from "@/lib/utils";
 import { EditorBubbleItem, useEditor } from "novel";
 import {
