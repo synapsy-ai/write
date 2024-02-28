@@ -520,7 +520,7 @@ export default function Create(props: Props) {
         },
         "",
         { setContent: setRes },
-      )) ?? "";
+      )) + "\n" ?? "";
     setProgress(32);
 
     const p1 = await sendToGptCustom(
@@ -538,35 +538,37 @@ export default function Create(props: Props) {
       { setContent: setRes },
     );
     setProgress(48);
-    const p2 = await sendToGptCustom(
-      getSystem("ph_basic", lng, tone),
-      getComplexEssayPrompts(2, outline, lng),
-      apiKey,
-      model,
-      {
-        temp: temp,
-        presP: presP,
-        topP: topp,
-        freqP: freqP,
-      },
-      intro + p1 || "",
-      { setContent: setRes },
-    );
+    const p2 =
+      (await sendToGptCustom(
+        getSystem("ph_basic", lng, tone),
+        getComplexEssayPrompts(2, outline, lng),
+        apiKey,
+        model,
+        {
+          temp: temp,
+          presP: presP,
+          topP: topp,
+          freqP: freqP,
+        },
+        intro + p1 || "",
+        { setContent: setRes },
+      )) + "\n";
     setProgress(64);
-    const p3 = await sendToGptCustom(
-      getSystem("ph_basic", lng, tone),
-      getComplexEssayPrompts(3, outline, lng),
-      apiKey,
-      model,
-      {
-        temp: temp,
-        presP: presP,
-        topP: topp,
-        freqP: freqP,
-      },
-      intro + p1 + p2 || "",
-      { setContent: setRes },
-    );
+    const p3 =
+      (await sendToGptCustom(
+        getSystem("ph_basic", lng, tone),
+        getComplexEssayPrompts(3, outline, lng),
+        apiKey,
+        model,
+        {
+          temp: temp,
+          presP: presP,
+          topP: topp,
+          freqP: freqP,
+        },
+        intro + p1 + p2 || "",
+        { setContent: setRes },
+      )) + "\n";
     setProgress(82);
     const ccl = await sendToGptCustom(
       getSystem("ph_conclusion", lng, tone),
