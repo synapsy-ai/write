@@ -240,5 +240,6 @@
   "quote-desc": "Capture a quote.",
   "code-desc": "Capture a code snippet.",
   "image-desc": "Upload an image from your computer.",
-  "ph-visual-outline": "Essay outline (visual)"
+  "ph-visual-outline": "Essay outline (visual)",
+  "gen-editor": "Generation editor"
 }

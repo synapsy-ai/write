@@ -238,5 +238,6 @@
   "quote-desc": "Saisir une citation.",
   "code-desc": "Saisir un extrait de code.",
   "image-desc": "Téléverser une image depuis votre ordinateur.",
-  "ph-visual-outline": "Plan (visuel)"
+  "ph-visual-outline": "Plan (visuel)",
+  "gen-editor": "Editeur de générations"
 }
