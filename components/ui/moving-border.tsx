@@ -68,7 +68,7 @@ export function BorderAnimation({
 
 export const MovingBorder = ({
   children,
-  duration = 4000,
+  duration = 2000,
   rx,
   ry,
   ...otherProps

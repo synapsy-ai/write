@@ -18,6 +18,8 @@ import Footer from "@/components/footer";
 import { useTheme } from "next-themes";
 import { useRef } from "react";
 import Spotlight, { SpotlightCard } from "@/components/spotlight";
+import { SpotlightEffect } from "@/components/ui/spotlight-effect";
+import { BorderAnimation } from "@/components/ui/moving-border";
 
 export default function Home({ params: { lng } }: { params: { lng: any } }) {
   const { t } = useTranslation(lng, "common");
@@ -30,7 +32,11 @@ export default function Home({ params: { lng } }: { params: { lng: any } }) {
   return (
     <>
       <main>
-        <section className="bg-mesh flex min-h-screen flex-col items-center justify-center rounded-lg p-4 text-center">
+        <section className="dark:bg-grid-slate-700/[0.2] bg-grid-slate-300/[0.2] flex min-h-screen flex-col items-center justify-center rounded-lg p-4 text-center">
+          <SpotlightEffect
+            className="-top-40 left-0 md:-top-20 md:left-60"
+            fill="#7d54e0"
+          />
           <h2 className="mt-8 bg-gradient-to-br from-slate-500 to-slate-800 bg-clip-text text-4xl text-transparent dark:from-slate-100 dark:to-slate-400 sm:text-7xl">
             {t("introducing-synapsy")}
           </h2>
@@ -57,30 +63,32 @@ export default function Home({ params: { lng } }: { params: { lng: any } }) {
           <Button onClick={handleClick} variant="link">
             {t("learn-more")}
           </Button>
-          <div className="m-5 inline-block animate-border rounded-[10px] bg-gradient-to-r from-indigo-500 via-purple-500 to-indigo-500 bg-[length:_400%_400%] p-[1px] shadow-xl [animation-duration:_3s;]">
-            <picture>
-              <source
-                media="(prefers-color-scheme: dark)"
-                srcSet="/images/app-dark.png"
-              />
-              <source
-                media="(prefers-color-scheme: light)"
-                srcSet="/images/app.png"
-              />
-              <img
-                className="max-h-[600px] rounded-[9px]"
-                alt="A isometric image representing all apps made by Léo Corporation."
-                src="/images/app.png"
-              />
-            </picture>
-          </div>
+          <BorderAnimation>
+            <div className="m-1 rounded-xl shadow-xl">
+              <picture>
+                <source
+                  media="(prefers-color-scheme: dark)"
+                  srcSet="/images/app-dark.png"
+                />
+                <source
+                  media="(prefers-color-scheme: light)"
+                  srcSet="/images/app.png"
+                />
+                <img
+                  className="max-h-[600px] rounded-[9px]"
+                  alt="A isometric image representing all apps made by Léo Corporation."
+                  src="/images/app.png"
+                />
+              </picture>
+            </div>
+          </BorderAnimation>
         </section>
         <section
           id="features"
           ref={sectionRef}
           className="flex min-h-[50vh] flex-col items-center justify-center"
         >
-          <h2 className="mt-8 text-center text-4xl font-normal sm:text-5xl">
+          <h2 className="mt-8 bg-gradient-to-br from-slate-500 to-slate-800 bg-clip-text text-center text-4xl font-normal text-transparent dark:from-slate-100 dark:to-slate-400 sm:text-5xl">
             {t("features")}
           </h2>
           <p className="text-center text-lg text-slate-700 dark:text-slate-300">
@@ -136,7 +144,7 @@ export default function Home({ params: { lng } }: { params: { lng: any } }) {
         </section>
         <section className="flex min-h-[50vh] flex-col items-center justify-center">
           <div className="flex flex-col justify-center p-4">
-            <h2 className="mt-8 text-center text-4xl font-normal sm:text-5xl">
+            <h2 className="mt-8 bg-gradient-to-br from-slate-500 to-slate-800 bg-clip-text text-center text-4xl font-normal text-transparent dark:from-slate-100 dark:to-slate-400 sm:text-5xl">
               {t("open-source")}
             </h2>
             <p className="text-center text-lg text-slate-700 dark:text-slate-300">
