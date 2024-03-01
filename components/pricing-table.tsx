@@ -54,6 +54,14 @@ export default async function PricingFeatureTable(props: { lng: string }) {
           </td>
         </tr>
         <tr>
+          <td>{t("gen-editor")}</td>
+          <td>
+            <span className="flex justify-center">
+              <Check size={16} />
+            </span>
+          </td>
+        </tr>
+        <tr>
           <td>{t("export-gens")}</td>
           <td>
             <span className="flex justify-center">
