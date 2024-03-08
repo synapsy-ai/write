@@ -52,7 +52,7 @@
     "react-cookie": "^7.1.0",
     "react-dom": "latest",
     "react-i18next": "^14.1.0",
-    "stripe": "^14.18.0",
+    "stripe": "^14.20.0",
     "styled-jsx": "^5.1.2",
     "tailwind-merge": "^2.2.1",
     "tailwindcss-animate": "^1.0.7",
