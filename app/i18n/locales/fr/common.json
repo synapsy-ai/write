@@ -248,5 +248,12 @@
   "unavailable": "Indisponible",
   "motivation-letter": "Lettre de motivation",
   "rephraser": "Reformulateur",
-  "expand-input": "Élargir la zone de saisie"
+  "expand-input": "Élargir la zone de saisie",
+  "new-creation": "Nouvelle création",
+  "ai": "IA",
+  "ai-desc": "Utiliser entièrement l'IA pour générer des documents.",
+  "manual": "Manuel",
+  "manual-desc": "Rédiger manuellement un document.",
+  "new-doc": "Nouveau document",
+  "doc-title": "Titre"
 }

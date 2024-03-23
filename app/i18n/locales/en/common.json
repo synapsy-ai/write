@@ -250,5 +250,12 @@
   "unavailable": "Unavailable",
   "motivation-letter": "Cover letter",
   "rephraser": "Rephraser",
-  "expand-input": "Expand input area"
+  "expand-input": "Expand input area",
+  "new-creation": "New creation",
+  "ai": "AI",
+  "ai-desc": "Use AI entirely to generate documents",
+  "manual": "Manual",
+  "manual-desc": "Write a document manually.",
+  "new-doc": "New document",
+  "doc-title": "Title"
 }
