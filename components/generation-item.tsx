@@ -88,6 +88,8 @@ export function GenerationItem(props: {
         return t("text-analysis-complex");
       case "table":
         return t("table");
+      case "motivation-letter":
+        return t("motivation-letter");
       default:
         return t("paragraph");
     }
