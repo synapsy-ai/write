@@ -162,7 +162,11 @@ export function getSystem(
         "You are an expert who creates HTML Tables. You help organize data in HTML tables. You ONLY give the code for the HTML Table (body ONLY,no head, no scripts) on a single line." +
         (tone === "tones-none" ? "" : " Use the following tone: " + tone)
       );
-
+    if (template === "motivation-letter")
+      return (
+        "You are an expert who creates Motivation letters. The letter must be clear, not too long, avoid cliché phrases. Organize and structure the letter, don't criticize the previous employer. If for university, talk about your (academic) qualities." +
+        (tone === "tones-none" ? "" : " Use the following tone: " + tone)
+      );
     switch (type) {
       case "ph_":
         return (
@@ -216,6 +220,11 @@ export function getSystem(
       return (
         "Tu es un expert qui crée des tableaux HTML. Tu aides à organiser les données dans les tableaux HTML. Tu donnes UNIQUEMENT le code du tableau en HTML  (body SEULEMENT, pas de head, pas de scripts) en une seule ligne." +
         (tone === "tones-none" ? "" : " Utilise le ton suivant : " + tone)
+      );
+    if (template === "motivation-letter")
+      return (
+        "Tu es un expert qui crée des lettres de motivation. La lettre doit être claire, pas trop longue, éviter les phrases clichées. Organiser et structurer la lettre, ne pas critiquer l'employeur précédent. Si c'est pour l'université/école, parle de tes qualités (académiques)." +
+        (tone === "tones-none" ? "" : " Use the following tone: " + tone)
       );
     switch (type) {
       case "ph_":
@@ -282,9 +291,10 @@ export function getPrompt(
         return `Write the text explanation using sentences, no list. The explanation is linear, i.e. the assignment must follow the order of the text. Each part corresponds to a part of the extract, and within the part, the various specific explanations (of terms, of sentences in themselves) follow one another as in the text. Start from the broadest to the most precise: - For each part, start by giving the main idea. - For each sentence, give its function (premise, explanation, example...) and content expressed in your own words. An explanation may follow if the sentence is very complex. - Explain the philosophical terms in the sentence by giving definitions, and make explicit any implied meaning or underlying references (you may wish to mention other authors). - End with a concrete example illustrating the author's idea. Text: [[${prompt}]]`;
       case "ph_analysis_outline":
         return `Write the outline of the text explanation. The explanation is linear, i.e. the assignment must follow the order of the text. Each part corresponds to a part of the extract, and within the part, the various specific explanations (of terms, of sentences in themselves) follow one another as in the text. Start from the broadest to the most precise: - For each part, start by giving the main idea. - For each sentence, give its function (premise, explanation, example...) and content expressed in your own words. An explanation may follow if the sentence is very complex. - Explain the philosophical terms in the sentence by giving definitions, and make explicit any implied meaning or underlying references (you may wish to mention other authors). - End with a concrete example illustrating the author's idea. Text: [[${prompt}]]`;
-
       case "table":
         return `Give ONLY the corresponding HTML Table about (no other text): ${prompt}`;
+      case "motivation-letter":
+        return `Write the motivation letter: ${prompt}`;
       default:
         return prompt;
     }
@@ -328,9 +338,10 @@ export function getPrompt(
         return `Rédige le developpement l'explication de texte avec des phrases, pas de listes. L'explication est linéaire, c'est-à-dire que le devoir doit suivre l'ordre du texte. Chaque partie correspond à une partie de l'extrait, et à l'intérieur de la partie, les différentes explications particulières (des termes, des phrases en elles-mêmes) se succèdent comme dans le texte. Partez du plus large pour aller vers le plus précis : - Pour chaque partie, commencez par en donner l'idée principale. - Pour chaque phrase, donnez-en la fonction (postulat, explication, exemple...) et le contenu exprimé avec vos mots. Peut suivre une explication si la phrase est très complexe. - Expliquez les termes philosophiques de la phrase en donnant des définitions, et explicitez les sous-entendus, les références sous-jacentes (vous pouvez alors mentionner d'autres auteurs). - Terminez par un exemple concret illustrant l'idée de l'auteur. Texte : [[${prompt}]]`;
       case "ph_analysis_outline":
         return `Rédige le plan du developpement de l'explication de texte. L'explication est linéaire, c'est-à-dire que le devoir doit suivre l'ordre du texte. Chaque partie correspond à une partie de l'extrait, et à l'intérieur de la partie, les différentes explications particulières (des termes, des phrases en elles-mêmes) se succèdent comme dans le texte. Partez du plus large pour aller vers le plus précis : - Pour chaque partie, commencez par en donner l'idée principale. - Pour chaque phrase, donnez-en la fonction (postulat, explication, exemple...) et le contenu exprimé avec vos mots. Peut suivre une explication si la phrase est très complexe. - Expliquez les termes philosophiques de la phrase en donnant des définitions, et explicitez les sous-entendus, les références sous-jacentes (vous pouvez alors mentionner d'autres auteurs). - Terminez par un exemple concret illustrant l'idée de l'auteur. Texte : [[${prompt}]]`;
-
       case "table":
         return `Donne SEULEMENT le tableau HTML correspondant au sujet suivant (pas d'autre texte) : ${prompt}`;
+      case "motivation-letter":
+        return `Rédige la lettte de motivation : ${prompt}`;
       default:
         return prompt;
     }

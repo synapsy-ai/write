@@ -247,5 +247,6 @@
   "text-editor": "Text editor",
   "available": "Available",
   "partially-available": "Partially available",
-  "unavailable": "Unavailable"
+  "unavailable": "Unavailable",
+  "motivation-letter": "Cover letter"
 }

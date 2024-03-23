@@ -7,6 +7,7 @@ const formats = [
       { text: "blog-post", val: "blog" },
       { text: "ideas", val: "ideas" },
       { text: "table", val: "table" },
+      { text: "motivation-letter", val: "motivation-letter" },
     ],
   },
   {
