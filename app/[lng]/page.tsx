@@ -7,6 +7,7 @@ import {
   BrainCircuit,
   Building,
   Check,
+  Dot,
   Github,
   MousePointerClick,
   PenSquare,
@@ -206,13 +207,22 @@ export default function Home({ params: { lng } }: { params: { lng: any } }) {
               </div>
             </SpotlightCard>
           </Spotlight>
-          <div className="grid grid-cols-[auto,1fr] items-center gap-x-2 py-5 text-slate-800 dark:text-slate-300">
-            <Check size={16} />
-            <p>{t("available")}</p>
-            <TriangleAlert size={16} />
-            <p>{t("partially-available")}</p>
-            <X size={16} />
-            <p>{t("unavailable")}</p>
+          <div className="flex flex-col items-center justify-center space-x-2 py-5 text-slate-800 dark:text-slate-300 sm:flex-row">
+            <span className="flex items-center space-x-2 ">
+              <Check size={16} />
+              <p>{t("available")}</p>
+            </span>
+            <Dot size={12} className="hidden sm:block" />
+            <span className="flex items-center space-x-2">
+              {" "}
+              <TriangleAlert size={16} />
+              <p>{t("partially-available")}</p>
+            </span>
+            <Dot size={12} className="hidden sm:block" />
+            <span className="flex items-center space-x-2">
+              <X size={16} />
+              <p>{t("unavailable")}</p>
+            </span>
           </div>
         </section>
         <section className="flex min-h-[50vh] flex-col items-center justify-center">
