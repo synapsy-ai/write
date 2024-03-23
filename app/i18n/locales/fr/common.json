@@ -239,5 +239,11 @@
   "code-desc": "Saisir un extrait de code.",
   "image-desc": "Téléverser une image depuis votre ordinateur.",
   "ph-visual-outline": "Plan (visuel)",
-  "gen-editor": "Editeur de générations"
+  "gen-editor": "Editeur de générations",
+  "why-synapsy": "Pourquoi Synapsy Write ?",
+  "why-synapsy-desc": "ChatGPT Plus peut être utile, mais Synapsy Write offre des fonctionnalités exclusives qui amélioreront grandement votre productivité.",
+  "text-editor": "Editeur de texte",
+  "available": "Disponible",
+  "partially-available": "Partiellement disponible",
+  "unavailable": "Indisponible"
 }

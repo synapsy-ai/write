@@ -6,13 +6,16 @@ import Link from "next/link";
 import {
   BrainCircuit,
   Building,
+  Check,
   Github,
   MousePointerClick,
   PenSquare,
   PencilRulerIcon,
   Rocket,
   Table,
+  TriangleAlert,
   Variable,
+  X,
 } from "lucide-react";
 import Footer from "@/components/footer";
 import { useTheme } from "next-themes";
@@ -32,7 +35,7 @@ export default function Home({ params: { lng } }: { params: { lng: any } }) {
   return (
     <>
       <main>
-        <section className="dark:bg-grid-slate-700/[0.2] bg-grid-slate-300/[0.2] flex min-h-screen flex-col items-center justify-center rounded-lg p-4 text-center">
+        <section className="flex min-h-screen flex-col items-center justify-center rounded-lg p-4 text-center bg-grid-slate-300/[0.2] dark:bg-grid-slate-700/[0.2]">
           <SpotlightEffect
             className="-top-40 left-0 md:-top-20 md:left-60"
             fill="#7d54e0"
@@ -141,6 +144,76 @@ export default function Home({ params: { lng } }: { params: { lng: any } }) {
               </div>
             </SpotlightCard>
           </Spotlight>
+        </section>
+        <section className="flex min-h-[50vh] flex-col items-center justify-center">
+          <div className="flex flex-col justify-center p-4">
+            <h2 className="mt-8 bg-gradient-to-br from-slate-500 to-slate-800 bg-clip-text text-center text-4xl font-normal text-transparent dark:from-slate-100 dark:to-slate-400 sm:text-5xl">
+              {t("why-synapsy")}
+            </h2>
+            <p className="text-center text-lg text-slate-700 dark:text-slate-300">
+              {t("why-synapsy-desc")}
+            </p>
+          </div>
+          <Spotlight className="grid items-center justify-center space-y-4 sm:grid-cols-2 sm:space-x-2 sm:space-y-0">
+            <SpotlightCard className="h-full w-full max-w-sm border shadow-md">
+              <div className="relative z-20 h-full overflow-hidden rounded-[inherit] bg-white p-6 pb-8 dark:bg-slate-900">
+                <div className="mb-5 grow">
+                  <h2 className="mb-1 text-center text-xl font-bold text-black dark:text-slate-200">
+                    Synapsy
+                  </h2>
+                </div>
+                <div className="mt-8 grid grid-cols-[auto,1fr] items-center gap-x-2  dark:text-slate-300">
+                  <Check size={16} />
+                  <p>{t("unlimited-access")}</p>
+                  <Check size={16} />
+                  <p>{t("advanced-instructions")}</p>
+                  <Check size={16} />
+                  <p>{t("table-generator")}</p>
+                  <Check size={16} />
+                  <p>{t("essays")}</p>
+                  <Check size={16} />
+                  <p>{t("text-analysis")}</p>
+                  <Check size={16} />
+                  <p>{t("variable-editor")}</p>
+                  <Check size={16} />
+                  <p>{t("text-editor")}</p>
+                </div>
+              </div>
+            </SpotlightCard>
+            <SpotlightCard className="h-full w-full max-w-sm border shadow-md">
+              <div className="relative z-20 h-full overflow-hidden rounded-[inherit] bg-white p-6 pb-8 dark:bg-slate-900">
+                <div className="mb-5 grow">
+                  <h2 className="mb-1 text-center text-xl font-bold text-black dark:text-slate-200">
+                    ChatGPT Plus
+                  </h2>
+                </div>
+                <div className="mt-8 grid grid-cols-[auto,1fr] items-center gap-x-2  dark:text-slate-300">
+                  <TriangleAlert size={16} />
+                  <p>{t("unlimited-access")}</p>
+                  <X size={16} />
+                  <p>{t("advanced-instructions")}</p>
+                  <Check size={16} />
+                  <p>{t("table-generator")}</p>
+                  <TriangleAlert size={16} />
+                  <p>{t("essays")}</p>
+                  <TriangleAlert size={16} />
+                  <p>{t("text-analysis")}</p>
+                  <X size={16} />
+                  <p>{t("variable-editor")}</p>
+                  <X size={16} />
+                  <p>{t("text-editor")}</p>
+                </div>
+              </div>
+            </SpotlightCard>
+          </Spotlight>
+          <div className="grid grid-cols-[auto,1fr] items-center gap-x-2 py-5 text-slate-800 dark:text-slate-300">
+            <Check size={16} />
+            <p>{t("available")}</p>
+            <TriangleAlert size={16} />
+            <p>{t("partially-available")}</p>
+            <X size={16} />
+            <p>{t("unavailable")}</p>
+          </div>
         </section>
         <section className="flex min-h-[50vh] flex-col items-center justify-center">
           <div className="flex flex-col justify-center p-4">

@@ -241,5 +241,11 @@
   "code-desc": "Capture a code snippet.",
   "image-desc": "Upload an image from your computer.",
   "ph-visual-outline": "Essay outline (visual)",
-  "gen-editor": "Generation editor"
+  "gen-editor": "Generation editor",
+  "why-synapsy": "Why Synapsy Write?",
+  "why-synapsy-desc": "ChatGPT Plus can be useful, but Synapsy Write offers some exclusive features that will greatly improve your productivity.",
+  "text-editor": "Text editor",
+  "available": "Available",
+  "partially-available": "Partially available",
+  "unavailable": "Unavailable"
 }
