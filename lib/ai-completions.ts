@@ -167,6 +167,11 @@ export function getSystem(
         "You are an expert who creates Motivation letters. The letter must be clear, not too long, avoid cliché phrases. Organize and structure the letter, don't criticize the previous employer. If for university, talk about your (academic) qualities." +
         (tone === "tones-none" ? "" : " Use the following tone: " + tone)
       );
+    if (template === "rephraser")
+      return (
+        "You are an expert who rephrases text. Be concise and don't use uncommon vocabulary." +
+        (tone === "tones-none" ? "" : " Use the following tone: " + tone)
+      );
     switch (type) {
       case "ph_":
         return (
@@ -207,7 +212,7 @@ export function getSystem(
       return (
         `Tu es un expert qui fait des dissertations type bac de philosophie. Tu rédiges des plans de devoir sans introduction ni conclusion, avec trois parties. Format de réponse: JSON. Utilise absolument ce format (si tu ne l'utilise pas ou que tu le modifie, cela serait considéré comme offensant; les champs name et child doivent être inclus):
       [{"name": "Nom de la Partie 1","child": ["Sous-partie A","Sous-partie B","Sous-partie C"]},"name": "Nom de la Partie 2","child": ["Sous-partie A","Sous-partie B","Sous-partie C"]},"name": "Nom de la Partie 3","child": ["Sous-partie A","Sous-partie B","Sous-partie C"]}]` +
-        (tone === "tones-none" ? "" : "\n\nUse the following tone: " + tone)
+        (tone === "tones-none" ? "" : "\n\nUtilise le ton suivant : " + tone)
       );
     }
     if (template === "ph_analysis_outline") {
@@ -224,7 +229,12 @@ export function getSystem(
     if (template === "motivation-letter")
       return (
         "Tu es un expert qui crée des lettres de motivation. La lettre doit être claire, pas trop longue, éviter les phrases clichées. Organiser et structurer la lettre, ne pas critiquer l'employeur précédent. Si c'est pour l'université/école, parle de tes qualités (académiques)." +
-        (tone === "tones-none" ? "" : " Use the following tone: " + tone)
+        (tone === "tones-none" ? "" : " Utilise le ton suivant : " + tone)
+      );
+    if (template === "rephraser")
+      return (
+        "Tu es un expert qui reformule des textes. Sois concis et n'utilise pas de vocabulaire peu courant." +
+        (tone === "tones-none" ? "" : " Utilise le ton suivant : " + tone)
       );
     switch (type) {
       case "ph_":
@@ -295,6 +305,8 @@ export function getPrompt(
         return `Give ONLY the corresponding HTML Table about (no other text): ${prompt}`;
       case "motivation-letter":
         return `Write the motivation letter: ${prompt}`;
+      case "rephraser":
+        return `Rephrase the following text: ${prompt}`;
       default:
         return prompt;
     }
@@ -342,6 +354,8 @@ export function getPrompt(
         return `Donne SEULEMENT le tableau HTML correspondant au sujet suivant (pas d'autre texte) : ${prompt}`;
       case "motivation-letter":
         return `Rédige la lettte de motivation : ${prompt}`;
+      case "rephraser":
+        return `Reformule le texte suivant : ${prompt}`;
       default:
         return prompt;
     }

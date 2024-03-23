@@ -90,6 +90,8 @@ export function GenerationItem(props: {
         return t("table");
       case "motivation-letter":
         return t("motivation-letter");
+      case "rephraser":
+        return t("rephraser");
       default:
         return t("paragraph");
     }

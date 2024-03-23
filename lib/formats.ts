@@ -8,6 +8,7 @@ const formats = [
       { text: "ideas", val: "ideas" },
       { text: "table", val: "table" },
       { text: "motivation-letter", val: "motivation-letter" },
+      { text: "rephraser", val: "rephraser" },
     ],
   },
   {
