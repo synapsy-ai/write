@@ -92,6 +92,8 @@ export function GenerationItem(props: {
         return t("motivation-letter");
       case "rephraser":
         return t("rephraser");
+      case "manual":
+        return t("manual-doc");
       default:
         return t("paragraph");
     }

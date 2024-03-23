@@ -255,5 +255,6 @@
   "manual": "Manuel",
   "manual-desc": "Rédiger manuellement un document.",
   "new-doc": "Nouveau document",
-  "doc-title": "Titre"
+  "doc-title": "Titre",
+  "manual-doc": "Document (Humain)"
 }
