@@ -77,6 +77,7 @@ import {
 } from "@/components/ui/dialog";
 import { DialogClose } from "@radix-ui/react-dialog";
 import PeyronnetLogo from "@/components/peyronnet-logo";
+import { Checkbox } from "@/components/ui/checkbox";
 
 type Subscription = Database["public"]["Tables"]["subscriptions"]["Row"];
 type Product = Database["public"]["Tables"]["products"]["Row"];
@@ -129,6 +130,7 @@ export default function Create(props: Props) {
   const [variables, setVariables] = useState<Variable[]>([]);
   const [tone, setTone] = useState("tones-none");
   const [textToAnalyse, setTextToAnalyse] = useState("");
+  const [expandInput, setExpandInput] = useState(false);
 
   async function getMs() {
     let m = await getModels();
@@ -635,8 +637,16 @@ export default function Create(props: Props) {
 
       <section>
         <p className="m-2 font-bold print:hidden">{t("prompt")}</p>
-        <div className="m-2 flex flex-col items-stretch space-y-1 sm:flex-row sm:items-center sm:space-x-2 sm:space-y-0 print:hidden">
-          <Input onChange={(v) => setPrompt(v.target.value)} />
+        <div className="m-2 flex flex-col items-stretch space-y-1 sm:flex-row sm:items-start sm:space-x-2 sm:space-y-0 print:hidden">
+          {expandInput ? (
+            <Textarea
+              value={prompt}
+              onChange={(v) => setPrompt(v.target.value)}
+            />
+          ) : (
+            <Input value={prompt} onChange={(v) => setPrompt(v.target.value)} />
+          )}
+
           <div className="grid grid-cols-[1fr,auto] space-x-1 sm:flex sm:space-x-2">
             <FormatDialog lng={lng} setVal={setType} />
 
@@ -848,6 +858,14 @@ export default function Create(props: Props) {
               </DialogContent>
             </Dialog>
           )}
+        </div>
+        <div className="flex items-center space-x-2 px-2">
+          <Checkbox
+            id="expandChk"
+            checked={expandInput}
+            onCheckedChange={() => setExpandInput(!expandInput)}
+          />
+          <label htmlFor="expandChk">{t("expand-input")}</label>
         </div>
         {type.startsWith("ph_analysis_") && (
           <div className="p-2">
