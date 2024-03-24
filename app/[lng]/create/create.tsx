@@ -120,9 +120,6 @@ export default function Create(props: Props) {
   const [model, setModel] = useState("gpt-3.5-turbo");
   const [errorMsg, setErrorMsg] = useState<any>({ message: "", name: "" });
   const [errorVis, setErrorVis] = useState(false);
-  const [avModels, setAvModels] = useState(
-    s.models ?? ["gpt-3.5-turbo", "gpt-4"],
-  );
   const [temp, setTemp] = useState(1);
   const [topp, setTopP] = useState(1);
   const [freqP, setFreqP] = useState(0);
@@ -132,12 +129,33 @@ export default function Create(props: Props) {
   const [tone, setTone] = useState("tones-none");
   const [textToAnalyse, setTextToAnalyse] = useState("");
   const [expandInput, setExpandInput] = useState(false);
+  const defaultModels = () =>
+    hasGpt4Access() ? ["gpt-3.5-turbo", "gpt-4"] : ["gpt-3.5-turbo"];
+  const [avModels, setAvModels] = useState(
+    getAvailableModels(s.models) ?? defaultModels(),
+  );
+
+  function getAvailableModels(
+    availableModels: string[] | undefined,
+  ): string[] | undefined {
+    if (!availableModels) return [];
+    let models = [];
+    let gpt4 = hasGpt4Access();
+    for (let i = 0; i < availableModels.length; i++) {
+      if (availableModels[i].includes("gpt-4") && !gpt4) continue;
+      models?.push(availableModels[i]);
+    }
+    return models;
+  }
 
   async function getMs() {
     let m = await getModels();
     let avm: string[] = [];
     for (let i = 0; i < m.length; i++) {
-      if (m[i].id.startsWith("gpt")) avm.push(m[i].id);
+      if (m[i].id.startsWith("gpt")) {
+        if (m[i].id.includes("gpt-4") && !hasGpt4Access()) continue;
+        avm.push(m[i].id);
+      }
     }
     setAvModels(avm);
     if (typeof window !== "undefined") {
@@ -768,6 +786,20 @@ export default function Create(props: Props) {
           .includes("write")
       ) {
         return true;
+      }
+    }
+    return false;
+  }
+
+  function hasGpt4Access(): boolean {
+    if (!props.session || !props.subscriptions) return false;
+    for (let i = 0; i < props.subscriptions?.length; i++) {
+      if (
+        props.subscriptions[i].prices?.products?.name
+          ?.toLowerCase()
+          .includes("write")
+      ) {
+        return props.subscriptions[i].status === "active";
       }
     }
     return false;
