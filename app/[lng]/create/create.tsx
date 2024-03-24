@@ -226,6 +226,8 @@ export default function Create(props: Props) {
     setRes("");
     if (type === "es_complex") {
       createComplexEssay();
+    } else if (type == "g_es_complex") {
+      createComplexEssayGlobal();
     } else if (type == "ph_complex") {
       createComplexPhiloEssay();
     } else if (type === "ph_analysis_complex") {
@@ -336,6 +338,152 @@ export default function Create(props: Props) {
     addToHistory({
       prompt: textToAnalyse,
       content: intro + "\n" + p1 + "\n" + ccl ?? "",
+      template: type,
+      date: new Date(),
+    });
+    setIsGen(false);
+    setInProgress(false);
+  }
+
+  async function createComplexEssayGlobal() {
+    setInProgress(true);
+    setErrorVis(false);
+    setIsGen(false);
+    const outline = await getStandardGeneration(
+      getSystem("g_es_complex_outline", lng, tone),
+      getPrompt("g_es_outline", lng, prompt),
+      apiKey,
+      model,
+      {
+        temp: temp,
+        presP: presP,
+        topP: topp,
+        freqP: freqP,
+      },
+    );
+
+    if (outline instanceof OpenAI.APIError) {
+      setErrorMsg(outline);
+      setErrorVis(true);
+      setInProgress(false);
+      return;
+    }
+    setIsGen(true);
+    setInProgress(false);
+    setRes("");
+    setProgress(16);
+    const intro =
+      (await sendToGptCustom(
+        getSystem("g_es_intro", lng, tone),
+        getPrompt("g_es_intro", lng, prompt + usingPlan(lng) + outline),
+        apiKey,
+        model,
+        {
+          temp: temp,
+          presP: presP,
+          topP: topp,
+          freqP: freqP,
+        },
+        "",
+        { setContent: setRes },
+      )) ?? "";
+
+    if (intro instanceof OpenAI.APIError) {
+      setErrorMsg(intro);
+      setErrorVis(true);
+      setInProgress(false);
+      return;
+    }
+    setProgress(32);
+
+    const p1 = await sendToGptCustom(
+      getSystem("g_es_basic", lng, tone),
+      getComplexEssayPrompts(1, outline, lng),
+      apiKey,
+      model,
+      {
+        temp: temp,
+        presP: presP,
+        topP: topp,
+        freqP: freqP,
+      },
+      intro || "",
+      { setContent: setRes },
+    );
+    if (p1 instanceof OpenAI.APIError) {
+      setErrorMsg(p1);
+      setErrorVis(true);
+      setInProgress(false);
+      return;
+    }
+    setProgress(48);
+    const p2 = await sendToGptCustom(
+      getSystem("g_es_basic", lng, tone),
+      getComplexEssayPrompts(2, outline, lng),
+      apiKey,
+      model,
+      {
+        temp: temp,
+        presP: presP,
+        topP: topp,
+        freqP: freqP,
+      },
+      intro + p1 || "",
+      { setContent: setRes },
+    );
+    if (p2 instanceof OpenAI.APIError) {
+      setErrorMsg(p2);
+      setErrorVis(true);
+      setInProgress(false);
+      return;
+    }
+    setProgress(64);
+    const p3 = await sendToGptCustom(
+      getSystem("g_es_basic", lng, tone),
+      getComplexEssayPrompts(3, outline, lng),
+      apiKey,
+      model,
+      {
+        temp: temp,
+        presP: presP,
+        topP: topp,
+        freqP: freqP,
+      },
+      intro + p1 + p2 || "",
+      { setContent: setRes },
+    );
+    if (p3 instanceof OpenAI.APIError) {
+      setErrorMsg(p3);
+      setErrorVis(true);
+      setInProgress(false);
+      return;
+    }
+    setProgress(82);
+    const ccl = await sendToGptCustom(
+      getSystem("g_es_conclusion", lng, tone),
+      getPrompt("g_es_conclusion", lng, prompt + usingPlan(lng) + outline),
+      apiKey,
+      model,
+      {
+        temp: temp,
+        presP: presP,
+        topP: topp,
+        freqP: freqP,
+      },
+      intro + p1 + p2 + p3 || "",
+      { setContent: setRes },
+    );
+    if (ccl instanceof OpenAI.APIError) {
+      setErrorMsg(ccl);
+      setErrorVis(true);
+      setInProgress(false);
+      return;
+    }
+    setProgress(100);
+    setRes(intro + p1 + p2 + p3 + ccl);
+    addToHistory({
+      prompt: prompt,
+      content: intro + p1 + p2 + p3 + ccl ?? "",
       template: type,
       date: new Date(),
     });

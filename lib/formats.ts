@@ -18,6 +18,7 @@ const formats = [
       { text: "introduction", val: "g_es_intro" },
       { text: "conclusion", val: "g_es_conclusion" },
       { text: "essay-basic", val: "g_es_basic" },
+      { text: "essay-complex", val: "g_es_complex" },
     ],
   },
   {
