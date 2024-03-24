@@ -14,7 +14,11 @@ import { ScrollArea } from "./ui/scroll-area";
 import formats from "@/lib/formats";
 import { useState } from "react";
 import { DialogClose } from "@radix-ui/react-dialog";
-export default function FormatDialog(props: { lng: string; setVal: Function }) {
+export default function FormatDialog(props: {
+  lng: string;
+  setVal: Function;
+  setCategory: Function;
+}) {
   const { t } = useTranslation(props.lng, "common");
   const [value, setValue] = useState("");
 
@@ -52,7 +56,10 @@ export default function FormatDialog(props: { lng: string; setVal: Function }) {
                           <Button
                             className="w-full justify-start"
                             key={j}
-                            onClick={() => props.setVal(format.val)}
+                            onClick={() => {
+                              props.setVal(format.val),
+                                props.setCategory(category.category);
+                            }}
                             variant="ghost"
                           >
                             {t(format.text)}

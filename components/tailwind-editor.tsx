@@ -5,10 +5,10 @@ import {
   EditorCommand,
   EditorCommandEmpty,
   EditorCommandItem,
+  EditorCommandList,
   EditorContent,
   EditorRoot,
   JSONContent,
-  defaultEditorProps,
 } from "novel";
 import { useState } from "react";
 import {
@@ -20,13 +20,11 @@ import {
   ImageIcon,
   List,
   ListOrdered,
-  MessageSquarePlus,
   Save,
   Text,
   TextQuote,
 } from "lucide-react";
-import { SuggestionItem, createSuggestionItems } from "novel/extensions";
-import { startImageUpload } from "novel/plugins";
+import { SuggestionItem, handleCommandNavigation } from "novel/extensions";
 import { Command, renderItems } from "novel/extensions";
 import { defaultExtensions } from "@/lib/editor-extensions";
 import { NodeSelector } from "./selectors/node-selector";
@@ -42,7 +40,8 @@ import {
 } from "./ui/tooltip";
 import { useTranslation } from "@/app/i18n/client";
 import { HistoryItem } from "@/lib/history";
-
+import { handleImageDrop, handleImagePaste } from "novel/plugins";
+import { uploadFn } from "@/lib/image-upload";
 interface EditorProps {
   content: JSONContent;
   lng: string;
@@ -88,7 +87,13 @@ export default function TailwindEditor(props: EditorProps) {
           className="relative min-h-[500px] w-full max-w-screen-lg border-muted bg-background sm:mb-[calc(20vh)] sm:rounded-lg sm:border sm:shadow-lg"
           extensions={extensions}
           editorProps={{
-            ...defaultEditorProps,
+            handleDOMEvents: {
+              keydown: (_view, event) => handleCommandNavigation(event),
+            },
+            handlePaste: (view, event) =>
+              handleImagePaste(view, event, uploadFn),
+            handleDrop: (view, event, _slice, moved) =>
+              handleImageDrop(view, event, moved, uploadFn),
             attributes: {
               class: `prose-lg prose-stone dark:prose-invert prose-headings:font-title font-default focus:outline-none max-w-full`,
             },
@@ -104,24 +109,26 @@ export default function TailwindEditor(props: EditorProps) {
             <EditorCommandEmpty className="px-2 text-muted-foreground">
               {t("no-results")}
             </EditorCommandEmpty>
-            {suggestionItems.map((item) => (
-              <EditorCommandItem
-                value={item.title}
-                onCommand={(val) => item.command?.(val)}
-                className={`grid w-full grid-cols-[auto,1fr] items-center space-x-2 rounded-md px-2 py-1 text-left text-sm hover:bg-accent aria-selected:bg-accent `}
-                key={item.title}
-              >
-                <div className="flex size-10 items-center justify-center rounded-md border border-muted bg-background">
-                  {item.icon}
-                </div>
-                <div>
-                  <p className="font-medium">{t(item.translation)}</p>
-                  <p className="text-xs text-muted-foreground">
-                    {t(item.translation + "-desc")}
-                  </p>
-                </div>
-              </EditorCommandItem>
-            ))}
+            <EditorCommandList>
+              {suggestionItems.map((item) => (
+                <EditorCommandItem
+                  value={item.title}
+                  onCommand={(val) => item.command?.(val)}
+                  className={`grid w-full grid-cols-[auto,1fr] items-center space-x-2 rounded-md px-2 py-1 text-left text-sm hover:bg-accent aria-selected:bg-accent `}
+                  key={item.title}
+                >
+                  <div className="flex size-10 items-center justify-center rounded-md border border-muted bg-background">
+                    {item.icon}
+                  </div>
+                  <div>
+                    <p className="font-medium">{t(item.translation)}</p>
+                    <p className="text-xs text-muted-foreground">
+                      {t(item.translation + "-desc")}
+                    </p>
+                  </div>
+                </EditorCommandItem>
+              ))}
+            </EditorCommandList>
           </EditorCommand>
           <EditorBubble
             tippyOptions={{
@@ -287,7 +294,7 @@ export const suggestionItems: CustomSuggestionItem[] = [
         if (input.files?.length) {
           const file = input.files[0];
           const pos = editor.view.state.selection.from;
-          startImageUpload(file, editor.view, pos);
+          uploadFn(file, editor.view, pos);
         }
       };
       input.click();

@@ -7,6 +7,18 @@ const formats = [
       { text: "blog-post", val: "blog" },
       { text: "ideas", val: "ideas" },
       { text: "table", val: "table" },
+      { text: "motivation-letter", val: "motivation-letter" },
+      { text: "rephraser", val: "rephraser" },
+    ],
+  },
+  {
+    category: "essay-global",
+    options: [
+      { text: "essay-outline", val: "g_es_outline" },
+      { text: "introduction", val: "g_es_intro" },
+      { text: "conclusion", val: "g_es_conclusion" },
+      { text: "essay-basic", val: "g_es_basic" },
+      { text: "essay-complex", val: "g_es_complex" },
     ],
   },
   {

@@ -64,6 +64,16 @@ export function GenerationItem(props: {
         return t("essay-basic");
       case "es_complex":
         return t("essay-complex");
+      case "g_es_intro":
+        return t("introduction");
+      case "g_es_conclusion":
+        return t("conclusion");
+      case "g_es_outline":
+        return t("essay-outline");
+      case "g_es_basic":
+        return t("essay-basic");
+      case "g_es_complex":
+        return t("essay-complex");
       case "ph_conclusion":
         return t("conclusion");
       case "ph_outline":
@@ -88,6 +98,12 @@ export function GenerationItem(props: {
         return t("text-analysis-complex");
       case "table":
         return t("table");
+      case "motivation-letter":
+        return t("motivation-letter");
+      case "rephraser":
+        return t("rephraser");
+      case "manual":
+        return t("manual-doc");
       default:
         return t("paragraph");
     }

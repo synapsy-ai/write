@@ -77,6 +77,7 @@ import {
 } from "@/components/ui/dialog";
 import { DialogClose } from "@radix-ui/react-dialog";
 import PeyronnetLogo from "@/components/peyronnet-logo";
+import { Checkbox } from "@/components/ui/checkbox";
 
 type Subscription = Database["public"]["Tables"]["subscriptions"]["Row"];
 type Product = Database["public"]["Tables"]["products"]["Row"];
@@ -101,6 +102,7 @@ export default function Create(props: Props) {
   const lng: any = props.lng;
   const { t } = useTranslation(lng, "common");
   const [type, setType] = useState("para");
+  const [cat, setCat] = useState("regular-category");
 
   let s: Settings = { key: "" };
   const apiKey: string = process?.env?.OPENAI_API_KEY || "";
@@ -126,6 +128,7 @@ export default function Create(props: Props) {
   const [variables, setVariables] = useState<Variable[]>([]);
   const [tone, setTone] = useState("tones-none");
   const [textToAnalyse, setTextToAnalyse] = useState("");
+  const [expandInput, setExpandInput] = useState(false);
   const defaultModels = () =>
     hasGpt4Access() ? ["gpt-3.5-turbo", "gpt-4"] : ["gpt-3.5-turbo"];
   const [avModels, setAvModels] = useState(
@@ -241,6 +244,8 @@ export default function Create(props: Props) {
     setRes("");
     if (type === "es_complex") {
       createComplexEssay();
+    } else if (type == "g_es_complex") {
+      createComplexEssayGlobal();
     } else if (type == "ph_complex") {
       createComplexPhiloEssay();
     } else if (type === "ph_analysis_complex") {
@@ -351,6 +356,152 @@ export default function Create(props: Props) {
     addToHistory({
       prompt: textToAnalyse,
       content: intro + "\n" + p1 + "\n" + ccl ?? "",
+      template: type,
+      date: new Date(),
+    });
+    setIsGen(false);
+    setInProgress(false);
+  }
+
+  async function createComplexEssayGlobal() {
+    setInProgress(true);
+    setErrorVis(false);
+    setIsGen(false);
+    const outline = await getStandardGeneration(
+      getSystem("g_es_complex_outline", lng, tone),
+      getPrompt("g_es_outline", lng, prompt),
+      apiKey,
+      model,
+      {
+        temp: temp,
+        presP: presP,
+        topP: topp,
+        freqP: freqP,
+      },
+    );
+
+    if (outline instanceof OpenAI.APIError) {
+      setErrorMsg(outline);
+      setErrorVis(true);
+      setInProgress(false);
+      return;
+    }
+    setIsGen(true);
+    setInProgress(false);
+    setRes("");
+    setProgress(16);
+    const intro =
+      (await sendToGptCustom(
+        getSystem("g_es_intro", lng, tone),
+        getPrompt("g_es_intro", lng, prompt + usingPlan(lng) + outline),
+        apiKey,
+        model,
+        {
+          temp: temp,
+          presP: presP,
+          topP: topp,
+          freqP: freqP,
+        },
+        "",
+        { setContent: setRes },
+      )) ?? "";
+
+    if (intro instanceof OpenAI.APIError) {
+      setErrorMsg(intro);
+      setErrorVis(true);
+      setInProgress(false);
+      return;
+    }
+    setProgress(32);
+
+    const p1 = await sendToGptCustom(
+      getSystem("g_es_basic", lng, tone),
+      getComplexEssayPrompts(1, outline, lng),
+      apiKey,
+      model,
+      {
+        temp: temp,
+        presP: presP,
+        topP: topp,
+        freqP: freqP,
+      },
+      intro || "",
+      { setContent: setRes },
+    );
+    if (p1 instanceof OpenAI.APIError) {
+      setErrorMsg(p1);
+      setErrorVis(true);
+      setInProgress(false);
+      return;
+    }
+    setProgress(48);
+    const p2 = await sendToGptCustom(
+      getSystem("g_es_basic", lng, tone),
+      getComplexEssayPrompts(2, outline, lng),
+      apiKey,
+      model,
+      {
+        temp: temp,
+        presP: presP,
+        topP: topp,
+        freqP: freqP,
+      },
+      intro + p1 || "",
+      { setContent: setRes },
+    );
+    if (p2 instanceof OpenAI.APIError) {
+      setErrorMsg(p2);
+      setErrorVis(true);
+      setInProgress(false);
+      return;
+    }
+    setProgress(64);
+    const p3 = await sendToGptCustom(
+      getSystem("g_es_basic", lng, tone),
+      getComplexEssayPrompts(3, outline, lng),
+      apiKey,
+      model,
+      {
+        temp: temp,
+        presP: presP,
+        topP: topp,
+        freqP: freqP,
+      },
+      intro + p1 + p2 || "",
+      { setContent: setRes },
+    );
+    if (p3 instanceof OpenAI.APIError) {
+      setErrorMsg(p3);
+      setErrorVis(true);
+      setInProgress(false);
+      return;
+    }
+    setProgress(82);
+    const ccl = await sendToGptCustom(
+      getSystem("g_es_conclusion", lng, tone),
+      getPrompt("g_es_conclusion", lng, prompt + usingPlan(lng) + outline),
+      apiKey,
+      model,
+      {
+        temp: temp,
+        presP: presP,
+        topP: topp,
+        freqP: freqP,
+      },
+      intro + p1 + p2 + p3 || "",
+      { setContent: setRes },
+    );
+    if (ccl instanceof OpenAI.APIError) {
+      setErrorMsg(ccl);
+      setErrorVis(true);
+      setInProgress(false);
+      return;
+    }
+    setProgress(100);
+    setRes(intro + p1 + p2 + p3 + ccl);
+    addToHistory({
+      prompt: prompt,
+      content: intro + p1 + p2 + p3 + ccl ?? "",
       template: type,
       date: new Date(),
     });
@@ -667,10 +818,18 @@ export default function Create(props: Props) {
 
       <section>
         <p className="m-2 font-bold print:hidden">{t("prompt")}</p>
-        <div className="m-2 flex flex-col items-stretch space-y-1 sm:flex-row sm:items-center sm:space-x-2 sm:space-y-0 print:hidden">
-          <Input onChange={(v) => setPrompt(v.target.value)} />
+        <div className="m-2 flex flex-col items-stretch space-y-1 sm:flex-row sm:items-start sm:space-x-2 sm:space-y-0 print:hidden">
+          {expandInput ? (
+            <Textarea
+              value={prompt}
+              onChange={(v) => setPrompt(v.target.value)}
+            />
+          ) : (
+            <Input value={prompt} onChange={(v) => setPrompt(v.target.value)} />
+          )}
+
           <div className="grid grid-cols-[1fr,auto] space-x-1 sm:flex sm:space-x-2">
-            <FormatDialog lng={lng} setVal={setType} />
+            <FormatDialog lng={lng} setVal={setType} setCategory={setCat} />
 
             <Sheet>
               <SheetTrigger asChild>
@@ -881,6 +1040,14 @@ export default function Create(props: Props) {
             </Dialog>
           )}
         </div>
+        <div className="flex items-center space-x-2 px-2 print:hidden">
+          <Checkbox
+            id="expandChk"
+            checked={expandInput}
+            onCheckedChange={() => setExpandInput(!expandInput)}
+          />
+          <label htmlFor="expandChk">{t("expand-input")}</label>
+        </div>
         {type.startsWith("ph_analysis_") && (
           <div className="p-2">
             <p className="mb-2 font-bold print:hidden">
@@ -933,7 +1100,9 @@ export default function Create(props: Props) {
           <p className="font-bold">{t("gen-settings")}</p>
           <p className="flex items-center space-x-2">
             <PenBox height={14} />
-            <span>{t(typesToString(type))}</span>
+            <span>
+              {t(cat)} - {t(typesToString(type))}
+            </span>
           </p>
           <p className="flex items-center space-x-2">
             <Lightbulb height={14} />

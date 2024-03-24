@@ -162,7 +162,16 @@ export function getSystem(
         "You are an expert who creates HTML Tables. You help organize data in HTML tables. You ONLY give the code for the HTML Table (body ONLY,no head, no scripts) on a single line." +
         (tone === "tones-none" ? "" : " Use the following tone: " + tone)
       );
-
+    if (template === "motivation-letter")
+      return (
+        "You are an expert who creates Motivation letters. The letter must be clear, not too long, avoid cliché phrases. Organize and structure the letter, don't criticize the previous employer. If for university, talk about your (academic) qualities." +
+        (tone === "tones-none" ? "" : " Use the following tone: " + tone)
+      );
+    if (template === "rephraser")
+      return (
+        "You are an expert who rephrases text. Be concise and don't use uncommon vocabulary." +
+        (tone === "tones-none" ? "" : " Use the following tone: " + tone)
+      );
     switch (type) {
       case "ph_":
         return (
@@ -172,6 +181,11 @@ export function getSystem(
       case "es_":
         return (
           "You are an expert who writes essays similar to those required for a high school diploma in the United States. Response format: HTML (body ONLY,no head, no scripts)" +
+          (tone === "tones-none" ? "" : " Use the following tone: " + tone)
+        );
+      case "g_e":
+        return (
+          "You are an expert who writes essays. Essays should always respond to a problematic, have an introduction, development (2 or 3 parts) and a conclusion. Response format: HTML (body ONLY,no head, no scripts)" +
           (tone === "tones-none" ? "" : " Use the following tone: " + tone)
         );
       default:
@@ -203,7 +217,7 @@ export function getSystem(
       return (
         `Tu es un expert qui fait des dissertations type bac de philosophie. Tu rédiges des plans de devoir sans introduction ni conclusion, avec trois parties. Format de réponse: JSON. Utilise absolument ce format (si tu ne l'utilise pas ou que tu le modifie, cela serait considéré comme offensant; les champs name et child doivent être inclus):
       [{"name": "Nom de la Partie 1","child": ["Sous-partie A","Sous-partie B","Sous-partie C"]},"name": "Nom de la Partie 2","child": ["Sous-partie A","Sous-partie B","Sous-partie C"]},"name": "Nom de la Partie 3","child": ["Sous-partie A","Sous-partie B","Sous-partie C"]}]` +
-        (tone === "tones-none" ? "" : "\n\nUse the following tone: " + tone)
+        (tone === "tones-none" ? "" : "\n\nUtilise le ton suivant : " + tone)
       );
     }
     if (template === "ph_analysis_outline") {
@@ -217,6 +231,16 @@ export function getSystem(
         "Tu es un expert qui crée des tableaux HTML. Tu aides à organiser les données dans les tableaux HTML. Tu donnes UNIQUEMENT le code du tableau en HTML  (body SEULEMENT, pas de head, pas de scripts) en une seule ligne." +
         (tone === "tones-none" ? "" : " Utilise le ton suivant : " + tone)
       );
+    if (template === "motivation-letter")
+      return (
+        "Tu es un expert qui crée des lettres de motivation. La lettre doit être claire, pas trop longue, éviter les phrases clichées. Organiser et structurer la lettre, ne pas critiquer l'employeur précédent. Si c'est pour l'université/école, parle de tes qualités (académiques)." +
+        (tone === "tones-none" ? "" : " Utilise le ton suivant : " + tone)
+      );
+    if (template === "rephraser")
+      return (
+        "Tu es un expert qui reformule des textes. Sois concis et n'utilise pas de vocabulaire peu courant." +
+        (tone === "tones-none" ? "" : " Utilise le ton suivant : " + tone)
+      );
     switch (type) {
       case "ph_":
         return (
@@ -226,6 +250,11 @@ export function getSystem(
       case "es_":
         return (
           "Tu es un expert qui fait des dissertations type bac de français. Format de réponse : HTML (SEULEMENT body, pas de head, pas de scripts)" +
+          (tone === "tones-none" ? "" : " Utilise le ton suivant : " + tone)
+        );
+      case "g_e":
+        return (
+          "Tu es un expert qui rédige des dissertations. Les dissertations doivent toujours répondre à une problématique, avoir une introduction, un développement (2 ou 3 parties) et une conclusion. Format de réponse : HTML (SEULEMENT body, pas de head, pas de scripts)" +
           (tone === "tones-none" ? "" : " Utilise le ton suivant : " + tone)
         );
       default:
@@ -255,11 +284,19 @@ export function getPrompt(
       case "es_intro":
         return `Write the introduction (hook, presentation of the subject, problem statement, and plan announcement) for the following topic: ${prompt}`;
       case "es_conclusion":
-        return `Write the conclusion (with an opening) for the following topic: `;
+        return `Write the conclusion (with an opening) for the following topic: ${prompt}`;
       case "es_outline":
         return `Write only the outline of the essay organized in three main parts (I, II, III etc.) each containing at least two subparts containing examples/quotes (A, B, etc.) for the following topic: ${prompt}`;
       case "es_basic":
         return `Write the introduction (introduction, presentation of the subject, issues and outline), the content of the essay organized into at least two main parts (I, II, III etc.) each containing at least two sub-parts (A, B, etc.) (with quotations), and the conclusion of the following subject: ${prompt}`;
+      case "g_es_intro":
+        return `Write the introduction (hook, presentation of the subject, problem statement, and plan announcement) for the following topic: ${prompt}`;
+      case "g_es_conclusion":
+        return `Write the conclusion, that resumes what you said in the essay (with an opening) for the following topic: ${prompt}`;
+      case "g_es_outline":
+        return `Write only the outline of the essay organized in three main parts (I, II, III etc.) each containing at least two subparts with arguments, examples, numbers, stats, quotes (depending on context) for the following topic: ${prompt}`;
+      case "es_basic":
+        return `Write the introduction (primer, presentation of the subject, problem and announcement of the plan), the content of the essay organized into at least two main parts (I, II, III etc.) each containing at least two sub-parts (A, B, etc.) (with arguments, examples, dates, numbers, quotations, etc.), and the conclusion of the following subject: ${prompt}`;
       case "ph_intro":
         return `Write the introduction to the subject essay, including a hook, a provisional and QUICK definition of the main terms, a problem statement with three paragraphs (On the one hand..., on the other hand..., therefore...), the issues (explaining why this question is being answered), and the plan (Nature, Existence, Value OR Meaning 1, meaning 2, meaning 3). Subject: ${prompt}`;
       case "ph_prob":
@@ -282,9 +319,12 @@ export function getPrompt(
         return `Write the text explanation using sentences, no list. The explanation is linear, i.e. the assignment must follow the order of the text. Each part corresponds to a part of the extract, and within the part, the various specific explanations (of terms, of sentences in themselves) follow one another as in the text. Start from the broadest to the most precise: - For each part, start by giving the main idea. - For each sentence, give its function (premise, explanation, example...) and content expressed in your own words. An explanation may follow if the sentence is very complex. - Explain the philosophical terms in the sentence by giving definitions, and make explicit any implied meaning or underlying references (you may wish to mention other authors). - End with a concrete example illustrating the author's idea. Text: [[${prompt}]]`;
       case "ph_analysis_outline":
         return `Write the outline of the text explanation. The explanation is linear, i.e. the assignment must follow the order of the text. Each part corresponds to a part of the extract, and within the part, the various specific explanations (of terms, of sentences in themselves) follow one another as in the text. Start from the broadest to the most precise: - For each part, start by giving the main idea. - For each sentence, give its function (premise, explanation, example...) and content expressed in your own words. An explanation may follow if the sentence is very complex. - Explain the philosophical terms in the sentence by giving definitions, and make explicit any implied meaning or underlying references (you may wish to mention other authors). - End with a concrete example illustrating the author's idea. Text: [[${prompt}]]`;
-
       case "table":
         return `Give ONLY the corresponding HTML Table about (no other text): ${prompt}`;
+      case "motivation-letter":
+        return `Write the motivation letter: ${prompt}`;
+      case "rephraser":
+        return `Rephrase the following text: ${prompt}`;
       default:
         return prompt;
     }
@@ -306,6 +346,14 @@ export function getPrompt(
         return `Rédige uniquement le plan de la dissertation organisé en trois grandes parties (I, II, III etc.) contenant chacune au moins deux sous-parties contenant des exemples/citations (A, B, etc.) du sujet suivant : ${prompt}`;
       case "es_basic":
         return `Rédige l'introduction (amorce, présentation du sujet, problématique et annonce du plan), le contenu de la dissertation organisé en au moins deux grandes parties (I, II, III etc.) contenant chacune au moins deux sous-parties (A, B, etc.) (avec des citations), et la conclusion du sujet suivant : ${prompt}`;
+      case "g_es_intro":
+        return `Rédige l'introduction (accroche, présentation du sujet, énoncé du problème et annonce du plan) pour le sujet suivant : ${prompt}`;
+      case "g_es_conclusion":
+        return `Rédige la conclusion, qui reprend ce que vous avez dit dans la dissertation (avec une ouverture) pour le sujet suivant : ${prompt}`;
+      case "g_es_outline":
+        return `Rédige seulement le plan de la dissertation organisé en trois parties principales (I, II, III etc.) contenant chacune au moins deux sous-parties, avec arguments, exemples, chiffres, statistiques, citations (selon le contexte) pour le sujet suivant : ${prompt}`;
+      case "es_basic":
+        return `Rédige l'introduction (amorce, présentation du sujet, problématique et annonce du plan), le contenu de la dissertation organisé en au moins deux grandes parties (I, II, III etc.) contenant chacune au moins deux sous-parties (A, B, etc.) (avec arguments, exemples, dates, chiffres, citations, etc.), et la conclusion du sujet suivant : ${prompt}`;
       case "ph_intro":
         return `Rédige l'introduction de dissertation du sujet avec accroche, définition provisoire et RAPIDE des termes principaux, problématique avec trois paragraphes (D'une part..., d'autre part..., donc...), enjeux (expliquant pourquoi on répond à cette question), annonce du plan (soit Nature, Existence, Valeur OU Sens 1, sens 2, sens 3). Sujet : ${prompt}`;
       case "ph_prob":
@@ -328,9 +376,12 @@ export function getPrompt(
         return `Rédige le developpement l'explication de texte avec des phrases, pas de listes. L'explication est linéaire, c'est-à-dire que le devoir doit suivre l'ordre du texte. Chaque partie correspond à une partie de l'extrait, et à l'intérieur de la partie, les différentes explications particulières (des termes, des phrases en elles-mêmes) se succèdent comme dans le texte. Partez du plus large pour aller vers le plus précis : - Pour chaque partie, commencez par en donner l'idée principale. - Pour chaque phrase, donnez-en la fonction (postulat, explication, exemple...) et le contenu exprimé avec vos mots. Peut suivre une explication si la phrase est très complexe. - Expliquez les termes philosophiques de la phrase en donnant des définitions, et explicitez les sous-entendus, les références sous-jacentes (vous pouvez alors mentionner d'autres auteurs). - Terminez par un exemple concret illustrant l'idée de l'auteur. Texte : [[${prompt}]]`;
       case "ph_analysis_outline":
         return `Rédige le plan du developpement de l'explication de texte. L'explication est linéaire, c'est-à-dire que le devoir doit suivre l'ordre du texte. Chaque partie correspond à une partie de l'extrait, et à l'intérieur de la partie, les différentes explications particulières (des termes, des phrases en elles-mêmes) se succèdent comme dans le texte. Partez du plus large pour aller vers le plus précis : - Pour chaque partie, commencez par en donner l'idée principale. - Pour chaque phrase, donnez-en la fonction (postulat, explication, exemple...) et le contenu exprimé avec vos mots. Peut suivre une explication si la phrase est très complexe. - Expliquez les termes philosophiques de la phrase en donnant des définitions, et explicitez les sous-entendus, les références sous-jacentes (vous pouvez alors mentionner d'autres auteurs). - Terminez par un exemple concret illustrant l'idée de l'auteur. Texte : [[${prompt}]]`;
-
       case "table":
         return `Donne SEULEMENT le tableau HTML correspondant au sujet suivant (pas d'autre texte) : ${prompt}`;
+      case "motivation-letter":
+        return `Rédige la lettte de motivation : ${prompt}`;
+      case "rephraser":
+        return `Reformule le texte suivant : ${prompt}`;
       default:
         return prompt;
     }
