@@ -102,6 +102,7 @@ export default function Create(props: Props) {
   const lng: any = props.lng;
   const { t } = useTranslation(lng, "common");
   const [type, setType] = useState("para");
+  const [cat, setCat] = useState("regular-category");
 
   let s: Settings = { key: "" };
   const apiKey: string = process?.env?.OPENAI_API_KEY || "";
@@ -648,7 +649,7 @@ export default function Create(props: Props) {
           )}
 
           <div className="grid grid-cols-[1fr,auto] space-x-1 sm:flex sm:space-x-2">
-            <FormatDialog lng={lng} setVal={setType} />
+            <FormatDialog lng={lng} setVal={setType} setCategory={setCat} />
 
             <Sheet>
               <SheetTrigger asChild>
@@ -919,7 +920,9 @@ export default function Create(props: Props) {
           <p className="font-bold">{t("gen-settings")}</p>
           <p className="flex items-center space-x-2">
             <PenBox height={14} />
-            <span>{t(typesToString(type))}</span>
+            <span>
+              {t(cat)} - {t(typesToString(type))}
+            </span>
           </p>
           <p className="flex items-center space-x-2">
             <Lightbulb height={14} />
