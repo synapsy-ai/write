@@ -27,7 +27,7 @@
   "light": "Light",
   "dark": "Dark",
   "system": "System",
-  "philosophy": "Essay (Philosophy)",
+  "philosophy": "Essay (philosophy)",
   "essay": "Essay (English)",
   "introduction": "Introduction",
   "problematization": "Problematization",
@@ -92,7 +92,7 @@
   "format-desc": "A generation format is a mode in which Synapsy Write generates text.",
   "gen-settings": "Generation Settings",
   "text-to-analyse": "Text to analyse",
-  "text-philosophy": "Text analysis (Philosophy)",
+  "text-philosophy": "Text analysis (philosophy)",
   "text-analysis-introduction": "Analysis introduction",
   "text-analysis-conclusion": "Analysis conclusion",
   "text-analysis-basic": "Text analysis (Basic)",
@@ -258,5 +258,6 @@
   "manual-desc": "Write a document manually.",
   "new-doc": "New document",
   "doc-title": "Title",
-  "manual-doc": "Document (Human)"
+  "manual-doc": "Document (Human)",
+  "essay-global": "Essay (generic)"
 }

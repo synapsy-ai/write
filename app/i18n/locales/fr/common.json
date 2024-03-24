@@ -92,7 +92,7 @@
   "format-desc": "Un format de génération est une manière dont Synapsy Write va générer du texte.",
   "gen-settings": "Paramètres de génération",
   "text-to-analyse": "Texte à analyser",
-  "text-philosophy": "Analyse de texte (Philosophie)",
+  "text-philosophy": "Analyse de texte (philosophie)",
   "text-analysis-introduction": "Introduction d'analyse",
   "text-analysis-conclusion": "Conclusion d'analyse",
   "text-analysis-basic": "Analyse de texte (Basique)",
@@ -256,5 +256,6 @@
   "manual-desc": "Rédiger manuellement un document.",
   "new-doc": "Nouveau document",
   "doc-title": "Titre",
-  "manual-doc": "Document (Humain)"
+  "manual-doc": "Document (Humain)",
+  "essay-global": "Dissertation (générique)"
 }

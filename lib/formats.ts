@@ -12,6 +12,15 @@ const formats = [
     ],
   },
   {
+    category: "essay-global",
+    options: [
+      { text: "essay-outline", val: "g_es_outline" },
+      { text: "introduction", val: "g_es_intro" },
+      { text: "conclusion", val: "g_es_conclusion" },
+      { text: "essay-basic", val: "g_es_basic" },
+    ],
+  },
+  {
     category: "essay",
     options: [
       { text: "essay-outline", val: "es_outline" },
