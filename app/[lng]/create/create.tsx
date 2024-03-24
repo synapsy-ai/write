@@ -859,7 +859,7 @@ export default function Create(props: Props) {
             </Dialog>
           )}
         </div>
-        <div className="flex items-center space-x-2 px-2">
+        <div className="flex items-center space-x-2 px-2 print:hidden">
           <Checkbox
             id="expandChk"
             checked={expandInput}
