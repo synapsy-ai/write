@@ -20,7 +20,7 @@ export default async function CreatePage({
     getActiveProductsWithPrices(),
     getSubscriptions(),
   ]);
-  async function getQuotas() {
+  async function getQuotas(): Promise<number> {
     if (!session || !session.user) return 0;
     const user = await getUserDetails();
     if (!user) return 0;
@@ -31,7 +31,7 @@ export default async function CreatePage({
         return q;
       }
     }
-    return 0;
+    return user.write_gpt4_quota || 0;
   }
   function getInterval(): "month" | "year" | "none" {
     if (!session || !subscriptions) return "none";
@@ -58,7 +58,7 @@ export default async function CreatePage({
     }
     return false;
   }
-  getQuotas();
+  const q = await getQuotas();
   return (
     <Create
       session={session}
@@ -66,6 +66,7 @@ export default async function CreatePage({
       subscriptions={subscriptions}
       user={session?.user}
       lng={lng}
+      quotas={q}
     />
   );
 }
