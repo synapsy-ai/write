@@ -26,7 +26,7 @@ export default async function CreatePage({
     if (!user) return 0;
     if (!user?.write_gpt4_quota) {
       if (isSubscribed()) {
-        const q = getInterval() == "year" ? 120 : 10;
+        const q = getInterval() === "year" ? 120 : 10;
         setUserQuotas(user.id, q);
         return q;
       }
@@ -39,10 +39,7 @@ export default async function CreatePage({
       if (
         subscriptions[i].prices?.products?.name?.toLowerCase().includes("write")
       ) {
-        const period =
-          +subscriptions[i].current_period_end -
-          parseInt(subscriptions[i].current_period_start);
-        return period > 2764800 ? "year" : "month";
+        return subscriptions[i].prices?.interval === "year" ? "year" : "month";
       }
     }
     return "none";
