@@ -14,7 +14,7 @@ export default async function PricingFeatureTable(props: { lng: string }) {
             {t("features")}
           </td>
           <td className="text-lg font-bold text-black dark:text-white">
-            Premium
+            Basic
           </td>
         </tr>
         <tr>
@@ -94,9 +94,7 @@ export default async function PricingFeatureTable(props: { lng: string }) {
         <tr>
           <td>OpenAI GPT-4</td>
           <td>
-            <span className="flex justify-center">
-              <Check size={16} />
-            </span>
+            <span className="flex justify-center">10/{t("month")}</span>
           </td>
         </tr>
         <tr>

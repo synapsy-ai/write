@@ -34,6 +34,20 @@ export async function getUserDetails() {
   }
 }
 
+export async function setUserQuotas(id: string, quota: number) {
+  const supabase = createServerSupabaseClient();
+  try {
+    const { error } = await supabase
+      .from("users")
+      .update({ write_gpt4_quota: quota })
+      .eq("id", id);
+    if (error) throw error;
+  } catch (error) {
+    console.error("Error:", error);
+    return null;
+  }
+}
+
 export async function getSubscriptions() {
   const supabase = createServerSupabaseClient();
   try {

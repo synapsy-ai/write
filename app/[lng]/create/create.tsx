@@ -78,6 +78,7 @@ import {
 import { DialogClose } from "@radix-ui/react-dialog";
 import PeyronnetLogo from "@/components/peyronnet-logo";
 import { Checkbox } from "@/components/ui/checkbox";
+import { useSupabase } from "@/app/supabase-provider";
 
 type Subscription = Database["public"]["Tables"]["subscriptions"]["Row"];
 type Product = Database["public"]["Tables"]["products"]["Row"];
@@ -97,6 +98,7 @@ interface Props {
   products: ProductWithPrices[];
   subscriptions: SubscriptionWithProduct[] | null;
   lng: string;
+  quotas: number;
 }
 export default function Create(props: Props) {
   const lng: any = props.lng;
@@ -134,7 +136,8 @@ export default function Create(props: Props) {
   const [avModels, setAvModels] = useState(
     getAvailableModels(s.models) ?? defaultModels(),
   );
-
+  const [gpt4Quotas, setGpt4Quotas] = useState(props.quotas);
+  const supabase = useSupabase();
   function getAvailableModels(
     availableModels: string[] | undefined,
   ): string[] | undefined {
@@ -239,9 +242,25 @@ export default function Create(props: Props) {
     });
     setIsGen(false);
   }
-
-  function createButton() {
+  async function createButton() {
     setRes("");
+    if (model.includes("gpt-4")) {
+      if (gpt4Quotas <= 0) return;
+      if (props.session && props.session.user && gpt4Quotas > 0) {
+        let q = gpt4Quotas - 1;
+        setGpt4Quotas(gpt4Quotas - 1);
+        try {
+          const { error } = await supabase.supabase
+            .from("users")
+            .update({ write_gpt4_quota: q })
+            .eq("id", props.session.user.id);
+          if (error) throw error;
+        } catch (error) {
+          console.error("Error:", error);
+          return null;
+        }
+      }
+    }
     if (type === "es_complex") {
       createComplexEssay();
     } else if (type == "g_es_complex") {
@@ -954,6 +973,7 @@ export default function Create(props: Props) {
               {!inProgress ? (
                 <Button
                   disabled={
+                    (model.includes("gpt-4") && gpt4Quotas <= 0) ||
                     type.startsWith("ph_analysis_")
                       ? textToAnalyse.replace(" ", "") == ""
                       : prompt.replace(" ", "") == ""
@@ -1048,6 +1068,14 @@ export default function Create(props: Props) {
           />
           <label htmlFor="expandChk">{t("expand-input")}</label>
         </div>
+        {model.includes("gpt-4") && (
+          <div className="m-2 flex items-center space-x-2 rounded-md border border-violet-500 bg-violet-500/20 px-2 py-1 print:hidden">
+            <Info size={16} color="#8b5cf6" />
+            <p className="font-bold text-violet-500">
+              {t("gpt-4-remaining-quotas")} {gpt4Quotas}
+            </p>
+          </div>
+        )}
         {type.startsWith("ph_analysis_") && (
           <div className="p-2">
             <p className="mb-2 font-bold print:hidden">
