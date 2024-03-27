@@ -29,7 +29,7 @@
     "@supabase/auth-ui-react": "^0.4.7",
     "@supabase/auth-ui-shared": "^0.1.8",
     "@supabase/supabase-js": "^2.40.0",
-    "@tailwindcss/typography": "^0.5.11",
+    "@tailwindcss/typography": "^0.5.12",
     "@tiptap/html": "^2.2.4",
     "accept-language": "^3.0.18",
     "ai": "^3.0.15",
