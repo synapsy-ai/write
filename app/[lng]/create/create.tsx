@@ -973,6 +973,7 @@ export default function Create(props: Props) {
               {!inProgress ? (
                 <Button
                   disabled={
+                    (model.includes("gpt-4") && gpt4Quotas <= 0) ||
                     type.startsWith("ph_analysis_")
                       ? textToAnalyse.replace(" ", "") == ""
                       : prompt.replace(" ", "") == ""
