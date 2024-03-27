@@ -14,9 +14,9 @@ export default function PricingFeatures(props: Props) {
   return (
     <div className="mt-8 grid grid-cols-[auto,1fr] items-center gap-x-2  dark:text-slate-300">
       <Check size={16} />
-      <p>{t("feature-ai")}</p>
-      <Check size={16} />
-      <p>{t("unlimited-access")}</p>
+      <p>
+        {t("feature-ai")} (10/{t("month")})
+      </p>
       <Check size={16} />
       <p>{t("advanced-instructions")}</p>
       <Check size={16} />
