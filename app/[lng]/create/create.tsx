@@ -837,7 +837,6 @@ export default function Create(props: Props) {
 
       <section>
         <p className="m-2 font-bold print:hidden">{t("prompt")}</p>
-        <p className="m-2 font-bold print:hidden">{gpt4Quotas}</p>
         <div className="m-2 flex flex-col items-stretch space-y-1 sm:flex-row sm:items-start sm:space-x-2 sm:space-y-0 print:hidden">
           {expandInput ? (
             <Textarea
@@ -1068,6 +1067,14 @@ export default function Create(props: Props) {
           />
           <label htmlFor="expandChk">{t("expand-input")}</label>
         </div>
+        {model.includes("gpt-4") && (
+          <div className="m-2 flex items-center space-x-2 rounded-md border border-violet-500 bg-violet-500/20 px-2 py-1 print:hidden">
+            <Info size={16} color="#8b5cf6" />
+            <p className="font-bold text-violet-500">
+              {t("gpt-4-remaining-quotas")} {gpt4Quotas}
+            </p>
+          </div>
+        )}
         {type.startsWith("ph_analysis_") && (
           <div className="p-2">
             <p className="mb-2 font-bold print:hidden">
