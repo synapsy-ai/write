@@ -260,5 +260,14 @@
   "doc-title": "Title",
   "manual-doc": "Document (Human)",
   "essay-global": "Essay (generic)",
-  "gpt-4-remaining-quotas": "Remaining GPT-4 generations:"
+  "gpt-4-remaining-quotas": "Remaining GPT-4 generations:",
+  "unlimited": "Unlimited",
+  "active": "Active",
+  "trialing": "Trialing",
+  "canceled": "Canceled",
+  "incomplete": "Incomplete",
+  "incomplete_expired": "Incomplete Expired",
+  "past_due": "Past Due",
+  "unpaid": "Unpaid",
+  "paused": "Paused"
 }

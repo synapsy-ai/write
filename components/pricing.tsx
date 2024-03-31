@@ -64,7 +64,7 @@ export default function Pricing({
     }
   }
 
-  const handleCheckout = async (price: Price) => {
+  const handleCheckout = async (price: Price, free_trial: boolean) => {
     setPriceIdLoading(price.id);
     if (!user) {
       return router.push(`/${lng}/login`);
@@ -77,8 +77,8 @@ export default function Pricing({
         }
       }
     }
-    let trial = true;
-    if (subscriptions) {
+    let trial = free_trial;
+    if (free_trial && subscriptions) {
       for (let i = 0; i < subscriptions.length; i++) {
         if (subscriptions[i].trial_end) {
           trial = false;
@@ -180,13 +180,6 @@ export default function Pricing({
                     <h2 className="text-2xl font-semibold leading-6 dark:text-white">
                       {product.name}
                     </h2>
-                    {subscriptions?.length === 0 ? (
-                      <p className="rounded-full bg-indigo-500 px-2 text-sm text-white">
-                        {t("free-trial")}
-                      </p>
-                    ) : (
-                      <></>
-                    )}
                   </span>
                   <p className="mt-4 dark:text-slate-300">
                     {product.description}
@@ -200,15 +193,30 @@ export default function Pricing({
                     </span>
                   </p>
                   <PricingFeatures lng={lng} productName={product.name} />
-                  <Button
-                    type="button"
-                    onClick={() => handleCheckout(price)}
-                    className="mt-8 block w-full rounded-md py-2 text-center text-sm font-semibold text-white hover:bg-slate-900"
-                  >
-                    {isSubscribedToProduct(product.id)
-                      ? t("manage")
-                      : t("subscribe")}
-                  </Button>
+
+                  <span className="block pt-8">
+                    {subscriptions?.length === 0 ? (
+                      <Button
+                        type="button"
+                        variant="outline"
+                        onClick={() => handleCheckout(price, true)}
+                        className="block w-full rounded-md border-purple-500 bg-transparent py-2 text-center text-sm font-semibold"
+                      >
+                        {t("free-trial")}
+                      </Button>
+                    ) : (
+                      <></>
+                    )}
+                    <Button
+                      type="button"
+                      onClick={() => handleCheckout(price, false)}
+                      className="mt-2 block w-full rounded-md py-2 text-center text-sm font-semibold text-white"
+                    >
+                      {isSubscribedToProduct(product.id)
+                        ? t("manage")
+                        : t("subscribe")}
+                    </Button>
+                  </span>
                 </div>
               </div>
             );
