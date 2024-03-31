@@ -137,6 +137,7 @@ export default function Create(props: Props) {
     getAvailableModels(s.models) ?? defaultModels(),
   );
   const [gpt4Quotas, setGpt4Quotas] = useState(props.quotas);
+  const [unlimited, setUnlimited] = useState(hasUnlimitedAccess());
   const supabase = useSupabase();
   function getAvailableModels(
     availableModels: string[] | undefined,
@@ -810,6 +811,23 @@ export default function Create(props: Props) {
     return false;
   }
 
+  function hasUnlimitedAccess(): boolean {
+    if (!props.session || !props.subscriptions) return false;
+    for (let i = 0; i < props.subscriptions?.length; i++) {
+      if (
+        props.subscriptions[i].prices?.products?.name
+          ?.toLowerCase()
+          .includes("write") &&
+        props.subscriptions[i].prices?.products?.name
+          ?.toLowerCase()
+          .includes("pro")
+      ) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   function hasGpt4Access(): boolean {
     if (!props.session || !props.subscriptions) return false;
     for (let i = 0; i < props.subscriptions?.length; i++) {
@@ -973,7 +991,9 @@ export default function Create(props: Props) {
               {!inProgress ? (
                 <Button
                   disabled={
-                    (model.includes("gpt-4") && gpt4Quotas <= 0) ||
+                    (!unlimited &&
+                      model.includes("gpt-4") &&
+                      gpt4Quotas <= 0) ||
                     type.startsWith("ph_analysis_")
                       ? textToAnalyse.replace(" ", "") == ""
                       : prompt.replace(" ", "") == ""
@@ -1068,7 +1088,7 @@ export default function Create(props: Props) {
           />
           <label htmlFor="expandChk">{t("expand-input")}</label>
         </div>
-        {model.includes("gpt-4") && (
+        {!unlimited && model.includes("gpt-4") && (
           <div className="m-2 flex items-center space-x-2 rounded-md border border-violet-500 bg-violet-500/20 px-2 py-1 print:hidden">
             <Info size={16} color="#8b5cf6" />
             <p className="font-bold text-violet-500">
