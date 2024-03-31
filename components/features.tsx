@@ -11,7 +11,7 @@ export default function PricingFeatures(props: Props) {
   if (!props.productName.toLowerCase().includes("synapsy write")) {
     return <></>;
   }
-  if (props.productName.includes("premium")) {
+  if (props.productName.toLowerCase().includes("premium")) {
     return (
       <div className="mt-8 grid grid-cols-[auto,1fr] items-center gap-x-2  dark:text-slate-300">
         <Check size={16} />
@@ -32,7 +32,7 @@ export default function PricingFeatures(props: Props) {
     );
   }
 
-  if (props.productName.includes("pro")) {
+  if (props.productName.toLowerCase().includes("pro")) {
     return (
       <div className="mt-8 grid grid-cols-[auto,1fr] items-center gap-x-2  dark:text-slate-300">
         <Check size={16} />
