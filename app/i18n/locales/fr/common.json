@@ -258,5 +258,6 @@
   "doc-title": "Titre",
   "manual-doc": "Document (Humain)",
   "essay-global": "Dissertation (générique)",
-  "gpt-4-remaining-quotas": "Générations GPT-4 restantes :"
+  "gpt-4-remaining-quotas": "Générations GPT-4 restantes :",
+  "unlimited": "Illimité"
 }
