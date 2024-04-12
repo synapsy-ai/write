@@ -41,7 +41,7 @@
     "html-react-parser": "^5.1.10",
     "i18next": "^23.10.1",
     "i18next-browser-languagedetector": "^7.2.1",
-    "i18next-resources-to-backend": "^1.2.0",
+    "i18next-resources-to-backend": "^1.2.1",
     "lucide-react": "^0.367.0",
     "mini-svg-data-uri": "^1.4.4",
     "next": "14.0.1",
