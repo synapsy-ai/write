@@ -79,6 +79,8 @@ import { DialogClose } from "@radix-ui/react-dialog";
 import PeyronnetLogo from "@/components/peyronnet-logo";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useSupabase } from "@/app/supabase-provider";
+import ComplexGenItem from "@/components/complex-gen";
+import GenerationStep from "@/lib/generation-step";
 
 type Subscription = Database["public"]["Tables"]["subscriptions"]["Row"];
 type Product = Database["public"]["Tables"]["products"]["Row"];
@@ -136,6 +138,10 @@ export default function Create(props: Props) {
   const [avModels, setAvModels] = useState(
     getAvailableModels(s.models) ?? defaultModels(),
   );
+
+  const [complexSteps, setComplexSteps] = useState<GenerationStep[]>([]);
+  const [complexSectionVis, setComplexSectionVis] = useState(false);
+
   const [gpt4Quotas, setGpt4Quotas] = useState(props.quotas);
   const [unlimited, setUnlimited] = useState(hasUnlimitedAccess());
   const supabase = useSupabase();
@@ -281,7 +287,13 @@ export default function Create(props: Props) {
     setInProgress(true);
     setErrorVis(false);
     setIsGen(false);
-
+    setComplexSectionVis(true);
+    setComplexSteps([
+      { i18nname: "essay-outline", done: false },
+      { i18nname: "introduction", done: false },
+      { i18nname: "main-content", done: false },
+      { i18nname: "conclusion", done: false },
+    ]);
     // 1. Generate the outline
     const outline = await getStandardGeneration(
       getSystem("ph_analysis_outline", lng, tone),
@@ -306,6 +318,12 @@ export default function Create(props: Props) {
     setIsGen(true);
     setInProgress(false);
     setRes("");
+    setComplexSteps([
+      { i18nname: "essay-outline", done: true },
+      { i18nname: "introduction", done: false },
+      { i18nname: "main-content", done: false },
+      { i18nname: "conclusion", done: false },
+    ]);
 
     // 2. Generate the intro
     const intro =
@@ -335,6 +353,12 @@ export default function Create(props: Props) {
       setInProgress(false);
       return;
     }
+    setComplexSteps([
+      { i18nname: "essay-outline", done: true },
+      { i18nname: "introduction", done: true },
+      { i18nname: "main-content", done: false },
+      { i18nname: "conclusion", done: false },
+    ]);
 
     // 3. Generate dev part
     const p1 = await sendToGptCustom(
@@ -351,7 +375,12 @@ export default function Create(props: Props) {
       intro + "\n" || "",
       { setContent: setRes },
     );
-
+    setComplexSteps([
+      { i18nname: "essay-outline", done: true },
+      { i18nname: "introduction", done: true },
+      { i18nname: "main-content", done: true },
+      { i18nname: "conclusion", done: false },
+    ]);
     // 4. Generate conclusion
     const ccl = await sendToGptCustom(
       getSystem("ph_analysis_outline", lng, tone),
@@ -373,6 +402,12 @@ export default function Create(props: Props) {
       { setContent: setRes },
     );
     setRes(intro + p1 + ccl);
+    setComplexSteps([
+      { i18nname: "essay-outline", done: true },
+      { i18nname: "introduction", done: true },
+      { i18nname: "main-content", done: true },
+      { i18nname: "conclusion", done: true },
+    ]);
     addToHistory({
       prompt: textToAnalyse,
       content: intro + "\n" + p1 + "\n" + ccl ?? "",
@@ -381,12 +416,22 @@ export default function Create(props: Props) {
     });
     setIsGen(false);
     setInProgress(false);
+    setComplexSectionVis(false);
   }
 
   async function createComplexEssayGlobal() {
     setInProgress(true);
     setErrorVis(false);
     setIsGen(false);
+    setComplexSectionVis(true);
+    setComplexSteps([
+      { i18nname: "essay-outline", done: false },
+      { i18nname: "introduction", done: false },
+      { i18nname: "part-1", done: false },
+      { i18nname: "part-2", done: false },
+      { i18nname: "part-3", done: false },
+      { i18nname: "conclusion", done: false },
+    ]);
     const outline = await getStandardGeneration(
       getSystem("g_es_complex_outline", lng, tone),
       getPrompt("g_es_outline", lng, prompt),
@@ -406,6 +451,14 @@ export default function Create(props: Props) {
       setInProgress(false);
       return;
     }
+    setComplexSteps([
+      { i18nname: "essay-outline", done: true },
+      { i18nname: "introduction", done: false },
+      { i18nname: "part-1", done: false },
+      { i18nname: "part-2", done: false },
+      { i18nname: "part-3", done: false },
+      { i18nname: "conclusion", done: false },
+    ]);
     setIsGen(true);
     setInProgress(false);
     setRes("");
@@ -433,6 +486,14 @@ export default function Create(props: Props) {
       return;
     }
     setProgress(32);
+    setComplexSteps([
+      { i18nname: "essay-outline", done: true },
+      { i18nname: "introduction", done: true },
+      { i18nname: "part-1", done: false },
+      { i18nname: "part-2", done: false },
+      { i18nname: "part-3", done: false },
+      { i18nname: "conclusion", done: false },
+    ]);
 
     const p1 = await sendToGptCustom(
       getSystem("g_es_basic", lng, tone),
@@ -455,6 +516,14 @@ export default function Create(props: Props) {
       return;
     }
     setProgress(48);
+    setComplexSteps([
+      { i18nname: "essay-outline", done: true },
+      { i18nname: "introduction", done: true },
+      { i18nname: "part-1", done: true },
+      { i18nname: "part-2", done: false },
+      { i18nname: "part-3", done: false },
+      { i18nname: "conclusion", done: false },
+    ]);
     const p2 = await sendToGptCustom(
       getSystem("g_es_basic", lng, tone),
       getComplexEssayPrompts(2, outline, lng),
@@ -476,6 +545,14 @@ export default function Create(props: Props) {
       return;
     }
     setProgress(64);
+    setComplexSteps([
+      { i18nname: "essay-outline", done: true },
+      { i18nname: "introduction", done: true },
+      { i18nname: "part-1", done: true },
+      { i18nname: "part-2", done: true },
+      { i18nname: "part-3", done: false },
+      { i18nname: "conclusion", done: false },
+    ]);
     const p3 = await sendToGptCustom(
       getSystem("g_es_basic", lng, tone),
       getComplexEssayPrompts(3, outline, lng),
@@ -497,6 +574,14 @@ export default function Create(props: Props) {
       return;
     }
     setProgress(82);
+    setComplexSteps([
+      { i18nname: "essay-outline", done: true },
+      { i18nname: "introduction", done: true },
+      { i18nname: "part-1", done: true },
+      { i18nname: "part-2", done: true },
+      { i18nname: "part-3", done: true },
+      { i18nname: "conclusion", done: false },
+    ]);
     const ccl = await sendToGptCustom(
       getSystem("g_es_conclusion", lng, tone),
       getPrompt("g_es_conclusion", lng, prompt + usingPlan(lng) + outline),
@@ -518,6 +603,14 @@ export default function Create(props: Props) {
       return;
     }
     setProgress(100);
+    setComplexSteps([
+      { i18nname: "essay-outline", done: true },
+      { i18nname: "introduction", done: true },
+      { i18nname: "part-1", done: true },
+      { i18nname: "part-2", done: true },
+      { i18nname: "part-3", done: true },
+      { i18nname: "conclusion", done: true },
+    ]);
     setRes(intro + p1 + p2 + p3 + ccl);
     addToHistory({
       prompt: prompt,
@@ -527,12 +620,22 @@ export default function Create(props: Props) {
     });
     setIsGen(false);
     setInProgress(false);
+    setComplexSectionVis(false);
   }
 
   async function createComplexEssay() {
+    setComplexSectionVis(true);
     setInProgress(true);
     setErrorVis(false);
     setIsGen(false);
+    setComplexSteps([
+      { i18nname: "essay-outline", done: false },
+      { i18nname: "introduction", done: false },
+      { i18nname: "part-1", done: false },
+      { i18nname: "part-2", done: false },
+      { i18nname: "part-3", done: false },
+      { i18nname: "conclusion", done: false },
+    ]);
     const outline = await getStandardGeneration(
       getSystem("es_complex_outline", lng, tone),
       getPrompt("es_outline", lng, prompt),
@@ -556,6 +659,14 @@ export default function Create(props: Props) {
     setInProgress(false);
     setRes("");
     setProgress(16);
+    setComplexSteps([
+      { i18nname: "essay-outline", done: true },
+      { i18nname: "introduction", done: false },
+      { i18nname: "part-1", done: false },
+      { i18nname: "part-2", done: false },
+      { i18nname: "part-3", done: false },
+      { i18nname: "conclusion", done: false },
+    ]);
     const intro =
       (await sendToGptCustom(
         getSystem("es_intro", lng, tone),
@@ -579,6 +690,14 @@ export default function Create(props: Props) {
       return;
     }
     setProgress(32);
+    setComplexSteps([
+      { i18nname: "essay-outline", done: true },
+      { i18nname: "introduction", done: true },
+      { i18nname: "part-1", done: false },
+      { i18nname: "part-2", done: false },
+      { i18nname: "part-3", done: false },
+      { i18nname: "conclusion", done: false },
+    ]);
 
     const p1 = await sendToGptCustom(
       getSystem("es_basic", lng, tone),
@@ -601,6 +720,14 @@ export default function Create(props: Props) {
       return;
     }
     setProgress(48);
+    setComplexSteps([
+      { i18nname: "essay-outline", done: true },
+      { i18nname: "introduction", done: true },
+      { i18nname: "part-1", done: true },
+      { i18nname: "part-2", done: false },
+      { i18nname: "part-3", done: false },
+      { i18nname: "conclusion", done: false },
+    ]);
     const p2 = await sendToGptCustom(
       getSystem("es_basic", lng, tone),
       getComplexEssayPrompts(2, outline, lng),
@@ -622,6 +749,14 @@ export default function Create(props: Props) {
       return;
     }
     setProgress(64);
+    setComplexSteps([
+      { i18nname: "essay-outline", done: true },
+      { i18nname: "introduction", done: true },
+      { i18nname: "part-1", done: true },
+      { i18nname: "part-2", done: true },
+      { i18nname: "part-3", done: false },
+      { i18nname: "conclusion", done: false },
+    ]);
     const p3 = await sendToGptCustom(
       getSystem("es_basic", lng, tone),
       getComplexEssayPrompts(3, outline, lng),
@@ -643,6 +778,14 @@ export default function Create(props: Props) {
       return;
     }
     setProgress(82);
+    setComplexSteps([
+      { i18nname: "essay-outline", done: true },
+      { i18nname: "introduction", done: true },
+      { i18nname: "part-1", done: true },
+      { i18nname: "part-2", done: true },
+      { i18nname: "part-3", done: true },
+      { i18nname: "conclusion", done: false },
+    ]);
     const ccl = await sendToGptCustom(
       getSystem("es_conclusion", lng, tone),
       getPrompt("es_conclusion", lng, prompt + usingPlan(lng) + outline),
@@ -664,6 +807,14 @@ export default function Create(props: Props) {
       return;
     }
     setProgress(100);
+    setComplexSteps([
+      { i18nname: "essay-outline", done: true },
+      { i18nname: "introduction", done: true },
+      { i18nname: "part-1", done: true },
+      { i18nname: "part-2", done: true },
+      { i18nname: "part-3", done: false },
+      { i18nname: "conclusion", done: true },
+    ]);
     setRes(intro + p1 + p2 + p3 + ccl);
     addToHistory({
       prompt: prompt,
@@ -673,12 +824,22 @@ export default function Create(props: Props) {
     });
     setIsGen(false);
     setInProgress(false);
+    setComplexSectionVis(false);
   }
 
   async function createComplexPhiloEssay() {
+    setComplexSectionVis(true);
     setInProgress(true);
     setIsGen(false);
     setProgressBarVis(true);
+    setComplexSteps([
+      { i18nname: "essay-outline", done: false },
+      { i18nname: "introduction", done: false },
+      { i18nname: "part-1", done: false },
+      { i18nname: "part-2", done: false },
+      { i18nname: "part-3", done: false },
+      { i18nname: "conclusion", done: false },
+    ]);
     const outline = await getStandardGeneration(
       getSystem("ph_visual_outline", lng, tone),
       getPrompt("ph_visual_outline", lng, prompt),
@@ -692,6 +853,14 @@ export default function Create(props: Props) {
       },
     );
     setProgress(16);
+    setComplexSteps([
+      { i18nname: "essay-outline", done: true },
+      { i18nname: "introduction", done: false },
+      { i18nname: "part-1", done: false },
+      { i18nname: "part-2", done: false },
+      { i18nname: "part-3", done: false },
+      { i18nname: "conclusion", done: false },
+    ]);
     setInProgress(false);
     setRes("");
     setIsGen(true);
@@ -711,6 +880,14 @@ export default function Create(props: Props) {
         { setContent: setRes },
       )) + "\n" ?? "";
     setProgress(32);
+    setComplexSteps([
+      { i18nname: "essay-outline", done: true },
+      { i18nname: "introduction", done: true },
+      { i18nname: "part-1", done: false },
+      { i18nname: "part-2", done: false },
+      { i18nname: "part-3", done: false },
+      { i18nname: "conclusion", done: false },
+    ]);
 
     const p1 = await sendToGptCustom(
       getSystem("ph_basic", lng, tone),
@@ -727,6 +904,14 @@ export default function Create(props: Props) {
       { setContent: setRes },
     );
     setProgress(48);
+    setComplexSteps([
+      { i18nname: "essay-outline", done: true },
+      { i18nname: "introduction", done: true },
+      { i18nname: "part-1", done: true },
+      { i18nname: "part-2", done: false },
+      { i18nname: "part-3", done: false },
+      { i18nname: "conclusion", done: false },
+    ]);
     const p2 =
       (await sendToGptCustom(
         getSystem("ph_basic", lng, tone),
@@ -743,6 +928,14 @@ export default function Create(props: Props) {
         { setContent: setRes },
       )) + "\n";
     setProgress(64);
+    setComplexSteps([
+      { i18nname: "essay-outline", done: true },
+      { i18nname: "introduction", done: true },
+      { i18nname: "part-1", done: true },
+      { i18nname: "part-2", done: true },
+      { i18nname: "part-3", done: false },
+      { i18nname: "conclusion", done: false },
+    ]);
     const p3 =
       (await sendToGptCustom(
         getSystem("ph_basic", lng, tone),
@@ -759,6 +952,14 @@ export default function Create(props: Props) {
         { setContent: setRes },
       )) + "\n";
     setProgress(82);
+    setComplexSteps([
+      { i18nname: "essay-outline", done: true },
+      { i18nname: "introduction", done: true },
+      { i18nname: "part-1", done: true },
+      { i18nname: "part-2", done: true },
+      { i18nname: "part-3", done: true },
+      { i18nname: "conclusion", done: false },
+    ]);
     const ccl = await sendToGptCustom(
       getSystem("ph_conclusion", lng, tone),
       getPrompt("ph_conclusion", lng, prompt + usingPlan(lng) + outline),
@@ -774,6 +975,14 @@ export default function Create(props: Props) {
       { setContent: setRes },
     );
     setProgress(100);
+    setComplexSteps([
+      { i18nname: "essay-outline", done: true },
+      { i18nname: "introduction", done: true },
+      { i18nname: "part-1", done: true },
+      { i18nname: "part-2", done: true },
+      { i18nname: "part-3", done: true },
+      { i18nname: "conclusion", done: true },
+    ]);
     setRes(intro + p1 + p2 + p3 + ccl);
     addToHistory({
       prompt: prompt,
@@ -783,6 +992,7 @@ export default function Create(props: Props) {
     });
     setIsGen(false);
     setInProgress(false);
+    setComplexSectionVis(false);
   }
 
   function removeVariable(i: number) {
@@ -1162,6 +1372,8 @@ export default function Create(props: Props) {
           </p>
         </div>
       </section>
+
+      {complexSectionVis && <ComplexGenItem steps={complexSteps} lng={lng} />}
 
       {!errorVis && res && (
         <section
