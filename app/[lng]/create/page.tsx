@@ -6,9 +6,6 @@ import {
   getUserDetails,
   setUserQuotas,
 } from "@/app/supabase-server";
-import NoSession from "./no-session";
-import BuySubscription from "./buy-subscription";
-import SiteFooter from "@/components/footer";
 
 export default async function CreatePage({
   params: { lng },
