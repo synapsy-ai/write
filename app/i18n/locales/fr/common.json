@@ -267,5 +267,11 @@
   "incomplete_expired": "Incomplet Expiré",
   "past_due": "En retard",
   "unpaid": "Impayé",
-  "paused": "En pause"
+  "paused": "En pause",
+  "complex-gen": "Génération de Documents Complexes",
+  "complex-gen-desc": "Vous utilisez une génération complexe qui nécessite plusieurs étapes pour être complétée.",
+  "main-content": "Contenu principal",
+  "part-1": "Partie I",
+  "part-2": "Partie II",
+  "part-3": "Partie III"
 }
