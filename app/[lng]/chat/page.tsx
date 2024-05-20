@@ -1,4 +1,3 @@
-import Create from "./create";
 import {
   getActiveProductsWithPrices,
   getSession,
@@ -6,8 +5,10 @@ import {
   getUserDetails,
   setUserQuotas,
 } from "@/app/supabase-server";
+import Chat from "./chat";
+import React from "react";
 
-export default async function CreatePage({
+export default async function ChatPage({
   params: { lng },
 }: {
   params: { lng: any };
@@ -54,7 +55,7 @@ export default async function CreatePage({
   }
   const q = await getQuotas();
   return (
-    <Create
+    <Chat
       session={session}
       products={products}
       subscriptions={subscriptions}

@@ -215,7 +215,7 @@ export default async function PricingFeatureTable(props: { lng: string }) {
             <td></td>
           </tr>
           <tr>
-            <td>OpenAI GPT-4</td>
+            <td>OpenAI GPT-4 + GPT-4o</td>
             <td>
               <span className="flex justify-center">
                 <X size={16} />

@@ -28,6 +28,7 @@ export default function PricingFeatures(props: Props) {
         <p>{t("text-analysis")}</p>
         <Check size={16} />
         <p>{t("variable-editor")}</p>
+        <span className="h-[24px]"></span>
       </div>
     );
   }
@@ -71,6 +72,7 @@ export default function PricingFeatures(props: Props) {
       <p>{t("text-analysis")}</p>
       <Check size={16} />
       <p>{t("variable-editor")}</p>
+      <span className="h-[24px]"></span>
     </div>
   );
 }
