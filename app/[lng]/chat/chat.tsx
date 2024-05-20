@@ -18,9 +18,15 @@ import { ChatMessage } from "@/lib/ai-completions";
 import { Database } from "@/types_db";
 import { DialogClose } from "@radix-ui/react-dialog";
 import { Session, User } from "@supabase/supabase-js";
-import { MessageSquareMore, Send, Sparkles } from "lucide-react";
+import { MessageSquareMore, PlusCircle, Send, Sparkles } from "lucide-react";
 import { useState } from "react";
 import Link from "next/link";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 type Subscription = Database["public"]["Tables"]["subscriptions"]["Row"];
 type Product = Database["public"]["Tables"]["products"]["Row"];
@@ -126,10 +132,45 @@ export default function Chat(props: Props) {
             onChange={(e) => setUserInput(e.target.value)}
             placeholder={t("send-msg")}
           />
+          <TooltipProvider delayDuration={0}>
+            <Tooltip>
+              <TooltipTrigger>
+                <Button
+                  onClick={() => {
+                    setMessages([
+                      {
+                        role: "system",
+                        content:
+                          lng === "en"
+                            ? "You are a highly skilled AI assistant specializing in document creation, information extraction, and essay writing. You help users generate well-structured documents, summarize and extract key information from texts, and craft high-quality essays based on provided topics."
+                            : "Vous êtes un assistant IA hautement qualifié, spécialisé dans la création de documents, l'extraction d'informations et la rédaction d'essais. Vous aidez les utilisateurs à générer des documents bien structurés, à résumer et à extraire des informations clés de textes, et à rédiger des essais de haute qualité sur la base de sujets fournis.",
+                      },
+                    ]);
+                  }}
+                  variant="outline"
+                >
+                  <PlusCircle size={16} />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>{t("new")}</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+
           {isSubscribed() ? (
-            <Button disabled={sendDisabled} onClick={sendBtn}>
-              <Send size={16} />
-            </Button>
+            <TooltipProvider delayDuration={0}>
+              <Tooltip>
+                <TooltipTrigger>
+                  <Button disabled={sendDisabled} onClick={sendBtn}>
+                    <Send size={16} />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>{t("send-msg")}</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
           ) : (
             <Dialog>
               <DialogTrigger className="w-auto">
