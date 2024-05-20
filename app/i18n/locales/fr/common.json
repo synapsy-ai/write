@@ -273,5 +273,11 @@
   "main-content": "Contenu principal",
   "part-1": "Partie I",
   "part-2": "Partie II",
-  "part-3": "Partie III"
+  "part-3": "Partie III",
+  "chat": "Conversation",
+  "chat-desc": "Conversez avec l'assistant Synapsy pour améliorer vos documents ou obtenir des informations à leur sujet",
+  "send": "Envoyer",
+  "send-msg": "Envoyer un message",
+  "you": "Vous",
+  "synapsy-assistant": "Assistant Synapsy"
 }

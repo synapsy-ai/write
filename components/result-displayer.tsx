@@ -7,6 +7,7 @@ export default function ResultDisplayer(props: {
   res: string;
   type: Template | string;
   is_generating: boolean;
+  no_padding?: boolean;
 }) {
   const options: HTMLReactParserOptions = {
     replace: (domNode) => {
@@ -20,7 +21,7 @@ export default function ResultDisplayer(props: {
     (props.is_generating && props.type === "ph_visual_outline")
   ) {
     return (
-      <p id="contentp" className="p-4">
+      <p id="contentp" className={props.no_padding ? "" : "p-4"}>
         {props.res}
         <span className="inline-block h-[14px] w-[7px] animate-pulse self-baseline bg-black duration-500 dark:bg-white"></span>
       </p>
@@ -117,7 +118,10 @@ export default function ResultDisplayer(props: {
       }
     default:
       return (
-        <p className="p-4 print:text-black" id="contentp">
+        <p
+          className={`${props.no_padding ? "" : "p-4"} print:text-black`}
+          id="contentp"
+        >
           {parse(
             props.res
               .replaceAll("<body>", "")
