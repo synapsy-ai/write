@@ -18,7 +18,13 @@ import { ChatMessage } from "@/lib/ai-completions";
 import { Database } from "@/types_db";
 import { DialogClose } from "@radix-ui/react-dialog";
 import { Session, User } from "@supabase/supabase-js";
-import { MessageSquareMore, PlusCircle, Send, Sparkles } from "lucide-react";
+import {
+  MessageCircleMore,
+  MessageSquareMore,
+  PlusCircle,
+  Send,
+  Sparkles,
+} from "lucide-react";
 import { useState } from "react";
 import Link from "next/link";
 import {
@@ -54,15 +60,16 @@ export default function Chat(props: Props) {
   const { t } = useTranslation(lng, "common");
   const [userInput, setUserInput] = useState("");
   const [sendDisabled, setSendDisabled] = useState(false);
-  const [messages, setMessages] = useState<ChatMessage[]>([
+  const defaultMsg: ChatMessage[] = [
     {
       role: "system",
       content:
         lng === "en"
-          ? "You are a highly skilled AI assistant specializing in document creation, information extraction, and essay writing. You help users generate well-structured documents, summarize and extract key information from texts, and craft high-quality essays based on provided topics."
-          : "Vous êtes un assistant IA hautement qualifié, spécialisé dans la création de documents, l'extraction d'informations et la rédaction d'essais. Vous aidez les utilisateurs à générer des documents bien structurés, à résumer et à extraire des informations clés de textes, et à rédiger des essais de haute qualité sur la base de sujets fournis.",
+          ? "You are a highly skilled AI assistant specializing in document creation, information extraction, and essay writing. You help users generate well-structured documents, summarize and extract key information from texts, and craft high-quality essays based on provided topics. Format response: HTML (use headers only when necessary, otherwise, only provide text)."
+          : "Vous êtes un assistant IA hautement qualifié, spécialisé dans la création de documents, l'extraction d'informations et la rédaction d'essais. Vous aidez les utilisateurs à générer des documents bien structurés, à résumer et à extraire des informations clés de textes, et à rédiger des essais de haute qualité sur la base de sujets fournis. Format de réponse : HTML (utiliser les titres seulement si nécessaire, sinon, utiliser du texte simple).",
     },
-  ]);
+  ];
+  const [messages, setMessages] = useState<ChatMessage[]>(defaultMsg);
 
   async function sendMessage() {
     let msgs: ChatMessage[] = [
@@ -122,7 +129,16 @@ export default function Chat(props: Props) {
       >
         <ScrollArea className="max-h-[calc(100vh-250px)]">
           <ChatBox isLoading={sendDisabled} lng={lng} messages={messages} />
+          {messages.length === 1 && (
+            <div className="flex h-[calc(100vh-250px)] flex-col items-center justify-center">
+              <MessageCircleMore size={36} />
+              <h3>{t("chat-placeholder")}</h3>
+              <p>{t("chat-placeholder-desc")}</p>
+              <p>{t("chat-placeholder-desc2")}</p>
+            </div>
+          )}
         </ScrollArea>
+
         <div className="flex space-x-2">
           <Input
             onKeyUp={(e) => {
@@ -137,15 +153,7 @@ export default function Chat(props: Props) {
               <TooltipTrigger>
                 <Button
                   onClick={() => {
-                    setMessages([
-                      {
-                        role: "system",
-                        content:
-                          lng === "en"
-                            ? "You are a highly skilled AI assistant specializing in document creation, information extraction, and essay writing. You help users generate well-structured documents, summarize and extract key information from texts, and craft high-quality essays based on provided topics."
-                            : "Vous êtes un assistant IA hautement qualifié, spécialisé dans la création de documents, l'extraction d'informations et la rédaction d'essais. Vous aidez les utilisateurs à générer des documents bien structurés, à résumer et à extraire des informations clés de textes, et à rédiger des essais de haute qualité sur la base de sujets fournis.",
-                      },
-                    ]);
+                    setMessages(defaultMsg);
                   }}
                   variant="outline"
                 >

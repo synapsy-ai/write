@@ -281,5 +281,8 @@
   "send": "Send",
   "send-msg": "Send a message",
   "you": "You",
-  "synapsy-assistant": "Synapsy Assistant"
+  "synapsy-assistant": "Synapsy Assistant",
+  "chat-placeholder": "Let's chat!",
+  "chat-placeholder-desc": "The Synapsy Assistant is here to answer all your questions and queries.",
+  "chat-placeholder-desc2": "Enter a message to get started."
 }
