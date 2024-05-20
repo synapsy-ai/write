@@ -462,3 +462,8 @@ export function getPromptComplexAnalysis(
   }
   return "";
 }
+
+export interface ChatMessage {
+  role: "system" | "user" | "assistant";
+  content: string;
+}
