@@ -4,7 +4,7 @@ import {
   getSubscriptions,
   getUserDetails,
   setUserQuotas,
-} from "/app/supabase-server";
+} from "@/app/supabase-server";
 import Chat from "./chat";
 import React from "react";
 
