@@ -52,6 +52,9 @@ export default function NavBar(props: { lng: string }) {
         <Link href={"/" + props.lng + "/generations"}>
           <Button variant="ghost">{t("generations")}</Button>
         </Link>
+        <Link href={"/" + props.lng + "/chat"}>
+          <Button variant="ghost">{t("chat")}</Button>
+        </Link>
       </div>
       <span></span>
       <div className="m-2 flex items-center">

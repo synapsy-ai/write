@@ -251,7 +251,7 @@
   "expand-input": "Élargir la zone de saisie",
   "new-creation": "Nouvelle création",
   "ai": "IA",
-  "ai-desc": "Utiliser entièrement l'IA pour générer des documents.",
+  "ai-desc": "Utiliser entièrement l'IA pour générer des documents ou des dissertations.",
   "manual": "Manuel",
   "manual-desc": "Rédiger manuellement un document.",
   "new-doc": "Nouveau document",
@@ -275,12 +275,12 @@
   "part-2": "Partie II",
   "part-3": "Partie III",
   "chat": "Conversation",
-  "chat-desc": "Conversez avec l'assistant Synapsy pour améliorer vos documents ou obtenir des informations à leur sujet",
+  "chat-desc": "Conversez avec l'assistant Synapsy pour améliorer vos documents ou obtenir des informations à leur sujet.",
   "send": "Envoyer",
   "send-msg": "Envoyer un message",
   "you": "Vous",
   "synapsy-assistant": "Assistant Synapsy",
   "chat-placeholder": " Discutons ! ",
-  "chat-placeholder-desc": "L'assistant Synapsy est là pour répondre à toutes vos questions et interrogations",
+  "chat-placeholder-desc": "L'assistant Synapsy est là pour répondre à toutes vos questions et interrogations.",
   "chat-placeholder-desc2": "Entrez un message pour commencer."
 }
