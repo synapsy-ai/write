@@ -8,6 +8,7 @@ import {
   DialogContent,
   DialogFooter,
   DialogHeader,
+  DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
@@ -16,11 +17,12 @@ import { Separator } from "@/components/ui/separator";
 import { sendChatToGpt } from "@/lib/ai-chat";
 import { ChatConversation, ChatMessage } from "@/lib/ai-completions";
 import { Database } from "@/types_db";
-import { DialogClose } from "@radix-ui/react-dialog";
+import { Close, DialogClose } from "@radix-ui/react-dialog";
 import { Session, User } from "@supabase/supabase-js";
 import {
   MessageCircleMore,
   MessageSquareMore,
+  Pen,
   PlusCircle,
   Send,
   Sparkles,
@@ -76,6 +78,8 @@ export default function Chat(props: Props) {
   );
   let userMsg = userInput;
   const [convIndex, setConvIndex] = useState(0);
+  const [renamePopup, setRenamePopup] = useState("");
+
   async function sendMessage() {
     userMsg = userInput;
     let msgs: ChatMessage[] = [
@@ -177,9 +181,47 @@ export default function Chat(props: Props) {
                   setConvIndex(i);
                 }}
                 variant="ghost"
-                className={`justify-start ${i == convIndex ? "border-slate-300 bg-accent/50 text-accent-foreground dark:border-slate-700" : ""}`}
+                className={`grid grid-cols-[1fr,auto] items-center ${i == convIndex ? "border-slate-300 bg-accent/50 text-accent-foreground dark:border-slate-700" : ""}`}
               >
-                {el.name}
+                <span className="text-left">{el.name}</span>
+                <Dialog>
+                  <DialogTrigger>
+                    <Button
+                      variant="ghost"
+                      onClick={() => setRenamePopup("")}
+                      className="h-auto p-1"
+                    >
+                      <Pen size={12} />
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent>
+                    <DialogHeader>
+                      <DialogTitle>{t("rename")}</DialogTitle>
+                      <Input
+                        value={renamePopup}
+                        onChange={(v) => setRenamePopup(v.target.value)}
+                        placeholder={t("enter-name")}
+                      />
+                      <DialogFooter>
+                        <Close>
+                          <Button
+                            onClick={() => {
+                              let c = [...conversations];
+                              c[i].name = renamePopup;
+                              setConversations(c);
+                              saveConvs(c);
+                            }}
+                          >
+                            {t("rename")}
+                          </Button>
+                        </Close>
+                        <Close>
+                          <Button variant="ghost">{t("close")}</Button>
+                        </Close>
+                      </DialogFooter>
+                    </DialogHeader>
+                  </DialogContent>
+                </Dialog>
               </Button>
             ))}
           </div>

@@ -288,5 +288,7 @@
   "history-paragraph-long": "Paragraphe (Histoire)",
   "conversations": "Conversations",
   "new-conv": "Nouvelle conversation",
-  "rename": "Renommer"
+  "rename": "Renommer",
+  "cancel": "Annuler",
+  "enter-name": "Entrez un nom"
 }
