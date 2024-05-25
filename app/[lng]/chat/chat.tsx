@@ -24,6 +24,7 @@ import {
   MessageCircleMore,
   MessageSquareMore,
   Pen,
+  PenSquare,
   PlusCircle,
   Send,
   Trash,
@@ -341,7 +342,7 @@ export default function Chat(props: Props) {
                     }}
                     variant="outline"
                   >
-                    <PlusCircle size={16} />
+                    <PenSquare size={16} />
                   </Button>
                 </TooltipTrigger>
                 <TooltipContent>
@@ -353,8 +354,12 @@ export default function Chat(props: Props) {
               <TooltipProvider delayDuration={0}>
                 <Tooltip>
                   <TooltipTrigger>
-                    <Button disabled={sendDisabled} onClick={sendBtn}>
-                      <Send size={16} />
+                    <Button
+                      className="group overflow-hidden"
+                      disabled={sendDisabled}
+                      onClick={sendBtn}
+                    >
+                      <Send className="group-hover:animate-rocket" size={16} />
                     </Button>
                   </TooltipTrigger>
                   <TooltipContent>
