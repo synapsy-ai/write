@@ -4,10 +4,23 @@ import { GenerationItem } from "@/components/generation-item";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { HistoryItem } from "@/lib/history";
-import { Download, Eraser, List, Upload } from "lucide-react";
+import {
+  ArrowDownNarrowWide,
+  ArrowUpNarrowWide,
+  Download,
+  Eraser,
+  List,
+  Upload,
+} from "lucide-react";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 export default function Creations({
   params: { lng },
@@ -21,6 +34,7 @@ export default function Creations({
   }
   const [history, setHistory] = useState<HistoryItem[]>(histo);
   const [query, setQuery] = useState("");
+  const [ascend, setAscend] = useState(false);
 
   function Import(event: any) {
     let file = event.target.files[0]; // get the selected file
@@ -86,13 +100,36 @@ export default function Creations({
         </div>
 
         <Separator className="my-2" />
-        <span className="flex justify-center sm:block">
+        <span className="flex justify-center space-x-2 sm:justify-start">
           <Input
             className="bg-transparent sm:max-w-[350px]"
             placeholder={t("search-history")}
             value={query}
             onChange={(v) => setQuery(v.target.value)}
           />
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger>
+                <Button
+                  className="bg-transparent"
+                  onClick={() => {
+                    setAscend(!ascend);
+                    setHistory(history.reverse());
+                  }}
+                  variant="outline"
+                >
+                  {ascend ? (
+                    <ArrowDownNarrowWide size={14} />
+                  ) : (
+                    <ArrowUpNarrowWide size={14} />
+                  )}
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>{ascend ? t("most-recent") : t("oldest")}</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
         </span>
       </header>
 

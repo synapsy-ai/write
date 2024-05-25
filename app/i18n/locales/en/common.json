@@ -294,5 +294,7 @@
   "cancel": "Cancel",
   "enter-name": "Enter a name",
   "refresh": "Refresh",
-  "refresh-models": "Refresh models"
+  "refresh-models": "Refresh models",
+  "most-recent": "Most recent",
+  "oldest": "Oldest"
 }

@@ -292,5 +292,7 @@
   "cancel": "Annuler",
   "enter-name": "Entrez un nom",
   "refresh": "Rafraîchir",
-  "refresh-models": "Rafraîchir les modèles"
+  "refresh-models": "Rafraîchir les modèles",
+  "most-recent": "Le plus récent",
+  "oldest": "Le plus vieux"
 }
