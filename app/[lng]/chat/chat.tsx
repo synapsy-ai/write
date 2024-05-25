@@ -20,12 +20,12 @@ import { Database } from "@/types_db";
 import { Close, DialogClose } from "@radix-ui/react-dialog";
 import { Session, User } from "@supabase/supabase-js";
 import {
+  History,
   MessageCircleMore,
   MessageSquareMore,
   Pen,
   PlusCircle,
   Send,
-  Sparkles,
   Trash,
 } from "lucide-react";
 import { useState } from "react";
@@ -36,6 +36,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { Drawer, DrawerContent, DrawerTrigger } from "@/components/ui/drawer";
 
 type Subscription = Database["public"]["Tables"]["subscriptions"]["Row"];
 type Product = Database["public"]["Tables"]["products"]["Row"];
@@ -79,7 +80,6 @@ export default function Chat(props: Props) {
   );
   let userMsg = userInput;
   const [convIndex, setConvIndex] = useState(0);
-  const [renamePopup, setRenamePopup] = useState("");
 
   async function sendMessage() {
     userMsg = userInput;
@@ -159,6 +159,111 @@ export default function Chat(props: Props) {
     }
   }
 
+  function ConversationComponent(props: { isMobile?: boolean }) {
+    const [renamePopup, setRenamePopup] = useState("");
+
+    return (
+      <div className={props.isMobile ? "p-2 pb-16" : "hidden w-60 sm:block"}>
+        <p className="font-bold">{t("conversations")}</p>
+        <Separator className="my-1" />
+        <div className="flex flex-col space-y-2">
+          {conversations.map((el, i) => (
+            <Button
+              key={i}
+              onClick={() => {
+                setMessages(el.messages);
+                setConvIndex(i);
+              }}
+              variant="ghost"
+              className={`grid grid-cols-[1fr,auto,auto] items-center ${i == convIndex ? "border-slate-300 bg-accent/50 text-accent-foreground dark:border-slate-700" : ""}`}
+            >
+              <span className="text-left">{el.name}</span>
+              <Dialog>
+                <DialogTrigger>
+                  <TooltipProvider delayDuration={0}>
+                    <Tooltip>
+                      <TooltipTrigger>
+                        <Button
+                          variant="ghost"
+                          onClick={() => setRenamePopup("")}
+                          className="h-auto p-1"
+                        >
+                          <Pen size={12} />
+                        </Button>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>{t("rename")}</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                </DialogTrigger>
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle>{t("rename")}</DialogTitle>
+                    <Input
+                      value={renamePopup}
+                      onChange={(v) => setRenamePopup(v.target.value)}
+                      placeholder={t("enter-name")}
+                    />
+                    <DialogFooter>
+                      <Close>
+                        <Button
+                          onClick={() => {
+                            let c = [...conversations];
+                            c[i].name = renamePopup;
+                            setConversations(c);
+                            saveConvs(c);
+                          }}
+                        >
+                          {t("rename")}
+                        </Button>
+                      </Close>
+                      <Close>
+                        <Button variant="ghost">{t("close")}</Button>
+                      </Close>
+                    </DialogFooter>
+                  </DialogHeader>
+                </DialogContent>
+              </Dialog>
+              <TooltipProvider delayDuration={0}>
+                <Tooltip>
+                  <TooltipTrigger>
+                    <Button
+                      variant="ghost"
+                      onClick={() => {
+                        let c = [...conversations];
+                        c.splice(i, 1);
+                        if (c.length === 0) {
+                          c = [
+                            {
+                              name: t("new-conv"),
+                              messages: [...defaultMsg],
+                            },
+                          ];
+                          setMessages([...defaultMsg]);
+                        }
+
+                        setConversations(c);
+                        saveConvs(c);
+                        setConvIndex(0);
+                      }}
+                      className="h-auto p-1"
+                    >
+                      <Trash size={12} />
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>{t("delete")}</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            </Button>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
   return (
     <main className="mt-2 grid min-h-full grid-rows-[auto,auto,1fr] pb-8 sm:mt-16 sm:pb-0 print:mt-0">
       <section className="ml-2 grid grid-cols-[24px,1fr] items-center space-x-2 print:hidden">
@@ -169,105 +274,10 @@ export default function Chat(props: Props) {
         </span>
       </section>
       <Separator className="mt-2" />
-      <section className="grid grid-cols-[auto,1fr] space-x-2 p-2">
-        <section className="w-60">
-          <p className="font-bold">{t("conversations")}</p>
-          <Separator className="my-1" />
-          <div className="flex flex-col space-y-2">
-            {conversations.map((el, i) => (
-              <Button
-                key={i}
-                onClick={() => {
-                  setMessages(el.messages);
-                  setConvIndex(i);
-                }}
-                variant="ghost"
-                className={`grid grid-cols-[1fr,auto,auto] items-center ${i == convIndex ? "border-slate-300 bg-accent/50 text-accent-foreground dark:border-slate-700" : ""}`}
-              >
-                <span className="text-left">{el.name}</span>
-                <Dialog>
-                  <DialogTrigger>
-                    <TooltipProvider delayDuration={0}>
-                      <Tooltip>
-                        <TooltipTrigger>
-                          <Button
-                            variant="ghost"
-                            onClick={() => setRenamePopup("")}
-                            className="h-auto p-1"
-                          >
-                            <Pen size={12} />
-                          </Button>
-                        </TooltipTrigger>
-                        <TooltipContent>
-                          <p>{t("rename")}</p>
-                        </TooltipContent>
-                      </Tooltip>
-                    </TooltipProvider>
-                  </DialogTrigger>
-                  <DialogContent>
-                    <DialogHeader>
-                      <DialogTitle>{t("rename")}</DialogTitle>
-                      <Input
-                        value={renamePopup}
-                        onChange={(v) => setRenamePopup(v.target.value)}
-                        placeholder={t("enter-name")}
-                      />
-                      <DialogFooter>
-                        <Close>
-                          <Button
-                            onClick={() => {
-                              let c = [...conversations];
-                              c[i].name = renamePopup;
-                              setConversations(c);
-                              saveConvs(c);
-                            }}
-                          >
-                            {t("rename")}
-                          </Button>
-                        </Close>
-                        <Close>
-                          <Button variant="ghost">{t("close")}</Button>
-                        </Close>
-                      </DialogFooter>
-                    </DialogHeader>
-                  </DialogContent>
-                </Dialog>
-                <TooltipProvider delayDuration={0}>
-                  <Tooltip>
-                    <TooltipTrigger>
-                      <Button
-                        variant="ghost"
-                        onClick={() => {
-                          let c = [...conversations];
-                          c.splice(i, 1);
-                          if (c.length === 0) {
-                            c = [
-                              {
-                                name: t("new-conv"),
-                                messages: [...defaultMsg],
-                              },
-                            ];
-                            setMessages([...defaultMsg]);
-                          }
-
-                          setConversations(c);
-                          saveConvs(c);
-                          setConvIndex(0);
-                        }}
-                        className="h-auto p-1"
-                      >
-                        <Trash size={12} />
-                      </Button>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <p>{t("delete")}</p>
-                    </TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
-              </Button>
-            ))}
-          </div>
-        </section>
+      <section className="grid grid-cols-[auto,1fr] p-2 sm:space-x-2">
+        <ScrollArea className="max-h-[calc(100vh-150px)]">
+          <ConversationComponent />
+        </ScrollArea>
         <section
           className={
             "grid grid-rows-[1fr,auto] rounded-md border bg-white p-2 text-justify shadow-sm dark:bg-slate-900/50 print:border-0 print:shadow-none"
@@ -286,6 +296,7 @@ export default function Chat(props: Props) {
           </ScrollArea>
           <div className="flex space-x-2">
             <Input
+              className="sm:-mr-2"
               onKeyUp={(e) => {
                 if (e.key === "Enter") sendBtn();
               }}
@@ -293,6 +304,27 @@ export default function Chat(props: Props) {
               onChange={(e) => setUserInput(e.target.value)}
               placeholder={t("send-msg")}
             />
+            <TooltipProvider delayDuration={0}>
+              <Tooltip>
+                <TooltipTrigger>
+                  <Drawer>
+                    <DrawerTrigger className="sm:hidden">
+                      <Button variant="outline">
+                        <History size={14} />
+                      </Button>
+                    </DrawerTrigger>
+                    <DrawerContent>
+                      <ScrollArea className="h-[200px]">
+                        <ConversationComponent isMobile />
+                      </ScrollArea>
+                    </DrawerContent>
+                  </Drawer>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>{t("history")}</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
             <TooltipProvider delayDuration={0}>
               <Tooltip>
                 <TooltipTrigger>
