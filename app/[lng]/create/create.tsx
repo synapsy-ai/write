@@ -79,6 +79,12 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { useSupabase } from "@/app/supabase-provider";
 import ComplexGenItem from "@/components/complex-gen";
 import GenerationStep from "@/lib/generation-step";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 type Subscription = Database["public"]["Tables"]["subscriptions"]["Row"];
 type Product = Database["public"]["Tables"]["products"]["Row"];
@@ -1077,11 +1083,21 @@ export default function Create(props: Props) {
             <FormatDialog lng={lng} setVal={setType} setCategory={setCat} />
 
             <Sheet>
-              <SheetTrigger asChild>
-                <Button variant="outline">
-                  <SettingsLogo height={16} />
-                </Button>
-              </SheetTrigger>
+              <TooltipProvider delayDuration={0}>
+                <Tooltip>
+                  <TooltipTrigger>
+                    <SheetTrigger asChild>
+                      <Button variant="outline">
+                        <SettingsLogo height={16} />
+                      </Button>
+                    </SheetTrigger>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>{t("settings")}</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+
               <SheetContent>
                 <SheetHeader>
                   <SheetTitle>{t("options")}</SheetTitle>
@@ -1107,9 +1123,18 @@ export default function Create(props: Props) {
                         </ScrollArea>
                       </SelectContent>
                     </Select>
-                    <Button variant="outline" onClick={getMs}>
-                      <RefreshCcw height={14} />
-                    </Button>
+                    <TooltipProvider delayDuration={0}>
+                      <Tooltip>
+                        <TooltipTrigger>
+                          <Button variant="outline" onClick={getMs}>
+                            <RefreshCcw height={14} />
+                          </Button>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p>{t("refresh-models")}</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
                   </div>
 
                   <Separator className="my-2" />
@@ -1352,22 +1377,49 @@ export default function Create(props: Props) {
             </div>
           </div>
         )}
-        <div className="m-2 print:hidden">
+        <div className="m-2 flex flex-col items-start print:hidden">
           <p className="font-bold">{t("gen-settings")}</p>
-          <p className="flex items-center space-x-2">
-            <PenBox height={14} />
-            <span>
-              {t(cat)} - {t(typesToString(type))}
-            </span>
-          </p>
-          <p className="flex items-center space-x-2">
-            <Lightbulb height={14} />
-            <span>{getModelString(model)}</span>
-          </p>
-          <p className="flex items-center space-x-2">
-            <PencilRuler height={14} />
-            <span>{t(tone)}</span>
-          </p>
+          <TooltipProvider delayDuration={0}>
+            <Tooltip>
+              <TooltipTrigger className="cursor-default">
+                <p className="flex items-center space-x-2">
+                  <PenBox height={14} />
+                  <span>
+                    {t(cat)} - {t(typesToString(type))}
+                  </span>
+                </p>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>{t("formats")}</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          <TooltipProvider delayDuration={0}>
+            <Tooltip>
+              <TooltipTrigger className="cursor-default">
+                <p className="flex items-center space-x-2">
+                  <Lightbulb height={14} />
+                  <span>{getModelString(model)}</span>
+                </p>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>{t("model")}</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          <TooltipProvider delayDuration={0}>
+            <Tooltip>
+              <TooltipTrigger className="cursor-default">
+                <p className="flex items-center space-x-2">
+                  <PencilRuler height={14} />
+                  <span>{t(tone)}</span>
+                </p>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>{t("tone")}</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
         </div>
       </section>
 

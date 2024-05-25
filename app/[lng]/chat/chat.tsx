@@ -8,22 +8,26 @@ import {
   DialogContent,
   DialogFooter,
   DialogHeader,
+  DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import { sendChatToGpt } from "@/lib/ai-chat";
-import { ChatMessage } from "@/lib/ai-completions";
+import { ChatConversation, ChatMessage } from "@/lib/ai-completions";
 import { Database } from "@/types_db";
-import { DialogClose } from "@radix-ui/react-dialog";
+import { Close, DialogClose } from "@radix-ui/react-dialog";
 import { Session, User } from "@supabase/supabase-js";
 import {
+  History,
   MessageCircleMore,
   MessageSquareMore,
+  Pen,
+  PenSquare,
   PlusCircle,
   Send,
-  Sparkles,
+  Trash,
 } from "lucide-react";
 import { useState } from "react";
 import Link from "next/link";
@@ -33,6 +37,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { Drawer, DrawerContent, DrawerTrigger } from "@/components/ui/drawer";
 
 type Subscription = Database["public"]["Tables"]["subscriptions"]["Row"];
 type Product = Database["public"]["Tables"]["products"]["Row"];
@@ -69,9 +74,16 @@ export default function Chat(props: Props) {
           : "Vous êtes un assistant IA hautement qualifié, spécialisé dans la création de documents, l'extraction d'informations et la rédaction d'essais. Vous aidez les utilisateurs à générer des documents bien structurés, à résumer et à extraire des informations clés de textes, et à rédiger des essais de haute qualité sur la base de sujets fournis. Format de réponse : HTML (utiliser les titres seulement si nécessaire, sinon, utiliser du texte simple).",
     },
   ];
-  const [messages, setMessages] = useState<ChatMessage[]>(defaultMsg);
+  const [conversations, setConversations] =
+    useState<ChatConversation[]>(getConvs());
+  const [messages, setMessages] = useState<ChatMessage[]>(
+    conversations[0].messages,
+  );
+  let userMsg = userInput;
+  const [convIndex, setConvIndex] = useState(0);
 
   async function sendMessage() {
+    userMsg = userInput;
     let msgs: ChatMessage[] = [
       ...messages,
       { role: "user", content: userInput },
@@ -85,17 +97,30 @@ export default function Chat(props: Props) {
 
     function setContent(content: string) {
       msgs2[msgs2.length - 1].content = content;
-      console.log(msgs2);
       setMessages([...msgs2]);
     }
     setUserInput("");
-    await sendChatToGpt("gpt-3.5-turbo", { setContent: setContent }, msgs);
+    let newMsg = await sendChatToGpt(
+      "gpt-3.5-turbo",
+      { setContent: setContent },
+      msgs,
+    );
+    return newMsg;
   }
 
   async function sendBtn() {
     setSendDisabled(true);
-    await sendMessage();
+    let newMsg = await sendMessage();
     setSendDisabled(false);
+
+    let c = [...conversations];
+    c[convIndex].messages = [
+      ...c[convIndex].messages,
+
+      { role: "user", content: userMsg },
+      { role: "assistant", content: newMsg },
+    ];
+    saveConvs([...c]);
   }
 
   function isSubscribed(): boolean {
@@ -112,133 +137,297 @@ export default function Chat(props: Props) {
     return false;
   }
 
+  function getConvs(): ChatConversation[] {
+    if (typeof window !== "undefined") {
+      let convs: ChatConversation[] = JSON.parse(
+        localStorage.getItem("synapsy_write_conversations") ?? "[]",
+      );
+      if (convs === undefined || convs.length === 0) {
+        saveConvs([{ name: t("new-conv"), messages: [...defaultMsg] }]);
+        return [{ name: t("new-conv"), messages: [...defaultMsg] }];
+      }
+      return convs;
+    }
+    return [{ name: t("new-convs"), messages: [...defaultMsg] }];
+  }
+
+  function saveConvs(convs: ChatConversation[]): void {
+    if (typeof window !== "undefined") {
+      localStorage.setItem(
+        "synapsy_write_conversations",
+        JSON.stringify(convs),
+      );
+    }
+  }
+
+  function ConversationComponent(props: { isMobile?: boolean }) {
+    const [renamePopup, setRenamePopup] = useState("");
+
+    return (
+      <div className={props.isMobile ? "p-2 pb-16" : "hidden w-60 sm:block"}>
+        <p className="font-bold">{t("conversations")}</p>
+        <Separator className="my-1" />
+        <div className="flex flex-col space-y-2">
+          {conversations.map((el, i) => (
+            <Button
+              key={i}
+              onClick={() => {
+                setMessages(el.messages);
+                setConvIndex(i);
+              }}
+              variant="ghost"
+              className={`grid grid-cols-[1fr,auto,auto] items-center ${i == convIndex ? "border-slate-300 bg-accent/50 text-accent-foreground dark:border-slate-700" : ""}`}
+            >
+              <span className="text-left">{el.name}</span>
+              <Dialog>
+                <DialogTrigger>
+                  <TooltipProvider delayDuration={0}>
+                    <Tooltip>
+                      <TooltipTrigger>
+                        <Button
+                          variant="ghost"
+                          onClick={() => setRenamePopup("")}
+                          className="h-auto p-1"
+                        >
+                          <Pen size={12} />
+                        </Button>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>{t("rename")}</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                </DialogTrigger>
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle>{t("rename")}</DialogTitle>
+                    <Input
+                      value={renamePopup}
+                      onChange={(v) => setRenamePopup(v.target.value)}
+                      placeholder={t("enter-name")}
+                    />
+                    <DialogFooter>
+                      <Close>
+                        <Button
+                          onClick={() => {
+                            let c = [...conversations];
+                            c[i].name = renamePopup;
+                            setConversations(c);
+                            saveConvs(c);
+                          }}
+                        >
+                          {t("rename")}
+                        </Button>
+                      </Close>
+                      <Close>
+                        <Button variant="ghost">{t("close")}</Button>
+                      </Close>
+                    </DialogFooter>
+                  </DialogHeader>
+                </DialogContent>
+              </Dialog>
+              <TooltipProvider delayDuration={0}>
+                <Tooltip>
+                  <TooltipTrigger>
+                    <Button
+                      variant="ghost"
+                      onClick={() => {
+                        let c = [...conversations];
+                        c.splice(i, 1);
+                        if (c.length === 0) {
+                          c = [
+                            {
+                              name: t("new-conv"),
+                              messages: [...defaultMsg],
+                            },
+                          ];
+                          setMessages([...defaultMsg]);
+                        }
+
+                        setConversations(c);
+                        saveConvs(c);
+                        setConvIndex(0);
+                      }}
+                      className="h-auto p-1"
+                    >
+                      <Trash size={12} />
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>{t("delete")}</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            </Button>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
   return (
     <main className="mt-2 grid min-h-full grid-rows-[auto,auto,1fr] pb-8 sm:mt-16 sm:pb-0 print:mt-0">
-      <section className="ml-2 flex items-center space-x-2 print:hidden">
+      <section className="ml-2 grid grid-cols-[24px,1fr] items-center space-x-2 print:hidden">
         <MessageSquareMore />
         <span>
           <h2 className="text-2xl font-bold">{t("chat")}</h2>
           <p>{t("chat-desc")}</p>
         </span>
       </section>
-      <Separator className="my-2" />
-      <section
-        className={
-          "m-2 grid grid-rows-[1fr,auto] rounded-md border bg-white p-2 text-justify shadow-sm dark:bg-slate-900/50 print:border-0 print:shadow-none"
-        }
-      >
-        <ScrollArea className="max-h-[calc(100vh-250px)]">
-          <ChatBox isLoading={sendDisabled} lng={lng} messages={messages} />
-          {messages.length === 1 && (
-            <div className="flex h-[calc(100vh-250px)] flex-col items-center justify-center text-center">
-              <MessageCircleMore size={36} />
-              <h3>{t("chat-placeholder")}</h3>
-              <p>{t("chat-placeholder-desc")}</p>
-              <p>{t("chat-placeholder-desc2")}</p>
-            </div>
-          )}
+      <Separator className="mt-2" />
+      <section className="grid grid-cols-[auto,1fr] p-2 sm:space-x-2">
+        <ScrollArea className="max-h-[calc(100vh-150px)]">
+          <ConversationComponent />
         </ScrollArea>
-
-        <div className="flex space-x-2">
-          <Input
-            onKeyUp={(e) => {
-              if (e.key === "Enter") sendBtn();
-            }}
-            value={userInput}
-            onChange={(e) => setUserInput(e.target.value)}
-            placeholder={t("send-msg")}
-          />
-          <TooltipProvider delayDuration={0}>
-            <Tooltip>
-              <TooltipTrigger>
-                <Button
-                  onClick={() => {
-                    setMessages(defaultMsg);
-                  }}
-                  variant="outline"
-                >
-                  <PlusCircle size={16} />
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>{t("new")}</p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
-
-          {isSubscribed() ? (
+        <section
+          className={
+            "grid grid-rows-[1fr,auto] rounded-md border bg-white p-2 text-justify shadow-sm dark:bg-slate-900/50 print:border-0 print:shadow-none"
+          }
+        >
+          <ScrollArea className="max-h-[calc(100vh-250px)]">
+            <ChatBox isLoading={sendDisabled} lng={lng} messages={messages} />
+            {messages.length === 1 && (
+              <div className="flex h-[calc(100vh-250px)] flex-col items-center justify-center text-center">
+                <MessageCircleMore size={36} />
+                <h3>{t("chat-placeholder")}</h3>
+                <p>{t("chat-placeholder-desc")}</p>
+                <p>{t("chat-placeholder-desc2")}</p>
+              </div>
+            )}
+          </ScrollArea>
+          <div className="flex space-x-2">
+            <Input
+              className="sm:-mr-2"
+              onKeyUp={(e) => {
+                if (e.key === "Enter") sendBtn();
+              }}
+              value={userInput}
+              onChange={(e) => setUserInput(e.target.value)}
+              placeholder={t("send-msg")}
+            />
             <TooltipProvider delayDuration={0}>
               <Tooltip>
                 <TooltipTrigger>
-                  <Button disabled={sendDisabled} onClick={sendBtn}>
-                    <Send size={16} />
-                  </Button>
+                  <Drawer>
+                    <DrawerTrigger className="sm:hidden">
+                      <Button variant="outline">
+                        <History size={14} />
+                      </Button>
+                    </DrawerTrigger>
+                    <DrawerContent>
+                      <ScrollArea className="h-[200px]">
+                        <ConversationComponent isMobile />
+                      </ScrollArea>
+                    </DrawerContent>
+                  </Drawer>
                 </TooltipTrigger>
                 <TooltipContent>
-                  <p>{t("send-msg")}</p>
+                  <p>{t("history")}</p>
                 </TooltipContent>
               </Tooltip>
             </TooltipProvider>
-          ) : (
-            <Dialog>
-              <DialogTrigger className="w-auto">
-                <Button>
-                  <Send size={16} />
-                </Button>
-              </DialogTrigger>
-              <DialogContent>
-                <DialogHeader>
-                  {props.session ? (
-                    <section className="m-4">
-                      <div className="flex justify-center">
-                        <PeyronnetLogo width={250} />
-                      </div>
-                      <h2 className="text-center">{t("products-desc")}</h2>
-                      <p className="max-w-3xl text-center">
-                        {t("pricing-desc")}
-                      </p>
-                    </section>
-                  ) : (
-                    <section className="m-4 flex flex-col items-center space-y-2">
-                      <div className="flex items-center">
-                        <PeyronnetLogo width={250} />
-                      </div>
-                      <span className="rounded-full border border-violet-600 px-2 text-sm font-bold text-violet-600 dark:bg-violet-600/10">
-                        {t("new")}
-                      </span>
-                      <h2 className="text-center">{t("unlock-power-ai")}</h2>
-                      <p className="max-w-3xl text-center">
-                        {t("account-desc")}
-                      </p>
-                    </section>
-                  )}
-                </DialogHeader>
-                <DialogFooter>
-                  <section className="flex flex-col-reverse space-x-2 sm:flex-row">
-                    <DialogClose>
-                      <Button variant="link">{t("close")}</Button>
-                    </DialogClose>
+            <TooltipProvider delayDuration={0}>
+              <Tooltip>
+                <TooltipTrigger>
+                  <Button
+                    onClick={() => {
+                      if (messages.length === 1) return; // If there are no messages
+                      setMessages(defaultMsg);
+                      setConversations([
+                        ...conversations,
+                        { name: t("new-conv"), messages: [...defaultMsg] },
+                      ]);
+                      setConvIndex(conversations.length);
+                      saveConvs(conversations);
+                    }}
+                    variant="outline"
+                  >
+                    <PenSquare size={16} />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>{t("new-conv")}</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+            {isSubscribed() ? (
+              <TooltipProvider delayDuration={0}>
+                <Tooltip>
+                  <TooltipTrigger>
+                    <Button
+                      className="group overflow-hidden"
+                      disabled={sendDisabled}
+                      onClick={sendBtn}
+                    >
+                      <Send className="group-hover:animate-rocket" size={16} />
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>{t("send-msg")}</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            ) : (
+              <Dialog>
+                <DialogTrigger className="w-auto">
+                  <Button>
+                    <Send size={16} />
+                  </Button>
+                </DialogTrigger>
+                <DialogContent>
+                  <DialogHeader>
                     {props.session ? (
-                      <Link href={`/${lng}/pricing`}>
-                        <Button>{t("see-pricing")}</Button>
-                      </Link>
+                      <section className="m-4">
+                        <div className="flex justify-center">
+                          <PeyronnetLogo width={250} />
+                        </div>
+                        <h2 className="text-center">{t("products-desc")}</h2>
+                        <p className="max-w-3xl text-center">
+                          {t("pricing-desc")}
+                        </p>
+                      </section>
                     ) : (
-                      <div className="flex justify-center space-x-2">
-                        {" "}
-                        <Link href="login">
-                          <Button variant="outline">{t("sign-in")}</Button>
-                        </Link>
-                        <Link href="https://account.peyronnet.group/login">
-                          <Button>{t("sign-up")}</Button>
-                        </Link>
-                      </div>
+                      <section className="m-4 flex flex-col items-center space-y-2">
+                        <div className="flex items-center">
+                          <PeyronnetLogo width={250} />
+                        </div>
+                        <span className="rounded-full border border-violet-600 px-2 text-sm font-bold text-violet-600 dark:bg-violet-600/10">
+                          {t("new")}
+                        </span>
+                        <h2 className="text-center">{t("unlock-power-ai")}</h2>
+                        <p className="max-w-3xl text-center">
+                          {t("account-desc")}
+                        </p>
+                      </section>
                     )}
-                  </section>
-                </DialogFooter>
-              </DialogContent>
-            </Dialog>
-          )}
-        </div>
+                  </DialogHeader>
+                  <DialogFooter>
+                    <section className="flex flex-col-reverse space-x-2 sm:flex-row">
+                      <DialogClose>
+                        <Button variant="link">{t("close")}</Button>
+                      </DialogClose>
+                      {props.session ? (
+                        <Link href={`/${lng}/pricing`}>
+                          <Button>{t("see-pricing")}</Button>
+                        </Link>
+                      ) : (
+                        <div className="flex justify-center space-x-2">
+                          {" "}
+                          <Link href="login">
+                            <Button variant="outline">{t("sign-in")}</Button>
+                          </Link>
+                          <Link href="https://account.peyronnet.group/login">
+                            <Button>{t("sign-up")}</Button>
+                          </Link>
+                        </div>
+                      )}
+                    </section>
+                  </DialogFooter>
+                </DialogContent>
+              </Dialog>
+            )}
+          </div>
+        </section>
       </section>
     </main>
   );

@@ -54,6 +54,10 @@ const formats = [
       { text: "text-analysis-complex", val: "ph_analysis_complex" },
     ],
   },
+  {
+    category: "history-format",
+    options: [{ text: "history-paragraph", val: "history_para" }],
+  },
 ];
 export default formats;
 

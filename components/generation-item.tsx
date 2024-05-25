@@ -104,6 +104,8 @@ export function GenerationItem(props: {
         return t("rephraser");
       case "manual":
         return t("manual-doc");
+      case "history_para":
+        return t("history-paragraph-long");
       default:
         return t("paragraph");
     }

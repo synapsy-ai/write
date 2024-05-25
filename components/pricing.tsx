@@ -169,9 +169,10 @@ export default function Pricing({
                 className={cn(
                   "divide-y divide-slate-100 rounded-lg border border-slate-300 bg-white shadow-sm dark:divide-slate-600 dark:border-slate-700 dark:bg-slate-900",
                   {
-                    "border border-indigo-500": subscriptions
-                      ? isSubscribedToProduct(product.id)
-                      : product.name === "Freelancer",
+                    "border border-indigo-500 dark:border-indigo-500":
+                      subscriptions
+                        ? isSubscribedToProduct(product.id)
+                        : product.name === "Freelancer",
                   },
                 )}
               >

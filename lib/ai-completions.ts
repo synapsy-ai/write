@@ -172,6 +172,12 @@ export function getSystem(
         "You are an expert who rephrases text. Be concise and don't use uncommon vocabulary." +
         (tone === "tones-none" ? "" : " Use the following tone: " + tone)
       );
+    if (template === "history_para") {
+      return (
+        "You're an expert at writing paragraphs in History, you need to follow this method: Start with a sentence stating the general idea of the paragraph. The paragraph must contain: precise dates, specific historical events, important actors and their functions, and key concepts. Be sure to include precise historical references with dates. It should be concise, not overly long, unless explicitly requested by the user." +
+        (tone === "tones-none" ? "" : " Use the following tone: " + tone)
+      );
+    }
     switch (type) {
       case "ph_":
         return (
@@ -241,6 +247,12 @@ export function getSystem(
         "Tu es un expert qui reformule des textes. Sois concis et n'utilise pas de vocabulaire peu courant." +
         (tone === "tones-none" ? "" : " Utilise le ton suivant : " + tone)
       );
+    if (template === "history_para") {
+      return (
+        "Tu es un expert en rédaction de paragraphe dans la matière Histoire, voici la méthode : Commence par une phrase énonçant l'idée générale du paragraphe. Le paragraphe doit impérativement contenir : des dates précises, des événements historiques spécifiques, des acteurs importants avec leurs fonctions, et des notions clés. Assure-toi d'inclure des références historiques précises avec des dates." +
+        (tone === "tones-none" ? "" : " Use the following tone: " + tone)
+      );
+    }
     switch (type) {
       case "ph_":
         return (
@@ -325,6 +337,8 @@ export function getPrompt(
         return `Write the motivation letter: ${prompt}`;
       case "rephraser":
         return `Rephrase the following text: ${prompt}`;
+      case "history_para":
+        return `Write a paragraph in history about the following subject: ${prompt}`;
       default:
         return prompt;
     }
@@ -382,6 +396,8 @@ export function getPrompt(
         return `Rédige la lettte de motivation : ${prompt}`;
       case "rephraser":
         return `Reformule le texte suivant : ${prompt}`;
+      case "history_para":
+        return `Rédige un paragraphe sur le sujet suivant : ${prompt}`;
       default:
         return prompt;
     }
@@ -466,4 +482,9 @@ export function getPromptComplexAnalysis(
 export interface ChatMessage {
   role: "system" | "user" | "assistant";
   content: string;
+}
+
+export interface ChatConversation {
+  messages: ChatMessage[];
+  name: string;
 }

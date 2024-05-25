@@ -284,5 +284,18 @@
   "synapsy-assistant": "Synapsy Assistant",
   "chat-placeholder": "Let's chat!",
   "chat-placeholder-desc": "The Synapsy Assistant is here to answer all your questions and queries.",
-  "chat-placeholder-desc2": "Enter a message to get started."
+  "chat-placeholder-desc2": "Enter a message to get started.",
+  "history-format": "History",
+  "history-paragraph": "Paragraph",
+  "history-paragraph-long": "Paragraph (History)",
+  "conversations": "Conversations",
+  "new-conv": "New conversation",
+  "rename": "Rename",
+  "cancel": "Cancel",
+  "enter-name": "Enter a name",
+  "refresh": "Refresh",
+  "refresh-models": "Refresh models",
+  "most-recent": "Most recent",
+  "oldest": "Oldest",
+  "conv-management": "Conversation management"
 }

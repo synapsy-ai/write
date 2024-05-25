@@ -134,11 +134,13 @@ export default function GenerationViewPage({
             >
               <Copy size={16} />
             </Button>
-            <Link href={`/${params.lng}/generations/edit?id=${id}`}>
-              <Button variant="outline">
-                <Edit size={16} />
-              </Button>
-            </Link>
+            {el.template !== "ideas" && el.template !== "ph_visual_outline" && (
+              <Link href={`/${params.lng}/generations/edit?id=${id}`}>
+                <Button variant="outline">
+                  <Edit size={16} />
+                </Button>
+              </Link>
+            )}
           </div>
         </section>
         {el.template !== "ideas" &&
