@@ -296,5 +296,6 @@
   "refresh": "Refresh",
   "refresh-models": "Refresh models",
   "most-recent": "Most recent",
-  "oldest": "Oldest"
+  "oldest": "Oldest",
+  "conv-management": "Conversation management"
 }

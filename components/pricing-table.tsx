@@ -287,6 +287,29 @@ export default async function PricingFeatureTable(props: { lng: string }) {
             </td>
           </tr>
           <tr>
+            <td>{t("conv-management")}</td>
+            <td>
+              <span className="flex justify-center">
+                <X size={16} />
+              </span>
+            </td>
+            <td>
+              <span className="flex justify-center">
+                <Check size={16} />
+              </span>
+            </td>
+            <td>
+              <span className="flex justify-center">
+                <Check size={16} />
+              </span>
+            </td>
+            <td>
+              <span className="flex justify-center">
+                <Check size={16} />
+              </span>
+            </td>
+          </tr>
+          <tr>
             <td className="text-lg font-bold text-black dark:text-white">
               {t("formats")}
             </td>

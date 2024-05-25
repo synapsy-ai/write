@@ -294,5 +294,6 @@
   "refresh": "Rafraîchir",
   "refresh-models": "Rafraîchir les modèles",
   "most-recent": "Le plus récent",
-  "oldest": "Le plus vieux"
+  "oldest": "Le plus vieux",
+  "conv-management": "Gestion des conversations"
 }
