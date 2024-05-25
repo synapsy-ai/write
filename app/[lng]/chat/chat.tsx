@@ -26,6 +26,7 @@ import {
   PlusCircle,
   Send,
   Sparkles,
+  Trash,
 } from "lucide-react";
 import { useState } from "react";
 import Link from "next/link";
@@ -169,7 +170,7 @@ export default function Chat(props: Props) {
       </section>
       <Separator className="mt-2" />
       <section className="grid grid-cols-[auto,1fr] space-x-2 p-2">
-        <section className="w-56">
+        <section className="w-60">
           <p className="font-bold">{t("conversations")}</p>
           <Separator className="my-1" />
           <div className="flex flex-col space-y-2">
@@ -181,18 +182,27 @@ export default function Chat(props: Props) {
                   setConvIndex(i);
                 }}
                 variant="ghost"
-                className={`grid grid-cols-[1fr,auto] items-center ${i == convIndex ? "border-slate-300 bg-accent/50 text-accent-foreground dark:border-slate-700" : ""}`}
+                className={`grid grid-cols-[1fr,auto,auto] items-center ${i == convIndex ? "border-slate-300 bg-accent/50 text-accent-foreground dark:border-slate-700" : ""}`}
               >
                 <span className="text-left">{el.name}</span>
                 <Dialog>
                   <DialogTrigger>
-                    <Button
-                      variant="ghost"
-                      onClick={() => setRenamePopup("")}
-                      className="h-auto p-1"
-                    >
-                      <Pen size={12} />
-                    </Button>
+                    <TooltipProvider delayDuration={0}>
+                      <Tooltip>
+                        <TooltipTrigger>
+                          <Button
+                            variant="ghost"
+                            onClick={() => setRenamePopup("")}
+                            className="h-auto p-1"
+                          >
+                            <Pen size={12} />
+                          </Button>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p>{t("rename")}</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
                   </DialogTrigger>
                   <DialogContent>
                     <DialogHeader>
@@ -222,6 +232,38 @@ export default function Chat(props: Props) {
                     </DialogHeader>
                   </DialogContent>
                 </Dialog>
+                <TooltipProvider delayDuration={0}>
+                  <Tooltip>
+                    <TooltipTrigger>
+                      <Button
+                        variant="ghost"
+                        onClick={() => {
+                          let c = [...conversations];
+                          c.splice(i, 1);
+                          if (c.length === 0) {
+                            c = [
+                              {
+                                name: t("new-conv"),
+                                messages: [...defaultMsg],
+                              },
+                            ];
+                            setMessages([...defaultMsg]);
+                          }
+
+                          setConversations(c);
+                          saveConvs(c);
+                          setConvIndex(0);
+                        }}
+                        className="h-auto p-1"
+                      >
+                        <Trash size={12} />
+                      </Button>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>{t("delete")}</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
               </Button>
             ))}
           </div>
