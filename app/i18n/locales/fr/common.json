@@ -285,5 +285,8 @@
   "chat-placeholder-desc2": "Entrez un message pour commencer.",
   "history-format": "Histoire",
   "history-paragraph": "Paragraphe",
-  "history-paragraph-long": "Paragraphe (Histoire)"
+  "history-paragraph-long": "Paragraphe (Histoire)",
+  "conversations": "Conversations",
+  "new-conv": "Nouvelle conversation",
+  "rename": "Renommer"
 }
