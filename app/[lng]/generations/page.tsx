@@ -139,7 +139,7 @@ export default function Creations({
             el.prompt.toLowerCase().includes(query.toLowerCase()) ? (
               <GenerationItem
                 refresh={refresh}
-                id={i}
+                id={ascend ? history.length - (i + 1) : i}
                 key={i}
                 item={el}
                 lng={lng}
