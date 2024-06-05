@@ -299,7 +299,7 @@ export default function Chat(props: Props) {
             <Input
               className="sm:-mr-2"
               onKeyUp={(e) => {
-                if (e.key === "Enter") sendBtn();
+                if (e.key === "Enter" && isSubscribed()) sendBtn();
               }}
               value={userInput}
               onChange={(e) => setUserInput(e.target.value)}
