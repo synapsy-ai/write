@@ -38,6 +38,15 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { Drawer, DrawerContent, DrawerTrigger } from "@/components/ui/drawer";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { getModelString } from "@/lib/models";
+import { Settings } from "@/lib/settings";
 
 type Subscription = Database["public"]["Tables"]["subscriptions"]["Row"];
 type Product = Database["public"]["Tables"]["products"]["Row"];
@@ -63,6 +72,15 @@ interface Props {
 export default function Chat(props: Props) {
   const lng: any = props.lng;
   const { t } = useTranslation(lng, "common");
+
+  let s: Settings = { key: "" };
+  const apiKey: string = process?.env?.OPENAI_API_KEY || "";
+  if (typeof window !== "undefined") {
+    s = JSON.parse(localStorage.getItem("synapsy_settings") ?? "{}");
+    s.models ??= ["gpt-3.5-turbo", "gpt-4"];
+    localStorage.setItem("synapsy_settings", JSON.stringify(s));
+  }
+
   const [userInput, setUserInput] = useState("");
   const [sendDisabled, setSendDisabled] = useState(false);
   const defaultMsg: ChatMessage[] = [
@@ -78,6 +96,41 @@ export default function Chat(props: Props) {
     useState<ChatConversation[]>(getConvs());
   const [messages, setMessages] = useState<ChatMessage[]>(
     conversations[0].messages,
+  );
+  const [model, setModel] = useState("gpt-3.5-turbo");
+
+  const defaultModels = () =>
+    hasGpt4Access() ? ["gpt-3.5-turbo", "gpt-4"] : ["gpt-3.5-turbo"];
+
+  function getAvailableModels(
+    availableModels: string[] | undefined,
+  ): string[] | undefined {
+    if (!availableModels) return [];
+    let models = [];
+    let gpt4 = hasGpt4Access();
+    for (let i = 0; i < availableModels.length; i++) {
+      if (availableModels[i].includes("gpt-4") && !gpt4) continue;
+      models?.push(availableModels[i]);
+    }
+    return models;
+  }
+
+  function hasGpt4Access(): boolean {
+    if (!props.session || !props.subscriptions) return false;
+    for (let i = 0; i < props.subscriptions?.length; i++) {
+      if (
+        props.subscriptions[i].prices?.products?.name
+          ?.toLowerCase()
+          .includes("write")
+      ) {
+        return props.subscriptions[i].status === "active";
+      }
+    }
+    return false;
+  }
+
+  const [avModels, setAvModels] = useState(
+    getAvailableModels(s.models) ?? defaultModels(),
   );
   let userMsg = userInput;
   const [convIndex, setConvIndex] = useState(0);
@@ -100,11 +153,7 @@ export default function Chat(props: Props) {
       setMessages([...msgs2]);
     }
     setUserInput("");
-    let newMsg = await sendChatToGpt(
-      "gpt-3.5-turbo",
-      { setContent: setContent },
-      msgs,
-    );
+    let newMsg = await sendChatToGpt(model, { setContent: setContent }, msgs);
     return newMsg;
   }
 
@@ -281,10 +330,24 @@ export default function Chat(props: Props) {
         </ScrollArea>
         <section
           className={
-            "grid grid-rows-[1fr,auto] rounded-md border bg-white p-2 text-justify shadow-sm dark:bg-slate-900/50 print:border-0 print:shadow-none"
+            "grid grid-rows-[auto,1fr,auto] space-y-2 rounded-md border bg-white p-2 text-justify shadow-sm dark:bg-slate-900/50 print:border-0 print:shadow-none"
           }
         >
-          <ScrollArea className="max-h-[calc(100vh-250px)]">
+          <Select onValueChange={(e) => setModel(e)} defaultValue={model}>
+            <SelectTrigger className="w-[180px]">
+              <SelectValue placeholder={t("model")} />
+            </SelectTrigger>
+            <SelectContent>
+              <ScrollArea className="h-[200px]">
+                {avModels.map((el, i) => (
+                  <SelectItem key={i} value={el}>
+                    {getModelString(el)}
+                  </SelectItem>
+                ))}
+              </ScrollArea>
+            </SelectContent>
+          </Select>
+          <ScrollArea className="max-h-[calc(100vh-290px)]">
             <ChatBox isLoading={sendDisabled} lng={lng} messages={messages} />
             {messages.length === 1 && (
               <div className="flex h-[calc(100vh-250px)] flex-col items-center justify-center text-center">
