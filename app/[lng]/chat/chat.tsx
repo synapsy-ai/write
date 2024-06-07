@@ -371,7 +371,7 @@ export default function Chat(props: Props) {
                     <div>
                       <ScrollArea className="h-[200px]">
                         {templates.map((template, i) => (
-                          <Close className="block w-full">
+                          <Close key={i} className="block w-full">
                             <Button
                               onClick={() => {
                                 if (selectedTemplateId === i) {
