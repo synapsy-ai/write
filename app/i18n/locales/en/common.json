@@ -297,5 +297,9 @@
   "refresh-models": "Refresh models",
   "most-recent": "Most recent",
   "oldest": "Oldest",
-  "conv-management": "Conversation management"
+  "conv-management": "Conversation management",
+  "create-template": "Create a template",
+  "system-templates": "System templates",
+  "system-template-creator": "System template creator",
+  "system-template-creator-desc": "Create a template to use as System prompt when creating a conversation with Synapsy Assistant."
 }

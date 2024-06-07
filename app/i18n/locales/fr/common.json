@@ -295,5 +295,9 @@
   "refresh-models": "Rafraîchir les modèles",
   "most-recent": "Le plus récent",
   "oldest": "Le plus vieux",
-  "conv-management": "Gestion des conversations"
+  "conv-management": "Gestion des conversations",
+  "create-template": "Créer un modèle",
+  "system-templates": "Modèles système",
+  "system-template-creator": "Créateur de modèles système",
+  "system-template-creator-desc": "Créer un modèle à utiliser comme invite du système lors de la création d'une conversation avec l'assistant Synapsy"
 }
