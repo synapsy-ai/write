@@ -6,6 +6,7 @@ import {
   RefreshCcw,
   Settings as SettingsLogo,
   Sun,
+  Trash,
 } from "lucide-react";
 import { useTranslation } from "../../i18n/client";
 import { Separator } from "@/components/ui/separator";
@@ -35,6 +36,14 @@ import {
 } from "@/components/ui/dialog";
 import { DialogClose } from "@radix-ui/react-dialog";
 import { version } from "@/lib/version";
+import SystemTemplateCreator from "@/components/system-template-creator";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { m } from "framer-motion";
 
 export default function SettingsPage({
   params: { lng },
@@ -46,7 +55,7 @@ export default function SettingsPage({
   let s: Settings = { key: "" };
   if (typeof window !== "undefined") {
     s = JSON.parse(localStorage.getItem("synapsy_settings") ?? "{}");
-    s.models ??= ["gpt-3.5-turbo", "gpt-4"];
+    s.models ??= ["gpt-3.5-turbo"];
     localStorage.setItem("synapsy_settings", JSON.stringify(s));
   }
   const [models, setModels] = useState(
@@ -56,6 +65,7 @@ export default function SettingsPage({
   );
   const [modelQuery, setModelQuery] = useState("");
   const apiKey = process?.env?.OPENAI_API_KEY || "";
+  const [templates, setTemplates] = useState(s.system_templates ?? []);
   async function refreshModels() {
     let m = await getModels();
     let avm: string[] = [];
@@ -180,6 +190,8 @@ export default function SettingsPage({
             </div>
           </ScrollArea>
         </div>
+        <p className="my-2">{t("system-templates")}</p>
+        <SystemTemplateCreator setTemplates={setTemplates} lng={lng} />
       </section>
       <section>
         <h3 className="text-xl font-semibold">{t("misc")}</h3>
