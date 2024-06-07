@@ -192,6 +192,49 @@ export default function SettingsPage({
         </div>
         <p className="my-2">{t("system-templates")}</p>
         <SystemTemplateCreator setTemplates={setTemplates} lng={lng} />
+        {templates.length > 0 && (
+          <div className="mt-2 max-w-[550px] rounded-md border p-2">
+            <ScrollArea className="h-[200px]">
+              {templates.map((template, i) => (
+                <div
+                  className="m-1 grid grid-cols-[1fr,auto] rounded-md border border-transparent p-2 hover:border-slate-300 hover:bg-slate-200/50 dark:hover:border-accent dark:hover:bg-slate-800/50"
+                  key={i}
+                >
+                  <span>
+                    <h4>{template.name}</h4>
+                    <p className="text-slate-400">
+                      {template.prompt.substring(0, 50) +
+                        (template.prompt.length > 50 ? "..." : "")}
+                    </p>
+                  </span>
+                  <TooltipProvider delayDuration={0}>
+                    <Tooltip>
+                      <TooltipTrigger>
+                        <Button
+                          onClick={() => {
+                            s.system_templates?.splice(i, 1);
+                            localStorage.setItem(
+                              "synapsy_settings",
+                              JSON.stringify(s),
+                            );
+                            setTemplates([...(s.system_templates ?? [])]);
+                          }}
+                          className="mt-1 h-auto p-2"
+                          variant="ghost"
+                        >
+                          <Trash size={12} />
+                        </Button>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>{t("delete")}</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                </div>
+              ))}
+            </ScrollArea>
+          </div>
+        )}
       </section>
       <section>
         <h3 className="text-xl font-semibold">{t("misc")}</h3>
