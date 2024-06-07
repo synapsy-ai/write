@@ -20,6 +20,7 @@ import { Database } from "@/types_db";
 import { Close, DialogClose } from "@radix-ui/react-dialog";
 import { Session, User } from "@supabase/supabase-js";
 import {
+  Check,
   History,
   MessageCircleMore,
   MessageSquareMore,
@@ -27,6 +28,7 @@ import {
   PenSquare,
   PlusCircle,
   Send,
+  Settings as SettingsIcon,
   Trash,
 } from "lucide-react";
 import { useState } from "react";
@@ -78,11 +80,16 @@ export default function Chat(props: Props) {
   if (typeof window !== "undefined") {
     s = JSON.parse(localStorage.getItem("synapsy_settings") ?? "{}");
     s.models ??= ["gpt-3.5-turbo", "gpt-4"];
+    s.system_templates ??= [];
     localStorage.setItem("synapsy_settings", JSON.stringify(s));
   }
 
   const [userInput, setUserInput] = useState("");
   const [sendDisabled, setSendDisabled] = useState(false);
+  const [templates, setTemplates] = useState(s.system_templates ?? []);
+  const [selectedTemplateId, setSelectedTemplateId] = useState<
+    number | undefined
+  >();
   const defaultMsg: ChatMessage[] = [
     {
       role: "system",
@@ -223,6 +230,7 @@ export default function Chat(props: Props) {
               onClick={() => {
                 setMessages(el.messages);
                 setConvIndex(i);
+                setSelectedTemplateId(undefined);
               }}
               variant="ghost"
               className={`grid grid-cols-[1fr,auto,auto] items-center ${i == convIndex ? "border-slate-300 bg-accent/50 text-accent-foreground dark:border-slate-700" : ""}`}
@@ -333,20 +341,124 @@ export default function Chat(props: Props) {
             "grid grid-rows-[auto,1fr,auto] space-y-2 rounded-md border bg-white p-2 text-justify shadow-sm dark:bg-slate-900/50 print:border-0 print:shadow-none"
           }
         >
-          <Select onValueChange={(e) => setModel(e)} defaultValue={model}>
-            <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder={t("model")} />
-            </SelectTrigger>
-            <SelectContent>
-              <ScrollArea className="h-[200px]">
-                {avModels.map((el, i) => (
-                  <SelectItem key={i} value={el}>
-                    {getModelString(el)}
-                  </SelectItem>
-                ))}
-              </ScrollArea>
-            </SelectContent>
-          </Select>
+          <div className="flex items-center space-x-2">
+            <Select onValueChange={(e) => setModel(e)} defaultValue={model}>
+              <SelectTrigger className="w-[180px]">
+                <SelectValue placeholder={t("model")} />
+              </SelectTrigger>
+              <SelectContent>
+                <ScrollArea className="h-[200px]">
+                  {avModels.map((el, i) => (
+                    <SelectItem key={i} value={el}>
+                      {getModelString(el)}
+                    </SelectItem>
+                  ))}
+                </ScrollArea>
+              </SelectContent>
+            </Select>
+            {messages.length === 1 && (
+              <Dialog>
+                <DialogTrigger>
+                  <Button variant="ghost">
+                    <SettingsIcon size={16} />
+                  </Button>
+                </DialogTrigger>
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle>{t("system-templates")}</DialogTitle>
+                  </DialogHeader>
+                  {templates.length > 0 && (
+                    <div>
+                      <ScrollArea className="h-[200px]">
+                        {templates.map((template, i) => (
+                          <Close className="block w-full">
+                            <Button
+                              onClick={() => {
+                                if (selectedTemplateId === i) {
+                                  setSelectedTemplateId(undefined);
+                                  setMessages(defaultMsg);
+                                  let c = [...conversations];
+                                  c[convIndex].messages = defaultMsg;
+                                  setConversations(c);
+                                  return;
+                                }
+                                setSelectedTemplateId(i);
+                                setMessages([
+                                  { role: "system", content: template.prompt },
+                                ]);
+                                let c = [...conversations];
+                                c[convIndex].messages = messages;
+                                setConversations(c);
+                              }}
+                              variant="ghost"
+                              className="h-auto w-full px-1 text-left"
+                            >
+                              <div
+                                className="grid w-full grid-cols-[auto,1fr,auto] items-center"
+                                key={i}
+                              >
+                                {selectedTemplateId === i ? (
+                                  <Check size={16} className="mx-2" />
+                                ) : (
+                                  <span></span>
+                                )}
+                                <span>
+                                  <h4>{template.name}</h4>
+                                  <p className="text-slate-400">
+                                    {template.prompt.substring(0, 50) +
+                                      (template.prompt.length > 50
+                                        ? "..."
+                                        : "")}
+                                  </p>
+                                </span>
+                                <TooltipProvider delayDuration={0}>
+                                  <Tooltip>
+                                    <TooltipTrigger>
+                                      <Button
+                                        onClick={() => {
+                                          s.system_templates?.splice(i, 1);
+                                          localStorage.setItem(
+                                            "synapsy_settings",
+                                            JSON.stringify(s),
+                                          );
+                                          setTemplates([
+                                            ...(s.system_templates ?? []),
+                                          ]);
+                                        }}
+                                        className="mt-1 h-auto p-2"
+                                        variant="ghost"
+                                      >
+                                        <Trash size={12} />
+                                      </Button>
+                                    </TooltipTrigger>
+                                    <TooltipContent>
+                                      <p>{t("delete")}</p>
+                                    </TooltipContent>
+                                  </Tooltip>
+                                </TooltipProvider>
+                              </div>
+                            </Button>
+                          </Close>
+                        ))}
+                      </ScrollArea>
+                    </div>
+                  )}
+                  {(!templates.length || templates.length === 0) && (
+                    <div className="flex flex-col items-center rounded-md border p-2">
+                      <SettingsIcon className="m-2" size={32} />
+                      <h4>{t("no-templates")}</h4>
+                      <p className="text-center text-slate-400">
+                        {t("no-templates-desc")}
+                      </p>
+                      <Link href={`/${lng}/settings`}>
+                        <Button variant="link">{t("create-template")}</Button>
+                      </Link>
+                    </div>
+                  )}
+                </DialogContent>
+              </Dialog>
+            )}
+          </div>
           <ScrollArea className="max-h-[calc(100vh-290px)]">
             <ChatBox isLoading={sendDisabled} lng={lng} messages={messages} />
             {messages.length === 1 && (
