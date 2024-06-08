@@ -42,13 +42,13 @@ export default function FormatDialog(props: {
   ];
 
   const icons = [
-    <Pen />,
-    <Book />,
-    <BookOpen />,
-    <MessageCircle />,
-    <BrainCircuit />,
-    <Presentation />,
-    <CalendarRangeIcon />,
+    <Pen key="pen" />,
+    <Book key="book" />,
+    <BookOpen key="bookopen" />,
+    <MessageCircle key="msg" />,
+    <BrainCircuit key="brain" />,
+    <Presentation key="pres" />,
+    <CalendarRangeIcon key="calendar" />,
   ];
 
   const [selectedFormat, setSelectedFormat] = useState<Format | undefined>();
