@@ -306,5 +306,10 @@
   "no-templates-desc": "You can create a system template to influence the way the Assistant will interact with you.",
   "oral-presentation": "Oral presentation",
   "oral-basic": "Oral presentation (Basic)",
-  "go-back": "Go back"
+  "go-back": "Go back",
+  "generation-font": "Generation font",
+  "font-mono": "Mono",
+  "font-serif": "Serif",
+  "font-sans": "Sans Serif",
+  "font-default": "Default"
 }
