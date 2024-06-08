@@ -297,5 +297,19 @@
   "refresh-models": "Refresh models",
   "most-recent": "Most recent",
   "oldest": "Oldest",
-  "conv-management": "Conversation management"
+  "conv-management": "Conversation management",
+  "create-template": "Create a template",
+  "system-templates": "System templates",
+  "system-template-creator": "System template creator",
+  "system-template-creator-desc": "Create a template to use as System prompt when creating a conversation with Synapsy Assistant.",
+  "no-templates": "No system templates are available",
+  "no-templates-desc": "You can create a system template to influence the way the Assistant will interact with you.",
+  "oral-presentation": "Oral presentation",
+  "oral-basic": "Oral presentation (Basic)",
+  "go-back": "Go back",
+  "generation-font": "Generation font",
+  "font-mono": "Mono",
+  "font-serif": "Serif",
+  "font-sans": "Sans Serif",
+  "font-default": "Default"
 }

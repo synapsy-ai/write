@@ -295,5 +295,19 @@
   "refresh-models": "Rafraîchir les modèles",
   "most-recent": "Le plus récent",
   "oldest": "Le plus vieux",
-  "conv-management": "Gestion des conversations"
+  "conv-management": "Gestion des conversations",
+  "create-template": "Créer un modèle",
+  "system-templates": "Modèles système",
+  "system-template-creator": "Créateur de modèles système",
+  "system-template-creator-desc": "Créer un modèle à utiliser comme invite du système lors de la création d'une conversation avec l'assistant Synapsy",
+  "no-templates": "Aucun modèle de système n'est disponible",
+  "no-templates-desc": "Vous pouvez créer un modèle de système pour influencer la façon dont l'assistant interagira avec vous.",
+  "oral-presentation": "Présentation orale",
+  "oral-basic": "Présentation orale (Basique)",
+  "go-back": "Revenir en arrière",
+  "generation-font": "Police des générations",
+  "font-mono": "Mono",
+  "font-serif": "Serif",
+  "font-sans": "Sans Serif",
+  "font-default": "Par défaut"
 }

@@ -54,7 +54,7 @@ export default function ChatBox(props: ChatBoxProps) {
                 no_padding
               />
               <div className="hidden group-hover:block">
-                <TooltipProvider>
+                <TooltipProvider delayDuration={0}>
                   <Tooltip>
                     <TooltipTrigger>
                       <Button

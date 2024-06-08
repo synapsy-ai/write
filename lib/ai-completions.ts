@@ -194,6 +194,11 @@ export function getSystem(
           "You are an expert who writes essays. Essays should always respond to a problematic, have an introduction, development (2 or 3 parts) and a conclusion. Response format: HTML (body ONLY,no head, no scripts)" +
           (tone === "tones-none" ? "" : " Use the following tone: " + tone)
         );
+      case "oral_":
+        return (
+          "You are an expert who writes oral presentations. A presentation should always have an introduction, a development in multiple parts, and a conclusion. Response format: HTML (body ONLY,no head, no scripts)" +
+          (tone === "tones-none" ? "" : " Use the following tone: " + tone)
+        );
       default:
         return (
           "You help writing documents. Response format: HTML (body ONLY,no head, no scripts)" +
@@ -269,6 +274,11 @@ export function getSystem(
           "Tu es un expert qui rédige des dissertations. Les dissertations doivent toujours répondre à une problématique, avoir une introduction, un développement (2 ou 3 parties) et une conclusion. Format de réponse : HTML (SEULEMENT body, pas de head, pas de scripts)" +
           (tone === "tones-none" ? "" : " Utilise le ton suivant : " + tone)
         );
+      case "oral_":
+        return (
+          "Tu es un expert qui rédige des présentations orales. Les présentations doivent toujours avoir une introduction, un développement (2 ou 3 parties) et une conclusion. Format de réponse : HTML (SEULEMENT body, pas de head, pas de scripts)" +
+          (tone === "tones-none" ? "" : " Utilise le ton suivant : " + tone)
+        );
       default:
         return (
           "Tu aides à écrire des documents. Format de réponse : HTML (SEULEMENT body, pas de head, pas de scripts)" +
@@ -339,6 +349,15 @@ export function getPrompt(
         return `Rephrase the following text: ${prompt}`;
       case "history_para":
         return `Write a paragraph in history about the following subject: ${prompt}`;
+      case "oral_intro":
+        return `Write the introduction for the oral presentation's subject, including a hook, present the orator and the subject, the problematic (explaining why this question is being answered), and the outline. Subject: ${prompt}`;
+      case "oral_outline":
+        return `Draw up an outline for your oral presentation. Structure: Main sections with sub-sections, links to concepts. Length of presentation: 10 minutes. Subject: ${prompt}`;
+      case "oral_conclusion":
+        return `Write the oral presentation conclusion, which should summarize the presentation and include an opening. Subject: ${prompt}`;
+      case "oral_basic":
+        return `Write the introduction (introduction, presentation of the orator and outline), the developped content of the oral presentation organized into parts (I, II, III etc.) each sub-parts (A, B, etc.), and the conclusion of the subject. Each part and sub-parts must be completely written. Subject: ${prompt}`;
+
       default:
         return prompt;
     }
@@ -398,6 +417,14 @@ export function getPrompt(
         return `Reformule le texte suivant : ${prompt}`;
       case "history_para":
         return `Rédige un paragraphe sur le sujet suivant : ${prompt}`;
+      case "oral_intro":
+        return `Rédigez l'introduction du sujet de la présentation orale, incluant un accroche, présentez l'orateur et le sujet, la problématique (expliquant pourquoi cette question est abordée) et le plan. Sujet : ${prompt}`;
+      case "oral_outline":
+        return `Rédigez le plan de la présentation orale. Structure : Grandes parties avec sous parties, liens avec notions. Durée de la présentation : 10 minutes. Sujet : ${prompt}`;
+      case "oral_conclusion":
+        return `Rédigez la conclusion de la présentation orale, qui doit résumer la présentation et inclure une ouverture. Sujet : ${prompt}`;
+      case "oral_basic":
+        return `Rédigez l'introduction (introduction, présentation de l'orateur et plan), le contenu intégralement développé de la présentation orale organisé en parties (I, II, III, etc.) et sous-parties (A, B, etc.), ainsi que la conclusion du sujet. Chaque partie et sous partie doit être développée. Le sujet est le suivant : ${prompt}`;
       default:
         return prompt;
     }

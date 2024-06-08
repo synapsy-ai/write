@@ -1,6 +1,6 @@
 {
   "name": "write",
-  "version": "2.6.1",
+  "version": "2.7.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -32,7 +32,7 @@
     "@tailwindcss/typography": "^0.5.13",
     "@tiptap/html": "^2.4.0",
     "accept-language": "^3.0.18",
-    "ai": "^3.1.26",
+    "ai": "^3.1.30",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "cmdk": "^1.0.0",
@@ -42,13 +42,13 @@
     "i18next": "^23.11.5",
     "i18next-browser-languagedetector": "^8.0.0",
     "i18next-resources-to-backend": "^1.2.1",
-    "lucide-react": "^0.383.0",
+    "lucide-react": "^0.390.0",
     "mini-svg-data-uri": "^1.4.4",
     "next": "14.2.3",
     "next-pwa": "^5.6.0",
     "next-themes": "^0.3.0",
     "novel": "^0.4.2",
-    "openai": "^4.47.3",
+    "openai": "^4.49.0",
     "react": "latest",
     "react-cookie": "^7.1.4",
     "react-dom": "latest",
@@ -70,8 +70,8 @@
     "eslint": "latest",
     "eslint-config-next": "latest",
     "postcss": "latest",
-    "prettier": "^3.3.0",
-    "prettier-plugin-tailwindcss": "^0.6.1",
+    "prettier": "^3.3.1",
+    "prettier-plugin-tailwindcss": "^0.6.2",
     "tailwindcss": "latest",
     "typescript": "latest"
   }

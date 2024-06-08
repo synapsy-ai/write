@@ -6,12 +6,13 @@ import {
   RefreshCcw,
   Settings as SettingsLogo,
   Sun,
+  Trash,
 } from "lucide-react";
 import { useTranslation } from "../../i18n/client";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import { useTheme } from "next-themes";
-import { Settings } from "@/lib/settings";
+import { FontType, Settings } from "@/lib/settings";
 import {
   Select,
   SelectContent,
@@ -35,6 +36,14 @@ import {
 } from "@/components/ui/dialog";
 import { DialogClose } from "@radix-ui/react-dialog";
 import { version } from "@/lib/version";
+import SystemTemplateCreator from "@/components/system-template-creator";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { m } from "framer-motion";
 
 export default function SettingsPage({
   params: { lng },
@@ -46,7 +55,9 @@ export default function SettingsPage({
   let s: Settings = { key: "" };
   if (typeof window !== "undefined") {
     s = JSON.parse(localStorage.getItem("synapsy_settings") ?? "{}");
-    s.models ??= ["gpt-3.5-turbo", "gpt-4"];
+    s.models ??= ["gpt-3.5-turbo"];
+    s.system_templates ??= [];
+    s.gen_font ??= "default";
     localStorage.setItem("synapsy_settings", JSON.stringify(s));
   }
   const [models, setModels] = useState(
@@ -56,6 +67,7 @@ export default function SettingsPage({
   );
   const [modelQuery, setModelQuery] = useState("");
   const apiKey = process?.env?.OPENAI_API_KEY || "";
+  const [templates, setTemplates] = useState(s.system_templates ?? []);
   async function refreshModels() {
     let m = await getModels();
     let avm: string[] = [];
@@ -121,6 +133,26 @@ export default function SettingsPage({
             </Button>
           </div>
         </div>
+        <div className="my-2 flex items-center space-x-2">
+          <p>{t("generation-font")}</p>
+          <Select
+            defaultValue={s.gen_font ?? "default"}
+            onValueChange={(v: FontType) => {
+              s.gen_font = v;
+              localStorage.setItem("synapsy_settings", JSON.stringify(s));
+            }}
+          >
+            <SelectTrigger className="w-[180px]">
+              <SelectValue placeholder={t("generation-font")} />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="default">{t("font-default")}</SelectItem>
+              <SelectItem value="sans">{t("font-sans")}</SelectItem>
+              <SelectItem value="serif">{t("font-serif")}</SelectItem>
+              <SelectItem value="mono">{t("font-mono")}</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
       </section>
       <section>
         <h3 className="text-xl font-semibold">{t("language")}</h3>
@@ -180,6 +212,51 @@ export default function SettingsPage({
             </div>
           </ScrollArea>
         </div>
+        <p className="my-2">{t("system-templates")}</p>
+        <SystemTemplateCreator setTemplates={setTemplates} lng={lng} />
+        {templates.length > 0 && (
+          <div className="mt-2 max-w-[550px] rounded-md border p-2">
+            <ScrollArea className="h-[200px]">
+              {templates.map((template, i) => (
+                <div
+                  className="m-1 grid grid-cols-[1fr,auto] rounded-md border border-transparent p-2 hover:border-slate-300 hover:bg-slate-200/50 dark:hover:border-accent dark:hover:bg-slate-800/50"
+                  key={i}
+                >
+                  <span>
+                    <h4>{template.name}</h4>
+                    <p className="text-slate-400">
+                      {template.prompt.substring(0, 50) +
+                        (template.prompt.length > 50 ? "..." : "")}
+                    </p>
+                  </span>
+                  <TooltipProvider delayDuration={0}>
+                    <Tooltip>
+                      <TooltipTrigger>
+                        <Button
+                          onClick={() => {
+                            s.system_templates?.splice(i, 1);
+                            localStorage.setItem(
+                              "synapsy_settings",
+                              JSON.stringify(s),
+                            );
+                            setTemplates([...(s.system_templates ?? [])]);
+                          }}
+                          className="mt-1 h-auto p-2"
+                          variant="ghost"
+                        >
+                          <Trash size={12} />
+                        </Button>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>{t("delete")}</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                </div>
+              ))}
+            </ScrollArea>
+          </div>
+        )}
       </section>
       <section>
         <h3 className="text-xl font-semibold">{t("misc")}</h3>

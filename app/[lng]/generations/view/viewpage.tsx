@@ -14,6 +14,7 @@ import VariableItem from "@/components/variable-item";
 import { Variable } from "@/lib/variable";
 import VariableItemView from "@/components/variable-item-view";
 import Link from "next/link";
+import { Settings } from "@/lib/settings";
 
 export default function GenerationViewPage({
   params,
@@ -33,6 +34,9 @@ export default function GenerationViewPage({
   }
 
   const { t } = useTranslation(params.lng, "common");
+
+  let s: Settings = { key: "" };
+  s = JSON.parse(localStorage.getItem("synapsy_settings") ?? "{}");
 
   const [nbTokens, setNbTokens] = useState(0);
   const [nbWords, setNbWords] = useState(el.content.split(" ").length);
@@ -110,6 +114,7 @@ export default function GenerationViewPage({
             is_generating={false}
             res={content}
             type={el.template}
+            font={s.gen_font ?? "default"}
           />
           <div className="mt-2 flex justify-center space-x-2 print:hidden">
             <Button
