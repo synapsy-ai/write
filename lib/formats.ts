@@ -55,6 +55,15 @@ const formats = [
     ],
   },
   {
+    category: "oral-presentation",
+    options: [
+      { text: "essay-outline", val: "oral_outline" },
+      { text: "introduction", val: "oral_intro" },
+      { text: "conclusion", val: "oral_conclusion" },
+      { text: "oral-basic", val: "oral_basic" },
+    ],
+  },
+  {
     category: "history-format",
     options: [{ text: "history-paragraph", val: "history_para" }],
   },

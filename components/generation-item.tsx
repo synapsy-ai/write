@@ -106,6 +106,12 @@ export function GenerationItem(props: {
         return t("manual-doc");
       case "history_para":
         return t("history-paragraph-long");
+      case "oral_conclusion":
+        return t("conclusion");
+      case "oral_outline":
+        return t("essay-outline");
+      case "oral_basic":
+        return t("oral-basic");
       default:
         return t("paragraph");
     }
