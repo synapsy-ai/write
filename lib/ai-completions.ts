@@ -356,7 +356,7 @@ export function getPrompt(
       case "oral_conclusion":
         return `Write the oral presentation conclusion, which should summarize the presentation and include an opening. Subject: ${prompt}`;
       case "oral_basic":
-        return `Write the introduction (introduction, presentation of the orator and outline), the content of the oral presentation organized into parts (I, II, III etc.) each sub-parts (A, B, etc.), and the conclusion of the following subject: ${prompt}`;
+        return `Write the introduction (introduction, presentation of the orator and outline), the developped content of the oral presentation organized into parts (I, II, III etc.) each sub-parts (A, B, etc.), and the conclusion of the subject. Each part and sub-parts must be completely written. Subject: ${prompt}`;
 
       default:
         return prompt;
@@ -424,7 +424,7 @@ export function getPrompt(
       case "oral_conclusion":
         return `Rédigez la conclusion de la présentation orale, qui doit résumer la présentation et inclure une ouverture. Sujet : ${prompt}`;
       case "oral_basic":
-        return `Rédigez l'introduction (introduction, présentation de l'orateur et plan), le contenu de la présentation orale organisé en parties (I, II, III, etc.) et sous-parties (A, B, etc.), ainsi que la conclusion du sujet suivant : ${prompt}`;
+        return `Rédigez l'introduction (introduction, présentation de l'orateur et plan), le contenu intégralement développé de la présentation orale organisé en parties (I, II, III, etc.) et sous-parties (A, B, etc.), ainsi que la conclusion du sujet. Chaque partie et sous partie doit être développée. Le sujet est le suivant : ${prompt}`;
       default:
         return prompt;
     }
