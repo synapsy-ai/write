@@ -1,6 +1,7 @@
-const formats = [
+const formats: Format[] = [
   {
     category: "regular-category",
+    colorId: 0,
     options: [
       { text: "paragraph", val: "para" },
       { text: "email", val: "email" },
@@ -13,6 +14,7 @@ const formats = [
   },
   {
     category: "essay-global",
+    colorId: 1,
     options: [
       { text: "essay-outline", val: "g_es_outline" },
       { text: "introduction", val: "g_es_intro" },
@@ -23,6 +25,7 @@ const formats = [
   },
   {
     category: "essay",
+    colorId: 2,
     options: [
       { text: "essay-outline", val: "es_outline" },
       { text: "introduction", val: "es_intro" },
@@ -33,6 +36,7 @@ const formats = [
   },
   {
     category: "philosophy",
+    colorId: 3,
     options: [
       { text: "essay-outline", val: "ph_outline" },
       { text: "ph-visual-outline", val: "ph_visual_outline" },
@@ -45,6 +49,7 @@ const formats = [
   },
   {
     category: "text-philosophy",
+    colorId: 4,
     options: [
       { text: "text-analysis-outline", val: "ph_analysis_outline" },
       { text: "text-analysis-introduction", val: "ph_analysis_intro" },
@@ -56,6 +61,7 @@ const formats = [
   },
   {
     category: "oral-presentation",
+    colorId: 5,
     options: [
       { text: "essay-outline", val: "oral_outline" },
       { text: "introduction", val: "oral_intro" },
@@ -65,10 +71,21 @@ const formats = [
   },
   {
     category: "history-format",
+    colorId: 6,
     options: [{ text: "history-paragraph", val: "history_para" }],
   },
 ];
 export default formats;
+
+export interface Format {
+  category: string;
+  colorId: number;
+  options: FormatOption[];
+}
+export interface FormatOption {
+  text: string;
+  val: string;
+}
 
 export function typesToString(type: string): string {
   for (let i = 0; i < formats.length; i++) {

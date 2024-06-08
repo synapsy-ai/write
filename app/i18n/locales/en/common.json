@@ -305,5 +305,6 @@
   "no-templates": "No system templates are available",
   "no-templates-desc": "You can create a system template to influence the way the Assistant will interact with you.",
   "oral-presentation": "Oral presentation",
-  "oral-basic": "Oral presentation (Basic)"
+  "oral-basic": "Oral presentation (Basic)",
+  "go-back": "Go back"
 }

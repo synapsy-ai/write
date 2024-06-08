@@ -303,5 +303,6 @@
   "no-templates": "Aucun modèle de système n'est disponible",
   "no-templates-desc": "Vous pouvez créer un modèle de système pour influencer la façon dont l'assistant interagira avec vous.",
   "oral-presentation": "Présentation orale",
-  "oral-basic": "Présentation orale (Basique)"
+  "oral-basic": "Présentation orale (Basique)",
+  "go-back": "Revenir en arrière"
 }
