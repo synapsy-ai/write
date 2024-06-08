@@ -2,12 +2,14 @@ import { Template } from "@/lib/ai-completions";
 import { Check } from "lucide-react";
 import parse, { HTMLReactParserOptions, Element } from "html-react-parser";
 import { OutlineItem } from "@/lib/formats";
+import { FontType } from "@/lib/settings";
 
 export default function ResultDisplayer(props: {
   res: string;
   type: Template | string;
   is_generating: boolean;
   no_padding?: boolean;
+  font?: FontType;
 }) {
   const options: HTMLReactParserOptions = {
     replace: (domNode) => {
@@ -119,7 +121,7 @@ export default function ResultDisplayer(props: {
     default:
       return (
         <p
-          className={`${props.no_padding ? "" : "p-4"} print:text-black`}
+          className={`${props.no_padding ? "" : "p-4"} ${props.font && props.font !== "default" ? "font-" + props.font : ""} print:text-black`}
           id="contentp"
         >
           {parse(

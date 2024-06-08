@@ -12,7 +12,7 @@ import { useTranslation } from "../../i18n/client";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import { useTheme } from "next-themes";
-import { Settings } from "@/lib/settings";
+import { FontType, Settings } from "@/lib/settings";
 import {
   Select,
   SelectContent,
@@ -56,6 +56,8 @@ export default function SettingsPage({
   if (typeof window !== "undefined") {
     s = JSON.parse(localStorage.getItem("synapsy_settings") ?? "{}");
     s.models ??= ["gpt-3.5-turbo"];
+    s.system_templates ??= [];
+    s.gen_font ??= "default";
     localStorage.setItem("synapsy_settings", JSON.stringify(s));
   }
   const [models, setModels] = useState(
@@ -130,6 +132,26 @@ export default function SettingsPage({
               </div>
             </Button>
           </div>
+        </div>
+        <div className="my-2 flex items-center space-x-2">
+          <p>{t("generation-font")}</p>
+          <Select
+            defaultValue={s.gen_font ?? "default"}
+            onValueChange={(v: FontType) => {
+              s.gen_font = v;
+              localStorage.setItem("synapsy_settings", JSON.stringify(s));
+            }}
+          >
+            <SelectTrigger className="w-[180px]">
+              <SelectValue placeholder={t("generation-font")} />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="default">{t("font-default")}</SelectItem>
+              <SelectItem value="sans">{t("font-sans")}</SelectItem>
+              <SelectItem value="serif">{t("font-serif")}</SelectItem>
+              <SelectItem value="mono">{t("font-mono")}</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
       </section>
       <section>

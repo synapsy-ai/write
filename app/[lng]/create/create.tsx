@@ -1431,7 +1431,12 @@ export default function Create(props: Props) {
             "m-2 grow rounded-md border bg-white p-2 text-justify shadow-sm dark:bg-slate-900/50 print:border-0 print:shadow-none"
           }
         >
-          <ResultDisplayer is_generating={isGen} res={res} type={type} />
+          <ResultDisplayer
+            font={s.gen_font ?? "default"}
+            is_generating={isGen}
+            res={res}
+            type={type}
+          />
         </section>
       )}
       {!errorVis && !res && (
