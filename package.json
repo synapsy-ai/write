@@ -70,7 +70,7 @@
     "eslint": "latest",
     "eslint-config-next": "latest",
     "postcss": "latest",
-    "prettier": "^3.3.1",
+    "prettier": "^3.3.2",
     "prettier-plugin-tailwindcss": "^0.6.4",
     "tailwindcss": "latest",
     "typescript": "latest"
