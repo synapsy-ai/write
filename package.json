@@ -65,7 +65,7 @@
     "@types/node": "latest",
     "@types/react": "latest",
     "@types/react-dom": "latest",
-    "@types/uuid": "^9.0.8",
+    "@types/uuid": "^10.0.0",
     "autoprefixer": "latest",
     "eslint": "latest",
     "eslint-config-next": "latest",
