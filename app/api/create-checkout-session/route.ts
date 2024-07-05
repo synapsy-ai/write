@@ -33,7 +33,6 @@ export async function POST(req: Request) {
       if (price.type === "recurring") {
         session = await stripe.checkout.sessions.create({
           billing_address_collection: "required",
-          payment_method_configuration: "pmc_1MyIY4IQ9vVwtUkdSG7KXCye",
           customer,
           customer_update: {
             address: "auto",
@@ -57,7 +56,6 @@ export async function POST(req: Request) {
         });
       } else if (price.type === "one_time") {
         session = await stripe.checkout.sessions.create({
-          payment_method_types: ["card"],
           billing_address_collection: "required",
           customer,
           customer_update: {
