@@ -33,7 +33,7 @@ export async function POST(req: Request) {
         JSON.stringify({ error: { statusCode: 500, message: err.message } }),
         {
           status: 500,
-        }
+        },
       );
     }
   } else {
