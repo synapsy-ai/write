@@ -222,9 +222,11 @@ export default function Pricing({
             if (!product.name?.toLowerCase().includes("write")) return <></>;
 
             const price = product?.prices?.find(
-              (price) => price.interval === billingInterval,
+              (price) =>
+                price.interval === billingInterval &&
+                price.currency === selectedCurrency,
             );
-            if (!price || price.currency !== selectedCurrency) return null;
+            if (!price) return null;
             const priceString = new Intl.NumberFormat(
               lng === "fr" ? "fr-FR" : "en-US",
               {
