@@ -9,7 +9,7 @@ export const stripe = new Stripe(
     // https://stripe.com/docs/building-plugins#setappinfo
     appInfo: {
       name: "Synapsy Write",
-      version: "2.7.0",
+      version: "2.7.1",
     },
   },
 );
