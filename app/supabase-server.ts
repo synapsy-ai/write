@@ -76,5 +76,10 @@ export const getActiveProductsWithPrices = async () => {
   if (error) {
     console.log(error.message);
   }
+  data?.sort((a, b) => {
+    const priceA = a.prices?.[0]?.unit_amount || 0;
+    const priceB = b.prices?.[0]?.unit_amount || 0;
+    return priceA - priceB;
+  });
   return data ?? [];
 };
