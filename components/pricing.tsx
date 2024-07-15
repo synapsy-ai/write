@@ -10,6 +10,13 @@ import { Button } from "./ui/button";
 import { cn } from "@/lib/utils";
 import { useTranslation } from "@/app/i18n/client";
 import PricingFeatures from "./features";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "./ui/select";
 
 type Subscription = Database["public"]["Tables"]["subscriptions"]["Row"];
 type Product = Database["public"]["Tables"]["products"]["Row"];
@@ -53,6 +60,33 @@ export default function Pricing({
   const [billingInterval, setBillingInterval] =
     useState<BillingInterval>("month");
   const [priceIdLoading, setPriceIdLoading] = useState<string>();
+  const [selectedCurrency, setSelectedCurrency] = useState("eur");
+  const [currencies, setCurrencies] = useState(getCurrencies());
+
+  function getCurrencies() {
+    let cs: (string | null)[] = []; // all currencies available
+    for (let i = 0; i < products.length; i++) {
+      for (let j = 0; j < products[i].prices.length; j++) {
+        if (
+          products[i].prices[j].currency !== null &&
+          !cs.includes(products[i].prices[j].currency)
+        ) {
+          cs.push(products[i].prices[j].currency);
+        }
+      }
+    }
+    return cs;
+  }
+
+  function currencyToString(cur: string): string {
+    switch (cur) {
+      case "eur":
+        return "Euro";
+
+      default:
+        return cur.toUpperCase();
+    }
+  }
 
   function isSubscribedToProduct(productId: string) {
     if (subscriptions) {
@@ -102,7 +136,7 @@ export default function Pricing({
   };
   if (!products.length)
     return (
-      <section className="min-h-3xl flex flex-col items-center justify-center ">
+      <section className="min-h-3xl flex flex-col items-center justify-center">
         <h2 className="text-2xl font-bold">
           No plans are available right now.
         </h2>
@@ -145,6 +179,42 @@ export default function Pricing({
                 {t("yearly-billing")}
               </button>
             )}
+            <div className="mr-1 hidden items-center sm:flex">
+              <Select
+                defaultValue={selectedCurrency}
+                value={selectedCurrency}
+                onValueChange={setSelectedCurrency}
+              >
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {currencies.map((currency, k) => (
+                    <SelectItem value={currency ?? "eur"} key={k}>
+                      {currencyToString(currency ?? "eur")}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+          <div className="flex items-center py-2 sm:hidden">
+            <Select
+              defaultValue={selectedCurrency}
+              value={selectedCurrency}
+              onValueChange={setSelectedCurrency}
+            >
+              <SelectTrigger>
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                {currencies.map((currency, k) => (
+                  <SelectItem value={currency ?? "eur"} key={k}>
+                    {currencyToString(currency ?? "eur")}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
         </div>
         <div className="mt-12 space-y-4 sm:mt-16 sm:grid sm:grid-cols-2 sm:gap-6 sm:space-y-0 lg:mx-auto lg:max-w-4xl xl:mx-0 xl:max-w-none xl:grid-cols-3">
@@ -154,7 +224,7 @@ export default function Pricing({
             const price = product?.prices?.find(
               (price) => price.interval === billingInterval,
             );
-            if (!price) return null;
+            if (!price || price.currency !== selectedCurrency) return null;
             const priceString = new Intl.NumberFormat(
               lng === "fr" ? "fr-FR" : "en-US",
               {
