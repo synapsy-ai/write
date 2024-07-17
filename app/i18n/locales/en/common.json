@@ -322,5 +322,6 @@
   "try-synapsy": "Try Synapsy Write",
   "text-editor-desc": "Synapsy Write allows you to directly edit your generations within the app, removing the need to use other third-party apps.",
   "advanced-instructions-desc": "Synapsy Write's advanced model instructions enable you to fine-tune the AI to your specific needs, ensuring high-quality and tailored content.",
-  "text-analysis-desc": "Synapsy Write's advanced text analysis tools provide valuable insights and feedback to help you improve your writing."
+  "text-analysis-desc": "Synapsy Write's advanced text analysis tools provide valuable insights and feedback to help you improve your writing.",
+  "open-source-title": "Synapsy Write is Open Source"
 }

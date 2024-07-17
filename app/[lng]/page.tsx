@@ -260,110 +260,118 @@ export default function Home({ params: { lng } }: { params: { lng: any } }) {
             </div>
           </div>
         </section>
-
-        <section className="flex min-h-[50vh] flex-col items-center justify-center">
-          <div className="flex flex-col justify-center p-4">
-            <h2 className="mt-8 bg-gradient-to-br from-slate-500 to-slate-800 bg-clip-text text-center text-4xl font-normal text-transparent dark:from-slate-100 dark:to-slate-400 sm:text-5xl">
-              {t("open-source")}
-            </h2>
-            <p className="text-center text-lg text-slate-700 dark:text-slate-300">
-              {t("open-source-desc")}
-            </p>
+        <section className="w-full py-12 md:py-24 lg:py-32">
+          <div className="container px-4 md:px-6">
+            <div className="flex flex-col items-center justify-center space-y-4 text-center">
+              <div className="space-y-2">
+                <div className="inline-block rounded-full border px-3 py-1 text-sm dark:border-slate-700">
+                  {t("open-source")}
+                </div>
+                <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">
+                  {t("open-source-title")}
+                </h2>
+                <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
+                  {t("open-source-desc")}
+                </p>
+                <div>
+                  <Spotlight className="grid place-items-center space-y-6 sm:grid-cols-2 sm:space-y-0">
+                    <SpotlightCard className="h-full w-full max-w-sm border shadow-md">
+                      <div className="relative z-20 h-full overflow-hidden rounded-[inherit] bg-white p-6 pb-8 dark:bg-slate-900">
+                        {/* Radial gradient */}
+                        <div
+                          className="pointer-events-none absolute bottom-0 left-1/2 -z-10 aspect-square w-1/2 -translate-x-1/2 translate-y-1/2"
+                          aria-hidden="true"
+                        >
+                          <div className="translate-z-0 absolute inset-0 rounded-full bg-slate-200 blur-[80px] dark:bg-slate-800"></div>
+                        </div>
+                        <div className="flex h-full flex-col items-center text-center">
+                          {/* Image */}
+                          <div className="relative inline-flex">
+                            <div
+                              className="absolute inset-0 -z-10 m-auto h-[40%] w-[40%] -translate-y-[10%] rounded-full bg-indigo-600 blur-3xl"
+                              aria-hidden="true"
+                            ></div>
+                            <span className="rounded-full border border-indigo-500/25 p-5">
+                              <Building />
+                            </span>
+                          </div>
+                          {/* Text */}
+                          <div className="mb-5 grow">
+                            <h2 className="mb-1 text-xl font-bold text-black dark:text-slate-200">
+                              Synapsy
+                            </h2>
+                            <p className="text-sm text-slate-800 dark:text-slate-500">
+                              {t("synapsy-browse")}
+                            </p>
+                          </div>
+                          <Link
+                            className="inline-flex items-center justify-center whitespace-nowrap rounded-lg border border-slate-700 px-3 py-1.5 text-sm font-medium transition-colors duration-150 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-900 dark:focus-visible:ring-slate-600"
+                            href="https://github.com/synapsy-ai/"
+                          >
+                            <svg
+                              className="mr-2 dark:fill-slate-500"
+                              xmlns="http://www.w3.org/2000/svg"
+                              width="16"
+                              height="14"
+                            >
+                              <path d="M12.82 8.116A.5.5 0 0 0 12 8.5V10h-.185a3 3 0 0 1-2.258-1.025l-.4-.457-1.328 1.519.223.255A5 5 0 0 0 11.815 12H12v1.5a.5.5 0 0 0 .82.384l3-2.5a.5.5 0 0 0 0-.768l-3-2.5ZM12.82.116A.5.5 0 0 0 12 .5V2h-.185a5 5 0 0 0-3.763 1.708L3.443 8.975A3 3 0 0 1 1.185 10H1a1 1 0 1 0 0 2h.185a5 5 0 0 0 3.763-1.708l4.609-5.267A3 3 0 0 1 11.815 4H12v1.5a.5.5 0 0 0 .82.384l3-2.5a.5.5 0 0 0 0-.768l-3-2.5ZM1 4h.185a3 3 0 0 1 2.258 1.025l.4.457 1.328-1.52-.223-.254A5 5 0 0 0 1.185 2H1a1 1 0 0 0 0 2Z" />
+                            </svg>
+                            <span>{t("learn-more")}</span>
+                          </Link>
+                        </div>
+                      </div>
+                    </SpotlightCard>
+                    <SpotlightCard className="h-full w-full max-w-sm border shadow-md">
+                      <div className="relative z-20 h-full overflow-hidden rounded-[inherit] bg-white p-6 pb-8 dark:bg-slate-900">
+                        {/* Radial gradient */}
+                        <div
+                          className="pointer-events-none absolute bottom-0 left-1/2 -z-10 aspect-square w-1/2 -translate-x-1/2 translate-y-1/2"
+                          aria-hidden="true"
+                        >
+                          <div className="translate-z-0 absolute inset-0 rounded-full bg-slate-200 blur-[80px] dark:bg-slate-800"></div>
+                        </div>
+                        <div className="flex h-full flex-col items-center text-center">
+                          {/* Image */}
+                          <div className="relative inline-flex">
+                            <div
+                              className="absolute inset-0 -z-10 m-auto h-[40%] w-[40%] -translate-y-[10%] rounded-full bg-indigo-600 blur-3xl"
+                              aria-hidden="true"
+                            ></div>
+                            <span className="rounded-full border border-indigo-500/25 p-5">
+                              <Github />
+                            </span>
+                          </div>
+                          {/* Text */}
+                          <div className="mb-5 grow">
+                            <h2 className="mb-1 text-xl font-bold text-black dark:text-slate-200">
+                              GitHub
+                            </h2>
+                            <p className="text-sm text-slate-800 dark:text-slate-500">
+                              {t("github-desc")}
+                            </p>
+                          </div>
+                          <Link
+                            className="inline-flex items-center justify-center whitespace-nowrap rounded-lg border border-slate-700 px-3 py-1.5 text-sm font-medium transition-colors duration-150 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-900 dark:focus-visible:ring-slate-600"
+                            href="https://github.com/synapsy-ai/write/"
+                          >
+                            <svg
+                              className="mr-2 dark:fill-slate-500"
+                              xmlns="http://www.w3.org/2000/svg"
+                              width="16"
+                              height="14"
+                            >
+                              <path d="M12.82 8.116A.5.5 0 0 0 12 8.5V10h-.185a3 3 0 0 1-2.258-1.025l-.4-.457-1.328 1.519.223.255A5 5 0 0 0 11.815 12H12v1.5a.5.5 0 0 0 .82.384l3-2.5a.5.5 0 0 0 0-.768l-3-2.5ZM12.82.116A.5.5 0 0 0 12 .5V2h-.185a5 5 0 0 0-3.763 1.708L3.443 8.975A3 3 0 0 1 1.185 10H1a1 1 0 1 0 0 2h.185a5 5 0 0 0 3.763-1.708l4.609-5.267A3 3 0 0 1 11.815 4H12v1.5a.5.5 0 0 0 .82.384l3-2.5a.5.5 0 0 0 0-.768l-3-2.5ZM1 4h.185a3 3 0 0 1 2.258 1.025l.4.457 1.328-1.52-.223-.254A5 5 0 0 0 1.185 2H1a1 1 0 0 0 0 2Z" />
+                            </svg>
+                            <span>{t("learn-more")}</span>
+                          </Link>
+                        </div>
+                      </div>
+                    </SpotlightCard>
+                  </Spotlight>
+                </div>
+              </div>
+            </div>
           </div>
-          <Spotlight className="grid items-center justify-center space-y-4 sm:grid-cols-2 sm:space-x-2 sm:space-y-0">
-            <SpotlightCard className="h-full w-full max-w-sm border shadow-md">
-              <div className="relative z-20 h-full overflow-hidden rounded-[inherit] bg-white p-6 pb-8 dark:bg-slate-900">
-                {/* Radial gradient */}
-                <div
-                  className="pointer-events-none absolute bottom-0 left-1/2 -z-10 aspect-square w-1/2 -translate-x-1/2 translate-y-1/2"
-                  aria-hidden="true"
-                >
-                  <div className="translate-z-0 absolute inset-0 rounded-full bg-slate-200 blur-[80px] dark:bg-slate-800"></div>
-                </div>
-                <div className="flex h-full flex-col items-center text-center">
-                  {/* Image */}
-                  <div className="relative inline-flex">
-                    <div
-                      className="absolute inset-0 -z-10 m-auto h-[40%] w-[40%] -translate-y-[10%] rounded-full bg-indigo-600 blur-3xl"
-                      aria-hidden="true"
-                    ></div>
-                    <span className="rounded-full border border-indigo-500/25 p-5">
-                      <Building />
-                    </span>
-                  </div>
-                  {/* Text */}
-                  <div className="mb-5 grow">
-                    <h2 className="mb-1 text-xl font-bold text-black dark:text-slate-200">
-                      Synapsy
-                    </h2>
-                    <p className="text-sm text-slate-800 dark:text-slate-500">
-                      {t("synapsy-browse")}
-                    </p>
-                  </div>
-                  <Link
-                    className="inline-flex items-center justify-center whitespace-nowrap rounded-lg border border-slate-700 px-3 py-1.5 text-sm font-medium transition-colors duration-150 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-900 dark:focus-visible:ring-slate-600"
-                    href="https://github.com/synapsy-ai/"
-                  >
-                    <svg
-                      className="mr-2 dark:fill-slate-500"
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="16"
-                      height="14"
-                    >
-                      <path d="M12.82 8.116A.5.5 0 0 0 12 8.5V10h-.185a3 3 0 0 1-2.258-1.025l-.4-.457-1.328 1.519.223.255A5 5 0 0 0 11.815 12H12v1.5a.5.5 0 0 0 .82.384l3-2.5a.5.5 0 0 0 0-.768l-3-2.5ZM12.82.116A.5.5 0 0 0 12 .5V2h-.185a5 5 0 0 0-3.763 1.708L3.443 8.975A3 3 0 0 1 1.185 10H1a1 1 0 1 0 0 2h.185a5 5 0 0 0 3.763-1.708l4.609-5.267A3 3 0 0 1 11.815 4H12v1.5a.5.5 0 0 0 .82.384l3-2.5a.5.5 0 0 0 0-.768l-3-2.5ZM1 4h.185a3 3 0 0 1 2.258 1.025l.4.457 1.328-1.52-.223-.254A5 5 0 0 0 1.185 2H1a1 1 0 0 0 0 2Z" />
-                    </svg>
-                    <span>{t("learn-more")}</span>
-                  </Link>
-                </div>
-              </div>
-            </SpotlightCard>
-            <SpotlightCard className="h-full w-full max-w-sm border shadow-md">
-              <div className="relative z-20 h-full overflow-hidden rounded-[inherit] bg-white p-6 pb-8 dark:bg-slate-900">
-                {/* Radial gradient */}
-                <div
-                  className="pointer-events-none absolute bottom-0 left-1/2 -z-10 aspect-square w-1/2 -translate-x-1/2 translate-y-1/2"
-                  aria-hidden="true"
-                >
-                  <div className="translate-z-0 absolute inset-0 rounded-full bg-slate-200 blur-[80px] dark:bg-slate-800"></div>
-                </div>
-                <div className="flex h-full flex-col items-center text-center">
-                  {/* Image */}
-                  <div className="relative inline-flex">
-                    <div
-                      className="absolute inset-0 -z-10 m-auto h-[40%] w-[40%] -translate-y-[10%] rounded-full bg-indigo-600 blur-3xl"
-                      aria-hidden="true"
-                    ></div>
-                    <span className="rounded-full border border-indigo-500/25 p-5">
-                      <Github />
-                    </span>
-                  </div>
-                  {/* Text */}
-                  <div className="mb-5 grow">
-                    <h2 className="mb-1 text-xl font-bold text-black dark:text-slate-200">
-                      GitHub
-                    </h2>
-                    <p className="text-sm text-slate-800 dark:text-slate-500">
-                      {t("github-desc")}
-                    </p>
-                  </div>
-                  <Link
-                    className="inline-flex items-center justify-center whitespace-nowrap rounded-lg border border-slate-700 px-3 py-1.5 text-sm font-medium transition-colors duration-150 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-900 dark:focus-visible:ring-slate-600"
-                    href="https://github.com/synapsy-ai/write/"
-                  >
-                    <svg
-                      className="mr-2 dark:fill-slate-500"
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="16"
-                      height="14"
-                    >
-                      <path d="M12.82 8.116A.5.5 0 0 0 12 8.5V10h-.185a3 3 0 0 1-2.258-1.025l-.4-.457-1.328 1.519.223.255A5 5 0 0 0 11.815 12H12v1.5a.5.5 0 0 0 .82.384l3-2.5a.5.5 0 0 0 0-.768l-3-2.5ZM12.82.116A.5.5 0 0 0 12 .5V2h-.185a5 5 0 0 0-3.763 1.708L3.443 8.975A3 3 0 0 1 1.185 10H1a1 1 0 1 0 0 2h.185a5 5 0 0 0 3.763-1.708l4.609-5.267A3 3 0 0 1 11.815 4H12v1.5a.5.5 0 0 0 .82.384l3-2.5a.5.5 0 0 0 0-.768l-3-2.5ZM1 4h.185a3 3 0 0 1 2.258 1.025l.4.457 1.328-1.52-.223-.254A5 5 0 0 0 1.185 2H1a1 1 0 0 0 0 2Z" />
-                    </svg>
-                    <span>{t("learn-more")}</span>
-                  </Link>
-                </div>
-              </div>
-            </SpotlightCard>
-          </Spotlight>
         </section>
       </main>
       <Footer params={{ lng: lng }} />
