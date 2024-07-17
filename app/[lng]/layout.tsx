@@ -1,6 +1,6 @@
 import "./globals.css";
 import type { Metadata } from "next";
-import { DM_Sans } from "next/font/google";
+import { Manrope } from "next/font/google";
 import { dir } from "i18next";
 import { languages } from "../i18n/settings";
 import NavBar from "@/components/navbar";
@@ -9,7 +9,7 @@ import Script from "next/script";
 import MobileNavBar from "@/components/mobile-nav";
 import SupabaseProvider from "../supabase-provider";
 
-const inter = DM_Sans({ subsets: ["latin"] });
+const manrope = Manrope({ subsets: ["latin"] });
 export async function generateStaticParams() {
   return languages.map((lng) => ({ lng }));
 }
@@ -81,7 +81,12 @@ export default function RootLayout({
   gtag('config', 'G-W409KSWNWR');`}
         </Script>
       </head>
-      <body className={inter.className + " dark:bg-slate-950 dark:text-white"}>
+      <body
+        className={
+          manrope.className +
+          " overflow-x-hidden dark:bg-slate-950 dark:text-white"
+        }
+      >
         <SupabaseProvider>
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
             <NavBar lng={lng} />

@@ -24,6 +24,8 @@ import { useRef } from "react";
 import Spotlight, { SpotlightCard } from "@/components/spotlight";
 import { SpotlightEffect } from "@/components/ui/spotlight-effect";
 import { BorderAnimation } from "@/components/ui/moving-border";
+import ResultDisplayer from "@/components/result-displayer";
+import { FlipWords } from "@/components/ui/flip-words";
 
 export default function Home({ params: { lng } }: { params: { lng: any } }) {
   const { t } = useTranslation(lng, "common");
@@ -89,63 +91,72 @@ export default function Home({ params: { lng } }: { params: { lng: any } }) {
         </section>
         <section
           id="features"
-          ref={sectionRef}
-          className="flex min-h-[50vh] flex-col items-center justify-center"
+          className="w-full bg-muted py-12 md:py-24 lg:py-32"
         >
-          <h2 className="mt-8 bg-gradient-to-br from-slate-500 to-slate-800 bg-clip-text text-center text-4xl font-normal text-transparent dark:from-slate-100 dark:to-slate-400 sm:text-5xl">
-            {t("features")}
-          </h2>
-          <p className="text-center text-lg text-slate-700 dark:text-slate-300">
-            {t("features-desc")}
-          </p>
-          <Link href={`/${lng}/pricing`}>
-            <Button variant="link">{t("pricing")}</Button>
-          </Link>
-          <Spotlight className="grid max-w-6xl grid-cols-1 gap-4 p-4 sm:grid-cols-2">
-            <SpotlightCard className="flex h-[200px] flex-col justify-center border border-slate-200 shadow-md dark:border-slate-700">
-              <div className="p-4">
-                <BrainCircuit height={24} className="mb-2" />
-                <h3 className="text-xl font-bold">{t("feature-ai")}</h3>
-                <p>{t("feature-ai-desc")}</p>
+          <div className="container px-4 md:px-6">
+            <div className="flex flex-col items-center justify-center space-y-4 text-center">
+              <div className="space-y-2">
+                <div className="inline-block rounded-full border bg-muted px-3 py-1 text-sm dark:border-slate-700">
+                  {t("key-features")}
+                </div>
+                <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">
+                  {t("unlock-potential")}
+                </h2>
+                <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
+                  {t("unlock-potential-desc")}
+                </p>
               </div>
-            </SpotlightCard>
-            <SpotlightCard className="flex h-[200px] flex-col justify-center border border-slate-200 shadow-md dark:border-slate-700">
-              <div className="p-4">
-                <PenSquare height={24} className="mb-2" />
-                <h3 className="text-xl font-bold">{t("feature-versatile")}</h3>
-                <p>{t("feature-versatile-desc")}</p>
+            </div>
+            <div className="mx-auto grid max-w-5xl items-center gap-6 py-12 lg:grid-cols-2 lg:gap-12">
+              <div className="mx-auto hidden aspect-video max-w-96 items-center justify-center overflow-hidden rounded-xl border object-cover object-center dark:border-slate-700 sm:flex sm:w-full lg:order-last">
+                <p className="text-5xl font-bold">
+                  <FlipWords
+                    words={[
+                      t("create"),
+                      t("ideas"),
+                      t("essay-outline"),
+                      t("tones-professional"),
+                      t("generation"),
+                    ]}
+                  />
+                </p>
               </div>
-            </SpotlightCard>
-            <SpotlightCard className="flex min-h-[200px] flex-col justify-center border border-slate-200 shadow-md dark:border-slate-700">
-              <div className="p-4">
-                <MousePointerClick height={24} className="mb-2" />
-                <h3 className="text-xl font-bold">{t("feature-easy")}</h3>
-                <p>{t("feature-easy-desc")}</p>
+              <div className="flex flex-col justify-center space-y-4">
+                <ul className="grid gap-6">
+                  <li>
+                    <div className="grid gap-1">
+                      <h3 className="text-xl font-bold">
+                        {t("effortless-text-gen")}
+                      </h3>
+                      <p className="text-muted-foreground">
+                        {t("effortless-text-gen-desc")}
+                      </p>
+                    </div>
+                  </li>
+                  <li>
+                    <div className="grid gap-1">
+                      <h3 className="text-xl font-bold">
+                        {t("feature-versatile")}
+                      </h3>
+                      <p className="text-muted-foreground">
+                        {t("feature-versatile-desc")}
+                      </p>
+                    </div>
+                  </li>
+                  <li>
+                    <div className="grid gap-1">
+                      <h3 className="text-xl font-bold">{t("essays")}</h3>
+                      <p className="text-muted-foreground">
+                        {t("essays-desc")}
+                      </p>
+                    </div>
+                  </li>
+                </ul>
               </div>
-            </SpotlightCard>
-            <SpotlightCard className="flex min-h-[200px] flex-col justify-center border border-slate-200 shadow-md dark:border-slate-700">
-              <div className="p-4">
-                <Table height={24} className="mb-2" />
-                <h3 className="text-xl font-bold">{t("tables")}</h3>
-                <p>{t("tables-desc")}</p>
-              </div>
-            </SpotlightCard>
-            <SpotlightCard className="flex min-h-[200px] flex-col justify-center border border-slate-200 shadow-md dark:border-slate-700">
-              <div className="p-4">
-                <PencilRulerIcon height={24} className="mb-2" />
-                <h3 className="text-xl font-bold">{t("essays")}</h3>
-                <p>{t("essays-desc")}</p>
-              </div>
-            </SpotlightCard>
-            <SpotlightCard className="flex min-h-[200px] flex-col justify-center border border-slate-200 shadow-md dark:border-slate-700">
-              <div className="p-4">
-                <Variable height={24} className="mb-2" />
-                <h3 className="text-xl font-bold">{t("variables")}</h3>
-                <p>{t("variables-desc")}</p>
-              </div>
-            </SpotlightCard>
-          </Spotlight>
+            </div>
+          </div>
         </section>
+
         <section className="flex min-h-[50vh] flex-col items-center justify-center">
           <div className="flex flex-col justify-center p-4">
             <h2 className="mt-8 bg-gradient-to-br from-slate-500 to-slate-800 bg-clip-text text-center text-4xl font-normal text-transparent dark:from-slate-100 dark:to-slate-400 sm:text-5xl">
@@ -163,7 +174,7 @@ export default function Home({ params: { lng } }: { params: { lng: any } }) {
                     Synapsy
                   </h2>
                 </div>
-                <div className="mt-8 grid grid-cols-[auto,1fr] items-center gap-x-2  dark:text-slate-300">
+                <div className="mt-8 grid grid-cols-[auto,1fr] items-center gap-x-2 dark:text-slate-300">
                   <Check size={16} />
                   <p>{t("unlimited-access")}</p>
                   <Check size={16} />
@@ -188,7 +199,7 @@ export default function Home({ params: { lng } }: { params: { lng: any } }) {
                     ChatGPT Plus
                   </h2>
                 </div>
-                <div className="mt-8 grid grid-cols-[auto,1fr] items-center gap-x-2  dark:text-slate-300">
+                <div className="mt-8 grid grid-cols-[auto,1fr] items-center gap-x-2 dark:text-slate-300">
                   <TriangleAlert size={16} />
                   <p>{t("unlimited-access")}</p>
                   <X size={16} />
@@ -208,7 +219,7 @@ export default function Home({ params: { lng } }: { params: { lng: any } }) {
             </SpotlightCard>
           </Spotlight>
           <div className="flex flex-col items-center justify-center space-x-2 py-5 text-slate-800 dark:text-slate-300 sm:flex-row">
-            <span className="flex items-center space-x-2 ">
+            <span className="flex items-center space-x-2">
               <Check size={16} />
               <p>{t("available")}</p>
             </span>
@@ -265,7 +276,7 @@ export default function Home({ params: { lng } }: { params: { lng: any } }) {
                     </p>
                   </div>
                   <Link
-                    className="inline-flex items-center justify-center whitespace-nowrap rounded-lg border border-slate-700 px-3 py-1.5 text-sm font-medium transition-colors duration-150   dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-900 dark:focus-visible:ring-slate-600"
+                    className="inline-flex items-center justify-center whitespace-nowrap rounded-lg border border-slate-700 px-3 py-1.5 text-sm font-medium transition-colors duration-150 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-900 dark:focus-visible:ring-slate-600"
                     href="https://github.com/synapsy-ai/"
                   >
                     <svg
@@ -311,7 +322,7 @@ export default function Home({ params: { lng } }: { params: { lng: any } }) {
                     </p>
                   </div>
                   <Link
-                    className="inline-flex items-center justify-center whitespace-nowrap rounded-lg border border-slate-700 px-3 py-1.5 text-sm font-medium transition-colors duration-150   dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-900 dark:focus-visible:ring-slate-600"
+                    className="inline-flex items-center justify-center whitespace-nowrap rounded-lg border border-slate-700 px-3 py-1.5 text-sm font-medium transition-colors duration-150 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-900 dark:focus-visible:ring-slate-600"
                     href="https://github.com/synapsy-ai/write/"
                   >
                     <svg
