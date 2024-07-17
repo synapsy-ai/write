@@ -91,12 +91,12 @@ export default function Home({ params: { lng } }: { params: { lng: any } }) {
         </section>
         <section
           id="features"
-          className="w-full bg-muted py-12 md:py-24 lg:py-32"
+          className="w-full bg-slate-100 py-12 dark:bg-slate-900 md:py-24 lg:py-32"
         >
           <div className="container px-4 md:px-6">
             <div className="flex flex-col items-center justify-center space-y-4 text-center">
               <div className="space-y-2">
-                <div className="inline-block rounded-full border bg-muted px-3 py-1 text-sm dark:border-slate-700">
+                <div className="inline-block rounded-full border bg-slate-100 px-3 py-1 text-sm dark:border-slate-700 dark:bg-slate-900">
                   {t("key-features")}
                 </div>
                 <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">
@@ -185,11 +185,11 @@ export default function Home({ params: { lng } }: { params: { lng: any } }) {
           </div>
         </section>
 
-        <section className="w-full bg-muted py-12 md:py-24 lg:py-32">
+        <section className="w-full bg-slate-100 py-12 dark:bg-slate-900 md:py-24 lg:py-32">
           <div className="container px-4 md:px-6">
             <div className="flex flex-col items-center justify-center space-y-4 text-center">
               <div className="space-y-2">
-                <div className="inline-block rounded-full border bg-muted px-3 py-1 text-sm dark:border-slate-700">
+                <div className="inline-block rounded-full border bg-slate-100 px-3 py-1 text-sm dark:border-slate-700 dark:bg-slate-900">
                   Synapsy Write vs. ChatGPT 4
                 </div>
                 <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">
