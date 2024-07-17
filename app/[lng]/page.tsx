@@ -43,7 +43,7 @@ export default function Home({ params: { lng } }: { params: { lng: any } }) {
             className="-top-40 left-0 md:-top-20 md:left-60"
             fill="#7d54e0"
           />
-          <h2 className="mt-8 bg-gradient-to-br from-slate-500 to-slate-800 bg-clip-text text-4xl text-transparent dark:from-slate-100 dark:to-slate-400 sm:text-7xl">
+          <h2 className="mt-8 bg-gradient-to-br from-slate-500 to-slate-800 bg-clip-text text-4xl tracking-tighter text-transparent dark:from-slate-100 dark:to-slate-400 sm:text-7xl">
             {t("introducing-synapsy")}
           </h2>
           <p className="text-lg text-slate-700 dark:text-slate-300">
