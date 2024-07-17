@@ -44,7 +44,7 @@
   "import": "Importer",
   "error-occured": "Une erreur s'est produite",
   "features": "Fonctionnalités",
-  "features-desc": "Découvrez les fonctionalités polyvalentes Synapsy Write.",
+  "features-desc": "Découvrez les fonctionalités polyvalentes Synapsy Write",
   "feature-ai": "IA GPT-4 Générative d'OpenAI",
   "feature-ai-desc": "Exploitez la technologie d'IA de pointe fournie par OpenAI pour générer un texte de haute qualité à partir de vos données",
   "feature-versatile": "Polyvalent",
@@ -182,7 +182,7 @@
   "text-analysis": "Analyse de texte",
   "variable-editor": "Editeur de variables",
   "table-generator": "Générateur de tableaux",
-  "advanced-instructions": "Instructions de modèle avancées",
+  "advanced-instructions": "Instructions de Modèle Avancées",
   "year": "an",
   "month": "mois",
   "free-trial": "Essai gratuit",
@@ -314,5 +314,11 @@
   "unlock-potential": "Déverrouillez votre potentiel d'écriture",
   "unlock-potential-desc": "Synapsy Write est conçu pour vous aider à créer facilement du contenu de haute qualité. Boostez votre productivité, améliorez votre créativité et faites progresser votre écriture vers de nouveaux sommets",
   "effortless-text-gen": "Génération de texte sans effort",
-  "effortless-text-gen-desc": "Les algorithmes d'IA avancés de Synapsy Write génèrent des textes de haute qualité avec seulement quelques invites, ce qui vous permet d'économiser du temps et des efforts."
+  "effortless-text-gen-desc": "Les algorithmes d'IA avancés de Synapsy Write génèrent des textes de haute qualité avec seulement quelques invites, ce qui vous permet d'économiser du temps et des efforts.",
+  "productivity": "Boostez votre productivité avec Synapsy Write",
+  "productivity-desc": "Les puissantes fonctionnalités et l'interface intuitive de Synapsy Write vous permettent de créer du contenu de haute qualité plus rapidement que jamais",
+  "try-synapsy": "Essayez Synapsy Write",
+  "text-editor-desc": "Synapsy Write vous permet de modifier directement vos générations dans l'application, éliminant ainsi le besoin d'utiliser d'autres applications tierces.",
+  "advanced-instructions-desc": "Les instructions avancées du modèle Synapsy Write vous permettent d'affiner l'IA en fonction de vos besoins spécifiques, garantissant ainsi un contenu personnalisé de haute qualité.",
+  "text-analysis-desc": "Les outils avancés d'analyse de texte de Synapsy Write fournissent des informations et des commentaires précieux pour vous aider à améliorer votre écriture."
 }

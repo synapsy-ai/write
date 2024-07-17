@@ -44,7 +44,7 @@
   "import": "Import",
   "error-occured": "An error has occured",
   "features": "Features",
-  "features-desc": "Discover the versatile features of Synapsy Write.",
+  "features-desc": "Discover the versatile features of Synapsy Write",
   "feature-ai": "OpenAI's GPT-4 Generative AI",
   "feature-ai-desc": "Harness the state-of-the-art AI technology provided by OpenAI to generate high-quality text based on your input.",
   "feature-versatile": "Versatile",
@@ -185,7 +185,7 @@
   "text-analysis": "Text analysis",
   "variable-editor": "Variable editor",
   "table-generator": "Table generator",
-  "advanced-instructions": "Advanced model instructions",
+  "advanced-instructions": "Advanced Model Instructions",
   "year": "year",
   "month": "month",
   "free-trial": "Free trial",
@@ -316,5 +316,11 @@
   "unlock-potential": "Unlock Your Writing Potential",
   "unlock-potential-desc": "Synapsy Write is designed to help you create high-quality content with ease. Boost your productivity, enhance your creativity, and take your writing to new heights.",
   "effortless-text-gen": "Effortless Text Generation",
-  "effortless-text-gen-desc": "Synapsy Write's advanced AI algorithms generate high-quality text with just a few prompts, saving you time and effort."
+  "effortless-text-gen-desc": "Synapsy Write's advanced AI algorithms generate high-quality text with just a few prompts, saving you time and effort.",
+  "productivity": "Boost Your Productivity with Synapsy Write",
+  "productivity-desc": "Synapsy Write's powerful features and intuitive interface empower you to create high-quality content faster than ever before.",
+  "try-synapsy": "Try Synapsy Write",
+  "text-editor-desc": "Synapsy Write allows you to directly edit your generations within the app, removing the need to use other third-party apps.",
+  "advanced-instructions-desc": "Synapsy Write's advanced model instructions enable you to fine-tune the AI to your specific needs, ensuring high-quality and tailored content.",
+  "text-analysis-desc": "Synapsy Write's advanced text analysis tools provide valuable insights and feedback to help you improve your writing."
 }
