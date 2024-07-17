@@ -311,5 +311,10 @@
   "font-mono": "Mono",
   "font-serif": "Serif",
   "font-sans": "Sans Serif",
-  "font-default": "Default"
+  "font-default": "Default",
+  "key-features": "Key Features",
+  "unlock-potential": "Unlock Your Writing Potential",
+  "unlock-potential-desc": "Synapsy Write is designed to help you create high-quality content with ease. Boost your productivity, enhance your creativity, and take your writing to new heights.",
+  "effortless-text-gen": "Effortless Text Generation",
+  "effortless-text-gen-desc": "Synapsy Write's advanced AI algorithms generate high-quality text with just a few prompts, saving you time and effort."
 }

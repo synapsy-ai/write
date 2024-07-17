@@ -280,7 +280,7 @@
   "send-msg": "Envoyer un message",
   "you": "Vous",
   "synapsy-assistant": "Assistant Synapsy",
-  "chat-placeholder": " Discutons ! ",
+  "chat-placeholder": "Discutons ! ",
   "chat-placeholder-desc": "L'assistant Synapsy est là pour répondre à toutes vos questions et interrogations.",
   "chat-placeholder-desc2": "Entrez un message pour commencer.",
   "history-format": "Histoire",
@@ -309,5 +309,10 @@
   "font-mono": "Mono",
   "font-serif": "Serif",
   "font-sans": "Sans Serif",
-  "font-default": "Par défaut"
+  "font-default": "Par défaut",
+  "key-features": "Fonctionnalités",
+  "unlock-potential": "Déverrouillez votre potentiel d'écriture",
+  "unlock-potential-desc": "Synapsy Write est conçu pour vous aider à créer facilement du contenu de haute qualité. Boostez votre productivité, améliorez votre créativité et faites progresser votre écriture vers de nouveaux sommets",
+  "effortless-text-gen": "Génération de texte sans effort",
+  "effortless-text-gen-desc": "Les algorithmes d'IA avancés de Synapsy Write génèrent des textes de haute qualité avec seulement quelques invites, ce qui vous permet d'économiser du temps et des efforts."
 }
