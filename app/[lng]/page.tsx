@@ -185,6 +185,82 @@ export default function Home({ params: { lng } }: { params: { lng: any } }) {
           </div>
         </section>
 
+        <section className="w-full bg-muted py-12 md:py-24 lg:py-32">
+          <div className="container px-4 md:px-6">
+            <div className="flex flex-col items-center justify-center space-y-4 text-center">
+              <div className="space-y-2">
+                <div className="inline-block rounded-full border bg-muted px-3 py-1 text-sm dark:border-slate-700">
+                  Synapsy Write vs. ChatGPT 4
+                </div>
+                <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">
+                  {t("features-desc")}
+                </h2>
+                <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
+                  {t("why-synapsy-desc")}
+                </p>
+              </div>
+            </div>
+            <div className="mx-auto max-w-5xl items-center gap-6 py-12 lg:grid-cols-2 lg:gap-12">
+              <div className="flex flex-col justify-center space-y-4">
+                <ul className="grid gap-6 sm:grid-cols-2">
+                  <li>
+                    <div className="grid gap-1">
+                      <h3 className="text-xl font-bold">
+                        {t("advanced-instructions")}
+                      </h3>
+                      <p className="text-muted-foreground">
+                        {t("advanced-instructions-desc")}
+                      </p>
+                    </div>
+                  </li>
+                  <li>
+                    <div className="grid gap-1">
+                      <h3 className="text-xl font-bold">{t("text-editor")}</h3>
+                      <p className="text-muted-foreground">
+                        {t("text-editor-desc")}
+                      </p>
+                    </div>
+                  </li>
+                  <li>
+                    <div className="grid gap-1">
+                      <h3 className="text-xl font-bold">{t("essays")}</h3>
+                      <p className="text-muted-foreground">
+                        {t("essays-desc")}
+                      </p>
+                    </div>
+                  </li>
+                  <li>
+                    <div className="grid gap-1">
+                      <h3 className="text-xl font-bold">
+                        {t("text-analysis")}
+                      </h3>
+                      <p className="text-muted-foreground">
+                        {t("text-analysis-desc")}
+                      </p>
+                    </div>
+                  </li>
+                  <li>
+                    <div className="grid gap-1">
+                      <h3 className="text-xl font-bold">{t("variables")}</h3>
+                      <p className="text-muted-foreground">
+                        {t("variables-desc")}
+                      </p>
+                    </div>
+                  </li>
+                  <li>
+                    <div className="grid gap-1">
+                      <h3 className="text-xl font-bold">{t("tables")}</h3>
+                      <p className="text-muted-foreground">
+                        {t("tables-desc")}
+                      </p>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+
         <section className="flex min-h-[50vh] flex-col items-center justify-center">
           <div className="flex flex-col justify-center p-4">
             <h2 className="mt-8 bg-gradient-to-br from-slate-500 to-slate-800 bg-clip-text text-center text-4xl font-normal text-transparent dark:from-slate-100 dark:to-slate-400 sm:text-5xl">
