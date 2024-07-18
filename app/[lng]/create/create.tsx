@@ -1266,7 +1266,7 @@ export default function Create(props: Props) {
           </Card>
         </div>
 
-        <div className="grid gap-4 text-sm text-muted-foreground print:hidden">
+        <div className="grid gap-6 text-sm text-muted-foreground print:hidden">
           <Card>
             <CardHeader>
               <CardTitle>{t("options")}</CardTitle>
