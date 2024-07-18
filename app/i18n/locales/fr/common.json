@@ -321,5 +321,9 @@
   "text-editor-desc": "Synapsy Write vous permet de modifier directement vos générations dans l'application, éliminant ainsi le besoin d'utiliser d'autres applications tierces.",
   "advanced-instructions-desc": "Les instructions avancées du modèle Synapsy Write vous permettent d'affiner l'IA en fonction de vos besoins spécifiques, garantissant ainsi un contenu personnalisé de haute qualité.",
   "text-analysis-desc": "Les outils avancés d'analyse de texte de Synapsy Write fournissent des informations et des commentaires précieux pour vous aider à améliorer votre écriture.",
-  "open-source-title": "Synapsy Write est Open-Source"
+  "open-source-title": "Synapsy Write est Open-Source",
+  "generation-font-desc": "Sélectionnez le style de police pour le contenu du texte.",
+  "system-templates-desc": "Créer des invites système pour Synapsy Assistant.",
+  "openai-models": "Modèles OpenAI",
+  "openai-models-desc": "Voir tous les modèles OpenAI disponibles pour votre compte."
 }
