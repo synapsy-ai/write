@@ -85,6 +85,13 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 
 type Subscription = Database["public"]["Tables"]["subscriptions"]["Row"];
 type Product = Database["public"]["Tables"]["products"]["Row"];
@@ -1057,168 +1064,117 @@ export default function Create(props: Props) {
   }
 
   return (
-    <main className="mt-2 flex min-h-full flex-col pb-16 sm:mt-16 sm:pb-0 print:mt-0">
-      <section className="ml-2 flex items-center space-x-2 print:hidden">
-        <PenBox />
-        <span>
-          <h2 className="text-2xl font-bold">{t("create")}</h2>
-          <p>{t("create-desc")}</p>
-        </span>
-      </section>
-      <Separator className="my-2" />
-
-      <section>
-        <p className="m-2 font-bold print:hidden">{t("prompt")}</p>
-        <div className="m-2 flex flex-col items-stretch space-y-1 sm:flex-row sm:items-start sm:space-x-2 sm:space-y-0 print:hidden">
-          {expandInput ? (
-            <Textarea
-              value={prompt}
-              onChange={(v) => setPrompt(v.target.value)}
-            />
-          ) : (
-            <Input value={prompt} onChange={(v) => setPrompt(v.target.value)} />
+    <main className="flex min-h-[calc(100vh_-_theme(spacing.16))] flex-1 flex-col gap-4 bg-slate-100/40 p-4 pb-16 dark:bg-transparent sm:mt-16 sm:pb-0 md:gap-8 md:p-10 print:mt-0">
+      <div className="mx-auto grid w-full max-w-6xl gap-2 print:hidden">
+        <h1 className="text-3xl font-semibold">{t("create")}</h1>
+      </div>
+      <div className="mx-auto grid w-full max-w-6xl items-start gap-6 md:grid-cols-[1fr_300px] lg:grid-cols-[1fr_350px]">
+        <div className="grid gap-6">
+          {!unlimited && model.includes("gpt-4") && (
+            <Card className="border-violet-500 bg-violet-500/20 print:hidden">
+              <div className="m-2 flex items-center space-x-2">
+                <Info size={16} color="#8b5cf6" />
+                <p className="font-bold text-violet-500">
+                  {t("gpt-4-remaining-quotas")} {gpt4Quotas}
+                </p>
+              </div>
+            </Card>
           )}
-
-          <div className="grid grid-cols-[1fr,auto] space-x-1 sm:flex sm:space-x-2">
-            <FormatDialog lng={lng} setVal={setType} setCategory={setCat} />
-
-            <Sheet>
-              <TooltipProvider delayDuration={0}>
-                <Tooltip>
-                  <TooltipTrigger>
-                    <SheetTrigger asChild>
-                      <Button variant="outline">
-                        <SettingsLogo height={16} />
-                      </Button>
-                    </SheetTrigger>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p>{t("settings")}</p>
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
-
-              <SheetContent>
-                <SheetHeader>
-                  <SheetTitle>{t("options")}</SheetTitle>
-                  <SheetDescription>{t("model-options")}</SheetDescription>
-                </SheetHeader>
-                <div className="py-4">
-                  <div className="flex items-center space-x-2">
-                    <p>{t("model")}</p>
-                    <Select
-                      onValueChange={(e) => setModel(e)}
-                      defaultValue={model}
-                    >
-                      <SelectTrigger className="w-[180px]">
-                        <SelectValue placeholder={t("model")} />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <ScrollArea className="h-[200px]">
-                          {avModels.map((el, i) => (
-                            <SelectItem key={i} value={el}>
-                              {getModelString(el)}
-                            </SelectItem>
-                          ))}
-                        </ScrollArea>
-                      </SelectContent>
-                    </Select>
-                    <TooltipProvider delayDuration={0}>
-                      <Tooltip>
-                        <TooltipTrigger>
-                          <Button variant="outline" onClick={getMs}>
-                            <RefreshCcw height={14} />
-                          </Button>
-                        </TooltipTrigger>
-                        <TooltipContent>
-                          <p>{t("refresh-models")}</p>
-                        </TooltipContent>
-                      </Tooltip>
-                    </TooltipProvider>
-                  </div>
-
-                  <Separator className="my-2" />
-                  <p>{t("temp")}</p>
-                  <HoverCard openDelay={200}>
-                    <HoverCardTrigger className="flex space-x-2">
-                      <Slider
-                        onValueChange={(v) => setTemp(v[0])}
-                        defaultValue={[temp]}
-                        max={2}
-                        step={0.01}
-                      />
-                      <p>{temp}</p>
-                    </HoverCardTrigger>
-                    <HoverCardContent>{t("temp-desc")}</HoverCardContent>
-                  </HoverCard>
-                  <p>{t("top-p")}</p>
-                  <HoverCard openDelay={200}>
-                    <HoverCardTrigger className="flex space-x-2">
-                      <Slider
-                        onValueChange={(v) => setTopP(v[0])}
-                        defaultValue={[topp]}
-                        max={1}
-                        step={0.01}
-                      />
-                      <p>{topp}</p>
-                    </HoverCardTrigger>
-                    <HoverCardContent>{t("top-p-desc")}</HoverCardContent>
-                  </HoverCard>
-                  <p>{t("freq-penalty")}</p>
-                  <HoverCard openDelay={200}>
-                    <HoverCardTrigger className="flex space-x-2">
-                      <Slider
-                        onValueChange={(v) => setFreqP(v[0])}
-                        defaultValue={[freqP]}
-                        max={2}
-                        step={0.01}
-                      />
-                      <p>{freqP}</p>
-                    </HoverCardTrigger>
-                    <HoverCardContent>
-                      {t("freq-penalty-desc")}
-                    </HoverCardContent>
-                  </HoverCard>
-                  <p>{t("pres-penalty")}</p>
-                  <HoverCard openDelay={200}>
-                    <HoverCardTrigger className="flex space-x-2">
-                      <Slider
-                        onValueChange={(v) => setPresP(v[0])}
-                        defaultValue={[presP]}
-                        max={2}
-                        step={0.01}
-                      />
-                      <p>{presP}</p>
-                    </HoverCardTrigger>
-                    <HoverCardContent>
-                      {t("pres-penalty-desc")}
-                    </HoverCardContent>
-                  </HoverCard>
-                  <Separator className="my-2" />
-                  <div className="flex items-center space-x-2">
-                    <p>{t("tone")}</p>
-                    <Select
-                      defaultValue={tone}
-                      onValueChange={(v) => setTone(v)}
-                    >
-                      <SelectTrigger className="w-[180px]">
-                        <SelectValue placeholder={t("tone")} />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <ScrollArea className="h-[200px]">
-                          {tones.map((el, i) => (
-                            <SelectItem key={i} value={el}>
-                              {t(el)}
-                            </SelectItem>
-                          ))}
-                        </ScrollArea>
-                      </SelectContent>
-                    </Select>
-                  </div>
+          <Card className="print:hidden">
+            <CardHeader>
+              <CardTitle>{t("prompt")}</CardTitle>
+              <CardDescription>{t("prompt-desc")}</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="grid gap-4">
+                {expandInput ? (
+                  <Textarea
+                    value={prompt}
+                    onChange={(v) => setPrompt(v.target.value)}
+                  />
+                ) : (
+                  <Input
+                    value={prompt}
+                    onChange={(v) => setPrompt(v.target.value)}
+                  />
+                )}
+              </div>
+              <div className="mt-2 flex items-center space-x-2 px-2 print:hidden">
+                <Checkbox
+                  id="expandChk"
+                  checked={expandInput}
+                  onCheckedChange={() => setExpandInput(!expandInput)}
+                />
+                <label htmlFor="expandChk">{t("expand-input")}</label>
+              </div>
+              {type.startsWith("ph_analysis_") && (
+                <div className="p-2">
+                  <p className="mb-2 font-bold print:hidden">
+                    {t("text-to-analyse")}
+                  </p>
+                  <Textarea
+                    className="print:hidden"
+                    value={textToAnalyse}
+                    onChange={(v) => setTextToAnalyse(v.target.value)}
+                  />
                 </div>
-              </SheetContent>
-            </Sheet>
-          </div>
+              )}
+            </CardContent>
+          </Card>
+          {complexSectionVis && (
+            <ComplexGenItem steps={complexSteps} lng={lng} />
+          )}
+          <Card className="print:border-0 print:shadow-none">
+            <CardHeader className="print:hidden">
+              <CardTitle>{t("generation")}</CardTitle>
+            </CardHeader>
+            <CardContent>
+              {!errorVis && res && (
+                <section className={"grow text-justify"}>
+                  <ResultDisplayer
+                    font={s.gen_font ?? "default"}
+                    is_generating={isGen}
+                    res={res}
+                    type={type}
+                  />
+                </section>
+              )}
+              {!errorVis && !res && (
+                <section
+                  className={
+                    "m-2 flex grow items-center justify-center rounded-md border bg-white p-2 shadow-sm dark:bg-slate-900/50 print:text-black print:shadow-none"
+                  }
+                >
+                  <div className="flex flex-col items-center justify-center">
+                    <Info height={48} width={48} />
+                    <p className="font-bold">{t("result-ph")}</p>
+                  </div>
+                </section>
+              )}
+              {errorVis && (
+                <section className="flex flex-col items-center">
+                  <LucideFileWarning height={48} width={48} />
+                  <p className="font-bold">{t("error-occured")}</p>
+                  <ErrorDisplayer err={errorMsg} />
+                </section>
+              )}
+              {inProgress ? (
+                <section className="flex min-h-[50vh] flex-col items-center justify-center">
+                  <p className="mb-2 text-xl font-bold">
+                    {t("gen-in-progress")}
+                  </p>
+                  <div className="space-y-2">
+                    <Skeleton className="h-4 w-[250px]" />
+                    <Skeleton className="h-4 w-[200px]" />
+                    <Skeleton className="h-4 w-[250px]" />
+                    <Skeleton className="h-4 w-[200px]" />
+                  </div>
+                </section>
+              ) : (
+                <></>
+              )}
+            </CardContent>
+          </Card>
           {isSubscribed() ? (
             <>
               {!inProgress ? (
@@ -1231,7 +1187,7 @@ export default function Create(props: Props) {
                       ? textToAnalyse.replace(" ", "") == ""
                       : prompt.replace(" ", "") == ""
                   }
-                  className="group space-x-1 disabled:cursor-not-allowed"
+                  className="group space-x-1 disabled:cursor-not-allowed print:hidden"
                   onClick={createButton}
                 >
                   <Sparkles
@@ -1313,164 +1269,209 @@ export default function Create(props: Props) {
             </Dialog>
           )}
         </div>
-        <div className="flex items-center space-x-2 px-2 print:hidden">
-          <Checkbox
-            id="expandChk"
-            checked={expandInput}
-            onCheckedChange={() => setExpandInput(!expandInput)}
-          />
-          <label htmlFor="expandChk">{t("expand-input")}</label>
-        </div>
-        {!unlimited && model.includes("gpt-4") && (
-          <div className="m-2 flex items-center space-x-2 rounded-md border border-violet-500 bg-violet-500/20 px-2 py-1 print:hidden">
-            <Info size={16} color="#8b5cf6" />
-            <p className="font-bold text-violet-500">
-              {t("gpt-4-remaining-quotas")} {gpt4Quotas}
-            </p>
-          </div>
-        )}
-        {type.startsWith("ph_analysis_") && (
-          <div className="p-2">
-            <p className="mb-2 font-bold print:hidden">
-              {t("text-to-analyse")}
-            </p>
-            <Textarea
-              className="print:hidden"
-              value={textToAnalyse}
-              onChange={(v) => setTextToAnalyse(v.target.value)}
-            />
-          </div>
-        )}
-        {type !== "ph_complex" && type !== "es_complex" && (
-          <div className="print:hidden">
-            <div>
-              <p className="m-2 font-bold">
-                {t("variables")} ({variables.length})
-              </p>
-              <Button
-                className="h-auto"
-                variant="link"
-                onClick={() =>
-                  setVariables([
-                    ...variables,
-                    { name: "", value: "", id: uuidv4() },
-                  ])
-                }
-              >
-                {t("add-variable")}
-              </Button>
-            </div>
-            <div>
-              {variables.length > 0 &&
-                variables.map((el, i) => (
-                  <VariableItem
-                    functions={{
-                      setVar: editVariable,
-                      removeVar: removeVariable,
-                    }}
-                    key={el.id}
+
+        <div className="grid gap-4 text-sm text-muted-foreground print:hidden">
+          <Card>
+            <CardHeader>
+              <CardTitle>{t("options")}</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="grid gap-4">
+                <div className="space-y-2">
+                  <label htmlFor="model">{t("model")}</label>
+                  <div className="flex items-center space-x-2">
+                    <Select
+                      onValueChange={(e) => setModel(e)}
+                      defaultValue={model}
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder={t("model")} />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <ScrollArea className="h-[200px]">
+                          {avModels.map((el, i) => (
+                            <SelectItem key={i} value={el}>
+                              {getModelString(el)}
+                            </SelectItem>
+                          ))}
+                        </ScrollArea>
+                      </SelectContent>
+                    </Select>
+                    <TooltipProvider delayDuration={0}>
+                      <Tooltip>
+                        <TooltipTrigger>
+                          <Button variant="outline" onClick={getMs}>
+                            <RefreshCcw height={14} />
+                          </Button>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p>{t("refresh-models")}</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                    <Sheet>
+                      <TooltipProvider delayDuration={0}>
+                        <Tooltip>
+                          <TooltipTrigger>
+                            <SheetTrigger asChild>
+                              <Button variant="outline">
+                                <SettingsLogo height={16} />
+                              </Button>
+                            </SheetTrigger>
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            <p>{t("settings")}</p>
+                          </TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
+
+                      <SheetContent>
+                        <SheetHeader>
+                          <SheetTitle>{t("options")}</SheetTitle>
+                          <SheetDescription>
+                            {t("model-options")}
+                          </SheetDescription>
+                        </SheetHeader>
+                        <div className="py-4">
+                          <Separator className="my-2" />
+                          <p>{t("temp")}</p>
+                          <HoverCard openDelay={200}>
+                            <HoverCardTrigger className="flex space-x-2">
+                              <Slider
+                                onValueChange={(v) => setTemp(v[0])}
+                                defaultValue={[temp]}
+                                max={2}
+                                step={0.01}
+                              />
+                              <p>{temp}</p>
+                            </HoverCardTrigger>
+                            <HoverCardContent>
+                              {t("temp-desc")}
+                            </HoverCardContent>
+                          </HoverCard>
+                          <p>{t("top-p")}</p>
+                          <HoverCard openDelay={200}>
+                            <HoverCardTrigger className="flex space-x-2">
+                              <Slider
+                                onValueChange={(v) => setTopP(v[0])}
+                                defaultValue={[topp]}
+                                max={1}
+                                step={0.01}
+                              />
+                              <p>{topp}</p>
+                            </HoverCardTrigger>
+                            <HoverCardContent>
+                              {t("top-p-desc")}
+                            </HoverCardContent>
+                          </HoverCard>
+                          <p>{t("freq-penalty")}</p>
+                          <HoverCard openDelay={200}>
+                            <HoverCardTrigger className="flex space-x-2">
+                              <Slider
+                                onValueChange={(v) => setFreqP(v[0])}
+                                defaultValue={[freqP]}
+                                max={2}
+                                step={0.01}
+                              />
+                              <p>{freqP}</p>
+                            </HoverCardTrigger>
+                            <HoverCardContent>
+                              {t("freq-penalty-desc")}
+                            </HoverCardContent>
+                          </HoverCard>
+                          <p>{t("pres-penalty")}</p>
+                          <HoverCard openDelay={200}>
+                            <HoverCardTrigger className="flex space-x-2">
+                              <Slider
+                                onValueChange={(v) => setPresP(v[0])}
+                                defaultValue={[presP]}
+                                max={2}
+                                step={0.01}
+                              />
+                              <p>{presP}</p>
+                            </HoverCardTrigger>
+                            <HoverCardContent>
+                              {t("pres-penalty-desc")}
+                            </HoverCardContent>
+                          </HoverCard>
+                        </div>
+                      </SheetContent>
+                    </Sheet>
+                  </div>
+                </div>
+                <div className="space-y-2">
+                  <label htmlFor="format">Format</label>
+                  <FormatDialog
                     lng={lng}
-                    index={i}
-                    item={el}
+                    setVal={setType}
+                    setCategory={setCat}
                   />
-                ))}
-            </div>
-          </div>
-        )}
-        <div className="m-2 flex flex-col items-start print:hidden">
-          <p className="font-bold">{t("gen-settings")}</p>
-          <TooltipProvider delayDuration={0}>
-            <Tooltip>
-              <TooltipTrigger className="cursor-default">
-                <p className="flex items-center space-x-2">
-                  <PenBox height={14} />
-                  <span>
-                    {t(cat)} - {t(typesToString(type))}
-                  </span>
-                </p>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>{t("formats")}</p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
-          <TooltipProvider delayDuration={0}>
-            <Tooltip>
-              <TooltipTrigger className="cursor-default">
-                <p className="flex items-center space-x-2">
-                  <Lightbulb height={14} />
-                  <span>{getModelString(model)}</span>
-                </p>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>{t("model")}</p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
-          <TooltipProvider delayDuration={0}>
-            <Tooltip>
-              <TooltipTrigger className="cursor-default">
-                <p className="flex items-center space-x-2">
-                  <PencilRuler height={14} />
-                  <span>{t(tone)}</span>
-                </p>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>{t("tone")}</p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
+                </div>
+                <div className="space-y-2">
+                  <label htmlFor="tone">{t("tone")}</label>
+                  <Select defaultValue={tone} onValueChange={(v) => setTone(v)}>
+                    <SelectTrigger>
+                      <SelectValue placeholder={t("tone")} />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <ScrollArea className="h-[200px]">
+                        {tones.map((el, i) => (
+                          <SelectItem key={i} value={el}>
+                            {t(el)}
+                          </SelectItem>
+                        ))}
+                      </ScrollArea>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader>
+              <CardTitle>
+                {t("variables")} ({variables.length})
+              </CardTitle>
+              <CardDescription>{t("variables-desc")}</CardDescription>
+            </CardHeader>
+            <CardContent>
+              {type !== "ph_complex" && type !== "es_complex" && (
+                <div className="print:hidden">
+                  <Button
+                    className="h-auto"
+                    variant="link"
+                    onClick={() =>
+                      setVariables([
+                        ...variables,
+                        { name: "", value: "", id: uuidv4() },
+                      ])
+                    }
+                  >
+                    {t("add-variable")}
+                  </Button>
+
+                  <div className="">
+                    {variables.length > 0 &&
+                      variables.map((el, i) => (
+                        <VariableItem
+                          small
+                          functions={{
+                            setVar: editVariable,
+                            removeVar: removeVariable,
+                          }}
+                          key={el.id}
+                          lng={lng}
+                          index={i}
+                          item={el}
+                        />
+                      ))}
+                  </div>
+                </div>
+              )}
+            </CardContent>
+          </Card>
         </div>
-      </section>
-
-      {complexSectionVis && <ComplexGenItem steps={complexSteps} lng={lng} />}
-
-      {!errorVis && res && (
-        <section
-          className={
-            "m-2 grow rounded-md border bg-white p-2 text-justify shadow-sm dark:bg-slate-900/50 print:border-0 print:shadow-none"
-          }
-        >
-          <ResultDisplayer
-            font={s.gen_font ?? "default"}
-            is_generating={isGen}
-            res={res}
-            type={type}
-          />
-        </section>
-      )}
-      {!errorVis && !res && (
-        <section
-          className={
-            "m-2 flex grow items-center justify-center rounded-md border bg-white p-2 shadow-sm dark:bg-slate-900/50 print:text-black print:shadow-none"
-          }
-        >
-          <div className="flex flex-col items-center justify-center">
-            <Info height={48} width={48} />
-            <p className="font-bold">{t("result-ph")}</p>
-          </div>
-        </section>
-      )}
-      {errorVis && (
-        <section className="flex flex-col items-center">
-          <LucideFileWarning height={48} width={48} />
-          <p className="font-bold">{t("error-occured")}</p>
-          <ErrorDisplayer err={errorMsg} />
-        </section>
-      )}
-      {inProgress ? (
-        <section className="flex min-h-[50vh] flex-col items-center justify-center">
-          <p className="mb-2 text-xl font-bold">{t("gen-in-progress")}</p>
-          <div className="space-y-2">
-            <Skeleton className="h-4 w-[250px]" />
-            <Skeleton className="h-4 w-[200px]" />
-            <Skeleton className="h-4 w-[250px]" />
-            <Skeleton className="h-4 w-[200px]" />
-          </div>
-        </section>
-      ) : (
-        <></>
-      )}
+      </div>
     </main>
   );
 }
