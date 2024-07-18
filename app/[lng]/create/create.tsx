@@ -1060,7 +1060,7 @@ export default function Create(props: Props) {
   }
 
   return (
-    <main className="flex min-h-[calc(100vh_-_theme(spacing.16))] flex-1 flex-col gap-4 bg-slate-100/40 p-4 pb-16 dark:bg-transparent sm:mt-16 sm:pb-0 md:gap-8 md:p-10 print:mt-0">
+    <main className="flex min-h-[calc(100vh_-_theme(spacing.16))] flex-1 flex-col gap-4 bg-slate-100/40 p-4 pb-16 dark:bg-transparent sm:mt-16 sm:pb-0 md:gap-8 md:p-10 print:mt-0 print:bg-white">
       <div className="mx-auto grid w-full max-w-6xl gap-2 print:hidden">
         <h1 className="text-3xl font-semibold">{t("create")}</h1>
       </div>
@@ -1117,60 +1117,6 @@ export default function Create(props: Props) {
               )}
             </CardContent>
           </Card>
-          {complexSectionVis && (
-            <ComplexGenItem steps={complexSteps} lng={lng} />
-          )}
-          <Card className="print:border-0 print:shadow-none">
-            <CardHeader className="print:hidden">
-              <CardTitle>{t("generation")}</CardTitle>
-            </CardHeader>
-            <CardContent>
-              {!errorVis && res && (
-                <section className={"grow text-justify"}>
-                  <ResultDisplayer
-                    font={s.gen_font ?? "default"}
-                    is_generating={isGen}
-                    res={res}
-                    type={type}
-                  />
-                </section>
-              )}
-              {!errorVis && !res && (
-                <section
-                  className={
-                    "m-2 flex grow items-center justify-center rounded-md border bg-white p-2 shadow-sm dark:bg-slate-900/50 print:text-black print:shadow-none"
-                  }
-                >
-                  <div className="flex flex-col items-center justify-center">
-                    <Info height={48} width={48} />
-                    <p className="font-bold">{t("result-ph")}</p>
-                  </div>
-                </section>
-              )}
-              {errorVis && (
-                <section className="flex flex-col items-center">
-                  <LucideFileWarning height={48} width={48} />
-                  <p className="font-bold">{t("error-occured")}</p>
-                  <ErrorDisplayer err={errorMsg} />
-                </section>
-              )}
-              {inProgress ? (
-                <section className="flex min-h-[50vh] flex-col items-center justify-center">
-                  <p className="mb-2 text-xl font-bold">
-                    {t("gen-in-progress")}
-                  </p>
-                  <div className="space-y-2">
-                    <Skeleton className="h-4 w-[250px]" />
-                    <Skeleton className="h-4 w-[200px]" />
-                    <Skeleton className="h-4 w-[250px]" />
-                    <Skeleton className="h-4 w-[200px]" />
-                  </div>
-                </section>
-              ) : (
-                <></>
-              )}
-            </CardContent>
-          </Card>
           {isSubscribed() ? (
             <>
               {!inProgress ? (
@@ -1183,7 +1129,7 @@ export default function Create(props: Props) {
                       ? textToAnalyse.replace(" ", "") == ""
                       : prompt.replace(" ", "") == ""
                   }
-                  className="group space-x-1 disabled:cursor-not-allowed print:hidden"
+                  className="group space-x-1 print:hidden"
                   onClick={createButton}
                 >
                   <Sparkles
@@ -1202,8 +1148,8 @@ export default function Create(props: Props) {
             </>
           ) : (
             <Dialog>
-              <DialogTrigger className="w-auto">
-                <Button className="group w-full space-x-1 disabled:cursor-not-allowed sm:w-auto">
+              <DialogTrigger>
+                <Button className="group w-full space-x-1 disabled:cursor-not-allowed">
                   <Sparkles
                     className="group-hover:animate-pulse group-hover:duration-700"
                     height={16}
@@ -1264,6 +1210,60 @@ export default function Create(props: Props) {
               </DialogContent>
             </Dialog>
           )}
+          {complexSectionVis && (
+            <ComplexGenItem steps={complexSteps} lng={lng} />
+          )}
+          <Card className="print:border-0 print:shadow-none">
+            <CardHeader className="print:hidden">
+              <CardTitle>{t("generation")}</CardTitle>
+            </CardHeader>
+            <CardContent>
+              {!errorVis && res && (
+                <section className={"grow text-justify"}>
+                  <ResultDisplayer
+                    font={s.gen_font ?? "default"}
+                    is_generating={isGen}
+                    res={res}
+                    type={type}
+                  />
+                </section>
+              )}
+              {!errorVis && !res && (
+                <section
+                  className={
+                    "m-2 flex grow items-center justify-center rounded-md border bg-white p-2 shadow-sm dark:bg-slate-900/50 print:text-black print:shadow-none"
+                  }
+                >
+                  <div className="flex flex-col items-center justify-center">
+                    <Info height={48} width={48} />
+                    <p className="font-bold">{t("result-ph")}</p>
+                  </div>
+                </section>
+              )}
+              {errorVis && (
+                <section className="flex flex-col items-center">
+                  <LucideFileWarning height={48} width={48} />
+                  <p className="font-bold">{t("error-occured")}</p>
+                  <ErrorDisplayer err={errorMsg} />
+                </section>
+              )}
+              {inProgress ? (
+                <section className="flex min-h-[50vh] flex-col items-center justify-center">
+                  <p className="mb-2 text-xl font-bold">
+                    {t("gen-in-progress")}
+                  </p>
+                  <div className="space-y-2">
+                    <Skeleton className="h-4 w-[250px]" />
+                    <Skeleton className="h-4 w-[200px]" />
+                    <Skeleton className="h-4 w-[250px]" />
+                    <Skeleton className="h-4 w-[200px]" />
+                  </div>
+                </section>
+              ) : (
+                <></>
+              )}
+            </CardContent>
+          </Card>
         </div>
 
         <div className="grid gap-4 text-sm text-muted-foreground print:hidden">
