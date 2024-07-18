@@ -6,11 +6,8 @@ import { v4 as uuidv4 } from "uuid";
 
 import {
   Info,
-  Lightbulb,
   Loader2,
   LucideFileWarning,
-  PenBox,
-  PencilRuler,
   RefreshCcw,
   Settings as SettingsLogo,
   Sparkles,
@@ -31,14 +28,13 @@ import {
 import { addToHistory } from "@/lib/history";
 import {
   Sheet,
-  SheetClose,
   SheetContent,
   SheetDescription,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { tones, typesToString } from "@/lib/formats";
+import { tones } from "@/lib/formats";
 
 import { Skeleton } from "@/components/ui/skeleton";
 import ResultDisplayer from "@/components/result-displayer";
