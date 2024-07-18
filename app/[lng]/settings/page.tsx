@@ -44,6 +44,14 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { m } from "framer-motion";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import Link from "next/link";
 
 export default function SettingsPage({
   params: { lng },
@@ -85,215 +93,246 @@ export default function SettingsPage({
 
   const router = useRouter();
   return (
-    <main className="mt-2 min-h-full space-y-2 px-2 pb-20 sm:mt-16 sm:pb-0">
-      <section className="flex items-center space-x-2">
-        <SettingsLogo />
-        <span>
-          <h2 className="text-2xl font-bold">{t("settings")}</h2>
-          <p>{t("settings-desc")}</p>
-        </span>
-      </section>
-      <Separator className="my-2" />
-      <section>
-        <h3 className="text-xl font-semibold">{t("theme")}</h3>
-        <p>{t("theme-desc")}</p>
-        <Separator className="my-2" />
-
-        <div className="sm:flex">
-          <div className="flex flex-col items-stretch space-y-2 sm:grid sm:grid-cols-3 sm:space-x-2 sm:space-y-0">
-            <Button
-              onClick={() => setTheme("light")}
-              variant="outline"
-              className="px-10 py-8"
-            >
-              <div className="my-2 grid grid-cols-[auto,1fr] items-center space-x-2">
-                <Sun />
-                <p>{t("light")}</p>
-              </div>
-            </Button>
-            <Button
-              variant="outline"
-              className="px-10 py-8"
-              onClick={() => setTheme("dark")}
-            >
-              <div className="my-2 grid grid-cols-[auto,1fr] items-center space-x-2">
-                <Moon />
-                <p>{t("dark")}</p>
-              </div>
-            </Button>
-            <Button
-              variant="outline"
-              className="px-10 py-8"
-              onClick={() => setTheme("system")}
-            >
-              <div className="my-2 grid grid-cols-[auto,1fr] items-center space-x-2">
-                <Laptop />
-                <p>{t("system")}</p>
-              </div>
-            </Button>
-          </div>
-        </div>
-        <div className="my-2 flex items-center space-x-2">
-          <p>{t("generation-font")}</p>
-          <Select
-            defaultValue={s.gen_font ?? "default"}
-            onValueChange={(v: FontType) => {
-              s.gen_font = v;
-              localStorage.setItem("synapsy_settings", JSON.stringify(s));
-            }}
+    <main className="mt-2 flex min-h-[calc(100vh_-_theme(spacing.16))] flex-1 flex-col gap-4 bg-slate-100/40 p-4 px-2 pb-20 dark:bg-transparent sm:mt-16 sm:pb-0 md:gap-8 md:p-10">
+      <div className="mx-auto grid w-full max-w-6xl gap-2">
+        <h1 className="mx-2 text-3xl font-semibold">Settings</h1>
+      </div>
+      <div className="mx-auto grid w-full max-w-6xl items-start gap-6 md:grid-cols-[180px_1fr] lg:grid-cols-[250px_1fr]">
+        <nav className="grid gap-4 p-2 text-sm text-muted-foreground">
+          <Link
+            href="#"
+            className="font-semibold text-primary"
+            prefetch={false}
           >
-            <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder={t("generation-font")} />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="default">{t("font-default")}</SelectItem>
-              <SelectItem value="sans">{t("font-sans")}</SelectItem>
-              <SelectItem value="serif">{t("font-serif")}</SelectItem>
-              <SelectItem value="mono">{t("font-mono")}</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-      </section>
-      <section>
-        <h3 className="text-xl font-semibold">{t("language")}</h3>
-        <p>{t("language-desc")}</p>
-        <Separator className="my-2" />
-        <div className="flex items-center space-x-2">
-          <p>{t("language")}</p>
-          <Select
-            defaultValue={lng}
-            onValueChange={(v) => {
-              router.push(`/${v}/settings`);
-            }}
-          >
-            <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder={t("language")} />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="en">English</SelectItem>
-              <SelectItem value="fr">Français</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-      </section>
-      <section>
-        <h3 className="text-xl font-semibold">{t("openai-options")}</h3>
-        <p>{t("openai-options-desc")}</p>
-        <Separator className="my-2" />
-
-        <p className="mt-2">
-          {t("models")} ({models?.length})
-        </p>
-        <div className="mt-2 max-w-[550px] rounded-md border p-2">
-          <div className="flex space-x-2">
-            <Input
-              placeholder={t("search-models")}
-              value={modelQuery}
-              onChange={(v) => setModelQuery(v.target.value)}
-            />
-            <Button onClick={refreshModels} variant="outline">
-              <RefreshCcw height={14} />
-            </Button>
-          </div>
-          <ScrollArea className="h-[200px]">
-            <div>
-              {models
-                ?.filter((s) =>
-                  s.toLowerCase().includes(modelQuery.toLowerCase()),
-                )
-                .map((m, i) => (
-                  <p
-                    key={i}
-                    className="m-1 rounded-md border border-transparent p-2 hover:border-slate-300 hover:bg-slate-200/50 dark:hover:border-accent dark:hover:bg-slate-800/50"
-                  >
-                    {m}
-                  </p>
-                ))}
-            </div>
-          </ScrollArea>
-        </div>
-        <p className="my-2">{t("system-templates")}</p>
-        <SystemTemplateCreator setTemplates={setTemplates} lng={lng} />
-        {templates.length > 0 && (
-          <div className="mt-2 max-w-[550px] rounded-md border p-2">
-            <ScrollArea className="h-[200px]">
-              {templates.map((template, i) => (
-                <div
-                  className="m-1 grid grid-cols-[1fr,auto] rounded-md border border-transparent p-2 hover:border-slate-300 hover:bg-slate-200/50 dark:hover:border-accent dark:hover:bg-slate-800/50"
-                  key={i}
+            General
+          </Link>
+          <Link href="#" prefetch={false}>
+            OpenAI Models
+          </Link>
+          <Link href="#" prefetch={false}>
+            Templates
+          </Link>
+          <Link href="#" prefetch={false}>
+            About
+          </Link>
+        </nav>
+        <div className="grid gap-6">
+          <Card>
+            <CardHeader>
+              <CardTitle>{t("theme")}</CardTitle>
+              <CardDescription>{t("theme-desc")}</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="flex flex-col items-stretch space-y-2 sm:grid sm:grid-cols-3 sm:space-x-2 sm:space-y-0">
+                <Button
+                  onClick={() => setTheme("light")}
+                  variant="outline"
+                  className="px-10 py-8"
                 >
-                  <span>
-                    <h4>{template.name}</h4>
-                    <p className="text-slate-400">
-                      {template.prompt.substring(0, 50) +
-                        (template.prompt.length > 50 ? "..." : "")}
-                    </p>
-                  </span>
-                  <TooltipProvider delayDuration={0}>
-                    <Tooltip>
-                      <TooltipTrigger>
-                        <Button
-                          onClick={() => {
-                            s.system_templates?.splice(i, 1);
-                            localStorage.setItem(
-                              "synapsy_settings",
-                              JSON.stringify(s),
-                            );
-                            setTemplates([...(s.system_templates ?? [])]);
-                          }}
-                          className="mt-1 h-auto p-2"
-                          variant="ghost"
-                        >
-                          <Trash size={12} />
-                        </Button>
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <p>{t("delete")}</p>
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
+                  <div className="my-2 grid grid-cols-[auto,1fr] items-center space-x-2">
+                    <Sun />
+                    <p>{t("light")}</p>
+                  </div>
+                </Button>
+                <Button
+                  variant="outline"
+                  className="px-10 py-8"
+                  onClick={() => setTheme("dark")}
+                >
+                  <div className="my-2 grid grid-cols-[auto,1fr] items-center space-x-2">
+                    <Moon />
+                    <p>{t("dark")}</p>
+                  </div>
+                </Button>
+                <Button
+                  variant="outline"
+                  className="px-10 py-8"
+                  onClick={() => setTheme("system")}
+                >
+                  <div className="my-2 grid grid-cols-[auto,1fr] items-center space-x-2">
+                    <Laptop />
+                    <p>{t("system")}</p>
+                  </div>
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader>
+              <CardTitle>{t("generation-font")}</CardTitle>
+              <CardDescription>{t("generation-font-desc")}</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Select
+                defaultValue={s.gen_font ?? "default"}
+                onValueChange={(v: FontType) => {
+                  s.gen_font = v;
+                  localStorage.setItem("synapsy_settings", JSON.stringify(s));
+                }}
+              >
+                <SelectTrigger className="w-[180px]">
+                  <SelectValue placeholder={t("generation-font")} />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="default">{t("font-default")}</SelectItem>
+                  <SelectItem value="sans">{t("font-sans")}</SelectItem>
+                  <SelectItem value="serif">{t("font-serif")}</SelectItem>
+                  <SelectItem value="mono">{t("font-mono")}</SelectItem>
+                </SelectContent>
+              </Select>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader>
+              <CardTitle>{t("language")}</CardTitle>
+              <CardDescription>{t("language-desc")}</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Select
+                defaultValue={lng}
+                onValueChange={(v) => {
+                  router.push(`/${v}/settings`);
+                }}
+              >
+                <SelectTrigger className="w-[180px]">
+                  <SelectValue placeholder={t("language")} />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="en">English</SelectItem>
+                  <SelectItem value="fr">Français</SelectItem>
+                </SelectContent>
+              </Select>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader>
+              <CardTitle>{t("openai-models")}</CardTitle>
+              <CardDescription>{t("openai-models-desc")}</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="rounded-md border p-2">
+                <div className="flex space-x-2">
+                  <Input
+                    placeholder={t("search-models")}
+                    value={modelQuery}
+                    onChange={(v) => setModelQuery(v.target.value)}
+                  />
+                  <Button onClick={refreshModels} variant="outline">
+                    <RefreshCcw height={14} />
+                  </Button>
                 </div>
-              ))}
-            </ScrollArea>
-          </div>
-        )}
-      </section>
-      <section>
-        <h3 className="text-xl font-semibold">{t("misc")}</h3>
-        <p>{t("other-settings")}</p>
-        <Separator className="my-2" />
-        <Dialog>
-          <DialogTrigger>
-            <Button variant="link" className="space-x-2">
-              <ArrowUpRightFromSquare size={16} />
-              <span>{t("about")}</span>
-            </Button>
-          </DialogTrigger>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>{t("about-long")}</DialogTitle>
-              <p>
-                Version {version} <br />© {new Date().getFullYear()} Synapsy by
-                Peyronnet
-              </p>
-              <p>
-                NextJS - MIT License - © 2023 Vercel, Inc.
-                <br />
-                RadixUI - MIT License - © 2022 WorkOS
-                <br />
-                shadcn/ui - MIT License - © 2023 shadcn
-                <br />
-                Lucide - ISC License - © 2024 Lucide Contributors
-              </p>
-            </DialogHeader>
-            <DialogFooter>
-              <DialogClose>
-                <Button variant="outline">{t("close")}</Button>
-              </DialogClose>
-            </DialogFooter>
-          </DialogContent>
-        </Dialog>
-      </section>
+                <ScrollArea className="h-[200px]">
+                  <div>
+                    {models
+                      ?.filter((s) =>
+                        s.toLowerCase().includes(modelQuery.toLowerCase()),
+                      )
+                      .map((m, i) => (
+                        <p
+                          key={i}
+                          className="m-1 rounded-md border border-transparent p-2 hover:border-slate-300 hover:bg-slate-200/50 dark:hover:border-accent dark:hover:bg-slate-800/50"
+                        >
+                          {m}
+                        </p>
+                      ))}
+                  </div>
+                </ScrollArea>
+              </div>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader>
+              <CardTitle>{t("system-templates")}</CardTitle>
+              <CardDescription>{t("system-templates-desc")}</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <SystemTemplateCreator setTemplates={setTemplates} lng={lng} />
+              {templates.length > 0 && (
+                <div className="mt-2 rounded-md border p-2">
+                  <ScrollArea className="h-[200px]">
+                    {templates.map((template, i) => (
+                      <div
+                        className="m-1 grid grid-cols-[1fr,auto] rounded-md border border-transparent p-2 hover:border-slate-300 hover:bg-slate-200/50 dark:hover:border-accent dark:hover:bg-slate-800/50"
+                        key={i}
+                      >
+                        <span>
+                          <h4>{template.name}</h4>
+                          <p className="text-slate-400">
+                            {template.prompt.substring(0, 50) +
+                              (template.prompt.length > 50 ? "..." : "")}
+                          </p>
+                        </span>
+                        <TooltipProvider delayDuration={0}>
+                          <Tooltip>
+                            <TooltipTrigger>
+                              <Button
+                                onClick={() => {
+                                  s.system_templates?.splice(i, 1);
+                                  localStorage.setItem(
+                                    "synapsy_settings",
+                                    JSON.stringify(s),
+                                  );
+                                  setTemplates([...(s.system_templates ?? [])]);
+                                }}
+                                className="mt-1 h-auto p-2"
+                                variant="ghost"
+                              >
+                                <Trash size={12} />
+                              </Button>
+                            </TooltipTrigger>
+                            <TooltipContent>
+                              <p>{t("delete")}</p>
+                            </TooltipContent>
+                          </Tooltip>
+                        </TooltipProvider>
+                      </div>
+                    ))}
+                  </ScrollArea>
+                </div>
+              )}
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader>
+              <CardTitle>{t("misc")}</CardTitle>
+              <CardDescription>{t("other-settings")}</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Dialog>
+                <DialogTrigger>
+                  <Button variant="link" className="space-x-2">
+                    <ArrowUpRightFromSquare size={16} />
+                    <span>{t("about")}</span>
+                  </Button>
+                </DialogTrigger>
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle>{t("about-long")}</DialogTitle>
+                    <p>
+                      Version {version} <br />© {new Date().getFullYear()}{" "}
+                      Synapsy by Peyronnet
+                    </p>
+                    <p>
+                      NextJS - MIT License - © 2023 Vercel, Inc.
+                      <br />
+                      RadixUI - MIT License - © 2022 WorkOS
+                      <br />
+                      shadcn/ui - MIT License - © 2023 shadcn
+                      <br />
+                      Lucide - ISC License - © 2024 Lucide Contributors
+                    </p>
+                  </DialogHeader>
+                  <DialogFooter>
+                    <DialogClose>
+                      <Button variant="outline">{t("close")}</Button>
+                    </DialogClose>
+                  </DialogFooter>
+                </DialogContent>
+              </Dialog>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
     </main>
   );
 }
