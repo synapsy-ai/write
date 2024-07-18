@@ -31,6 +31,7 @@ export default function FormatDialog(props: {
 }) {
   const { t } = useTranslation(props.lng, "common");
   const [value, setValue] = useState("");
+  const [format, setFormat] = useState("paragraph");
   const colors = [
     "border-blue-400 dark:border-blue-700 dark:hover:border-blue-600 hover:bg-blue-100 hover:border-blue-500 dark:hover:bg-blue-950/60",
     "border-sky-400 dark:border-sky-700 dark:hover:border-sky-600 hover:bg-sky-100 hover:border-sky-500 dark:hover:bg-sky-950/50",
@@ -54,81 +55,87 @@ export default function FormatDialog(props: {
   const [selectedFormat, setSelectedFormat] = useState<Format | undefined>();
 
   return (
-    <Dialog>
-      <DialogTrigger>
-        <Button
-          onClick={() => setSelectedFormat(undefined)}
-          className="w-full"
-          variant="outline"
-        >
-          {t("format")}
-        </Button>
-      </DialogTrigger>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>{t("select-format")}</DialogTitle>
-          <DialogDescription>{t("format-desc")}</DialogDescription>
-        </DialogHeader>
-        {selectedFormat && (
-          <div>
-            <Button
-              variant="link"
-              onClick={() => setSelectedFormat(undefined)}
-              className="m-0 -mt-4 flex h-auto space-x-2 p-2"
-            >
-              <ArrowLeft size={14} />
-              <p>{t("go-back")}</p>
-            </Button>
-            <Input
-              value={value}
-              onChange={(v) => setValue(v.target.value)}
-              placeholder={t("search-formats")}
-            />
-            <ScrollArea className="h-[200px]">
-              <div className="flex flex-col">
-                {selectedFormat.options.map((format, j) => (
-                  <>
-                    {t(format.text).toLowerCase().match(value.toLowerCase()) ? (
-                      <DialogClose className="items-stretch" tabIndex={-1}>
-                        <Button
-                          className="w-full justify-start"
-                          key={j}
-                          onClick={() => {
-                            props.setVal(format.val),
+    <div className="flex items-center justify-between space-x-2 rounded-md border px-2">
+      <p>{t(format)}</p>
+      <Dialog>
+        <DialogTrigger>
+          <Button
+            onClick={() => setSelectedFormat(undefined)}
+            className="w-full"
+            variant="link"
+          >
+            {t("change")}
+          </Button>
+        </DialogTrigger>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>{t("select-format")}</DialogTitle>
+            <DialogDescription>{t("format-desc")}</DialogDescription>
+          </DialogHeader>
+          {selectedFormat && (
+            <div>
+              <Button
+                variant="link"
+                onClick={() => setSelectedFormat(undefined)}
+                className="m-0 -mt-4 flex h-auto space-x-2 p-2"
+              >
+                <ArrowLeft size={14} />
+                <p>{t("go-back")}</p>
+              </Button>
+              <Input
+                value={value}
+                onChange={(v) => setValue(v.target.value)}
+                placeholder={t("search-formats")}
+              />
+              <ScrollArea className="h-[200px]">
+                <div className="flex flex-col">
+                  {selectedFormat.options.map((format, j) => (
+                    <>
+                      {t(format.text)
+                        .toLowerCase()
+                        .match(value.toLowerCase()) ? (
+                        <DialogClose className="items-stretch" tabIndex={-1}>
+                          <Button
+                            className="w-full justify-start"
+                            key={j}
+                            onClick={() => {
+                              props.setVal(format.val);
                               props.setCategory(selectedFormat.category);
-                          }}
-                          variant="ghost"
-                        >
-                          {t(format.text)}
-                        </Button>
-                      </DialogClose>
-                    ) : (
-                      <></>
-                    )}
-                  </>
+                              setFormat(format.text);
+                            }}
+                            variant="ghost"
+                          >
+                            {t(format.text)}
+                          </Button>
+                        </DialogClose>
+                      ) : (
+                        <></>
+                      )}
+                    </>
+                  ))}
+                </div>
+              </ScrollArea>
+            </div>
+          )}
+          {!selectedFormat && (
+            <ScrollArea className="h-[240px]">
+              <div className="flex flex-col gap-2">
+                {formats.map((category, i) => (
+                  <Button
+                    key={i}
+                    onClick={() => setSelectedFormat(category)}
+                    variant="ghost"
+                    className={`flex flex-row space-x-2 p-8 ${colors[category.colorId]}`}
+                  >
+                    {icons[i]}
+                    <p>{t(category.category)}</p>
+                  </Button>
                 ))}
               </div>
             </ScrollArea>
-          </div>
-        )}
-        {!selectedFormat && (
-          <ScrollArea className="h-[240px]">
-            <div className="flex flex-col gap-2">
-              {formats.map((category, i) => (
-                <Button
-                  key={i}
-                  onClick={() => setSelectedFormat(category)}
-                  variant="ghost"
-                  className={`flex flex-row space-x-2 p-8 ${colors[category.colorId]}`}
-                >
-                  {icons[i]}
-                  <p>{t(category.category)}</p>
-                </Button>
-              ))}
-            </div>
-          </ScrollArea>
-        )}
-      </DialogContent>
-    </Dialog>
+          )}
+        </DialogContent>
+      </Dialog>
+    </div>
   );
 }

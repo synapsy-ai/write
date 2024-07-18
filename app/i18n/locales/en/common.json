@@ -328,5 +328,7 @@
   "system-templates-desc": "Create system prompts for Synapsy Assistant.",
   "openai-models": "OpenAI Models",
   "openai-models-desc": "See all available OpenAI Models for your account.",
-  "general": "General"
+  "general": "General",
+  "change": "Change",
+  "prompt-desc": "Enter the prompt for the AI to generate the document."
 }

@@ -326,5 +326,7 @@
   "system-templates-desc": "Créer des invites système pour Synapsy Assistant.",
   "openai-models": "Modèles OpenAI",
   "openai-models-desc": "Voir tous les modèles OpenAI disponibles pour votre compte.",
-  "general": "Général"
+  "general": "Général",
+  "change": "Changer",
+  "prompt-desc": "Entrez une invite pour que l'IA génère le document."
 }
