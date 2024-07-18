@@ -90,6 +90,7 @@ export default function Home({ params: { lng } }: { params: { lng: any } }) {
           </BorderAnimation>
         </section>
         <section
+          ref={sectionRef}
           id="features"
           className="w-full bg-slate-100 py-12 dark:bg-slate-900 md:py-24 lg:py-32"
         >
