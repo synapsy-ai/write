@@ -325,5 +325,6 @@
   "generation-font-desc": "Sélectionnez le style de police pour le contenu du texte.",
   "system-templates-desc": "Créer des invites système pour Synapsy Assistant.",
   "openai-models": "Modèles OpenAI",
-  "openai-models-desc": "Voir tous les modèles OpenAI disponibles pour votre compte."
+  "openai-models-desc": "Voir tous les modèles OpenAI disponibles pour votre compte.",
+  "general": "Général"
 }

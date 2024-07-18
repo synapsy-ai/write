@@ -327,5 +327,6 @@
   "generation-font-desc": "Select the font style for the text content.",
   "system-templates-desc": "Create system prompts for Synapsy Assistant.",
   "openai-models": "OpenAI Models",
-  "openai-models-desc": "See all available OpenAI Models for your account."
+  "openai-models-desc": "See all available OpenAI Models for your account.",
+  "general": "General"
 }

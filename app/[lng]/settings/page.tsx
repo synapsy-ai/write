@@ -76,6 +76,7 @@ export default function SettingsPage({
   const [modelQuery, setModelQuery] = useState("");
   const apiKey = process?.env?.OPENAI_API_KEY || "";
   const [templates, setTemplates] = useState(s.system_templates ?? []);
+  const [anchor, setAnchor] = useState("general");
   async function refreshModels() {
     let m = await getModels();
     let avm: string[] = [];
@@ -95,25 +96,43 @@ export default function SettingsPage({
   return (
     <main className="mt-2 flex min-h-[calc(100vh_-_theme(spacing.16))] flex-1 flex-col gap-4 bg-slate-100/40 p-4 px-2 pb-20 dark:bg-transparent sm:mt-16 sm:pb-0 md:gap-8 md:p-10">
       <div className="mx-auto grid w-full max-w-6xl gap-2">
-        <h1 className="mx-2 text-3xl font-semibold">Settings</h1>
+        <h1 className="mx-2 text-3xl font-semibold">{t("settings")}</h1>
       </div>
       <div className="mx-auto grid w-full max-w-6xl items-start gap-6 md:grid-cols-[180px_1fr] lg:grid-cols-[250px_1fr]">
         <nav className="grid gap-4 p-2 text-sm text-muted-foreground">
           <Link
             href="#"
-            className="font-semibold text-primary"
+            onClick={() => setAnchor("general")}
+            className={anchor === "general" ? "font-semibold text-primary" : ""}
             prefetch={false}
           >
-            General
+            {t("general")}
           </Link>
-          <Link href="#" prefetch={false}>
-            OpenAI Models
+          <Link
+            href="#models"
+            className={anchor === "models" ? "font-semibold text-primary" : ""}
+            onClick={() => setAnchor("models")}
+            prefetch={false}
+          >
+            {t("openai-models")}
           </Link>
-          <Link href="#" prefetch={false}>
-            Templates
+          <Link
+            href="#templates"
+            className={
+              anchor === "templates" ? "font-semibold text-primary" : ""
+            }
+            onClick={() => setAnchor("templates")}
+            prefetch={false}
+          >
+            {t("system-templates")}
           </Link>
-          <Link href="#" prefetch={false}>
-            About
+          <Link
+            href="#misc"
+            className={anchor === "misc" ? "font-semibold text-primary" : ""}
+            onClick={() => setAnchor("misc")}
+            prefetch={false}
+          >
+            {t("misc")}
           </Link>
         </nav>
         <div className="grid gap-6">
@@ -204,7 +223,7 @@ export default function SettingsPage({
               </Select>
             </CardContent>
           </Card>
-          <Card>
+          <Card id="models">
             <CardHeader>
               <CardTitle>{t("openai-models")}</CardTitle>
               <CardDescription>{t("openai-models-desc")}</CardDescription>
@@ -240,7 +259,7 @@ export default function SettingsPage({
               </div>
             </CardContent>
           </Card>
-          <Card>
+          <Card id="templates">
             <CardHeader>
               <CardTitle>{t("system-templates")}</CardTitle>
               <CardDescription>{t("system-templates-desc")}</CardDescription>
@@ -292,7 +311,7 @@ export default function SettingsPage({
               )}
             </CardContent>
           </Card>
-          <Card>
+          <Card id="misc">
             <CardHeader>
               <CardTitle>{t("misc")}</CardTitle>
               <CardDescription>{t("other-settings")}</CardDescription>
