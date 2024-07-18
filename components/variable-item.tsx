@@ -11,6 +11,7 @@ export default function VariableItem(props: {
   item: Variable;
   index: number;
   functions: { setVar: Function; removeVar: Function };
+  small?: boolean;
 }) {
   const { t } = useTranslation(props.lng, "common");
   useEffect(() => {
@@ -21,7 +22,13 @@ export default function VariableItem(props: {
   const [value, setValue] = useState<string>();
   return (
     <div className="m-2 grid grid-cols-[1fr,auto] items-center space-x-2 rounded-md border border-slate-200 p-2 dark:border-slate-800">
-      <div className="items-center sm:flex sm:space-x-2">
+      <div
+        className={
+          props.small
+            ? "items-center space-y-2"
+            : "items-center sm:flex sm:space-x-2"
+        }
+      >
         <p>{t("name")}</p>
         <Input
           className="h-auto"
