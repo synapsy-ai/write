@@ -1231,7 +1231,7 @@ export default function Create(props: Props) {
               {!errorVis && !res && (
                 <section
                   className={
-                    "m-2 flex grow items-center justify-center rounded-md border bg-white p-2 shadow-sm dark:bg-slate-900/50 print:text-black print:shadow-none"
+                    "m-2 flex grow items-center justify-center rounded-md border bg-white p-2 py-[34px] shadow-sm dark:bg-slate-900/50 print:text-black print:shadow-none"
                   }
                 >
                   <div className="flex flex-col items-center justify-center">
