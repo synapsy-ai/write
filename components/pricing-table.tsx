@@ -232,6 +232,23 @@ export default async function PricingFeatureTable(props: { lng: string }) {
             </td>{" "}
           </tr>
           <tr>
+            <td>OpenAI GPT-4o Mini</td>
+            <td>
+              <span className="flex justify-center">
+                <X size={16} />
+              </span>
+            </td>
+            <td>
+              <span className="flex justify-center">{t("unlimited")}</span>
+            </td>
+            <td>
+              <span className="flex justify-center">{t("unlimited")}</span>
+            </td>
+            <td>
+              <span className="flex justify-center">{t("unlimited")}</span>
+            </td>{" "}
+          </tr>
+          <tr>
             <td>OpenAI GPT-3.5</td>
             <td>
               <span className="flex justify-center">
