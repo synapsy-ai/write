@@ -166,12 +166,14 @@ export default function GenerationViewPage({
                     {new Date(el.date).toLocaleString()}
                   </span>
                 </div>
-                <div className="flex flex-col">
-                  <span>{t("prompt")}</span>
-                  <span className="rounded-md bg-slate-100 p-2 font-medium dark:bg-slate-900">
-                    {el.prompt}
-                  </span>
-                </div>
+                {el.template !== "manual" && (
+                  <div className="flex flex-col">
+                    <span>{t("prompt")}</span>
+                    <span className="rounded-md bg-slate-100 p-2 font-medium dark:bg-slate-900">
+                      {el.prompt}
+                    </span>
+                  </div>
+                )}
               </div>
             </CardContent>
           </Card>
