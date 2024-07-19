@@ -5,6 +5,7 @@ export interface HistoryItem {
   template: Template | string;
   content: string;
   date: Date;
+  index?: number;
 }
 
 export function addToHistory(item: HistoryItem) {
@@ -32,4 +33,39 @@ export function getHistory(): HistoryItem[] {
     return history;
   }
   return [];
+}
+export function groupAndSortHistoryItems(
+  items: HistoryItem[],
+  sortByDate: boolean,
+): { template: string; items: HistoryItem[] }[] {
+  // Sort the items by date
+  items.sort((a, b) => {
+    if (sortByDate) {
+      return new Date(a.date).getTime() - new Date(b.date).getTime();
+    } else {
+      return new Date(b.date).getTime() - new Date(a.date).getTime();
+    }
+  });
+
+  // Group items by template
+  const groupedItems: { [key: string]: HistoryItem[] } = {};
+
+  items.forEach((item, i) => {
+    const templateKey = item.template as string;
+    if (!groupedItems[templateKey]) {
+      groupedItems[templateKey] = [];
+    }
+    item.index = i;
+    groupedItems[templateKey].push(item);
+  });
+
+  // Convert the grouped items object into an array
+  const result: { template: string; items: HistoryItem[] }[] = [];
+  for (const template in groupedItems) {
+    if (groupedItems.hasOwnProperty(template)) {
+      result.push({ template, items: groupedItems[template] });
+    }
+  }
+
+  return result;
 }

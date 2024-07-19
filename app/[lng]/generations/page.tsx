@@ -10,7 +10,8 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { HistoryItem } from "@/lib/history";
+import { typesToString } from "@/lib/formats";
+import { groupAndSortHistoryItems, HistoryItem } from "@/lib/history";
 import {
   ArrowDownNarrowWide,
   ArrowUpNarrowWide,
@@ -28,13 +29,15 @@ export default function Creations({
   params: { lng: any };
 }) {
   const { t } = useTranslation(lng, "common");
-  let histo = [];
+  let histo: HistoryItem[] = [];
   if (typeof window !== "undefined") {
     histo = JSON.parse(localStorage.getItem("synapsy_write_history") ?? "[]");
   }
-  const [history, setHistory] = useState<HistoryItem[]>(histo);
   const [query, setQuery] = useState("");
   const [ascend, setAscend] = useState(false);
+  const [history, setHistory] = useState(
+    groupAndSortHistoryItems(histo, ascend),
+  );
 
   function Import(event: any) {
     let file = event.target.files[0]; // get the selected file
@@ -133,21 +136,42 @@ export default function Creations({
         </span>
       </header>
 
-      {!(history.length == 0) ? (
-        <section className="flex flex-wrap justify-center p-5 pt-44 sm:pt-0 md:justify-start">
-          {history.map((el, i) =>
-            el.prompt.toLowerCase().includes(query.toLowerCase()) ? (
-              <GenerationItem
-                refresh={refresh}
-                id={ascend ? history.length - (i + 1) : i}
-                key={i}
-                item={el}
-                lng={lng}
-              />
-            ) : (
-              <></>
-            ),
-          )}
+      {!(history.length === 0) ? (
+        <section className="flex flex-col justify-center p-5 pt-44 sm:pt-0 md:justify-start">
+          {history.map((el, i) => {
+            const filteredItems = el.items.filter((historyItem) =>
+              historyItem.prompt.toLowerCase().includes(query.toLowerCase()),
+            );
+
+            return filteredItems.length > 0 ? (
+              <div className="p-2" key={i}>
+                <h3>{t(typesToString(el.template))}</h3>
+                <div className="flex flex-wrap justify-center md:justify-start">
+                  {el.items.map((historyItem, j) => (
+                    <>
+                      {historyItem.prompt
+                        .toLowerCase()
+                        .includes(query.toLowerCase()) ? (
+                        <GenerationItem
+                          refresh={refresh}
+                          id={
+                            historyItem.index ?? ascend
+                              ? history.length - (i + 1)
+                              : i
+                          }
+                          key={j}
+                          item={historyItem}
+                          lng={lng}
+                        />
+                      ) : (
+                        <></>
+                      )}
+                    </>
+                  ))}
+                </div>
+              </div>
+            ) : null;
+          })}
         </section>
       ) : (
         <section className="flex min-h-[50vh] flex-col items-center justify-center pt-48 sm:pt-0">
