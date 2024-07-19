@@ -328,5 +328,8 @@
   "openai-models-desc": "Voir tous les modèles OpenAI disponibles pour votre compte.",
   "general": "Général",
   "change": "Changer",
-  "prompt-desc": "Entrez une invite pour que l'IA génère le document."
+  "prompt-desc": "Entrez une invite pour que l'IA génère le document.",
+  "overview": "Aperçu",
+  "information": "Informations",
+  "date": "Date"
 }

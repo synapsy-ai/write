@@ -330,5 +330,8 @@
   "openai-models-desc": "See all available OpenAI Models for your account.",
   "general": "General",
   "change": "Change",
-  "prompt-desc": "Enter the prompt for the AI to generate the document."
+  "prompt-desc": "Enter the prompt for the AI to generate the document.",
+  "overview": "Overview",
+  "information": "Information",
+  "date": "Date"
 }
