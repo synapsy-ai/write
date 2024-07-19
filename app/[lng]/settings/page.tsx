@@ -94,7 +94,7 @@ export default function SettingsPage({
 
   const router = useRouter();
   return (
-    <main className="mt-2 flex min-h-[calc(100vh_-_theme(spacing.16))] flex-1 flex-col gap-4 bg-slate-100/40 p-4 px-2 pb-20 dark:bg-transparent sm:mt-16 sm:pb-0 md:gap-8 md:p-10">
+    <main className="flex min-h-[calc(100vh_-_theme(spacing.16))] flex-1 flex-col gap-4 bg-slate-100/40 p-4 px-2 pb-20 dark:bg-transparent sm:mt-16 sm:pb-0 md:gap-8 md:p-10">
       <div className="mx-auto grid w-full max-w-6xl gap-2">
         <h1 className="mx-2 text-3xl font-semibold">{t("settings")}</h1>
       </div>

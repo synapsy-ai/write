@@ -66,7 +66,7 @@ export default async function Account({
   };
 
   return (
-    <main className="mt-2 min-h-full space-y-2 bg-slate-100/40 px-2 pb-20 dark:bg-transparent sm:mt-16 sm:pb-0 md:gap-8 md:p-10">
+    <main className="min-h-full space-y-2 bg-slate-100/40 px-2 pb-20 dark:bg-transparent sm:mt-16 sm:pb-0 md:gap-8 md:p-10">
       <section className="mx-auto grid w-full max-w-3xl items-start gap-6">
         <div className="mx-auto mt-2 grid w-full max-w-6xl gap-2 p-2 sm:mt-0 sm:p-0">
           <h1 className="text-3xl font-semibold">{t("my-account")}</h1>
