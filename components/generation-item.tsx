@@ -14,8 +14,6 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
 import { Button } from "./ui/button";
@@ -40,85 +38,6 @@ export function GenerationItem(props: {
     return gradients[Math.floor(Math.random() * gradients.length)];
   }
 
-  function getLabel() {
-    switch (props.item.template) {
-      case "para":
-        return t("paragraph");
-      case "blog":
-        return t("blog-post");
-      case "email":
-        return t("email");
-      case "ideas":
-        return t("ideas");
-      case "ph_intro":
-        return t("introduction");
-      case "ph_prob":
-        return t("problematization");
-      case "es_intro":
-        return t("introduction");
-      case "es_conclusion":
-        return t("conclusion");
-      case "es_outline":
-        return t("essay-outline");
-      case "es_basic":
-        return t("essay-basic");
-      case "es_complex":
-        return t("essay-complex");
-      case "g_es_intro":
-        return t("introduction");
-      case "g_es_conclusion":
-        return t("conclusion");
-      case "g_es_outline":
-        return t("essay-outline");
-      case "g_es_basic":
-        return t("essay-basic");
-      case "g_es_complex":
-        return t("essay-complex");
-      case "ph_conclusion":
-        return t("conclusion");
-      case "ph_outline":
-        return t("essay-outline");
-      case "ph_visual_outline":
-        return t("ph-visual-outline");
-      case "ph_basic":
-        return t("essay-basic");
-      case "ph_complex":
-        return t("essay-complex");
-      case "ph_analysis_intro":
-        return t("text-analysis-introduction");
-      case "ph_analysis_conclusion":
-        return t("text-analysis-conclusion");
-      case "ph_analysis_basic":
-        return t("text-analysis-basic");
-      case "ph_analysis_dev":
-        return t("text-analysis-dev");
-      case "ph_analysis_outline":
-        return t("text-analysis-outline");
-      case "ph_analysis_complex":
-        return t("text-analysis-complex");
-      case "table":
-        return t("table");
-      case "motivation-letter":
-        return t("motivation-letter");
-      case "rephraser":
-        return t("rephraser");
-      case "manual":
-        return t("manual-doc");
-      case "history_para":
-        return t("history-paragraph-long");
-      case "oral_conclusion":
-        return t("conclusion");
-      case "oral_outline":
-        return t("essay-outline");
-      case "oral_basic":
-        return t("oral-basic");
-      default:
-        return t("paragraph");
-    }
-  }
-
-  const label = getLabel();
-
   return (
     <TooltipProvider>
       <Tooltip>
@@ -133,11 +52,7 @@ export function GenerationItem(props: {
                 "flex h-16 items-start justify-start border-b border-slate-200 dark:border-slate-700 " +
                 getRandomGradient()
               }
-            >
-              <span className="mx-2 mt-2 w-auto rounded-full border border-[#ffffff55] bg-[#ffffff55] px-1.5 text-sm text-white backdrop-blur-md">
-                {label}
-              </span>
-            </Link>
+            ></Link>
             <span>
               <Link
                 href={"generations/view?id=" + props.id.toString()}
