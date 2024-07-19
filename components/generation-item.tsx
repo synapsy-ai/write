@@ -44,7 +44,7 @@ export function GenerationItem(props: {
         <TooltipTrigger>
           <div
             onClick={() => {}}
-            className="m-2 flex w-[380px] flex-col overflow-hidden rounded-md border border-slate-200 shadow-md transition hover:-translate-y-2 hover:shadow-lg dark:border-slate-700"
+            className="m-2 flex w-[380px] flex-col overflow-hidden rounded-md border border-slate-200 bg-white shadow-sm transition hover:-translate-y-2 hover:shadow-md dark:border-slate-700 dark:bg-slate-900"
           >
             <Link
               href={"generations/view?id=" + props.id.toString()}

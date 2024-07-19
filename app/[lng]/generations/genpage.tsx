@@ -136,7 +136,7 @@ export default function GenerationsPage({
       </header>
 
       {!(history.length === 0) ? (
-        <section className="flex flex-col justify-center p-5 pt-0 md:justify-start">
+        <section className="flex flex-col justify-center p-5 pt-0 sm:px-0 md:justify-start">
           {history.map((el, i) => {
             const filteredItems = el.items.filter((historyItem) =>
               historyItem.prompt.toLowerCase().includes(query.toLowerCase()),
@@ -144,7 +144,12 @@ export default function GenerationsPage({
 
             return filteredItems.length > 0 ? (
               <div className="p-2" key={i}>
-                <h3>{t(typesToString(el.template))}</h3>
+                <span className="flex items-center space-x-2">
+                  <h3>{t(typesToString(el.template))}</h3>
+                  <p className="rounded-full border bg-slate-100 px-2 text-sm dark:bg-slate-900">
+                    {filteredItems.length}
+                  </p>
+                </span>
                 <div className="flex flex-wrap justify-center md:justify-start">
                   {el.items.map((historyItem, j) => (
                     <>
