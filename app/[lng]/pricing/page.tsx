@@ -9,7 +9,7 @@ import Pricing from "@/components/pricing";
 import PricingFeatureTable from "@/components/pricing-table";
 
 export const metadata = {
-  title: "Pricing | Synapsy Write",
+  title: "Pricing",
   description:
     "Get more information about the available plans of Synapsy Write.",
 };
@@ -25,6 +25,7 @@ export default async function PricingPage({
     getSubscriptions(),
   ]);
   const { t } = await useTranslation(lng, "common");
+
   return (
     <>
       <main className="mt-2 min-h-full pb-16 sm:mt-16 sm:pb-0">

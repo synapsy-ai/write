@@ -7,7 +7,13 @@ import {
 } from "@/app/supabase-server";
 import Chat from "./chat";
 import React from "react";
+import type { Metadata } from "next";
 
+export const metadata: Metadata = {
+  title: "Chat",
+  description:
+    "Chat with Synapsy Assistant to improve your documents or get information about them.",
+};
 export default async function ChatPage({
   params: { lng },
 }: {

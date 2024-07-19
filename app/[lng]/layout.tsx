@@ -15,7 +15,7 @@ export async function generateStaticParams() {
 }
 
 export const metadata: Metadata = {
-  title: "Synapsy Write",
+  title: { default: "Synapsy Write", template: "%s | Synapsy Write" },
   description: "A new way to write text, powered by AI.",
 };
 
