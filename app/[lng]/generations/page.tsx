@@ -52,7 +52,10 @@ export default function Creations({
 
   function refresh() {
     setHistory(
-      JSON.parse(localStorage.getItem("synapsy_write_history") ?? "[]"),
+      groupAndSortHistoryItems(
+        JSON.parse(localStorage.getItem("synapsy_write_history") ?? "[]"),
+        ascend,
+      ),
     );
   }
   return (
@@ -154,11 +157,7 @@ export default function Creations({
                         .includes(query.toLowerCase()) ? (
                         <GenerationItem
                           refresh={refresh}
-                          id={
-                            historyItem.index ?? ascend
-                              ? history.length - (i + 1)
-                              : i
-                          }
+                          id={historyItem.index ?? 0}
                           key={j}
                           item={historyItem}
                           lng={lng}

@@ -38,6 +38,10 @@ export function groupAndSortHistoryItems(
   items: HistoryItem[],
   sortByDate: boolean,
 ): { template: string; items: HistoryItem[] }[] {
+  for (let i = 0; i < items.length; i++) {
+    items[i].index = i;
+  }
+
   // Sort the items by date
   items.sort((a, b) => {
     if (sortByDate) {
@@ -50,12 +54,11 @@ export function groupAndSortHistoryItems(
   // Group items by template
   const groupedItems: { [key: string]: HistoryItem[] } = {};
 
-  items.forEach((item, i) => {
+  items.forEach((item) => {
     const templateKey = item.template as string;
     if (!groupedItems[templateKey]) {
       groupedItems[templateKey] = [];
     }
-    item.index = i;
     groupedItems[templateKey].push(item);
   });
 
