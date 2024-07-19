@@ -141,7 +141,9 @@ export default function Create(props: Props) {
   const [textToAnalyse, setTextToAnalyse] = useState("");
   const [expandInput, setExpandInput] = useState(false);
   const defaultModels = () =>
-    hasGpt4Access() ? ["gpt-3.5-turbo", "gpt-4"] : ["gpt-3.5-turbo"];
+    hasGpt4Access()
+      ? ["gpt-3.5-turbo", "gpt-4", "gpt-4o-mini"]
+      : ["gpt-3.5-turbo", "gpt-4o-mini"];
   const [avModels, setAvModels] = useState(
     getAvailableModels(s.models) ?? defaultModels(),
   );
@@ -159,7 +161,12 @@ export default function Create(props: Props) {
     let models = [];
     let gpt4 = hasGpt4Access();
     for (let i = 0; i < availableModels.length; i++) {
-      if (availableModels[i].includes("gpt-4") && !gpt4) continue;
+      if (
+        availableModels[i].includes("gpt-4") &&
+        !availableModels[i].includes("mini") &&
+        !gpt4
+      )
+        continue;
       models?.push(availableModels[i]);
     }
     return models;
@@ -170,7 +177,12 @@ export default function Create(props: Props) {
     let avm: string[] = [];
     for (let i = 0; i < m.length; i++) {
       if (m[i].id.startsWith("gpt")) {
-        if (m[i].id.includes("gpt-4") && !hasGpt4Access()) continue;
+        if (
+          m[i].id.includes("gpt-4") &&
+          !m[i].id.includes("mini") &&
+          !hasGpt4Access()
+        )
+          continue;
         avm.push(m[i].id);
       }
     }
@@ -258,7 +270,7 @@ export default function Create(props: Props) {
   }
   async function createButton() {
     setRes("");
-    if (model.includes("gpt-4")) {
+    if (model.includes("gpt-4") && !model.includes("mini")) {
       if (gpt4Quotas <= 0) return;
       if (props.session && props.session.user && gpt4Quotas > 0) {
         let q = gpt4Quotas - 1;
@@ -1067,7 +1079,7 @@ export default function Create(props: Props) {
       </div>
       <div className="mx-auto grid w-full max-w-6xl items-start gap-6 md:grid-cols-[1fr_300px] lg:grid-cols-[1fr_350px]">
         <div className="grid gap-6">
-          {!unlimited && model.includes("gpt-4") && (
+          {!unlimited && model.includes("gpt-4") && !model.includes("mini") && (
             <Card className="border-violet-500 bg-violet-500/20 print:hidden">
               <div className="m-2 flex items-center space-x-2">
                 <Info size={16} color="#8b5cf6" />
