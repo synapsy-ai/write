@@ -134,13 +134,13 @@ export function getSystem(
     }
     if (template === "es_complex_outline") {
       return (
-        "You are an expert who writes essays similar to those required for a high school diploma in the United States. Format: HTML" +
+        "You are an expert who writes essays similar to those required for a high school diploma in the United States. Format: HTML (body only)" +
         (tone === "tones-none" ? "" : " Use the following tone: " + tone)
       );
     }
     if (template === "ph_complex_outline") {
       return (
-        "You are an expert who writes philosophy essays similar to those required for a high school diploma in the United States. Format: HTML" +
+        "You are an expert who writes philosophy essays similar to those required for a high school diploma in the United States. Format: HTML (body only)" +
         (tone === "tones-none" ? "" : " Use the following tone: " + tone)
       );
     }
@@ -214,13 +214,13 @@ export function getSystem(
     }
     if (template === "es_complex_outline") {
       return (
-        "Tu es un expert qui fait des dissertations type bac de français. Format: HTML" +
+        "Tu es un expert qui fait des dissertations type bac de français. Format: HTML (body only)" +
         (tone === "tones-none" ? "" : " Utilise le ton suivant : " + tone)
       );
     }
     if (template === "ph_complex_outline") {
       return (
-        "Tu es un expert qui fait des dissertations type bac de philosophie. Format: HTML" +
+        "Tu es un expert qui fait des dissertations type bac de philosophie. Format: HTML (body only)" +
         (tone === "tones-none" ? "" : " Utilise le ton suivant : " + tone)
       );
     }

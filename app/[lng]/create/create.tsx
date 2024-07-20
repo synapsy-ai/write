@@ -343,9 +343,7 @@ export default function Create(props: Props) {
           topP: topp,
           freqP: freqP,
         },
-        recipe.steps[i - 1]?.hide || false
-          ? ""
-          : (context[recipe.steps[i - 1]?.outputVar] || "") + "\n",
+        final,
         { setContent: step.hide ? () => {} : setRes },
       );
 
@@ -355,7 +353,7 @@ export default function Create(props: Props) {
         setInProgress(false);
         return;
       }
-      if (!step.hide) final += result + "\n";
+      if (!step.hide) final += result;
 
       // Store the result in the context
       if (step.outputVar) context[step.outputVar] = result;
@@ -366,6 +364,7 @@ export default function Create(props: Props) {
           done: index <= i,
         })),
       );
+      setRes(final);
     }
 
     addToHistory({
