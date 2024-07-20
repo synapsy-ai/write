@@ -88,6 +88,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { Recipe } from "@/lib/recipe";
+import { getPhiloAnalysisRecipe } from "@/lib/recipes/complex-philo-analysis";
 
 type Subscription = Database["public"]["Tables"]["subscriptions"]["Row"];
 type Product = Database["public"]["Tables"]["products"]["Row"];
@@ -302,58 +304,34 @@ export default function Create(props: Props) {
     }
   }
 
-  async function createComplexPhiloAnalysis() {
+  async function executeRecipe(recipe: Recipe) {
     setInProgress(true);
     setErrorVis(false);
     setIsGen(false);
     setComplexSectionVis(true);
-    setComplexSteps([
-      { i18nname: "essay-outline", done: false },
-      { i18nname: "introduction", done: false },
-      { i18nname: "main-content", done: false },
-      { i18nname: "conclusion", done: false },
-    ]);
-    // 1. Generate the outline
-    const outline = await getStandardGeneration(
-      getSystem("ph_analysis_outline", lng, tone),
-      getPrompt("ph_analysis_outline", lng, textToAnalyse) + "\n" + prompt,
-      apiKey,
-      model,
-      {
-        temp: temp,
-        presP: presP,
-        topP: topp,
-        freqP: freqP,
-      },
+
+    const context: { [key: string]: string } = {};
+    setComplexSteps(
+      recipe.steps.map((step) => ({ i18nname: step.name, done: false })),
     );
+    let final = "";
 
-    if (outline instanceof OpenAI.APIError) {
-      setErrorMsg(outline);
-      setErrorVis(true);
-      setInProgress(false);
-      return;
-    }
-
-    setIsGen(true);
-    setInProgress(false);
-    setRes("");
-    setComplexSteps([
-      { i18nname: "essay-outline", done: true },
-      { i18nname: "introduction", done: false },
-      { i18nname: "main-content", done: false },
-      { i18nname: "conclusion", done: false },
-    ]);
-
-    // 2. Generate the intro
-    const intro =
-      (await sendToGptCustom(
-        getSystem("ph_analysis_outline", lng, tone),
-        getPromptComplexAnalysis(
-          textToAnalyse,
-          outline,
-          "ph_analysis_intro",
-          lng,
-        ),
+    for (let i = 0; i < recipe.steps.length; i++) {
+      const step = recipe.steps[i];
+      step.userPrompt = step.userPrompt.replace(
+        "[[PROMPT]]",
+        type === "ph_analysis_complex" ? textToAnalyse : prompt,
+      );
+      for (let j = 0; j < Object.keys(context).length; j++) {
+        step.userPrompt = step.userPrompt.replace(
+          `[[${Object.keys(context)[j]}]]`,
+          context[Object.keys(context)[j]],
+        );
+      }
+      if (!step.hide) setInProgress(false);
+      const result = await sendToGptCustom(
+        step.systemPrompt ?? recipe.systemPrompt,
+        step.userPrompt,
         apiKey,
         model,
         {
@@ -362,80 +340,45 @@ export default function Create(props: Props) {
           topP: topp,
           freqP: freqP,
         },
-        "",
-        { setContent: setRes },
-      )) ?? "";
+        recipe.steps[i - 1]?.hide || false
+          ? ""
+          : (context[recipe.steps[i - 1]?.outputVar] || "") + "\n",
+        { setContent: step.hide ? () => {} : setRes },
+      );
 
-    if (intro instanceof OpenAI.APIError) {
-      setErrorMsg(intro);
-      setErrorVis(true);
-      setInProgress(false);
-      return;
+      if (result instanceof OpenAI.APIError) {
+        setErrorMsg(result);
+        setErrorVis(true);
+        setInProgress(false);
+        return;
+      }
+      if (!step.hide) final += result + "\n";
+
+      // Store the result in the context
+      if (step.outputVar) context[step.outputVar] = result;
+
+      setComplexSteps(
+        recipe.steps.map((step, index) => ({
+          i18nname: step.name,
+          done: index <= i,
+        })),
+      );
     }
-    setComplexSteps([
-      { i18nname: "essay-outline", done: true },
-      { i18nname: "introduction", done: true },
-      { i18nname: "main-content", done: false },
-      { i18nname: "conclusion", done: false },
-    ]);
 
-    // 3. Generate dev part
-    const p1 = await sendToGptCustom(
-      getSystem("ph_analysis_outline", lng, tone),
-      getPromptComplexAnalysis(textToAnalyse, outline, "ph_analysis_dev", lng),
-      apiKey,
-      model,
-      {
-        temp: temp,
-        presP: presP,
-        topP: topp,
-        freqP: freqP,
-      },
-      intro + "\n" || "",
-      { setContent: setRes },
-    );
-    setComplexSteps([
-      { i18nname: "essay-outline", done: true },
-      { i18nname: "introduction", done: true },
-      { i18nname: "main-content", done: true },
-      { i18nname: "conclusion", done: false },
-    ]);
-    // 4. Generate conclusion
-    const ccl = await sendToGptCustom(
-      getSystem("ph_analysis_outline", lng, tone),
-      getPromptComplexAnalysis(
-        textToAnalyse,
-        outline,
-        "ph_analysis_conclusion",
-        lng,
-      ),
-      apiKey,
-      model,
-      {
-        temp: temp,
-        presP: presP,
-        topP: topp,
-        freqP: freqP,
-      },
-      intro + "\n" + p1 + "\n" || "",
-      { setContent: setRes },
-    );
-    setRes(intro + p1 + ccl);
-    setComplexSteps([
-      { i18nname: "essay-outline", done: true },
-      { i18nname: "introduction", done: true },
-      { i18nname: "main-content", done: true },
-      { i18nname: "conclusion", done: true },
-    ]);
     addToHistory({
-      prompt: textToAnalyse,
-      content: intro + "\n" + p1 + "\n" + ccl ?? "",
+      prompt: type === "ph_analysis_complex" ? textToAnalyse : prompt,
+      content: final || Object.values(context).join("\n") || "",
       template: type,
       date: new Date(),
     });
+
     setIsGen(false);
     setInProgress(false);
     setComplexSectionVis(false);
+  }
+
+  async function createComplexPhiloAnalysis() {
+    executeRecipe(getPhiloAnalysisRecipe(lng, tone));
   }
 
   async function createComplexEssayGlobal() {
