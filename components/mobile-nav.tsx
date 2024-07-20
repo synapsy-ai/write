@@ -5,8 +5,10 @@ import {
   Lightbulb,
   List,
   MessageCircleMore,
+  MoreHorizontal,
   Pen,
   Settings,
+  Sheet,
   User2,
 } from "lucide-react";
 import Link from "next/link";
@@ -21,6 +23,7 @@ import {
 import Spotlight, { SpotlightCard } from "./spotlight";
 import { Close } from "@radix-ui/react-dialog";
 import { useRouter } from "next/navigation";
+import { Button } from "./ui/button";
 
 export default function MobileNavBar(props: { lng: string }) {
   const { t } = useTranslation(props.lng, "common");
@@ -93,12 +96,38 @@ export default function MobileNavBar(props: { lng: string }) {
         >
           <User2 />
         </Link>
-        <Link
-          className="flex items-center justify-center rounded-md border border-transparent p-5 hover:border-slate-200 hover:bg-slate-100/25 dark:hover:border-slate-700 dark:hover:bg-slate-800/25"
-          href={"/" + props.lng + "/settings"}
-        >
-          <Settings />
-        </Link>
+
+        <Dialog>
+          <DialogTrigger className="flex items-center justify-center rounded-md border border-transparent p-5 hover:border-slate-200 hover:bg-slate-100/25 dark:hover:border-slate-700 dark:hover:bg-slate-800/25">
+            <MoreHorizontal />
+          </DialogTrigger>
+          <DialogContent>
+            <Close>
+              <Button
+                onClick={() => push(`/${props.lng}/settings`)}
+                className="flex items-center space-x-2"
+                variant="ghost"
+              >
+                <span>
+                  <Settings />
+                </span>
+                <span className="text-lg font-bold">{t("settings")}</span>
+              </Button>
+            </Close>
+            <Close>
+              <Button
+                onClick={() => push(`/${props.lng}/templates`)}
+                className="flex items-center space-x-2"
+                variant="ghost"
+              >
+                <span>
+                  <Sheet />
+                </span>
+                <span className="text-lg font-bold">{t("templates")}</span>
+              </Button>
+            </Close>
+          </DialogContent>
+        </Dialog>
       </nav>
     </div>
   );
