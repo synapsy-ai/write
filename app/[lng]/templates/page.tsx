@@ -7,6 +7,7 @@ import { getComplexEssayGlobalRecipe } from "@/lib/recipes/complex-essay-global"
 import { getComplexEssayRecipe } from "@/lib/recipes/complex-essay-literrature";
 import { getComplexEssayPhiloRecipe } from "@/lib/recipes/complex-essay-philo";
 import { getPhiloAnalysisRecipe } from "@/lib/recipes/complex-philo-analysis";
+import Link from "next/link";
 
 export default function TemplatesPage({
   params: { lng },
@@ -42,9 +43,11 @@ export default function TemplatesPage({
                       {t(templateItem.name)}
                     </h3>
                   </div>
-                  <Button variant="outline" className="w-full">
-                    {t("template-view")}
-                  </Button>
+                  <Link href={`/${lng}/templates/view?id=${templateItem.name}`}>
+                    <Button variant="outline" className="w-full">
+                      {t("template-view")}
+                    </Button>
+                  </Link>
                 </CardContent>
               </Card>
             ))}
