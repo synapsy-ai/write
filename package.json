@@ -42,7 +42,7 @@
     "i18next": "^23.12.2",
     "i18next-browser-languagedetector": "^8.0.0",
     "i18next-resources-to-backend": "^1.2.1",
-    "lucide-react": "^0.408.0",
+    "lucide-react": "^0.411.0",
     "mini-svg-data-uri": "^1.4.4",
     "next": "14.2.5",
     "next-pwa": "^5.6.0",
