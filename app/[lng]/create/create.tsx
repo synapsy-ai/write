@@ -90,6 +90,7 @@ import {
 } from "@/components/ui/card";
 import { Recipe } from "@/lib/recipe";
 import { getPhiloAnalysisRecipe } from "@/lib/recipes/complex-philo-analysis";
+import { getComplexEssayGlobalRecipe } from "@/lib/recipes/complex-essay-global";
 
 type Subscription = Database["public"]["Tables"]["subscriptions"]["Row"];
 type Product = Database["public"]["Tables"]["products"]["Row"];
@@ -320,7 +321,8 @@ export default function Create(props: Props) {
       const step = recipe.steps[i];
       step.userPrompt = step.userPrompt.replace(
         "[[PROMPT]]",
-        type === "ph_analysis_complex" ? textToAnalyse : prompt,
+        (type === "ph_analysis_complex" ? textToAnalyse : prompt) +
+          getVariableString(variables),
       );
       for (let j = 0; j < Object.keys(context).length; j++) {
         step.userPrompt = step.userPrompt.replace(
@@ -382,207 +384,7 @@ export default function Create(props: Props) {
   }
 
   async function createComplexEssayGlobal() {
-    setInProgress(true);
-    setErrorVis(false);
-    setIsGen(false);
-    setComplexSectionVis(true);
-    setComplexSteps([
-      { i18nname: "essay-outline", done: false },
-      { i18nname: "introduction", done: false },
-      { i18nname: "part-1", done: false },
-      { i18nname: "part-2", done: false },
-      { i18nname: "part-3", done: false },
-      { i18nname: "conclusion", done: false },
-    ]);
-    const outline = await getStandardGeneration(
-      getSystem("g_es_complex_outline", lng, tone),
-      getPrompt("g_es_outline", lng, prompt),
-      apiKey,
-      model,
-      {
-        temp: temp,
-        presP: presP,
-        topP: topp,
-        freqP: freqP,
-      },
-    );
-
-    if (outline instanceof OpenAI.APIError) {
-      setErrorMsg(outline);
-      setErrorVis(true);
-      setInProgress(false);
-      return;
-    }
-    setComplexSteps([
-      { i18nname: "essay-outline", done: true },
-      { i18nname: "introduction", done: false },
-      { i18nname: "part-1", done: false },
-      { i18nname: "part-2", done: false },
-      { i18nname: "part-3", done: false },
-      { i18nname: "conclusion", done: false },
-    ]);
-    setIsGen(true);
-    setInProgress(false);
-    setRes("");
-    setProgress(16);
-    const intro =
-      (await sendToGptCustom(
-        getSystem("g_es_intro", lng, tone),
-        getPrompt("g_es_intro", lng, prompt + usingPlan(lng) + outline),
-        apiKey,
-        model,
-        {
-          temp: temp,
-          presP: presP,
-          topP: topp,
-          freqP: freqP,
-        },
-        "",
-        { setContent: setRes },
-      )) ?? "";
-
-    if (intro instanceof OpenAI.APIError) {
-      setErrorMsg(intro);
-      setErrorVis(true);
-      setInProgress(false);
-      return;
-    }
-    setProgress(32);
-    setComplexSteps([
-      { i18nname: "essay-outline", done: true },
-      { i18nname: "introduction", done: true },
-      { i18nname: "part-1", done: false },
-      { i18nname: "part-2", done: false },
-      { i18nname: "part-3", done: false },
-      { i18nname: "conclusion", done: false },
-    ]);
-
-    const p1 = await sendToGptCustom(
-      getSystem("g_es_basic", lng, tone),
-      getComplexEssayPrompts(1, outline, lng),
-      apiKey,
-      model,
-      {
-        temp: temp,
-        presP: presP,
-        topP: topp,
-        freqP: freqP,
-      },
-      intro || "",
-      { setContent: setRes },
-    );
-    if (p1 instanceof OpenAI.APIError) {
-      setErrorMsg(p1);
-      setErrorVis(true);
-      setInProgress(false);
-      return;
-    }
-    setProgress(48);
-    setComplexSteps([
-      { i18nname: "essay-outline", done: true },
-      { i18nname: "introduction", done: true },
-      { i18nname: "part-1", done: true },
-      { i18nname: "part-2", done: false },
-      { i18nname: "part-3", done: false },
-      { i18nname: "conclusion", done: false },
-    ]);
-    const p2 = await sendToGptCustom(
-      getSystem("g_es_basic", lng, tone),
-      getComplexEssayPrompts(2, outline, lng),
-      apiKey,
-      model,
-      {
-        temp: temp,
-        presP: presP,
-        topP: topp,
-        freqP: freqP,
-      },
-      intro + p1 || "",
-      { setContent: setRes },
-    );
-    if (p2 instanceof OpenAI.APIError) {
-      setErrorMsg(p2);
-      setErrorVis(true);
-      setInProgress(false);
-      return;
-    }
-    setProgress(64);
-    setComplexSteps([
-      { i18nname: "essay-outline", done: true },
-      { i18nname: "introduction", done: true },
-      { i18nname: "part-1", done: true },
-      { i18nname: "part-2", done: true },
-      { i18nname: "part-3", done: false },
-      { i18nname: "conclusion", done: false },
-    ]);
-    const p3 = await sendToGptCustom(
-      getSystem("g_es_basic", lng, tone),
-      getComplexEssayPrompts(3, outline, lng),
-      apiKey,
-      model,
-      {
-        temp: temp,
-        presP: presP,
-        topP: topp,
-        freqP: freqP,
-      },
-      intro + p1 + p2 || "",
-      { setContent: setRes },
-    );
-    if (p3 instanceof OpenAI.APIError) {
-      setErrorMsg(p3);
-      setErrorVis(true);
-      setInProgress(false);
-      return;
-    }
-    setProgress(82);
-    setComplexSteps([
-      { i18nname: "essay-outline", done: true },
-      { i18nname: "introduction", done: true },
-      { i18nname: "part-1", done: true },
-      { i18nname: "part-2", done: true },
-      { i18nname: "part-3", done: true },
-      { i18nname: "conclusion", done: false },
-    ]);
-    const ccl = await sendToGptCustom(
-      getSystem("g_es_conclusion", lng, tone),
-      getPrompt("g_es_conclusion", lng, prompt + usingPlan(lng) + outline),
-      apiKey,
-      model,
-      {
-        temp: temp,
-        presP: presP,
-        topP: topp,
-        freqP: freqP,
-      },
-      intro + p1 + p2 + p3 || "",
-      { setContent: setRes },
-    );
-    if (ccl instanceof OpenAI.APIError) {
-      setErrorMsg(ccl);
-      setErrorVis(true);
-      setInProgress(false);
-      return;
-    }
-    setProgress(100);
-    setComplexSteps([
-      { i18nname: "essay-outline", done: true },
-      { i18nname: "introduction", done: true },
-      { i18nname: "part-1", done: true },
-      { i18nname: "part-2", done: true },
-      { i18nname: "part-3", done: true },
-      { i18nname: "conclusion", done: true },
-    ]);
-    setRes(intro + p1 + p2 + p3 + ccl);
-    addToHistory({
-      prompt: prompt,
-      content: intro + p1 + p2 + p3 + ccl ?? "",
-      template: type,
-      date: new Date(),
-    });
-    setIsGen(false);
-    setInProgress(false);
-    setComplexSectionVis(false);
+    executeRecipe(getComplexEssayGlobalRecipe(lng, tone));
   }
 
   async function createComplexEssay() {

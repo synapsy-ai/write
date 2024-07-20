@@ -134,13 +134,13 @@ export function getSystem(
     }
     if (template === "es_complex_outline") {
       return (
-        "You are an expert who writes essays similar to those required for a high school diploma in the United States." +
+        "You are an expert who writes essays similar to those required for a high school diploma in the United States. Format: HTML" +
         (tone === "tones-none" ? "" : " Use the following tone: " + tone)
       );
     }
     if (template === "ph_complex_outline") {
       return (
-        "You are an expert who writes philosophy essays similar to those required for a high school diploma in the United States." +
+        "You are an expert who writes philosophy essays similar to those required for a high school diploma in the United States. Format: HTML" +
         (tone === "tones-none" ? "" : " Use the following tone: " + tone)
       );
     }
@@ -214,13 +214,13 @@ export function getSystem(
     }
     if (template === "es_complex_outline") {
       return (
-        "Tu es un expert qui fait des dissertations type bac de français." +
+        "Tu es un expert qui fait des dissertations type bac de français. Format: HTML" +
         (tone === "tones-none" ? "" : " Utilise le ton suivant : " + tone)
       );
     }
     if (template === "ph_complex_outline") {
       return (
-        "Tu es un expert qui fait des dissertations type bac de philosophie." +
+        "Tu es un expert qui fait des dissertations type bac de philosophie. Format: HTML" +
         (tone === "tones-none" ? "" : " Utilise le ton suivant : " + tone)
       );
     }
@@ -522,9 +522,9 @@ export function getPromptText(
       case "es_basic":
         return `Rédige l'introduction (amorce, présentation du sujet, problématique et annonce du plan), le contenu de la dissertation organisé en au moins deux grandes parties (I, II, III etc.) contenant chacune au moins deux sous-parties (A, B, etc.) (avec des citations), et la conclusion du sujet suivant : [[PROMPT]]`;
       case "g_es_intro":
-        return `Rédige l'introduction (accroche, présentation du sujet, énoncé du problème et annonce du plan) pour le sujet suivant : [[PROMPT]]`;
+        return `Rédige l'introduction (accroche, présentation du sujet, énoncé du problème et annonce du plan) pour le sujet suivant : [[PROMPT]] en utilisant ce plan : [[outline]]`;
       case "g_es_conclusion":
-        return `Rédige la conclusion, qui reprend ce que vous avez dit dans la dissertation (avec une ouverture) pour le sujet suivant : [[PROMPT]]`;
+        return `Rédige la conclusion, qui reprend ce que vous avez dit dans la dissertation (avec une ouverture) pour le sujet suivant : [[PROMPT]] en utilisant ce plan : [[outline]]`;
       case "g_es_outline":
         return `Rédige seulement le plan de la dissertation organisé en trois parties principales (I, II, III etc.) contenant chacune au moins deux sous-parties, avec arguments, exemples, chiffres, statistiques, citations (selon le contexte) pour le sujet suivant : [[PROMPT]]`;
       case "es_basic":
@@ -581,23 +581,19 @@ export function usingPlan(lng: "fr" | "en") {
   }
 }
 
-export function getComplexEssayPrompts(
-  part: number,
-  outline: string | null,
-  lng: "fr" | "en",
-) {
+export function getComplexEssayPrompts(part: number, lng: "fr" | "en") {
   if (lng === "en") {
-    return `ONLY write part ${part} using this outline (no intro nor conclusion): ${outline}`;
+    return `ONLY write part ${part} using this outline (no intro nor conclusion): [[outline]]`;
   } else {
     switch (part) {
       case 1:
-        return `Rédige SEULEMENT la première grande partie (I) du plan (ne pas rédiger d'intro ni de conclusion et fait des phrases complètes) ${outline}`;
+        return `Rédige SEULEMENT la première grande partie (I) du plan (ne pas rédiger d'intro ni de conclusion et fait des phrases complètes) [[outline]]`;
       case 2:
-        return `Rédige SEULEMENT la deuxième grande partie (II) du plan (ne pas rédiger d'intro ni de conclusion et fait des phrases complètes) ${outline}`;
+        return `Rédige SEULEMENT la deuxième grande partie (II) du plan (ne pas rédiger d'intro ni de conclusion et fait des phrases complètes) [[outline]]`;
       case 3:
-        return `Rédige SEULEMENT la troisième grande partie (III) du plan (ne pas rédiger d'intro ni de conclusion et fait des phrases complètes) ${outline}`;
+        return `Rédige SEULEMENT la troisième grande partie (III) du plan (ne pas rédiger d'intro ni de conclusion et fait des phrases complètes) [[outline]]`;
       default:
-        return `Rédige SEULEMENT la partie ${part} du plan ${outline}`;
+        return `Rédige SEULEMENT la partie ${part} du plan [[outline]]`;
     }
   }
 }
