@@ -7,7 +7,7 @@ import { Recipe } from "../recipe";
 
 export function getPhiloAnalysisRecipe(lng: "fr" | "en", tone: string): Recipe {
   return {
-    name: "ComplexPhiloAnalysis",
+    name: "text-philosophy",
     systemPrompt: getSystem("ph_analysis_outline", lng, tone),
     steps: [
       {
