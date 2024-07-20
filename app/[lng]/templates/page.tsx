@@ -33,7 +33,7 @@ export default function TemplatesPage({
           <h2 className="my-4 text-2xl">{t("default-templates")}</h2>
           <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
             {defaultTemplates.map((templateItem, i) => (
-              <Card>
+              <Card key={i}>
                 <CardContent
                   key={i}
                   className="flex h-full flex-col justify-between p-6"
