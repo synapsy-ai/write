@@ -331,5 +331,21 @@
   "prompt-desc": "Entrez une invite pour que l'IA génère le document.",
   "overview": "Aperçu",
   "information": "Informations",
-  "date": "Date"
+  "date": "Date",
+  "templates": "Modèles",
+  "template-new": "Nouveau modèle",
+  "template-delete": "Supprimer le modèle",
+  "template-view": "Afficher le modèle",
+  "template-edit": "Modifier le modèle",
+  "add-step": "Ajouter une étape",
+  "recipe": "Recette",
+  "user-templates": "Vos modèles",
+  "default-templates": "Modèles Synapsy",
+  "template-desc": "La fonctionnalité de modèles permet de créer des flux de travail structurés, étape par étape, pour générer des documents complexes.",
+  "steps": "Etapes",
+  "user-prompt": "Invite utilisateur",
+  "sys-prompt": "Invite système",
+  "output-var": "Nom de la variable de sortie",
+  "none": "Aucun",
+  "hide-content": "Non inclus dans la génération finale"
 }

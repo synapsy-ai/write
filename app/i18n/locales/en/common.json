@@ -333,5 +333,21 @@
   "prompt-desc": "Enter the prompt for the AI to generate the document.",
   "overview": "Overview",
   "information": "Information",
-  "date": "Date"
+  "date": "Date",
+  "templates": "Templates",
+  "template-new": "New template",
+  "template-delete": "Delete template",
+  "template-view": "View template",
+  "template-edit": "Edit template",
+  "add-step": "Add a step",
+  "recipe": "Recipe",
+  "user-templates": "Your templates",
+  "default-templates": "Synapsy templates",
+  "template-desc": "The templates feature allows to create structured, step-by-step workflows for generating complex documents.",
+  "steps": "Steps",
+  "user-prompt": "User Prompt",
+  "sys-prompt": "System Prompt",
+  "output-var": "Output Variable name",
+  "none": "None",
+  "hide-content": "Not included in the final generation"
 }
