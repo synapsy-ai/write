@@ -808,15 +808,18 @@ export default function Create(props: Props) {
               </div>
             </CardContent>
           </Card>
-          <Card>
-            <CardHeader>
-              <CardTitle>
-                {t("variables")} ({variables.length})
-              </CardTitle>
-              <CardDescription>{t("variables-desc")}</CardDescription>
-            </CardHeader>
-            <CardContent>
-              {type !== "ph_complex" && type !== "es_complex" && (
+          {type !== "ph_complex" && type !== "es_complex" && (
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center space-x-2">
+                  <span>{t("variables")}</span>
+                  <span className="rounded-full border bg-muted/40 px-2 text-sm text-muted-foreground">
+                    {variables.length}
+                  </span>
+                </CardTitle>
+                <CardDescription>{t("variables-desc")}</CardDescription>
+              </CardHeader>
+              <CardContent>
                 <div className="print:hidden">
                   <Button
                     className="h-auto"
@@ -848,9 +851,9 @@ export default function Create(props: Props) {
                       ))}
                   </div>
                 </div>
-              )}
-            </CardContent>
-          </Card>
+              </CardContent>
+            </Card>
+          )}
         </div>
       </div>
     </main>
