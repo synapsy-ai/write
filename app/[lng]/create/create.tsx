@@ -14,17 +14,7 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import { Settings } from "@/lib/settings";
-import {
-  getComplexEssayPrompts,
-  getModels,
-  getPrompt,
-  getPromptComplexAnalysis,
-  getStandardGeneration,
-  getSystem,
-  sendToGpt,
-  sendToGptCustom,
-  usingPlan,
-} from "@/lib/ai-completions";
+import { getModels, sendToGpt, sendToGptCustom } from "@/lib/ai-completions";
 import { addToHistory } from "@/lib/history";
 import {
   Sheet,
@@ -92,6 +82,7 @@ import { Recipe } from "@/lib/recipe";
 import { getPhiloAnalysisRecipe } from "@/lib/recipes/complex-philo-analysis";
 import { getComplexEssayGlobalRecipe } from "@/lib/recipes/complex-essay-global";
 import { getComplexEssayRecipe } from "@/lib/recipes/complex-essay-literrature";
+import { getComplexEssayPhiloRecipe } from "@/lib/recipes/complex-essay-philo";
 
 type Subscription = Database["public"]["Tables"]["subscriptions"]["Row"];
 type Product = Database["public"]["Tables"]["products"]["Row"];
@@ -392,171 +383,7 @@ export default function Create(props: Props) {
   }
 
   async function createComplexPhiloEssay() {
-    setComplexSectionVis(true);
-    setInProgress(true);
-    setIsGen(false);
-    setProgressBarVis(true);
-    setComplexSteps([
-      { i18nname: "essay-outline", done: false },
-      { i18nname: "introduction", done: false },
-      { i18nname: "part-1", done: false },
-      { i18nname: "part-2", done: false },
-      { i18nname: "part-3", done: false },
-      { i18nname: "conclusion", done: false },
-    ]);
-    const outline = await getStandardGeneration(
-      getSystem("ph_visual_outline", lng, tone),
-      getPrompt("ph_visual_outline", lng, prompt),
-      apiKey,
-      model,
-      {
-        temp: temp,
-        presP: presP,
-        topP: topp,
-        freqP: freqP,
-      },
-    );
-    setProgress(16);
-    setComplexSteps([
-      { i18nname: "essay-outline", done: true },
-      { i18nname: "introduction", done: false },
-      { i18nname: "part-1", done: false },
-      { i18nname: "part-2", done: false },
-      { i18nname: "part-3", done: false },
-      { i18nname: "conclusion", done: false },
-    ]);
-    setInProgress(false);
-    setRes("");
-    setIsGen(true);
-    const intro =
-      (await sendToGptCustom(
-        getSystem("ph_intro", lng, tone),
-        getPrompt("ph_intro", lng, prompt + usingPlan(lng) + outline),
-        apiKey,
-        model,
-        {
-          temp: temp,
-          presP: presP,
-          topP: topp,
-          freqP: freqP,
-        },
-        "",
-        { setContent: setRes },
-      )) + "\n" ?? "";
-    setProgress(32);
-    setComplexSteps([
-      { i18nname: "essay-outline", done: true },
-      { i18nname: "introduction", done: true },
-      { i18nname: "part-1", done: false },
-      { i18nname: "part-2", done: false },
-      { i18nname: "part-3", done: false },
-      { i18nname: "conclusion", done: false },
-    ]);
-
-    const p1 = await sendToGptCustom(
-      getSystem("ph_basic", lng, tone),
-      getComplexEssayPrompts(1, outline, lng),
-      apiKey,
-      model,
-      {
-        temp: temp,
-        presP: presP,
-        topP: topp,
-        freqP: freqP,
-      },
-      intro || "",
-      { setContent: setRes },
-    );
-    setProgress(48);
-    setComplexSteps([
-      { i18nname: "essay-outline", done: true },
-      { i18nname: "introduction", done: true },
-      { i18nname: "part-1", done: true },
-      { i18nname: "part-2", done: false },
-      { i18nname: "part-3", done: false },
-      { i18nname: "conclusion", done: false },
-    ]);
-    const p2 =
-      (await sendToGptCustom(
-        getSystem("ph_basic", lng, tone),
-        getComplexEssayPrompts(2, outline, lng),
-        apiKey,
-        model,
-        {
-          temp: temp,
-          presP: presP,
-          topP: topp,
-          freqP: freqP,
-        },
-        intro + p1 || "",
-        { setContent: setRes },
-      )) + "\n";
-    setProgress(64);
-    setComplexSteps([
-      { i18nname: "essay-outline", done: true },
-      { i18nname: "introduction", done: true },
-      { i18nname: "part-1", done: true },
-      { i18nname: "part-2", done: true },
-      { i18nname: "part-3", done: false },
-      { i18nname: "conclusion", done: false },
-    ]);
-    const p3 =
-      (await sendToGptCustom(
-        getSystem("ph_basic", lng, tone),
-        getComplexEssayPrompts(3, outline, lng),
-        apiKey,
-        model,
-        {
-          temp: temp,
-          presP: presP,
-          topP: topp,
-          freqP: freqP,
-        },
-        intro + p1 + p2 || "",
-        { setContent: setRes },
-      )) + "\n";
-    setProgress(82);
-    setComplexSteps([
-      { i18nname: "essay-outline", done: true },
-      { i18nname: "introduction", done: true },
-      { i18nname: "part-1", done: true },
-      { i18nname: "part-2", done: true },
-      { i18nname: "part-3", done: true },
-      { i18nname: "conclusion", done: false },
-    ]);
-    const ccl = await sendToGptCustom(
-      getSystem("ph_conclusion", lng, tone),
-      getPrompt("ph_conclusion", lng, prompt + usingPlan(lng) + outline),
-      apiKey,
-      model,
-      {
-        temp: temp,
-        presP: presP,
-        topP: topp,
-        freqP: freqP,
-      },
-      intro + p1 + p2 + p3 || "",
-      { setContent: setRes },
-    );
-    setProgress(100);
-    setComplexSteps([
-      { i18nname: "essay-outline", done: true },
-      { i18nname: "introduction", done: true },
-      { i18nname: "part-1", done: true },
-      { i18nname: "part-2", done: true },
-      { i18nname: "part-3", done: true },
-      { i18nname: "conclusion", done: true },
-    ]);
-    setRes(intro + p1 + p2 + p3 + ccl);
-    addToHistory({
-      prompt: prompt,
-      content: intro + p1 + p2 + p3 + ccl ?? "",
-      template: type,
-      date: new Date(),
-    });
-    setIsGen(false);
-    setInProgress(false);
-    setComplexSectionVis(false);
+    executeRecipe(getComplexEssayPhiloRecipe(lng, tone));
   }
 
   function removeVariable(i: number) {
