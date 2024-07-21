@@ -6,6 +6,7 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -13,15 +14,21 @@ import {
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { Textarea } from "@/components/ui/textarea";
-import { addToTemplates, getTemplates, Recipe } from "@/lib/recipe";
+import {
+  addToTemplates,
+  getTemplates,
+  Recipe,
+  saveTemplates,
+} from "@/lib/recipe";
 import { getComplexEssayGlobalRecipe } from "@/lib/recipes/complex-essay-global";
 import { getComplexEssayRecipe } from "@/lib/recipes/complex-essay-literrature";
 import { getComplexEssayPhiloRecipe } from "@/lib/recipes/complex-essay-philo";
 import { getPhiloAnalysisRecipe } from "@/lib/recipes/complex-philo-analysis";
-import { Eye, Plus } from "lucide-react";
+import { Eye, Plus, Trash } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { Close } from "@radix-ui/react-dialog";
 
 export default function TemplatesPage({
   params: { lng },
@@ -47,6 +54,12 @@ export default function TemplatesPage({
     addToTemplates(template);
     setTemplates([...templates, template]);
     push(`/${lng}/templates/edit?id=${templates.length}`);
+  }
+
+  function remove(index: number) {
+    templates.splice(index, 1);
+    saveTemplates(templates);
+    setTemplates([...templates]);
   }
 
   return (
@@ -82,6 +95,42 @@ export default function TemplatesPage({
           </div>
           <div>
             <h2 className="my-4 text-2xl">{t("user-templates")}</h2>
+
+            {templates.length > 0 && (
+              <Dialog>
+                <DialogTrigger>
+                  <Button className="-mt-4 space-x-2" variant="link">
+                    <Plus />
+                    <span>{t("create")}</span>
+                  </Button>
+                </DialogTrigger>
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle>{t("template-new")}</DialogTitle>
+                  </DialogHeader>
+                  <div className="space-y-2">
+                    <p>{t("name")}</p>
+                    <Input
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                    />
+                    <p>{t("sys-prompt")}</p>
+                    <Textarea
+                      value={prompt}
+                      onChange={(e) => setPrompt(e.target.value)}
+                    />
+                    <div className="flex justify-center">
+                      <Button
+                        onClick={createTemplate}
+                        disabled={!name || !prompt}
+                      >
+                        {t("create")}
+                      </Button>
+                    </div>
+                  </div>
+                </DialogContent>
+              </Dialog>
+            )}
             <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
               {templates.map((templateItem, i) => (
                 <Card key={i}>
@@ -94,7 +143,7 @@ export default function TemplatesPage({
                         {t(templateItem.name)}
                       </h3>
                     </div>
-                    <div className="flex w-full items-center space-x-2">
+                    <div className="grid w-full grid-cols-[1fr,auto,auto] items-center space-x-2">
                       <Link href={`/${lng}/templates/edit?id=${i}`}>
                         <Button variant="outline" className="w-full">
                           {t("template-edit")}
@@ -105,6 +154,34 @@ export default function TemplatesPage({
                           <Eye size={14} />
                         </Button>
                       </Link>
+                      <Dialog>
+                        <DialogTrigger>
+                          <Button variant="outline">
+                            <Trash size={14} />
+                          </Button>
+                        </DialogTrigger>
+                        <DialogContent>
+                          <DialogHeader>
+                            <DialogTitle>{t("delete-confirm")}</DialogTitle>
+                            <DialogDescription>
+                              {t("delete-confirm-desc")}
+                            </DialogDescription>
+                          </DialogHeader>
+                          <DialogFooter>
+                            <Close>
+                              <Button
+                                onClick={() => remove(i)}
+                                variant="destructive"
+                              >
+                                {t("delete")}
+                              </Button>
+                            </Close>
+                            <Close>
+                              <Button variant="outline">{t("cancel")}</Button>
+                            </Close>
+                          </DialogFooter>
+                        </DialogContent>
+                      </Dialog>
                     </div>
                   </CardContent>
                 </Card>

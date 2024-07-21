@@ -352,5 +352,7 @@
   "hide-content": "Not included in the final generation",
   "no-user-templates": "No templates are available",
   "no-user-templates-desc": "Create a template to get started.",
-  "add": "Add"
+  "add": "Add",
+  "delete-confirm": "Are you absolutely sure?",
+  "delete-confirm-desc": "This action cannot be undone. This will permanently delete this template."
 }

@@ -350,5 +350,7 @@
   "hide-content": "Non inclus dans la génération finale",
   "no-user-templates": "Aucun modèle n'est disponible",
   "no-user-templates-desc": "Créez un modèle pour commencer.",
-  "add": "Ajouter"
+  "add": "Ajouter",
+  "delete-confirm": "Etes-vous absolument sûr ?",
+  "delete-confirm-desc": "Cette action ne peut pas être annulée. Cela supprimera définitivement ce modèle."
 }
