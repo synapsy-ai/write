@@ -44,13 +44,10 @@ export const HighlightedVariable = ({
     <p>
       {parts.map((part, index) =>
         part.isSpan ? (
-          <TooltipProvider delayDuration={0}>
+          <TooltipProvider key={index} delayDuration={0}>
             <Tooltip>
               <TooltipTrigger className="cursor-auto select-text">
-                <span
-                  key={index}
-                  className="rounded-full border px-2 text-muted-foreground transition hover:border-indigo-500 hover:bg-indigo-500/20 hover:text-indigo-500"
-                >
+                <span className="rounded-full border px-2 text-muted-foreground transition hover:border-indigo-500 hover:bg-indigo-500/20 hover:text-indigo-500">
                   {part.text}
                 </span>
               </TooltipTrigger>
