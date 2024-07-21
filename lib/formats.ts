@@ -96,7 +96,7 @@ export function typesToString(type: string): string {
       }
     }
   }
-  return "";
+  return type;
 }
 
 export const tones = [

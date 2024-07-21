@@ -78,7 +78,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Recipe } from "@/lib/recipe";
+import { getTemplates, Recipe } from "@/lib/recipe";
 import { getPhiloAnalysisRecipe } from "@/lib/recipes/complex-philo-analysis";
 import { getComplexEssayGlobalRecipe } from "@/lib/recipes/complex-essay-global";
 import { getComplexEssayRecipe } from "@/lib/recipes/complex-essay-literrature";
@@ -122,7 +122,6 @@ export default function Create(props: Props) {
   const [prompt, setPrompt] = useState("");
   const [inProgress, setInProgress] = useState(false);
   const [progressBarVis, setProgressBarVis] = useState(false);
-  const [progress, setProgress] = useState(0);
   const [model, setModel] = useState("gpt-3.5-turbo");
   const [errorMsg, setErrorMsg] = useState<any>({ message: "", name: "" });
   const [errorVis, setErrorVis] = useState(false);
@@ -142,6 +141,8 @@ export default function Create(props: Props) {
   const [avModels, setAvModels] = useState(
     getAvailableModels(s.models) ?? defaultModels(),
   );
+
+  const [templateId, setTemplateId] = useState<number | undefined>();
 
   const [complexSteps, setComplexSteps] = useState<GenerationStep[]>([]);
   const [complexSectionVis, setComplexSectionVis] = useState(false);
@@ -265,6 +266,8 @@ export default function Create(props: Props) {
   }
   async function createButton() {
     setRes("");
+
+    // If the user has selected GPT-4, check if they have access to the model
     if (model.includes("gpt-4") && !model.includes("mini")) {
       if (gpt4Quotas <= 0) return;
       if (props.session && props.session.user && gpt4Quotas > 0) {
@@ -282,6 +285,13 @@ export default function Create(props: Props) {
         }
       }
     }
+
+    // If the user has selected its own template
+    if (templateId !== undefined) {
+      executeRecipe(getTemplates()[templateId]);
+      return;
+    }
+
     if (type === "es_complex") {
       createComplexEssay();
     } else if (type == "g_es_complex") {
@@ -783,6 +793,7 @@ export default function Create(props: Props) {
                 <div className="space-y-2">
                   <label htmlFor="format">Format</label>
                   <FormatDialog
+                    setTemplateId={setTemplateId}
                     lng={lng}
                     setVal={setType}
                     setCategory={setCat}

@@ -23,11 +23,14 @@ import {
   MessageCircle,
   Pen,
   Presentation,
+  UserCheck2,
 } from "lucide-react";
+import { getTemplates } from "@/lib/recipe";
 export default function FormatDialog(props: {
   lng: string;
   setVal: Function;
   setCategory: Function;
+  setTemplateId: Function;
 }) {
   const { t } = useTranslation(props.lng, "common");
   const [value, setValue] = useState("");
@@ -40,6 +43,7 @@ export default function FormatDialog(props: {
     "border-violet-400 dark:border-violet-700 dark:hover:border-violet-600 hover:bg-violet-100 hover:border-violet-500 dark:hover:bg-violet-950/60",
     "border-pink-400 dark:border-pink-700 dark:hover:border-pink-600 hover:bg-pink-100 hover:border-pink-500 dark:hover:bg-pink-950/60",
     "border-orange-400 dark:border-orange-700 dark:hover:border-orange-600 hover:bg-orange-100 hover:border-orange-500 dark:hover:bg-orange-950/60",
+    "border-emerald-400 dark:border-emerald-700 dark:hover:border-emerald-600 hover:bg-emerald-100 hover:border-emerald-500 dark:hover:bg-emerald-950/60",
   ];
 
   const icons = [
@@ -50,9 +54,23 @@ export default function FormatDialog(props: {
     <BrainCircuit key="brain" />,
     <Presentation key="pres" />,
     <CalendarRangeIcon key="calendar" />,
+    <UserCheck2 key="user" />,
   ];
 
   const [selectedFormat, setSelectedFormat] = useState<Format | undefined>();
+  const templates = getTemplates();
+  const [availableFormats] = useState<Format[]>(
+    templates.length > 0
+      ? [
+          ...formats,
+          {
+            category: "user-templates",
+            options: templates.map((e) => ({ text: e.name, val: e.name })),
+            colorId: 7,
+          },
+        ]
+      : formats,
+  );
 
   return (
     <div className="flex items-center justify-between space-x-2 rounded-md border px-2">
@@ -101,6 +119,11 @@ export default function FormatDialog(props: {
                             onClick={() => {
                               props.setVal(format.val);
                               props.setCategory(selectedFormat.category);
+                              props.setTemplateId(
+                                selectedFormat.category === "user-templates"
+                                  ? j
+                                  : undefined,
+                              );
                               setFormat(format.text);
                             }}
                             variant="ghost"
@@ -120,7 +143,7 @@ export default function FormatDialog(props: {
           {!selectedFormat && (
             <ScrollArea className="h-[240px]">
               <div className="flex flex-col gap-2">
-                {formats.map((category, i) => (
+                {availableFormats.map((category, i) => (
                   <Button
                     key={i}
                     onClick={() => setSelectedFormat(category)}
