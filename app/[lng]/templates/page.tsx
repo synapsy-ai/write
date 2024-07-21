@@ -18,7 +18,7 @@ import { getComplexEssayGlobalRecipe } from "@/lib/recipes/complex-essay-global"
 import { getComplexEssayRecipe } from "@/lib/recipes/complex-essay-literrature";
 import { getComplexEssayPhiloRecipe } from "@/lib/recipes/complex-essay-philo";
 import { getPhiloAnalysisRecipe } from "@/lib/recipes/complex-philo-analysis";
-import { Plus } from "lucide-react";
+import { Eye, Plus } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
@@ -94,11 +94,18 @@ export default function TemplatesPage({
                         {t(templateItem.name)}
                       </h3>
                     </div>
-                    <Link href={`/${lng}/templates/edit?id=${i}`}>
-                      <Button variant="outline" className="w-full">
-                        {t("template-edit")}
-                      </Button>
-                    </Link>
+                    <div className="flex w-full items-center space-x-2">
+                      <Link href={`/${lng}/templates/edit?id=${i}`}>
+                        <Button variant="outline" className="w-full">
+                          {t("template-edit")}
+                        </Button>
+                      </Link>
+                      <Link href={`/${lng}/templates/view?id=${i}`}>
+                        <Button variant="outline">
+                          <Eye size={14} />
+                        </Button>
+                      </Link>
+                    </div>
                   </CardContent>
                 </Card>
               ))}

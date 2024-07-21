@@ -6,7 +6,7 @@ import { getComplexEssayGlobalRecipe } from "@/lib/recipes/complex-essay-global"
 import { getComplexEssayRecipe } from "@/lib/recipes/complex-essay-literrature";
 import { getComplexEssayPhiloRecipe } from "@/lib/recipes/complex-essay-philo";
 import { getPhiloAnalysisRecipe } from "@/lib/recipes/complex-philo-analysis";
-import { Recipe } from "@/lib/recipe";
+import { getTemplates, Recipe } from "@/lib/recipe";
 import {
   Dialog,
   DialogContent,
@@ -19,6 +19,7 @@ import { NotepadText } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { HighlightedVariable } from "@/components/variable-highlight";
+import { useState } from "react";
 
 export default function ViewTemplatePage({
   params: { lng },
@@ -35,8 +36,11 @@ export default function ViewTemplatePage({
     "text-philosophy": getPhiloAnalysisRecipe(lng, "none"),
   };
 
-  const recipe: Recipe =
-    typeof id === "string" ? defaultTemplates[id] : defaultTemplates["essay"];
+  const templates = getTemplates();
+
+  const [recipe] = useState(
+    Number.isFinite(+id) ? templates[+id] : defaultTemplates[id],
+  );
 
   return (
     <main className="flex min-h-[calc(100vh_-_theme(spacing.16))] flex-1 flex-col gap-4 bg-slate-100/40 p-4 pb-16 dark:bg-transparent sm:mt-16 sm:pb-0 md:gap-8 md:p-10 print:mt-0 print:bg-white">
@@ -47,14 +51,14 @@ export default function ViewTemplatePage({
         <Card className="mt-6 flex flex-col gap-6 p-6 md:p-8">
           <div className="grid gap-2">
             <h4 className="font-bold">{t("name")}</h4>
-            <p className="text-muted-foreground">{t(recipe.name)}</p>
+            <p className="text-muted-foreground">{t(recipe?.name)}</p>
             <h4 className="font-bold">{t("prompt")}</h4>
-            <p className="text-muted-foreground">{recipe.systemPrompt}</p>
+            <p className="text-muted-foreground">{recipe?.systemPrompt}</p>
           </div>
           <div className="grid gap-4">
             <h3 className="text-lg font-semibold">{t("steps")}</h3>
             <div className="grid gap-4">
-              {recipe.steps.map((step, i) => (
+              {recipe?.steps.map((step, i) => (
                 <Card key={i} className="grid grid-cols-[1fr,auto] gap-2 p-4">
                   <div className="flex flex-col gap-4">
                     <h4 className="font-medium">{t(step.name)}</h4>
