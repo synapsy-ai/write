@@ -2,6 +2,8 @@
 ![GitHub issues](https://img.shields.io/github/issues/synapsy-ai/write)
 ![GitHub](https://img.shields.io/github/license/synapsy-ai/write)
 ![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/synapsy-ai/write)
+[![Netlify Status](https://api.netlify.com/api/v1/badges/bdeb6fdd-a8c3-42ae-8904-af28530f4be9/deploy-status)](https://app.netlify.com/sites/synapsy-write/deploys)
+![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/synapsy-ai/write/nextjs.yml)
 
 <br />
 <p align="center">
@@ -24,17 +26,35 @@
   </p>
 </p>
 
-
 ## Overview
 
 Synapsy Write is a Next.js web application that leverages the power of OpenAI's GPT Generative AI models to assist users in effortlessly generating text content. Whether you need paragraphs for your website, blog posts, essays, or any other written content, Synapsy Write has got you covered. With a user-friendly interface and advanced AI capabilities, creating text has never been easier!
 
 ## Features
 
-- **OpenAI's GPT Generative AI**: Harness the state-of-the-art AI technology provided by OpenAI to generate high-quality text based on your input.
-- **Versatile Output**: Create paragraphs, blog posts, essays, and more with just a few clicks.
-- **Easy to Use**: The intuitive user interface ensures that even non-technical users can get started quickly.
-- And more to come!
+### OpenAI's GPT Generative AI
+
+Synapsy Write harnesses the power of OpenAI's advanced AI models, including GPT-4, GPT-3.5, GPT-4o, and GPT-4o mini. These models are at the forefront of natural language processing, delivering high-quality text generation based on your input. Whether you're looking for precise, informative paragraphs or creative, engaging narratives, these state-of-the-art models provide reliable and contextually accurate content, ensuring your text meets the highest standards of quality and coherence.
+
+### Versatile Output
+
+One of the standout features of Synapsy Write is its versatility in content creation. With just a few clicks, you can generate various forms of written content such as paragraphs, blog posts, essays, and more. This flexibility allows users to produce different types of content without needing multiple tools, making it an all-in-one solution for your writing needs. The AI's adaptability ensures that the content generated is suitable for various purposes, from professional documentation to creative storytelling.
+
+### Templates
+
+The template feature in Synapsy Write allows users to create and utilize custom templates for generating complex documents. This functionality enables you to define the structure and format of your documents, breaking down the generation process into manageable parts and assigning different models to specific sections. By doing so, you ensure better output quality and coherence, especially for lengthy or detailed documents. This feature is ideal for users who frequently produce similar types of documents and want to streamline their workflow.
+
+### Conversation
+
+Synapsy Write includes a conversation mode that mimics the interactive experience of ChatGPT. This feature allows users to engage in a dialogue with the AI, providing a more dynamic and interactive content generation process. Additionally, users can customize the system prompt, tailoring the AI's responses to better fit their needs. This adaptability makes the conversation feature a powerful tool for brainstorming, refining ideas, or simply exploring different perspectives on a topic.
+
+### Easy to Use
+
+The intuitive user interface of Synapsy Write ensures that even non-technical users can get started quickly and efficiently. The design is user-centric, prioritizing ease of use and accessibility. Clear instructions, straightforward navigation, and responsive design elements all contribute to a seamless user experience. Whether you're a novice or an experienced user, Synapsy Write's interface is designed to facilitate effortless interaction with its powerful AI capabilities.
+
+### Customizable
+
+Customization is a key feature of Synapsy Write, allowing users to tailor the application to their specific needs. Various settings can be adjusted to enhance the user experience, such as selecting preferred AI models, adjusting text output length, and customizing system prompts. This level of personalization ensures that the application can be adapted to suit different writing styles, requirements, and preferences, providing a more personalized and effective content generation experience.
 
 ## Getting Started
 
@@ -52,6 +72,30 @@ To use Synapsy Write, follow these simple steps:
 
 - Modern web browser (Chrome, Firefox, Safari, Edge, etc.)
 - Internet connection
+
+## Contributing
+
+We welcome contributions to enhance Synapsy Write! If you'd like to contribute, please follow these steps:
+
+1. **Fork the Repository**: Click the 'Fork' button at the top right of this page.
+2. **Clone Your Fork**:
+   ```sh
+   git clone https://github.com/yourusername/synapsy-write.git
+   ```
+3. **Create a Branch**:
+   ```sh
+   git checkout -b feature/your-feature-name
+   ```
+4. **Make Your Changes**: Implement your feature or fix.
+5. **Commit Your Changes**:
+   ```sh
+   git commit -m 'Add feature/your-feature-name'
+   ```
+6. **Push to Your Branch**:
+   ```sh
+   git push origin feature/your-feature-name
+   ```
+7. **Open a Pull Request**: Submit your pull request for review.
 
 ## License
 
