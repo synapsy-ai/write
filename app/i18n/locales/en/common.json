@@ -349,5 +349,8 @@
   "sys-prompt": "System Prompt",
   "output-var": "Output Variable name",
   "none": "None",
-  "hide-content": "Not included in the final generation"
+  "hide-content": "Not included in the final generation",
+  "no-user-templates": "No templates are available",
+  "no-user-templates-desc": "Create a template to get started.",
+  "add": "Add"
 }

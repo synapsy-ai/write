@@ -347,5 +347,8 @@
   "sys-prompt": "Invite système",
   "output-var": "Nom de la variable de sortie",
   "none": "Aucun",
-  "hide-content": "Non inclus dans la génération finale"
+  "hide-content": "Non inclus dans la génération finale",
+  "no-user-templates": "Aucun modèle n'est disponible",
+  "no-user-templates-desc": "Créez un modèle pour commencer.",
+  "add": "Ajouter"
 }
