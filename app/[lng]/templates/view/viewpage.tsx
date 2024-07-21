@@ -15,11 +15,12 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { NotepadText } from "lucide-react";
+import { ArrowLeft, NotepadText } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { HighlightedVariable } from "@/components/variable-highlight";
 import { useState } from "react";
+import Link from "next/link";
 
 export default function ViewTemplatePage({
   params: { lng },
@@ -45,8 +46,14 @@ export default function ViewTemplatePage({
   return (
     <main className="flex min-h-[calc(100vh_-_theme(spacing.16))] flex-1 flex-col gap-4 bg-slate-100/40 p-4 pb-16 dark:bg-transparent sm:mt-16 sm:pb-0 md:gap-8 md:p-10 print:mt-0 print:bg-white">
       <div className="mx-auto w-full max-w-6xl">
-        <div className="mx-auto grid w-full gap-2 print:hidden">
+        <div className="mx-auto grid w-full justify-start gap-2 print:hidden">
           <h1 className="text-3xl font-semibold">{t("template-view")}</h1>
+          <Link href={`/${lng}/templates`} className="flex">
+            <Button variant="link" className="space-x-2">
+              <ArrowLeft size={14} />
+              <span>{t("back")}</span>
+            </Button>
+          </Link>
         </div>
         <Card className="mt-6 flex flex-col gap-6 p-6 md:p-8">
           <div className="grid gap-2">

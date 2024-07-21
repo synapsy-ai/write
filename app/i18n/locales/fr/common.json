@@ -352,5 +352,6 @@
   "no-user-templates-desc": "Créez un modèle pour commencer.",
   "add": "Ajouter",
   "delete-confirm": "Etes-vous absolument sûr ?",
-  "delete-confirm-desc": "Cette action ne peut pas être annulée. Cela supprimera définitivement ce modèle."
+  "delete-confirm-desc": "Cette action ne peut pas être annulée. Cela supprimera définitivement ce modèle.",
+  "back": "Retour"
 }

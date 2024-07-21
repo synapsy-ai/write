@@ -354,5 +354,6 @@
   "no-user-templates-desc": "Create a template to get started.",
   "add": "Add",
   "delete-confirm": "Are you absolutely sure?",
-  "delete-confirm-desc": "This action cannot be undone. This will permanently delete this template."
+  "delete-confirm-desc": "This action cannot be undone. This will permanently delete this template.",
+  "back": "Back"
 }

@@ -10,7 +10,14 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { ArrowDownIcon, ArrowUpIcon, Edit, Plus, Save } from "lucide-react";
+import {
+  ArrowDownIcon,
+  ArrowLeft,
+  ArrowUpIcon,
+  Edit,
+  Plus,
+  Save,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { HighlightedVariable } from "@/components/variable-highlight";
@@ -18,6 +25,7 @@ import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import { Textarea } from "@/components/ui/textarea";
 import { Close } from "@radix-ui/react-dialog";
+import Link from "next/link";
 
 export default function EditTemplatePage({
   params: { lng },
@@ -81,6 +89,12 @@ export default function EditTemplatePage({
       <div className="mx-auto w-full max-w-6xl">
         <div className="mx-auto grid w-full gap-2 print:hidden">
           <h1 className="text-3xl font-semibold">{t("template-edit")}</h1>
+          <Link href={`/${lng}/templates`} className="flex">
+            <Button variant="link" className="space-x-2">
+              <ArrowLeft size={14} />
+              <span>{t("back")}</span>
+            </Button>
+          </Link>
         </div>
 
         <Card className="mt-6 flex flex-col gap-6 p-6 md:p-8">
