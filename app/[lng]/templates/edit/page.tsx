@@ -10,7 +10,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { ArrowDownIcon, ArrowUpIcon, Edit, Plus } from "lucide-react";
+import { ArrowDownIcon, ArrowUpIcon, Edit, Plus, Save } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { HighlightedVariable } from "@/components/variable-highlight";
@@ -39,11 +39,15 @@ export default function EditTemplatePage({
     let steps = [...recipe.steps];
     steps[i - 1] = item2;
     steps[i] = item1;
-    setRecipe({
+
+    let r = {
       name: recipe.name,
       systemPrompt: recipe.systemPrompt,
       steps: steps,
-    });
+    };
+    setRecipe(r);
+    recipes[+id] = r;
+    saveTemplates(recipes);
   }
   function down(i: number) {
     let item1 = recipe?.steps[i + 1];
@@ -51,11 +55,25 @@ export default function EditTemplatePage({
     let steps = [...recipe.steps];
     steps[i + 1] = item2;
     steps[i] = item1;
-    setRecipe({
+
+    let r = {
       name: recipe.name,
       systemPrompt: recipe.systemPrompt,
       steps: steps,
-    });
+    };
+    setRecipe(r);
+    recipes[+id] = r;
+    saveTemplates(recipes);
+  }
+
+  function save() {
+    let r = {
+      name: name,
+      systemPrompt: prompt,
+      steps: [...recipe?.steps],
+    };
+    recipes[+id] = r;
+    saveTemplates(recipes);
   }
 
   return (
@@ -91,6 +109,16 @@ export default function EditTemplatePage({
                 });
               }}
             />
+            <div className="sm:flex sm:justify-start">
+              <Button
+                onClick={save}
+                className="w-full space-x-2 sm:w-auto"
+                variant="outline"
+              >
+                <Save size={14} />
+                <span>{t("save")}</span>
+              </Button>
+            </div>
           </div>
           <div className="grid gap-4">
             <h3 className="text-lg font-semibold">{t("steps")}</h3>

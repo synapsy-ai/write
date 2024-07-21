@@ -20,7 +20,7 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { HighlightedVariable } from "@/components/variable-highlight";
 
-export default function TemplatesPage({
+export default function ViewTemplatePage({
   params: { lng },
 }: {
   params: { lng: any };
