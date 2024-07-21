@@ -90,7 +90,7 @@ export default function ViewTemplatePage({
                         </div>
                         <div className="my-2">
                           <h4>{t("output-var")}</h4>
-                          <p className="w-fit rounded-full border px-2 text-muted-foreground">
+                          <p className="w-fit rounded-full border px-2 text-muted-foreground transition hover:border-indigo-500 hover:bg-indigo-500/20 hover:text-indigo-500">
                             {step.outputVar}
                           </p>
                         </div>

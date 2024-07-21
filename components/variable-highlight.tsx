@@ -31,7 +31,7 @@ export const HighlightedVariable = ({ text }: { text: string }) => {
         part.isSpan ? (
           <span
             key={index}
-            className="rounded-full border px-2 text-muted-foreground"
+            className="rounded-full border px-2 text-muted-foreground transition hover:border-indigo-500 hover:bg-indigo-500/20 hover:text-indigo-500"
           >
             {part.text}
           </span>
