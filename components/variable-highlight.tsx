@@ -15,7 +15,7 @@ export const HighlightedVariable = ({
   text: string;
   lng: string;
 }) => {
-  const { t } = useTranslation("fr", "common");
+  const { t } = useTranslation(lng, "common");
   const splitStringWithSpans = (text: string) => {
     const regex = /\[\[([^\]]+)\]\]/g;
     const parts = [];
