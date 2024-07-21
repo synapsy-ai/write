@@ -94,43 +94,47 @@ export default function TemplatesPage({
             ))}
           </div>
           <div>
-            <h2 className="my-4 text-2xl">{t("user-templates")}</h2>
-
-            {templates.length > 0 && (
-              <Dialog>
-                <DialogTrigger>
-                  <Button className="-mt-4 space-x-2" variant="link">
-                    <Plus />
-                    <span>{t("create")}</span>
-                  </Button>
-                </DialogTrigger>
-                <DialogContent>
-                  <DialogHeader>
-                    <DialogTitle>{t("template-new")}</DialogTitle>
-                  </DialogHeader>
-                  <div className="space-y-2">
-                    <p>{t("name")}</p>
-                    <Input
-                      value={name}
-                      onChange={(e) => setName(e.target.value)}
-                    />
-                    <p>{t("sys-prompt")}</p>
-                    <Textarea
-                      value={prompt}
-                      onChange={(e) => setPrompt(e.target.value)}
-                    />
-                    <div className="flex justify-center">
-                      <Button
-                        onClick={createTemplate}
-                        disabled={!name || !prompt}
-                      >
-                        {t("create")}
-                      </Button>
+            <div className="flex items-baseline space-x-2">
+              <h2 className="my-4 text-2xl">{t("user-templates")}</h2>
+              {templates.length > 0 && (
+                <Dialog>
+                  <DialogTrigger>
+                    <Button
+                      className="h-auto space-x-2 p-0 px-2"
+                      variant="link"
+                    >
+                      <Plus size={14} />
+                      <span>{t("create")}</span>
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent>
+                    <DialogHeader>
+                      <DialogTitle>{t("template-new")}</DialogTitle>
+                    </DialogHeader>
+                    <div className="space-y-2">
+                      <p>{t("name")}</p>
+                      <Input
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                      />
+                      <p>{t("sys-prompt")}</p>
+                      <Textarea
+                        value={prompt}
+                        onChange={(e) => setPrompt(e.target.value)}
+                      />
+                      <div className="flex justify-center">
+                        <Button
+                          onClick={createTemplate}
+                          disabled={!name || !prompt}
+                        >
+                          {t("create")}
+                        </Button>
+                      </div>
                     </div>
-                  </div>
-                </DialogContent>
-              </Dialog>
-            )}
+                  </DialogContent>
+                </Dialog>
+              )}
+            </div>
             <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
               {templates.map((templateItem, i) => (
                 <Card key={i}>
