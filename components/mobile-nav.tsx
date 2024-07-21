@@ -105,7 +105,7 @@ export default function MobileNavBar(props: { lng: string }) {
             <Close>
               <Button
                 onClick={() => push(`/${props.lng}/settings`)}
-                className="flex items-center space-x-2"
+                className="flex w-full items-center justify-start space-x-2"
                 variant="ghost"
               >
                 <span>
@@ -117,7 +117,7 @@ export default function MobileNavBar(props: { lng: string }) {
             <Close>
               <Button
                 onClick={() => push(`/${props.lng}/templates`)}
-                className="flex items-center space-x-2"
+                className="flex w-full items-center justify-start space-x-2"
                 variant="ghost"
               >
                 <span>
