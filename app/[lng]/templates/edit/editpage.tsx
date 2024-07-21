@@ -156,7 +156,7 @@ export default function EditTemplatePage({
                   <div className="flex flex-col gap-4">
                     <h4 className="font-medium">{t(step.name)}</h4>
                     <p className="text-sm text-muted-foreground">
-                      <HighlightedVariable text={step.userPrompt} />
+                      <HighlightedVariable lng={lng} text={step.userPrompt} />
                     </p>
                   </div>
                   <div>

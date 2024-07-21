@@ -353,5 +353,7 @@
   "add": "Ajouter",
   "delete-confirm": "Etes-vous absolument sûr ?",
   "delete-confirm-desc": "Cette action ne peut pas être annulée. Cela supprimera définitivement ce modèle.",
-  "back": "Retour"
+  "back": "Retour",
+  "prompt-var": "La variable PROMPT contient l'invite fournie par l'utilisateur dans la page Créer.",
+  "var-usage": "Vous pouvez utiliser le contenu stocké par cette variable en utilisant "
 }

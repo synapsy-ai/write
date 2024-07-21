@@ -70,7 +70,7 @@ export default function ViewTemplatePage({
                   <div className="flex flex-col gap-4">
                     <h4 className="font-medium">{t(step.name)}</h4>
                     <p className="text-sm text-muted-foreground">
-                      <HighlightedVariable text={step.userPrompt} />
+                      <HighlightedVariable lng={lng} text={step.userPrompt} />
                     </p>
                   </div>
                   <Dialog>
@@ -96,11 +96,15 @@ export default function ViewTemplatePage({
                         </div>
                         <div className="my-2">
                           <h4>{t("user-prompt")}</h4>
-                          <HighlightedVariable text={step.userPrompt} />
+                          <HighlightedVariable
+                            lng={lng}
+                            text={step.userPrompt}
+                          />
                         </div>
                         <div className="my-2">
                           <h4>{t("sys-prompt")}</h4>
                           <HighlightedVariable
+                            lng={lng}
                             text={step.systemPrompt || t("none")}
                           />
                         </div>

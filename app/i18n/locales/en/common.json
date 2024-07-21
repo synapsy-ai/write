@@ -355,5 +355,7 @@
   "add": "Add",
   "delete-confirm": "Are you absolutely sure?",
   "delete-confirm-desc": "This action cannot be undone. This will permanently delete this template.",
-  "back": "Back"
+  "back": "Back",
+  "prompt-var": "The PROMPT variable contains the prompt provided by the user in the Create page.",
+  "var-usage": "You can use the content stored by this variable by using "
 }
