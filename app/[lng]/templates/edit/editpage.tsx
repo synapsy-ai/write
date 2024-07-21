@@ -284,9 +284,9 @@ function EditDialog(props: {
             <Edit size={14} />
           </Button>
         ) : (
-          <Button className="space-x-2" variant="link">
-            <Plus />
-            <span>{t("new")}</span>
+          <Button className="h-auto space-x-2 p-0" variant="link">
+            <Plus size={14} />
+            <span>{t("add")}</span>
           </Button>
         )}
       </DialogTrigger>
