@@ -332,7 +332,7 @@ export default function SettingsPage({
                       Synapsy by Peyronnet
                     </p>
                     <p>
-                      NextJS - MIT License - © 2023 Vercel, Inc.
+                      NextJS - MIT License - © 2024 Vercel, Inc.
                       <br />
                       RadixUI - MIT License - © 2022 WorkOS
                       <br />
