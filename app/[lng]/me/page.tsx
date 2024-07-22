@@ -66,22 +66,19 @@ export default async function Account({
   };
 
   return (
-    <main className="mt-2 min-h-full space-y-2 px-2 pb-20 sm:mt-16 sm:pb-0">
-      <section className="flex items-center space-x-2">
-        <CircleUser />
-        <span>
-          <h2 className="text-2xl font-bold">{t("my-account")}</h2>
-          <p>
+    <main className="min-h-full space-y-2 bg-slate-100/40 px-2 pb-20 dark:bg-transparent sm:mt-16 sm:pb-0 md:gap-8 md:p-10">
+      <section className="mx-auto grid w-full max-w-3xl items-start gap-6">
+        <div className="mx-auto mt-2 grid w-full max-w-6xl gap-2 p-2 sm:mt-0 sm:p-0">
+          <h1 className="text-3xl font-semibold">{t("my-account")}</h1>
+          <p className="text-muted-foreground">
+            {" "}
             {t("welcome-msg").replace(
               "[[user]]",
               userDetails?.full_name || "user",
             )}
           </p>
-        </span>
-      </section>
-      <Separator />
-      <div className="p-4">
-        <div className="m-auto w-full max-w-3xl rounded-md border border-violet-400 bg-violet-100 p-4 dark:border-violet-700 dark:bg-violet-950">
+        </div>
+        <div className="m-auto w-full rounded-md border border-violet-400 bg-violet-100 p-4 dark:border-violet-700 dark:bg-violet-950">
           <p>
             {t("account-read-only-1")}{" "}
             <Link
@@ -108,10 +105,7 @@ export default async function Account({
             {subscriptions && subscriptions.length > 0 ? (
               <div className="space-y-2">
                 {subscriptions.map((subscription) => (
-                  <div
-                    key={subscription.id}
-                    className="rounded-md border p-4 dark:border-slate-700"
-                  >
+                  <div key={subscription.id} className="rounded-md border p-4">
                     <h3 className="text-xl font-bold">
                       {subscription?.prices?.products?.name}
                     </h3>
@@ -218,7 +212,7 @@ export default async function Account({
             </Button>
           </form>
         </Card>
-      </div>
+      </section>
     </main>
   );
 }
@@ -232,14 +226,16 @@ interface Props {
 
 function Card({ title, description, footer, children }: Props) {
   return (
-    <div className="m-auto my-8 w-full max-w-3xl rounded-md border border-slate-200 dark:border-slate-700">
-      <div className="px-5 py-4">
-        <h3 className="mb-1 text-xl">{title}</h3>
-        <p className="text-slate-700 dark:text-slate-300">{description}</p>
+    <div className="rounded-lg border bg-card text-card-foreground shadow-sm">
+      <div className="flex flex-col space-y-1.5 p-6">
+        <h3 className="text-2xl font-semibold leading-none tracking-tight">
+          {title}
+        </h3>
+        <p className="text-sm text-muted-foreground">{description}</p>
         {children}
       </div>
       {footer ? (
-        <div className="rounded-b-md border-t border-slate-200 bg-slate-100 p-4 text-slate-500 dark:border-slate-700 dark:bg-slate-900">
+        <div className="rounded-b-md border-t bg-slate-100/40 p-4 text-slate-500 dark:bg-slate-900/40">
           {footer}
         </div>
       ) : (

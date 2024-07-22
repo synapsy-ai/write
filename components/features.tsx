@@ -13,7 +13,7 @@ export default function PricingFeatures(props: Props) {
   }
   if (props.productName.toLowerCase().includes("premium")) {
     return (
-      <div className="mt-8 grid grid-cols-[auto,1fr] items-center gap-x-2  dark:text-slate-300">
+      <div className="mt-8 grid grid-cols-[auto,1fr] items-center gap-x-2 dark:text-slate-300">
         <Check size={16} />
         <p>
           {t("feature-ai")} (20/{t("month")})
@@ -35,7 +35,7 @@ export default function PricingFeatures(props: Props) {
 
   if (props.productName.toLowerCase().includes("pro")) {
     return (
-      <div className="mt-8 grid grid-cols-[auto,1fr] items-center gap-x-2  dark:text-slate-300">
+      <div className="mt-8 grid grid-cols-[auto,1fr] items-center gap-x-2 dark:text-slate-300">
         <Check size={16} />
         <p>
           {t("feature-ai")} ({t("unlimited")})
@@ -52,12 +52,13 @@ export default function PricingFeatures(props: Props) {
         <p>{t("text-analysis")}</p>
         <Check size={16} />
         <p>{t("variable-editor")}</p>
+        {props.lng === "fr" && <span className="h-[24px]"></span>}
       </div>
     );
   }
 
   return (
-    <div className="mt-8 grid grid-cols-[auto,1fr] items-center gap-x-2  dark:text-slate-300">
+    <div className="mt-8 grid grid-cols-[auto,1fr] items-center gap-x-2 dark:text-slate-300">
       <Check size={16} />
       <p>
         {t("feature-ai")} (10/{t("month")})

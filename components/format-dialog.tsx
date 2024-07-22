@@ -23,14 +23,18 @@ import {
   MessageCircle,
   Pen,
   Presentation,
+  UserCheck2,
 } from "lucide-react";
+import { getTemplates } from "@/lib/recipe";
 export default function FormatDialog(props: {
   lng: string;
   setVal: Function;
   setCategory: Function;
+  setTemplateId: Function;
 }) {
   const { t } = useTranslation(props.lng, "common");
   const [value, setValue] = useState("");
+  const [format, setFormat] = useState("paragraph");
   const colors = [
     "border-blue-400 dark:border-blue-700 dark:hover:border-blue-600 hover:bg-blue-100 hover:border-blue-500 dark:hover:bg-blue-950/60",
     "border-sky-400 dark:border-sky-700 dark:hover:border-sky-600 hover:bg-sky-100 hover:border-sky-500 dark:hover:bg-sky-950/50",
@@ -39,6 +43,7 @@ export default function FormatDialog(props: {
     "border-violet-400 dark:border-violet-700 dark:hover:border-violet-600 hover:bg-violet-100 hover:border-violet-500 dark:hover:bg-violet-950/60",
     "border-pink-400 dark:border-pink-700 dark:hover:border-pink-600 hover:bg-pink-100 hover:border-pink-500 dark:hover:bg-pink-950/60",
     "border-orange-400 dark:border-orange-700 dark:hover:border-orange-600 hover:bg-orange-100 hover:border-orange-500 dark:hover:bg-orange-950/60",
+    "border-emerald-400 dark:border-emerald-700 dark:hover:border-emerald-600 hover:bg-emerald-100 hover:border-emerald-500 dark:hover:bg-emerald-950/60",
   ];
 
   const icons = [
@@ -49,86 +54,111 @@ export default function FormatDialog(props: {
     <BrainCircuit key="brain" />,
     <Presentation key="pres" />,
     <CalendarRangeIcon key="calendar" />,
+    <UserCheck2 key="user" />,
   ];
 
   const [selectedFormat, setSelectedFormat] = useState<Format | undefined>();
+  const templates = getTemplates();
+  const [availableFormats] = useState<Format[]>(
+    templates.length > 0
+      ? [
+          ...formats,
+          {
+            category: "user-templates",
+            options: templates.map((e) => ({ text: e.name, val: e.name })),
+            colorId: 7,
+          },
+        ]
+      : formats,
+  );
 
   return (
-    <Dialog>
-      <DialogTrigger>
-        <Button
-          onClick={() => setSelectedFormat(undefined)}
-          className="w-full"
-          variant="outline"
-        >
-          {t("format")}
-        </Button>
-      </DialogTrigger>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>{t("select-format")}</DialogTitle>
-          <DialogDescription>{t("format-desc")}</DialogDescription>
-        </DialogHeader>
-        {selectedFormat && (
-          <div>
-            <Button
-              variant="link"
-              onClick={() => setSelectedFormat(undefined)}
-              className="m-0 -mt-4 flex h-auto space-x-2 p-2"
-            >
-              <ArrowLeft size={14} />
-              <p>{t("go-back")}</p>
-            </Button>
-            <Input
-              value={value}
-              onChange={(v) => setValue(v.target.value)}
-              placeholder={t("search-formats")}
-            />
-            <ScrollArea className="h-[200px]">
-              <div className="flex flex-col">
-                {selectedFormat.options.map((format, j) => (
-                  <>
-                    {t(format.text).toLowerCase().match(value.toLowerCase()) ? (
-                      <DialogClose className="items-stretch" tabIndex={-1}>
-                        <Button
-                          className="w-full justify-start"
-                          key={j}
-                          onClick={() => {
-                            props.setVal(format.val),
+    <div className="flex items-center justify-between space-x-2 rounded-md border px-2">
+      <p>{t(format)}</p>
+      <Dialog>
+        <DialogTrigger>
+          <Button
+            onClick={() => setSelectedFormat(undefined)}
+            className="w-full"
+            variant="link"
+          >
+            {t("change")}
+          </Button>
+        </DialogTrigger>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>{t("select-format")}</DialogTitle>
+            <DialogDescription>{t("format-desc")}</DialogDescription>
+          </DialogHeader>
+          {selectedFormat && (
+            <div>
+              <Button
+                variant="link"
+                onClick={() => setSelectedFormat(undefined)}
+                className="m-0 -mt-4 flex h-auto space-x-2 p-2"
+              >
+                <ArrowLeft size={14} />
+                <p>{t("go-back")}</p>
+              </Button>
+              <Input
+                value={value}
+                onChange={(v) => setValue(v.target.value)}
+                placeholder={t("search-formats")}
+              />
+              <ScrollArea className="h-[200px]">
+                <div className="flex flex-col">
+                  {selectedFormat.options.map((format, j) => (
+                    <>
+                      {t(format.text)
+                        .toLowerCase()
+                        .match(value.toLowerCase()) ? (
+                        <DialogClose className="items-stretch" tabIndex={-1}>
+                          <Button
+                            className="w-full justify-start"
+                            key={j}
+                            onClick={() => {
+                              props.setVal(format.val);
                               props.setCategory(selectedFormat.category);
-                          }}
-                          variant="ghost"
-                        >
-                          {t(format.text)}
-                        </Button>
-                      </DialogClose>
-                    ) : (
-                      <></>
-                    )}
-                  </>
+                              props.setTemplateId(
+                                selectedFormat.category === "user-templates"
+                                  ? j
+                                  : undefined,
+                              );
+                              setFormat(format.text);
+                            }}
+                            variant="ghost"
+                          >
+                            {t(format.text)}
+                          </Button>
+                        </DialogClose>
+                      ) : (
+                        <></>
+                      )}
+                    </>
+                  ))}
+                </div>
+              </ScrollArea>
+            </div>
+          )}
+          {!selectedFormat && (
+            <ScrollArea className="h-[240px]">
+              <div className="flex flex-col gap-2">
+                {availableFormats.map((category, i) => (
+                  <Button
+                    key={i}
+                    onClick={() => setSelectedFormat(category)}
+                    variant="ghost"
+                    className={`flex flex-row space-x-2 p-8 ${colors[category.colorId]}`}
+                  >
+                    {icons[i]}
+                    <p>{t(category.category)}</p>
+                  </Button>
                 ))}
               </div>
             </ScrollArea>
-          </div>
-        )}
-        {!selectedFormat && (
-          <ScrollArea className="h-[240px]">
-            <div className="flex flex-col gap-2">
-              {formats.map((category, i) => (
-                <Button
-                  key={i}
-                  onClick={() => setSelectedFormat(category)}
-                  variant="ghost"
-                  className={`flex flex-row space-x-2 p-8 ${colors[category.colorId]}`}
-                >
-                  {icons[i]}
-                  <p>{t(category.category)}</p>
-                </Button>
-              ))}
-            </div>
-          </ScrollArea>
-        )}
-      </DialogContent>
-    </Dialog>
+          )}
+        </DialogContent>
+      </Dialog>
+    </div>
   );
 }

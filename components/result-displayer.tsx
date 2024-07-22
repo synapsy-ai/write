@@ -132,9 +132,12 @@ export default function ResultDisplayer(props: {
               .replaceAll("</html>", "")
               .replaceAll("<!DOCTYPE html>", "")
               .replaceAll("\n\n", "<br>")
-              .replaceAll("\n\n\n", "<br>")
+              .replaceAll("\n\n\n", "\n")
               .replaceAll("\n    \n", "<br>")
-              .replaceAll("\n", "<br>"),
+              .replaceAll("\n", "<br>")
+              .replaceAll("```html", "")
+              .replaceAll("```", "")
+              .replaceAll("<br><br>", ""),
             options,
           )}
           {props.is_generating && (

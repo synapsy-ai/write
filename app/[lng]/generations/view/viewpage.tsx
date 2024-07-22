@@ -15,6 +15,14 @@ import { Variable } from "@/lib/variable";
 import VariableItemView from "@/components/variable-item-view";
 import Link from "next/link";
 import { Settings } from "@/lib/settings";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { type } from "os";
 
 export default function GenerationViewPage({
   params,
@@ -85,29 +93,50 @@ export default function GenerationViewPage({
     setContent(c);
   }
   return (
-    <main className="mt-2 pb-16 sm:mt-16 sm:pb-0 print:mt-0">
-      <section className="mx-2 flex items-center space-x-2 print:hidden">
-        <Book />
-        <span>
-          <h2 className="text-2xl font-bold">{t("generation")}</h2>
-          <p>{t("generation-desc")}</p>
-        </span>
-      </section>
-      <Separator className="my-2 print:hidden" />
-      <section className="mx-2 grid grid-cols-[auto,1fr] items-center gap-2 print:hidden">
-        <Text size={16} />
-        <p>{el.prompt}</p>
-
-        <Edit size={16} />
-        <p>{t(typesToString(el.template))}</p>
-
-        <Calendar size={16} />
-        <p>{new Date(el.date).toLocaleString()}</p>
-      </section>
-      <Separator className="my-2 print:hidden" />
-      <section className="flex flex-col items-center justify-center">
-        <section
-          className="m-2 max-w-[800px] rounded-md border pb-4 text-justify shadow-sm dark:bg-slate-900/50 print:border-0 print:text-black print:shadow-none"
+    <main className="flex min-h-[calc(100vh_-_theme(spacing.16))] flex-1 flex-col gap-4 bg-slate-100/40 p-4 pb-16 dark:bg-transparent sm:mt-16 sm:pb-0 md:gap-8 md:p-10 print:mt-0 print:bg-white">
+      <header className="mx-auto grid w-full max-w-6xl gap-2 print:hidden">
+        <h1 className="text-3xl font-semibold">{t("generation")}</h1>
+        <div className="mt-2 flex justify-center sm:justify-start print:hidden">
+          <Button
+            className="group mr-3 flex space-x-2 font-bold"
+            onClick={() => window.print()}
+          >
+            <Printer
+              className="transition group-hover:scale-125"
+              height={16}
+              width={16}
+            />
+            <p>{t("print")}</p>
+          </Button>
+          <Button
+            variant="link"
+            className="flex space-x-2"
+            onClick={() =>
+              navigator.clipboard.writeText(
+                document.getElementById("contentp")?.innerText ?? "",
+              )
+            }
+          >
+            <span>
+              <Copy size={16} />
+            </span>
+            <span>{t("copy")}</span>
+          </Button>
+          {el.template !== "ideas" && el.template !== "ph_visual_outline" && (
+            <Link href={`/${params.lng}/generations/edit?id=${id}`}>
+              <Button className="flex space-x-2" variant="link">
+                <span>
+                  <Edit size={16} />
+                </span>
+                <span>{t("edit")}</span>
+              </Button>
+            </Link>
+          )}
+        </div>
+      </header>
+      <section className="mx-auto grid w-full max-w-6xl items-start gap-6 md:grid-cols-[1fr_300px] lg:grid-cols-[1fr_350px]">
+        <div
+          className="max-w-[800px] rounded-md border bg-white pb-4 text-justify shadow-sm dark:bg-slate-900 dark:bg-slate-900/50 print:border-0 print:text-black print:shadow-none"
           id="ct"
         >
           <ResultDisplayer
@@ -116,103 +145,116 @@ export default function GenerationViewPage({
             type={el.template}
             font={s.gen_font ?? "default"}
           />
-          <div className="mt-2 flex justify-center space-x-2 print:hidden">
-            <Button
-              className="group flex space-x-2 font-bold"
-              onClick={() => window.print()}
-            >
-              <Printer
-                className="transition group-hover:scale-125"
-                height={16}
-                width={16}
-              />
-              <p>{t("print")}</p>
-            </Button>
-            <Button
-              variant="outline"
-              className="flex space-x-2"
-              onClick={() =>
-                navigator.clipboard.writeText(
-                  document.getElementById("contentp")?.innerText ?? "",
-                )
-              }
-            >
-              <Copy size={16} />
-            </Button>
-            {el.template !== "ideas" && el.template !== "ph_visual_outline" && (
-              <Link href={`/${params.lng}/generations/edit?id=${id}`}>
-                <Button variant="outline">
-                  <Edit size={16} />
-                </Button>
-              </Link>
-            )}
-          </div>
-        </section>
-        {el.template !== "ideas" &&
-        el.template !== "ph_visual_outline" &&
-        variables &&
-        variables.length > 0 ? (
-          <span className="flex w-full justify-center px-2">
-            <section className="mb-2 w-full max-w-[800px] rounded-md border pb-4 text-justify shadow-sm dark:bg-slate-900/50 print:hidden">
-              <p className="m-4 mb-0 text-sm font-normal text-slate-400 dark:text-slate-500">
-                {t("variables")} ({variables && variables.length})
-              </p>
-              <div>
-                {variables &&
-                  variables.length > 0 &&
-                  variables?.map((el, i) => (
-                    <VariableItemView
-                      functions={{
-                        setVar: editVariable,
-                      }}
-                      key={i}
-                      lng={params.lng}
-                      index={i}
-                      item={el}
-                    />
-                  ))}
-              </div>
-              <span className="flex justify-center">
-                <Button onClick={updateVariables} variant="outline">
-                  {t("apply")}
-                </Button>
-              </span>
-            </section>
-          </span>
-        ) : (
-          <></>
-        )}
+        </div>
 
-        <section className="grid w-full max-w-[800px] grid-cols-2 items-center justify-center gap-2 px-2 pb-5 md:grid-cols-4 md:p-0 print:hidden">
-          <div className="rounded-lg border bg-white/50 p-4 shadow-sm transition-all hover:bg-slate-100/75 dark:bg-slate-900/50 dark:hover:bg-slate-900/90">
-            <h2 className="text-sm font-normal text-slate-400 dark:text-slate-500">
-              {t("price")}
-            </h2>
-            <p id="price" className="text-xl font-semibold">
-              {price}
-            </p>
-          </div>
-          <div className="hover:bg-whit rounded-lg border bg-white/50 p-4 shadow-sm transition-all hover:bg-slate-100/75 dark:bg-slate-900/50 dark:hover:bg-slate-900/90">
-            <h2 className="text-sm font-normal text-slate-400 dark:text-slate-500">
-              {t("tokens")}
-            </h2>
-            <p id="price" className="text-xl font-semibold">
-              {nbTokens}
-            </p>
-          </div>
-          <div className="hover:bg-whit rounded-lg border bg-white/50 p-4 shadow-sm transition-all hover:bg-slate-100/75 dark:bg-slate-900/50 dark:hover:bg-slate-900/90">
-            <h2 className="text-sm font-normal text-slate-400 dark:text-slate-500">
-              {t("words")}
-            </h2>
-            <p className="text-xl font-semibold">{nbWords}</p>
-          </div>
-          <div className="hover:bg-whit rounded-lg border bg-white/50 p-4 shadow-sm transition-all hover:bg-slate-100/75 dark:bg-slate-900/50 dark:hover:bg-slate-900/90">
-            <h2 className="text-sm font-normal text-slate-400 dark:text-slate-500">
-              {t("characters")}
-            </h2>
-            <p className="text-xl font-semibold">{nbChars}</p>
-          </div>
-        </section>
+        <div className="grid gap-6 print:hidden">
+          <Card>
+            <CardHeader>
+              <CardTitle>{t("overview")}</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="grid gap-2">
+                <div className="flex items-center justify-between">
+                  <span>{t("format")}</span>
+                  <span className="font-medium">
+                    {t(typesToString(el.template))}
+                  </span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span>{t("date")}</span>
+                  <span className="font-medium">
+                    {new Date(el.date).toLocaleString()}
+                  </span>
+                </div>
+                {el.template !== "manual" && (
+                  <div className="flex flex-col">
+                    <span>{t("prompt")}</span>
+                    <span className="rounded-md bg-slate-100 p-2 font-medium dark:bg-slate-900">
+                      {el.prompt}
+                    </span>
+                  </div>
+                )}
+              </div>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader>
+              <CardTitle>{t("information")}</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <section className="flex w-full flex-col items-center justify-center gap-2 px-2 pb-5 md:p-0">
+                <div className="w-full">
+                  <h2 className="text-sm font-normal text-slate-400 dark:text-slate-500">
+                    {t("price")}
+                  </h2>
+                  <p id="price" className="text-xl font-semibold">
+                    {price}
+                  </p>
+                </div>
+                <div className="hover:bg-whit w-full">
+                  <h2 className="text-sm font-normal text-slate-400 dark:text-slate-500">
+                    {t("tokens")}
+                  </h2>
+                  <p id="price" className="text-xl font-semibold">
+                    {nbTokens}
+                  </p>
+                </div>
+                <div className="hover:bg-whit w-full">
+                  <h2 className="text-sm font-normal text-slate-400 dark:text-slate-500">
+                    {t("words")}
+                  </h2>
+                  <p className="text-xl font-semibold">{nbWords}</p>
+                </div>
+                <div className="hover:bg-whit w-full">
+                  <h2 className="text-sm font-normal text-slate-400 dark:text-slate-500">
+                    {t("characters")}
+                  </h2>
+                  <p className="text-xl font-semibold">{nbChars}</p>
+                </div>
+              </section>
+            </CardContent>
+          </Card>
+
+          {el.template !== "ideas" &&
+          el.template !== "ph_visual_outline" &&
+          variables &&
+          variables.length > 0 ? (
+            <Card>
+              <CardHeader>
+                <CardTitle>
+                  {t("variables")} ({variables.length})
+                </CardTitle>
+                <CardDescription>{t("variables-desc")}</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="mb-2 w-full max-w-[800px] rounded-md border pb-4 text-justify dark:bg-slate-900/50 print:hidden">
+                  <div>
+                    {variables &&
+                      variables.length > 0 &&
+                      variables?.map((el, i) => (
+                        <VariableItemView
+                          functions={{
+                            setVar: editVariable,
+                          }}
+                          key={i}
+                          lng={params.lng}
+                          index={i}
+                          item={el}
+                        />
+                      ))}
+                  </div>
+                  <span className="flex justify-center">
+                    <Button onClick={updateVariables} variant="outline">
+                      {t("apply")}
+                    </Button>
+                  </span>
+                </div>
+              </CardContent>
+            </Card>
+          ) : (
+            <></>
+          )}
+        </div>
       </section>
     </main>
   );

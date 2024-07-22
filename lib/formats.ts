@@ -88,6 +88,7 @@ export interface FormatOption {
 }
 
 export function typesToString(type: string): string {
+  if (type === "manual") return "manual";
   for (let i = 0; i < formats.length; i++) {
     for (let j = 0; j < formats[i].options.length; j++) {
       if (formats[i].options[j].val === type) {
@@ -95,7 +96,7 @@ export function typesToString(type: string): string {
       }
     }
   }
-  return "";
+  return type;
 }
 
 export const tones = [

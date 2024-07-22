@@ -1,3 +1,4 @@
+import { version } from "@/lib/version";
 import Stripe from "stripe";
 
 export const stripe = new Stripe(
@@ -9,7 +10,7 @@ export const stripe = new Stripe(
     // https://stripe.com/docs/building-plugins#setappinfo
     appInfo: {
       name: "Synapsy Write",
-      version: "2.7.1",
+      version: version,
     },
   },
 );

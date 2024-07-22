@@ -1,12 +1,12 @@
 "use client";
 import { Suspense } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
-import GenerationsPage from "./genpage";
+import EditTemplatePage from "./editpage";
 
 export default function ViewPage({ params }: { params: { lng: string } }) {
   return (
     <Suspense fallback={LoadingUI()}>
-      <GenerationsPage params={params} />
+      <EditTemplatePage params={params} />
     </Suspense>
   );
 }

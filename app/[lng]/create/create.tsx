@@ -6,39 +6,25 @@ import { v4 as uuidv4 } from "uuid";
 
 import {
   Info,
-  Lightbulb,
   Loader2,
   LucideFileWarning,
-  PenBox,
-  PencilRuler,
   RefreshCcw,
   Settings as SettingsLogo,
   Sparkles,
 } from "lucide-react";
 import { useState } from "react";
 import { Settings } from "@/lib/settings";
-import {
-  getComplexEssayPrompts,
-  getModels,
-  getPrompt,
-  getPromptComplexAnalysis,
-  getStandardGeneration,
-  getSystem,
-  sendToGpt,
-  sendToGptCustom,
-  usingPlan,
-} from "@/lib/ai-completions";
+import { getModels, sendToGpt, sendToGptCustom } from "@/lib/ai-completions";
 import { addToHistory } from "@/lib/history";
 import {
   Sheet,
-  SheetClose,
   SheetContent,
   SheetDescription,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { tones, typesToString } from "@/lib/formats";
+import { tones } from "@/lib/formats";
 
 import { Skeleton } from "@/components/ui/skeleton";
 import ResultDisplayer from "@/components/result-displayer";
@@ -85,6 +71,18 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { getTemplates, Recipe } from "@/lib/recipe";
+import { getPhiloAnalysisRecipe } from "@/lib/recipes/complex-philo-analysis";
+import { getComplexEssayGlobalRecipe } from "@/lib/recipes/complex-essay-global";
+import { getComplexEssayRecipe } from "@/lib/recipes/complex-essay-literrature";
+import { getComplexEssayPhiloRecipe } from "@/lib/recipes/complex-essay-philo";
 
 type Subscription = Database["public"]["Tables"]["subscriptions"]["Row"];
 type Product = Database["public"]["Tables"]["products"]["Row"];
@@ -124,7 +122,6 @@ export default function Create(props: Props) {
   const [prompt, setPrompt] = useState("");
   const [inProgress, setInProgress] = useState(false);
   const [progressBarVis, setProgressBarVis] = useState(false);
-  const [progress, setProgress] = useState(0);
   const [model, setModel] = useState("gpt-3.5-turbo");
   const [errorMsg, setErrorMsg] = useState<any>({ message: "", name: "" });
   const [errorVis, setErrorVis] = useState(false);
@@ -138,10 +135,14 @@ export default function Create(props: Props) {
   const [textToAnalyse, setTextToAnalyse] = useState("");
   const [expandInput, setExpandInput] = useState(false);
   const defaultModels = () =>
-    hasGpt4Access() ? ["gpt-3.5-turbo", "gpt-4"] : ["gpt-3.5-turbo"];
+    hasGpt4Access()
+      ? ["gpt-3.5-turbo", "gpt-4", "gpt-4o-mini"]
+      : ["gpt-3.5-turbo", "gpt-4o-mini"];
   const [avModels, setAvModels] = useState(
     getAvailableModels(s.models) ?? defaultModels(),
   );
+
+  const [templateId, setTemplateId] = useState<number | undefined>();
 
   const [complexSteps, setComplexSteps] = useState<GenerationStep[]>([]);
   const [complexSectionVis, setComplexSectionVis] = useState(false);
@@ -156,7 +157,12 @@ export default function Create(props: Props) {
     let models = [];
     let gpt4 = hasGpt4Access();
     for (let i = 0; i < availableModels.length; i++) {
-      if (availableModels[i].includes("gpt-4") && !gpt4) continue;
+      if (
+        availableModels[i].includes("gpt-4") &&
+        !availableModels[i].includes("mini") &&
+        !gpt4
+      )
+        continue;
       models?.push(availableModels[i]);
     }
     return models;
@@ -167,7 +173,12 @@ export default function Create(props: Props) {
     let avm: string[] = [];
     for (let i = 0; i < m.length; i++) {
       if (m[i].id.startsWith("gpt")) {
-        if (m[i].id.includes("gpt-4") && !hasGpt4Access()) continue;
+        if (
+          m[i].id.includes("gpt-4") &&
+          !m[i].id.includes("mini") &&
+          !hasGpt4Access()
+        )
+          continue;
         avm.push(m[i].id);
       }
     }
@@ -255,7 +266,9 @@ export default function Create(props: Props) {
   }
   async function createButton() {
     setRes("");
-    if (model.includes("gpt-4")) {
+
+    // If the user has selected GPT-4, check if they have access to the model
+    if (model.includes("gpt-4") && !model.includes("mini")) {
       if (gpt4Quotas <= 0) return;
       if (props.session && props.session.user && gpt4Quotas > 0) {
         let q = gpt4Quotas - 1;
@@ -272,6 +285,13 @@ export default function Create(props: Props) {
         }
       }
     }
+
+    // If the user has selected its own template
+    if (templateId !== undefined) {
+      executeRecipe(getTemplates()[templateId]);
+      return;
+    }
+
     if (type === "es_complex") {
       createComplexEssay();
     } else if (type == "g_es_complex") {
@@ -287,58 +307,35 @@ export default function Create(props: Props) {
     }
   }
 
-  async function createComplexPhiloAnalysis() {
+  async function executeRecipe(recipe: Recipe) {
     setInProgress(true);
     setErrorVis(false);
     setIsGen(false);
     setComplexSectionVis(true);
-    setComplexSteps([
-      { i18nname: "essay-outline", done: false },
-      { i18nname: "introduction", done: false },
-      { i18nname: "main-content", done: false },
-      { i18nname: "conclusion", done: false },
-    ]);
-    // 1. Generate the outline
-    const outline = await getStandardGeneration(
-      getSystem("ph_analysis_outline", lng, tone),
-      getPrompt("ph_analysis_outline", lng, textToAnalyse) + "\n" + prompt,
-      apiKey,
-      model,
-      {
-        temp: temp,
-        presP: presP,
-        topP: topp,
-        freqP: freqP,
-      },
+
+    const context: { [key: string]: string } = {};
+    setComplexSteps(
+      recipe.steps.map((step) => ({ i18nname: step.name, done: false })),
     );
+    let final = "";
 
-    if (outline instanceof OpenAI.APIError) {
-      setErrorMsg(outline);
-      setErrorVis(true);
-      setInProgress(false);
-      return;
-    }
-
-    setIsGen(true);
-    setInProgress(false);
-    setRes("");
-    setComplexSteps([
-      { i18nname: "essay-outline", done: true },
-      { i18nname: "introduction", done: false },
-      { i18nname: "main-content", done: false },
-      { i18nname: "conclusion", done: false },
-    ]);
-
-    // 2. Generate the intro
-    const intro =
-      (await sendToGptCustom(
-        getSystem("ph_analysis_outline", lng, tone),
-        getPromptComplexAnalysis(
-          textToAnalyse,
-          outline,
-          "ph_analysis_intro",
-          lng,
-        ),
+    for (let i = 0; i < recipe.steps.length; i++) {
+      const step = recipe.steps[i];
+      step.userPrompt = step.userPrompt.replace(
+        "[[PROMPT]]",
+        (type === "ph_analysis_complex" ? textToAnalyse : prompt) +
+          getVariableString(variables),
+      );
+      for (let j = 0; j < Object.keys(context).length; j++) {
+        step.userPrompt = step.userPrompt.replace(
+          `[[${Object.keys(context)[j]}]]`,
+          context[Object.keys(context)[j]],
+        );
+      }
+      if (!step.hide) setInProgress(false);
+      const result = await sendToGptCustom(
+        step.systemPrompt ?? recipe.systemPrompt,
+        step.userPrompt,
         apiKey,
         model,
         {
@@ -347,656 +344,56 @@ export default function Create(props: Props) {
           topP: topp,
           freqP: freqP,
         },
-        "",
-        { setContent: setRes },
-      )) ?? "";
+        final,
+        { setContent: step.hide ? () => {} : setRes },
+      );
 
-    if (intro instanceof OpenAI.APIError) {
-      setErrorMsg(intro);
-      setErrorVis(true);
-      setInProgress(false);
-      return;
+      if (result instanceof OpenAI.APIError) {
+        setErrorMsg(result);
+        setErrorVis(true);
+        setInProgress(false);
+        return;
+      }
+      if (!step.hide) final += result;
+
+      // Store the result in the context
+      if (step.outputVar) context[step.outputVar] = result;
+
+      setComplexSteps(
+        recipe.steps.map((step, index) => ({
+          i18nname: step.name,
+          done: index <= i,
+        })),
+      );
+      setRes(final);
     }
-    setComplexSteps([
-      { i18nname: "essay-outline", done: true },
-      { i18nname: "introduction", done: true },
-      { i18nname: "main-content", done: false },
-      { i18nname: "conclusion", done: false },
-    ]);
 
-    // 3. Generate dev part
-    const p1 = await sendToGptCustom(
-      getSystem("ph_analysis_outline", lng, tone),
-      getPromptComplexAnalysis(textToAnalyse, outline, "ph_analysis_dev", lng),
-      apiKey,
-      model,
-      {
-        temp: temp,
-        presP: presP,
-        topP: topp,
-        freqP: freqP,
-      },
-      intro + "\n" || "",
-      { setContent: setRes },
-    );
-    setComplexSteps([
-      { i18nname: "essay-outline", done: true },
-      { i18nname: "introduction", done: true },
-      { i18nname: "main-content", done: true },
-      { i18nname: "conclusion", done: false },
-    ]);
-    // 4. Generate conclusion
-    const ccl = await sendToGptCustom(
-      getSystem("ph_analysis_outline", lng, tone),
-      getPromptComplexAnalysis(
-        textToAnalyse,
-        outline,
-        "ph_analysis_conclusion",
-        lng,
-      ),
-      apiKey,
-      model,
-      {
-        temp: temp,
-        presP: presP,
-        topP: topp,
-        freqP: freqP,
-      },
-      intro + "\n" + p1 + "\n" || "",
-      { setContent: setRes },
-    );
-    setRes(intro + p1 + ccl);
-    setComplexSteps([
-      { i18nname: "essay-outline", done: true },
-      { i18nname: "introduction", done: true },
-      { i18nname: "main-content", done: true },
-      { i18nname: "conclusion", done: true },
-    ]);
     addToHistory({
-      prompt: textToAnalyse,
-      content: intro + "\n" + p1 + "\n" + ccl ?? "",
+      prompt: type === "ph_analysis_complex" ? textToAnalyse : prompt,
+      content: final || Object.values(context).join("\n") || "",
       template: type,
       date: new Date(),
     });
+
     setIsGen(false);
     setInProgress(false);
     setComplexSectionVis(false);
+  }
+
+  async function createComplexPhiloAnalysis() {
+    executeRecipe(getPhiloAnalysisRecipe(lng, tone));
   }
 
   async function createComplexEssayGlobal() {
-    setInProgress(true);
-    setErrorVis(false);
-    setIsGen(false);
-    setComplexSectionVis(true);
-    setComplexSteps([
-      { i18nname: "essay-outline", done: false },
-      { i18nname: "introduction", done: false },
-      { i18nname: "part-1", done: false },
-      { i18nname: "part-2", done: false },
-      { i18nname: "part-3", done: false },
-      { i18nname: "conclusion", done: false },
-    ]);
-    const outline = await getStandardGeneration(
-      getSystem("g_es_complex_outline", lng, tone),
-      getPrompt("g_es_outline", lng, prompt),
-      apiKey,
-      model,
-      {
-        temp: temp,
-        presP: presP,
-        topP: topp,
-        freqP: freqP,
-      },
-    );
-
-    if (outline instanceof OpenAI.APIError) {
-      setErrorMsg(outline);
-      setErrorVis(true);
-      setInProgress(false);
-      return;
-    }
-    setComplexSteps([
-      { i18nname: "essay-outline", done: true },
-      { i18nname: "introduction", done: false },
-      { i18nname: "part-1", done: false },
-      { i18nname: "part-2", done: false },
-      { i18nname: "part-3", done: false },
-      { i18nname: "conclusion", done: false },
-    ]);
-    setIsGen(true);
-    setInProgress(false);
-    setRes("");
-    setProgress(16);
-    const intro =
-      (await sendToGptCustom(
-        getSystem("g_es_intro", lng, tone),
-        getPrompt("g_es_intro", lng, prompt + usingPlan(lng) + outline),
-        apiKey,
-        model,
-        {
-          temp: temp,
-          presP: presP,
-          topP: topp,
-          freqP: freqP,
-        },
-        "",
-        { setContent: setRes },
-      )) ?? "";
-
-    if (intro instanceof OpenAI.APIError) {
-      setErrorMsg(intro);
-      setErrorVis(true);
-      setInProgress(false);
-      return;
-    }
-    setProgress(32);
-    setComplexSteps([
-      { i18nname: "essay-outline", done: true },
-      { i18nname: "introduction", done: true },
-      { i18nname: "part-1", done: false },
-      { i18nname: "part-2", done: false },
-      { i18nname: "part-3", done: false },
-      { i18nname: "conclusion", done: false },
-    ]);
-
-    const p1 = await sendToGptCustom(
-      getSystem("g_es_basic", lng, tone),
-      getComplexEssayPrompts(1, outline, lng),
-      apiKey,
-      model,
-      {
-        temp: temp,
-        presP: presP,
-        topP: topp,
-        freqP: freqP,
-      },
-      intro || "",
-      { setContent: setRes },
-    );
-    if (p1 instanceof OpenAI.APIError) {
-      setErrorMsg(p1);
-      setErrorVis(true);
-      setInProgress(false);
-      return;
-    }
-    setProgress(48);
-    setComplexSteps([
-      { i18nname: "essay-outline", done: true },
-      { i18nname: "introduction", done: true },
-      { i18nname: "part-1", done: true },
-      { i18nname: "part-2", done: false },
-      { i18nname: "part-3", done: false },
-      { i18nname: "conclusion", done: false },
-    ]);
-    const p2 = await sendToGptCustom(
-      getSystem("g_es_basic", lng, tone),
-      getComplexEssayPrompts(2, outline, lng),
-      apiKey,
-      model,
-      {
-        temp: temp,
-        presP: presP,
-        topP: topp,
-        freqP: freqP,
-      },
-      intro + p1 || "",
-      { setContent: setRes },
-    );
-    if (p2 instanceof OpenAI.APIError) {
-      setErrorMsg(p2);
-      setErrorVis(true);
-      setInProgress(false);
-      return;
-    }
-    setProgress(64);
-    setComplexSteps([
-      { i18nname: "essay-outline", done: true },
-      { i18nname: "introduction", done: true },
-      { i18nname: "part-1", done: true },
-      { i18nname: "part-2", done: true },
-      { i18nname: "part-3", done: false },
-      { i18nname: "conclusion", done: false },
-    ]);
-    const p3 = await sendToGptCustom(
-      getSystem("g_es_basic", lng, tone),
-      getComplexEssayPrompts(3, outline, lng),
-      apiKey,
-      model,
-      {
-        temp: temp,
-        presP: presP,
-        topP: topp,
-        freqP: freqP,
-      },
-      intro + p1 + p2 || "",
-      { setContent: setRes },
-    );
-    if (p3 instanceof OpenAI.APIError) {
-      setErrorMsg(p3);
-      setErrorVis(true);
-      setInProgress(false);
-      return;
-    }
-    setProgress(82);
-    setComplexSteps([
-      { i18nname: "essay-outline", done: true },
-      { i18nname: "introduction", done: true },
-      { i18nname: "part-1", done: true },
-      { i18nname: "part-2", done: true },
-      { i18nname: "part-3", done: true },
-      { i18nname: "conclusion", done: false },
-    ]);
-    const ccl = await sendToGptCustom(
-      getSystem("g_es_conclusion", lng, tone),
-      getPrompt("g_es_conclusion", lng, prompt + usingPlan(lng) + outline),
-      apiKey,
-      model,
-      {
-        temp: temp,
-        presP: presP,
-        topP: topp,
-        freqP: freqP,
-      },
-      intro + p1 + p2 + p3 || "",
-      { setContent: setRes },
-    );
-    if (ccl instanceof OpenAI.APIError) {
-      setErrorMsg(ccl);
-      setErrorVis(true);
-      setInProgress(false);
-      return;
-    }
-    setProgress(100);
-    setComplexSteps([
-      { i18nname: "essay-outline", done: true },
-      { i18nname: "introduction", done: true },
-      { i18nname: "part-1", done: true },
-      { i18nname: "part-2", done: true },
-      { i18nname: "part-3", done: true },
-      { i18nname: "conclusion", done: true },
-    ]);
-    setRes(intro + p1 + p2 + p3 + ccl);
-    addToHistory({
-      prompt: prompt,
-      content: intro + p1 + p2 + p3 + ccl ?? "",
-      template: type,
-      date: new Date(),
-    });
-    setIsGen(false);
-    setInProgress(false);
-    setComplexSectionVis(false);
+    executeRecipe(getComplexEssayGlobalRecipe(lng, tone));
   }
 
   async function createComplexEssay() {
-    setComplexSectionVis(true);
-    setInProgress(true);
-    setErrorVis(false);
-    setIsGen(false);
-    setComplexSteps([
-      { i18nname: "essay-outline", done: false },
-      { i18nname: "introduction", done: false },
-      { i18nname: "part-1", done: false },
-      { i18nname: "part-2", done: false },
-      { i18nname: "part-3", done: false },
-      { i18nname: "conclusion", done: false },
-    ]);
-    const outline = await getStandardGeneration(
-      getSystem("es_complex_outline", lng, tone),
-      getPrompt("es_outline", lng, prompt),
-      apiKey,
-      model,
-      {
-        temp: temp,
-        presP: presP,
-        topP: topp,
-        freqP: freqP,
-      },
-    );
-
-    if (outline instanceof OpenAI.APIError) {
-      setErrorMsg(outline);
-      setErrorVis(true);
-      setInProgress(false);
-      return;
-    }
-    setIsGen(true);
-    setInProgress(false);
-    setRes("");
-    setProgress(16);
-    setComplexSteps([
-      { i18nname: "essay-outline", done: true },
-      { i18nname: "introduction", done: false },
-      { i18nname: "part-1", done: false },
-      { i18nname: "part-2", done: false },
-      { i18nname: "part-3", done: false },
-      { i18nname: "conclusion", done: false },
-    ]);
-    const intro =
-      (await sendToGptCustom(
-        getSystem("es_intro", lng, tone),
-        getPrompt("es_intro", lng, prompt + usingPlan(lng) + outline),
-        apiKey,
-        model,
-        {
-          temp: temp,
-          presP: presP,
-          topP: topp,
-          freqP: freqP,
-        },
-        "",
-        { setContent: setRes },
-      )) ?? "";
-
-    if (intro instanceof OpenAI.APIError) {
-      setErrorMsg(intro);
-      setErrorVis(true);
-      setInProgress(false);
-      return;
-    }
-    setProgress(32);
-    setComplexSteps([
-      { i18nname: "essay-outline", done: true },
-      { i18nname: "introduction", done: true },
-      { i18nname: "part-1", done: false },
-      { i18nname: "part-2", done: false },
-      { i18nname: "part-3", done: false },
-      { i18nname: "conclusion", done: false },
-    ]);
-
-    const p1 = await sendToGptCustom(
-      getSystem("es_basic", lng, tone),
-      getComplexEssayPrompts(1, outline, lng),
-      apiKey,
-      model,
-      {
-        temp: temp,
-        presP: presP,
-        topP: topp,
-        freqP: freqP,
-      },
-      intro || "",
-      { setContent: setRes },
-    );
-    if (p1 instanceof OpenAI.APIError) {
-      setErrorMsg(p1);
-      setErrorVis(true);
-      setInProgress(false);
-      return;
-    }
-    setProgress(48);
-    setComplexSteps([
-      { i18nname: "essay-outline", done: true },
-      { i18nname: "introduction", done: true },
-      { i18nname: "part-1", done: true },
-      { i18nname: "part-2", done: false },
-      { i18nname: "part-3", done: false },
-      { i18nname: "conclusion", done: false },
-    ]);
-    const p2 = await sendToGptCustom(
-      getSystem("es_basic", lng, tone),
-      getComplexEssayPrompts(2, outline, lng),
-      apiKey,
-      model,
-      {
-        temp: temp,
-        presP: presP,
-        topP: topp,
-        freqP: freqP,
-      },
-      intro + p1 || "",
-      { setContent: setRes },
-    );
-    if (p2 instanceof OpenAI.APIError) {
-      setErrorMsg(p2);
-      setErrorVis(true);
-      setInProgress(false);
-      return;
-    }
-    setProgress(64);
-    setComplexSteps([
-      { i18nname: "essay-outline", done: true },
-      { i18nname: "introduction", done: true },
-      { i18nname: "part-1", done: true },
-      { i18nname: "part-2", done: true },
-      { i18nname: "part-3", done: false },
-      { i18nname: "conclusion", done: false },
-    ]);
-    const p3 = await sendToGptCustom(
-      getSystem("es_basic", lng, tone),
-      getComplexEssayPrompts(3, outline, lng),
-      apiKey,
-      model,
-      {
-        temp: temp,
-        presP: presP,
-        topP: topp,
-        freqP: freqP,
-      },
-      intro + p1 + p2 || "",
-      { setContent: setRes },
-    );
-    if (p3 instanceof OpenAI.APIError) {
-      setErrorMsg(p3);
-      setErrorVis(true);
-      setInProgress(false);
-      return;
-    }
-    setProgress(82);
-    setComplexSteps([
-      { i18nname: "essay-outline", done: true },
-      { i18nname: "introduction", done: true },
-      { i18nname: "part-1", done: true },
-      { i18nname: "part-2", done: true },
-      { i18nname: "part-3", done: true },
-      { i18nname: "conclusion", done: false },
-    ]);
-    const ccl = await sendToGptCustom(
-      getSystem("es_conclusion", lng, tone),
-      getPrompt("es_conclusion", lng, prompt + usingPlan(lng) + outline),
-      apiKey,
-      model,
-      {
-        temp: temp,
-        presP: presP,
-        topP: topp,
-        freqP: freqP,
-      },
-      intro + p1 + p2 + p3 || "",
-      { setContent: setRes },
-    );
-    if (ccl instanceof OpenAI.APIError) {
-      setErrorMsg(ccl);
-      setErrorVis(true);
-      setInProgress(false);
-      return;
-    }
-    setProgress(100);
-    setComplexSteps([
-      { i18nname: "essay-outline", done: true },
-      { i18nname: "introduction", done: true },
-      { i18nname: "part-1", done: true },
-      { i18nname: "part-2", done: true },
-      { i18nname: "part-3", done: false },
-      { i18nname: "conclusion", done: true },
-    ]);
-    setRes(intro + p1 + p2 + p3 + ccl);
-    addToHistory({
-      prompt: prompt,
-      content: intro + p1 + p2 + p3 + ccl ?? "",
-      template: type,
-      date: new Date(),
-    });
-    setIsGen(false);
-    setInProgress(false);
-    setComplexSectionVis(false);
+    executeRecipe(getComplexEssayRecipe(lng, tone));
   }
 
   async function createComplexPhiloEssay() {
-    setComplexSectionVis(true);
-    setInProgress(true);
-    setIsGen(false);
-    setProgressBarVis(true);
-    setComplexSteps([
-      { i18nname: "essay-outline", done: false },
-      { i18nname: "introduction", done: false },
-      { i18nname: "part-1", done: false },
-      { i18nname: "part-2", done: false },
-      { i18nname: "part-3", done: false },
-      { i18nname: "conclusion", done: false },
-    ]);
-    const outline = await getStandardGeneration(
-      getSystem("ph_visual_outline", lng, tone),
-      getPrompt("ph_visual_outline", lng, prompt),
-      apiKey,
-      model,
-      {
-        temp: temp,
-        presP: presP,
-        topP: topp,
-        freqP: freqP,
-      },
-    );
-    setProgress(16);
-    setComplexSteps([
-      { i18nname: "essay-outline", done: true },
-      { i18nname: "introduction", done: false },
-      { i18nname: "part-1", done: false },
-      { i18nname: "part-2", done: false },
-      { i18nname: "part-3", done: false },
-      { i18nname: "conclusion", done: false },
-    ]);
-    setInProgress(false);
-    setRes("");
-    setIsGen(true);
-    const intro =
-      (await sendToGptCustom(
-        getSystem("ph_intro", lng, tone),
-        getPrompt("ph_intro", lng, prompt + usingPlan(lng) + outline),
-        apiKey,
-        model,
-        {
-          temp: temp,
-          presP: presP,
-          topP: topp,
-          freqP: freqP,
-        },
-        "",
-        { setContent: setRes },
-      )) + "\n" ?? "";
-    setProgress(32);
-    setComplexSteps([
-      { i18nname: "essay-outline", done: true },
-      { i18nname: "introduction", done: true },
-      { i18nname: "part-1", done: false },
-      { i18nname: "part-2", done: false },
-      { i18nname: "part-3", done: false },
-      { i18nname: "conclusion", done: false },
-    ]);
-
-    const p1 = await sendToGptCustom(
-      getSystem("ph_basic", lng, tone),
-      getComplexEssayPrompts(1, outline, lng),
-      apiKey,
-      model,
-      {
-        temp: temp,
-        presP: presP,
-        topP: topp,
-        freqP: freqP,
-      },
-      intro || "",
-      { setContent: setRes },
-    );
-    setProgress(48);
-    setComplexSteps([
-      { i18nname: "essay-outline", done: true },
-      { i18nname: "introduction", done: true },
-      { i18nname: "part-1", done: true },
-      { i18nname: "part-2", done: false },
-      { i18nname: "part-3", done: false },
-      { i18nname: "conclusion", done: false },
-    ]);
-    const p2 =
-      (await sendToGptCustom(
-        getSystem("ph_basic", lng, tone),
-        getComplexEssayPrompts(2, outline, lng),
-        apiKey,
-        model,
-        {
-          temp: temp,
-          presP: presP,
-          topP: topp,
-          freqP: freqP,
-        },
-        intro + p1 || "",
-        { setContent: setRes },
-      )) + "\n";
-    setProgress(64);
-    setComplexSteps([
-      { i18nname: "essay-outline", done: true },
-      { i18nname: "introduction", done: true },
-      { i18nname: "part-1", done: true },
-      { i18nname: "part-2", done: true },
-      { i18nname: "part-3", done: false },
-      { i18nname: "conclusion", done: false },
-    ]);
-    const p3 =
-      (await sendToGptCustom(
-        getSystem("ph_basic", lng, tone),
-        getComplexEssayPrompts(3, outline, lng),
-        apiKey,
-        model,
-        {
-          temp: temp,
-          presP: presP,
-          topP: topp,
-          freqP: freqP,
-        },
-        intro + p1 + p2 || "",
-        { setContent: setRes },
-      )) + "\n";
-    setProgress(82);
-    setComplexSteps([
-      { i18nname: "essay-outline", done: true },
-      { i18nname: "introduction", done: true },
-      { i18nname: "part-1", done: true },
-      { i18nname: "part-2", done: true },
-      { i18nname: "part-3", done: true },
-      { i18nname: "conclusion", done: false },
-    ]);
-    const ccl = await sendToGptCustom(
-      getSystem("ph_conclusion", lng, tone),
-      getPrompt("ph_conclusion", lng, prompt + usingPlan(lng) + outline),
-      apiKey,
-      model,
-      {
-        temp: temp,
-        presP: presP,
-        topP: topp,
-        freqP: freqP,
-      },
-      intro + p1 + p2 + p3 || "",
-      { setContent: setRes },
-    );
-    setProgress(100);
-    setComplexSteps([
-      { i18nname: "essay-outline", done: true },
-      { i18nname: "introduction", done: true },
-      { i18nname: "part-1", done: true },
-      { i18nname: "part-2", done: true },
-      { i18nname: "part-3", done: true },
-      { i18nname: "conclusion", done: true },
-    ]);
-    setRes(intro + p1 + p2 + p3 + ccl);
-    addToHistory({
-      prompt: prompt,
-      content: intro + p1 + p2 + p3 + ccl ?? "",
-      template: type,
-      date: new Date(),
-    });
-    setIsGen(false);
-    setInProgress(false);
-    setComplexSectionVis(false);
+    executeRecipe(getComplexEssayPhiloRecipe(lng, tone));
   }
 
   function removeVariable(i: number) {
@@ -1057,168 +454,64 @@ export default function Create(props: Props) {
   }
 
   return (
-    <main className="mt-2 flex min-h-full flex-col pb-16 sm:mt-16 sm:pb-0 print:mt-0">
-      <section className="ml-2 flex items-center space-x-2 print:hidden">
-        <PenBox />
-        <span>
-          <h2 className="text-2xl font-bold">{t("create")}</h2>
-          <p>{t("create-desc")}</p>
-        </span>
-      </section>
-      <Separator className="my-2" />
-
-      <section>
-        <p className="m-2 font-bold print:hidden">{t("prompt")}</p>
-        <div className="m-2 flex flex-col items-stretch space-y-1 sm:flex-row sm:items-start sm:space-x-2 sm:space-y-0 print:hidden">
-          {expandInput ? (
-            <Textarea
-              value={prompt}
-              onChange={(v) => setPrompt(v.target.value)}
-            />
-          ) : (
-            <Input value={prompt} onChange={(v) => setPrompt(v.target.value)} />
+    <main className="flex min-h-[calc(100vh_-_theme(spacing.16))] flex-1 flex-col gap-4 bg-slate-100/40 p-4 pb-16 dark:bg-transparent sm:mt-16 sm:pb-0 md:gap-8 md:p-10 print:mt-0 print:bg-white">
+      <div className="mx-auto grid w-full max-w-6xl gap-2 print:hidden">
+        <h1 className="text-3xl font-semibold">{t("create")}</h1>
+        <p className="text-muted-foreground">{t("create-desc")}</p>
+      </div>
+      <div className="mx-auto grid w-full max-w-6xl items-start gap-6 md:grid-cols-[1fr_300px] lg:grid-cols-[1fr_350px]">
+        <div className="grid gap-6">
+          {!unlimited && model.includes("gpt-4") && !model.includes("mini") && (
+            <Card className="border-violet-500 bg-violet-500/20 print:hidden">
+              <div className="m-2 flex items-center space-x-2">
+                <Info size={16} color="#8b5cf6" />
+                <p className="font-bold text-violet-500">
+                  {t("gpt-4-remaining-quotas")} {gpt4Quotas}
+                </p>
+              </div>
+            </Card>
           )}
-
-          <div className="grid grid-cols-[1fr,auto] space-x-1 sm:flex sm:space-x-2">
-            <FormatDialog lng={lng} setVal={setType} setCategory={setCat} />
-
-            <Sheet>
-              <TooltipProvider delayDuration={0}>
-                <Tooltip>
-                  <TooltipTrigger>
-                    <SheetTrigger asChild>
-                      <Button variant="outline">
-                        <SettingsLogo height={16} />
-                      </Button>
-                    </SheetTrigger>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p>{t("settings")}</p>
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
-
-              <SheetContent>
-                <SheetHeader>
-                  <SheetTitle>{t("options")}</SheetTitle>
-                  <SheetDescription>{t("model-options")}</SheetDescription>
-                </SheetHeader>
-                <div className="py-4">
-                  <div className="flex items-center space-x-2">
-                    <p>{t("model")}</p>
-                    <Select
-                      onValueChange={(e) => setModel(e)}
-                      defaultValue={model}
-                    >
-                      <SelectTrigger className="w-[180px]">
-                        <SelectValue placeholder={t("model")} />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <ScrollArea className="h-[200px]">
-                          {avModels.map((el, i) => (
-                            <SelectItem key={i} value={el}>
-                              {getModelString(el)}
-                            </SelectItem>
-                          ))}
-                        </ScrollArea>
-                      </SelectContent>
-                    </Select>
-                    <TooltipProvider delayDuration={0}>
-                      <Tooltip>
-                        <TooltipTrigger>
-                          <Button variant="outline" onClick={getMs}>
-                            <RefreshCcw height={14} />
-                          </Button>
-                        </TooltipTrigger>
-                        <TooltipContent>
-                          <p>{t("refresh-models")}</p>
-                        </TooltipContent>
-                      </Tooltip>
-                    </TooltipProvider>
-                  </div>
-
-                  <Separator className="my-2" />
-                  <p>{t("temp")}</p>
-                  <HoverCard openDelay={200}>
-                    <HoverCardTrigger className="flex space-x-2">
-                      <Slider
-                        onValueChange={(v) => setTemp(v[0])}
-                        defaultValue={[temp]}
-                        max={2}
-                        step={0.01}
-                      />
-                      <p>{temp}</p>
-                    </HoverCardTrigger>
-                    <HoverCardContent>{t("temp-desc")}</HoverCardContent>
-                  </HoverCard>
-                  <p>{t("top-p")}</p>
-                  <HoverCard openDelay={200}>
-                    <HoverCardTrigger className="flex space-x-2">
-                      <Slider
-                        onValueChange={(v) => setTopP(v[0])}
-                        defaultValue={[topp]}
-                        max={1}
-                        step={0.01}
-                      />
-                      <p>{topp}</p>
-                    </HoverCardTrigger>
-                    <HoverCardContent>{t("top-p-desc")}</HoverCardContent>
-                  </HoverCard>
-                  <p>{t("freq-penalty")}</p>
-                  <HoverCard openDelay={200}>
-                    <HoverCardTrigger className="flex space-x-2">
-                      <Slider
-                        onValueChange={(v) => setFreqP(v[0])}
-                        defaultValue={[freqP]}
-                        max={2}
-                        step={0.01}
-                      />
-                      <p>{freqP}</p>
-                    </HoverCardTrigger>
-                    <HoverCardContent>
-                      {t("freq-penalty-desc")}
-                    </HoverCardContent>
-                  </HoverCard>
-                  <p>{t("pres-penalty")}</p>
-                  <HoverCard openDelay={200}>
-                    <HoverCardTrigger className="flex space-x-2">
-                      <Slider
-                        onValueChange={(v) => setPresP(v[0])}
-                        defaultValue={[presP]}
-                        max={2}
-                        step={0.01}
-                      />
-                      <p>{presP}</p>
-                    </HoverCardTrigger>
-                    <HoverCardContent>
-                      {t("pres-penalty-desc")}
-                    </HoverCardContent>
-                  </HoverCard>
-                  <Separator className="my-2" />
-                  <div className="flex items-center space-x-2">
-                    <p>{t("tone")}</p>
-                    <Select
-                      defaultValue={tone}
-                      onValueChange={(v) => setTone(v)}
-                    >
-                      <SelectTrigger className="w-[180px]">
-                        <SelectValue placeholder={t("tone")} />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <ScrollArea className="h-[200px]">
-                          {tones.map((el, i) => (
-                            <SelectItem key={i} value={el}>
-                              {t(el)}
-                            </SelectItem>
-                          ))}
-                        </ScrollArea>
-                      </SelectContent>
-                    </Select>
-                  </div>
+          <Card className="print:hidden">
+            <CardHeader>
+              <CardTitle>{t("prompt")}</CardTitle>
+              <CardDescription>{t("prompt-desc")}</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="grid gap-4">
+                {expandInput ? (
+                  <Textarea
+                    value={prompt}
+                    onChange={(v) => setPrompt(v.target.value)}
+                  />
+                ) : (
+                  <Input
+                    value={prompt}
+                    onChange={(v) => setPrompt(v.target.value)}
+                  />
+                )}
+              </div>
+              <div className="mt-2 flex items-center space-x-2 px-2 print:hidden">
+                <Checkbox
+                  id="expandChk"
+                  checked={expandInput}
+                  onCheckedChange={() => setExpandInput(!expandInput)}
+                />
+                <label htmlFor="expandChk">{t("expand-input")}</label>
+              </div>
+              {type.startsWith("ph_analysis_") && (
+                <div className="p-2">
+                  <p className="mb-2 font-bold print:hidden">
+                    {t("text-to-analyse")}
+                  </p>
+                  <Textarea
+                    className="print:hidden"
+                    value={textToAnalyse}
+                    onChange={(v) => setTextToAnalyse(v.target.value)}
+                  />
                 </div>
-              </SheetContent>
-            </Sheet>
-          </div>
+              )}
+            </CardContent>
+          </Card>
           {isSubscribed() ? (
             <>
               {!inProgress ? (
@@ -1231,7 +524,7 @@ export default function Create(props: Props) {
                       ? textToAnalyse.replace(" ", "") == ""
                       : prompt.replace(" ", "") == ""
                   }
-                  className="group space-x-1 disabled:cursor-not-allowed"
+                  className="group space-x-1 print:hidden"
                   onClick={createButton}
                 >
                   <Sparkles
@@ -1250,8 +543,8 @@ export default function Create(props: Props) {
             </>
           ) : (
             <Dialog>
-              <DialogTrigger className="w-auto">
-                <Button className="group w-full space-x-1 disabled:cursor-not-allowed sm:w-auto">
+              <DialogTrigger>
+                <Button className="group w-full space-x-1 disabled:cursor-not-allowed">
                   <Sparkles
                     className="group-hover:animate-pulse group-hover:duration-700"
                     height={16}
@@ -1312,165 +605,268 @@ export default function Create(props: Props) {
               </DialogContent>
             </Dialog>
           )}
-        </div>
-        <div className="flex items-center space-x-2 px-2 print:hidden">
-          <Checkbox
-            id="expandChk"
-            checked={expandInput}
-            onCheckedChange={() => setExpandInput(!expandInput)}
-          />
-          <label htmlFor="expandChk">{t("expand-input")}</label>
-        </div>
-        {!unlimited && model.includes("gpt-4") && (
-          <div className="m-2 flex items-center space-x-2 rounded-md border border-violet-500 bg-violet-500/20 px-2 py-1 print:hidden">
-            <Info size={16} color="#8b5cf6" />
-            <p className="font-bold text-violet-500">
-              {t("gpt-4-remaining-quotas")} {gpt4Quotas}
-            </p>
-          </div>
-        )}
-        {type.startsWith("ph_analysis_") && (
-          <div className="p-2">
-            <p className="mb-2 font-bold print:hidden">
-              {t("text-to-analyse")}
-            </p>
-            <Textarea
-              className="print:hidden"
-              value={textToAnalyse}
-              onChange={(v) => setTextToAnalyse(v.target.value)}
-            />
-          </div>
-        )}
-        {type !== "ph_complex" && type !== "es_complex" && (
-          <div className="print:hidden">
-            <div>
-              <p className="m-2 font-bold">
-                {t("variables")} ({variables.length})
-              </p>
-              <Button
-                className="h-auto"
-                variant="link"
-                onClick={() =>
-                  setVariables([
-                    ...variables,
-                    { name: "", value: "", id: uuidv4() },
-                  ])
-                }
-              >
-                {t("add-variable")}
-              </Button>
-            </div>
-            <div>
-              {variables.length > 0 &&
-                variables.map((el, i) => (
-                  <VariableItem
-                    functions={{
-                      setVar: editVariable,
-                      removeVar: removeVariable,
-                    }}
-                    key={el.id}
-                    lng={lng}
-                    index={i}
-                    item={el}
+          {complexSectionVis && (
+            <ComplexGenItem steps={complexSteps} lng={lng} />
+          )}
+          <Card className="print:border-0 print:shadow-none">
+            <CardHeader className="print:hidden">
+              <CardTitle>{t("generation")}</CardTitle>
+            </CardHeader>
+            <CardContent>
+              {!errorVis && res && (
+                <section className={"grow text-justify"}>
+                  <ResultDisplayer
+                    font={s.gen_font ?? "default"}
+                    is_generating={isGen}
+                    res={res}
+                    type={type}
                   />
-                ))}
-            </div>
-          </div>
-        )}
-        <div className="m-2 flex flex-col items-start print:hidden">
-          <p className="font-bold">{t("gen-settings")}</p>
-          <TooltipProvider delayDuration={0}>
-            <Tooltip>
-              <TooltipTrigger className="cursor-default">
-                <p className="flex items-center space-x-2">
-                  <PenBox height={14} />
-                  <span>
-                    {t(cat)} - {t(typesToString(type))}
-                  </span>
-                </p>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>{t("formats")}</p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
-          <TooltipProvider delayDuration={0}>
-            <Tooltip>
-              <TooltipTrigger className="cursor-default">
-                <p className="flex items-center space-x-2">
-                  <Lightbulb height={14} />
-                  <span>{getModelString(model)}</span>
-                </p>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>{t("model")}</p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
-          <TooltipProvider delayDuration={0}>
-            <Tooltip>
-              <TooltipTrigger className="cursor-default">
-                <p className="flex items-center space-x-2">
-                  <PencilRuler height={14} />
-                  <span>{t(tone)}</span>
-                </p>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>{t("tone")}</p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
+                </section>
+              )}
+              {!errorVis && !res && (
+                <section
+                  className={
+                    "m-2 flex grow items-center justify-center rounded-md border bg-white p-2 py-[34px] shadow-sm dark:bg-slate-900/50 print:text-black print:shadow-none"
+                  }
+                >
+                  <div className="flex flex-col items-center justify-center">
+                    <Info height={48} width={48} />
+                    <p className="font-bold">{t("result-ph")}</p>
+                  </div>
+                </section>
+              )}
+              {errorVis && (
+                <section className="flex flex-col items-center">
+                  <LucideFileWarning height={48} width={48} />
+                  <p className="font-bold">{t("error-occured")}</p>
+                  <ErrorDisplayer err={errorMsg} />
+                </section>
+              )}
+              {inProgress ? (
+                <section className="flex min-h-[50vh] flex-col items-center justify-center">
+                  <p className="mb-2 text-xl font-bold">
+                    {t("gen-in-progress")}
+                  </p>
+                  <div className="space-y-2">
+                    <Skeleton className="h-4 w-[250px]" />
+                    <Skeleton className="h-4 w-[200px]" />
+                    <Skeleton className="h-4 w-[250px]" />
+                    <Skeleton className="h-4 w-[200px]" />
+                  </div>
+                </section>
+              ) : (
+                <></>
+              )}
+            </CardContent>
+          </Card>
         </div>
-      </section>
 
-      {complexSectionVis && <ComplexGenItem steps={complexSteps} lng={lng} />}
+        <div className="grid gap-6 text-sm text-muted-foreground print:hidden">
+          <Card>
+            <CardHeader>
+              <CardTitle>{t("options")}</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="grid gap-4">
+                <div className="space-y-2">
+                  <label htmlFor="model">{t("model")}</label>
+                  <div className="flex items-center space-x-2">
+                    <Select
+                      onValueChange={(e) => setModel(e)}
+                      defaultValue={model}
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder={t("model")} />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <ScrollArea className="h-[200px]">
+                          {avModels.map((el, i) => (
+                            <SelectItem key={i} value={el}>
+                              {getModelString(el)}
+                            </SelectItem>
+                          ))}
+                        </ScrollArea>
+                      </SelectContent>
+                    </Select>
+                    <TooltipProvider delayDuration={0}>
+                      <Tooltip>
+                        <TooltipTrigger>
+                          <Button variant="outline" onClick={getMs}>
+                            <RefreshCcw height={14} />
+                          </Button>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p>{t("refresh-models")}</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                    <Sheet>
+                      <TooltipProvider delayDuration={0}>
+                        <Tooltip>
+                          <TooltipTrigger>
+                            <SheetTrigger asChild>
+                              <Button variant="outline">
+                                <SettingsLogo height={16} />
+                              </Button>
+                            </SheetTrigger>
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            <p>{t("settings")}</p>
+                          </TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
 
-      {!errorVis && res && (
-        <section
-          className={
-            "m-2 grow rounded-md border bg-white p-2 text-justify shadow-sm dark:bg-slate-900/50 print:border-0 print:shadow-none"
-          }
-        >
-          <ResultDisplayer
-            font={s.gen_font ?? "default"}
-            is_generating={isGen}
-            res={res}
-            type={type}
-          />
-        </section>
-      )}
-      {!errorVis && !res && (
-        <section
-          className={
-            "m-2 flex grow items-center justify-center rounded-md border bg-white p-2 shadow-sm dark:bg-slate-900/50 print:text-black print:shadow-none"
-          }
-        >
-          <div className="flex flex-col items-center justify-center">
-            <Info height={48} width={48} />
-            <p className="font-bold">{t("result-ph")}</p>
-          </div>
-        </section>
-      )}
-      {errorVis && (
-        <section className="flex flex-col items-center">
-          <LucideFileWarning height={48} width={48} />
-          <p className="font-bold">{t("error-occured")}</p>
-          <ErrorDisplayer err={errorMsg} />
-        </section>
-      )}
-      {inProgress ? (
-        <section className="flex min-h-[50vh] flex-col items-center justify-center">
-          <p className="mb-2 text-xl font-bold">{t("gen-in-progress")}</p>
-          <div className="space-y-2">
-            <Skeleton className="h-4 w-[250px]" />
-            <Skeleton className="h-4 w-[200px]" />
-            <Skeleton className="h-4 w-[250px]" />
-            <Skeleton className="h-4 w-[200px]" />
-          </div>
-        </section>
-      ) : (
-        <></>
-      )}
+                      <SheetContent>
+                        <SheetHeader>
+                          <SheetTitle>{t("options")}</SheetTitle>
+                          <SheetDescription>
+                            {t("model-options")}
+                          </SheetDescription>
+                        </SheetHeader>
+                        <div className="py-4">
+                          <Separator className="my-2" />
+                          <p>{t("temp")}</p>
+                          <HoverCard openDelay={200}>
+                            <HoverCardTrigger className="flex space-x-2">
+                              <Slider
+                                onValueChange={(v) => setTemp(v[0])}
+                                defaultValue={[temp]}
+                                max={2}
+                                step={0.01}
+                              />
+                              <p>{temp}</p>
+                            </HoverCardTrigger>
+                            <HoverCardContent>
+                              {t("temp-desc")}
+                            </HoverCardContent>
+                          </HoverCard>
+                          <p>{t("top-p")}</p>
+                          <HoverCard openDelay={200}>
+                            <HoverCardTrigger className="flex space-x-2">
+                              <Slider
+                                onValueChange={(v) => setTopP(v[0])}
+                                defaultValue={[topp]}
+                                max={1}
+                                step={0.01}
+                              />
+                              <p>{topp}</p>
+                            </HoverCardTrigger>
+                            <HoverCardContent>
+                              {t("top-p-desc")}
+                            </HoverCardContent>
+                          </HoverCard>
+                          <p>{t("freq-penalty")}</p>
+                          <HoverCard openDelay={200}>
+                            <HoverCardTrigger className="flex space-x-2">
+                              <Slider
+                                onValueChange={(v) => setFreqP(v[0])}
+                                defaultValue={[freqP]}
+                                max={2}
+                                step={0.01}
+                              />
+                              <p>{freqP}</p>
+                            </HoverCardTrigger>
+                            <HoverCardContent>
+                              {t("freq-penalty-desc")}
+                            </HoverCardContent>
+                          </HoverCard>
+                          <p>{t("pres-penalty")}</p>
+                          <HoverCard openDelay={200}>
+                            <HoverCardTrigger className="flex space-x-2">
+                              <Slider
+                                onValueChange={(v) => setPresP(v[0])}
+                                defaultValue={[presP]}
+                                max={2}
+                                step={0.01}
+                              />
+                              <p>{presP}</p>
+                            </HoverCardTrigger>
+                            <HoverCardContent>
+                              {t("pres-penalty-desc")}
+                            </HoverCardContent>
+                          </HoverCard>
+                        </div>
+                      </SheetContent>
+                    </Sheet>
+                  </div>
+                </div>
+                <div className="space-y-2">
+                  <label htmlFor="format">Format</label>
+                  <FormatDialog
+                    setTemplateId={setTemplateId}
+                    lng={lng}
+                    setVal={setType}
+                    setCategory={setCat}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label htmlFor="tone">{t("tone")}</label>
+                  <Select defaultValue={tone} onValueChange={(v) => setTone(v)}>
+                    <SelectTrigger>
+                      <SelectValue placeholder={t("tone")} />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <ScrollArea className="h-[200px]">
+                        {tones.map((el, i) => (
+                          <SelectItem key={i} value={el}>
+                            {t(el)}
+                          </SelectItem>
+                        ))}
+                      </ScrollArea>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+          {type !== "ph_complex" && type !== "es_complex" && (
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center space-x-2">
+                  <span>{t("variables")}</span>
+                  <span className="rounded-full border bg-muted/40 px-2 text-sm text-muted-foreground">
+                    {variables.length}
+                  </span>
+                </CardTitle>
+                <CardDescription>{t("variables-desc")}</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="print:hidden">
+                  <Button
+                    className="h-auto"
+                    variant="link"
+                    onClick={() =>
+                      setVariables([
+                        ...variables,
+                        { name: "", value: "", id: uuidv4() },
+                      ])
+                    }
+                  >
+                    {t("add-variable")}
+                  </Button>
+
+                  <div className="">
+                    {variables.length > 0 &&
+                      variables.map((el, i) => (
+                        <VariableItem
+                          small
+                          functions={{
+                            setVar: editVariable,
+                            removeVar: removeVariable,
+                          }}
+                          key={el.id}
+                          lng={lng}
+                          index={i}
+                          item={el}
+                        />
+                      ))}
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          )}
+        </div>
+      </div>
     </main>
   );
 }

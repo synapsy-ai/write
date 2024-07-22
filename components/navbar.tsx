@@ -52,6 +52,9 @@ export default function NavBar(props: { lng: string }) {
         <Link href={"/" + props.lng + "/generations"}>
           <Button variant="ghost">{t("generations")}</Button>
         </Link>
+        <Link href={"/" + props.lng + "/templates"}>
+          <Button variant="ghost">{t("templates")}</Button>
+        </Link>
         <Link href={"/" + props.lng + "/chat"}>
           <Button variant="ghost">{t("chat")}</Button>
         </Link>

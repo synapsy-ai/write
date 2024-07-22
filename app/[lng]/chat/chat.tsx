@@ -49,6 +49,7 @@ import {
 } from "@/components/ui/select";
 import { getModelString } from "@/lib/models";
 import { Settings } from "@/lib/settings";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 type Subscription = Database["public"]["Tables"]["subscriptions"]["Row"];
 type Product = Database["public"]["Tables"]["products"]["Row"];
@@ -221,8 +222,7 @@ export default function Chat(props: Props) {
 
     return (
       <div className={props.isMobile ? "p-2 pb-16" : "hidden w-60 sm:block"}>
-        <p className="font-bold">{t("conversations")}</p>
-        <Separator className="my-1" />
+        <p className="m-2 font-bold sm:hidden">{t("conversations")}</p>
         <div className="flex flex-col space-y-2">
           {conversations.map((el, i) => (
             <Button
@@ -323,22 +323,25 @@ export default function Chat(props: Props) {
   }
 
   return (
-    <main className="mt-2 grid min-h-full grid-rows-[auto,auto,1fr] pb-8 sm:mt-16 sm:pb-0 print:mt-0">
-      <section className="ml-2 grid grid-cols-[24px,1fr] items-center space-x-2 print:hidden">
-        <MessageSquareMore />
-        <span>
-          <h2 className="text-2xl font-bold">{t("chat")}</h2>
-          <p>{t("chat-desc")}</p>
-        </span>
-      </section>
-      <Separator className="mt-2" />
-      <section className="grid grid-cols-[auto,1fr] p-2 sm:space-x-2">
-        <ScrollArea className="max-h-[calc(100vh-150px)]">
-          <ConversationComponent />
-        </ScrollArea>
+    <main className="flex h-full min-h-[calc(100vh_-_theme(spacing.16))] flex-1 flex-col gap-4 bg-slate-100/40 p-4 pb-16 dark:bg-transparent sm:mt-16 sm:pb-0 md:gap-8 md:p-10 print:mt-0 print:bg-white">
+      <div className="mx-auto grid w-full max-w-6xl gap-2 print:hidden">
+        <h1 className="text-3xl font-semibold">{t("chat")}</h1>
+        <p className="text-muted-foreground">{t("chat-desc")}</p>
+      </div>
+      <section className="mx-auto grid h-full w-full max-w-6xl grid-cols-[auto,1fr] sm:space-x-2">
+        <Card className="hidden sm:block">
+          <CardHeader>
+            <CardTitle>{t("history")}</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <ScrollArea className="max-h-[calc(100vh-150px)]">
+              <ConversationComponent />
+            </ScrollArea>
+          </CardContent>
+        </Card>
         <section
           className={
-            "grid grid-rows-[auto,1fr,auto] space-y-2 rounded-md border bg-white p-2 text-justify shadow-sm dark:bg-slate-900/50 print:border-0 print:shadow-none"
+            "grid h-full grid-rows-[auto,1fr,auto] space-y-2 rounded-md border bg-card p-2 text-justify shadow-sm print:border-0 print:shadow-none"
           }
         >
           <div className="flex items-center space-x-2">
@@ -459,10 +462,10 @@ export default function Chat(props: Props) {
               </Dialog>
             )}
           </div>
-          <ScrollArea className="max-h-[calc(100vh-290px)]">
+          <ScrollArea className="max-h-[calc(100vh-330px)]">
             <ChatBox isLoading={sendDisabled} lng={lng} messages={messages} />
             {messages.length === 1 && (
-              <div className="flex h-[calc(100vh-290px)] flex-col items-center justify-center text-center">
+              <div className="flex h-[calc(100vh-330px)] flex-col items-center justify-center text-center">
                 <MessageCircleMore size={36} />
                 <h3>{t("chat-placeholder")}</h3>
                 <p>{t("chat-placeholder-desc")}</p>
