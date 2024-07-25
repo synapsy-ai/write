@@ -6,7 +6,7 @@ updates:
       interval: "daily"
     target-branch: vNext
     reviewers:
-      - Leo-Peyronnet
+      - lpeyr
     assignees:
-      - Leo-Peyronnet
+      - lpeyr
     open-pull-requests-limit: 25
