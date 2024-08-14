@@ -591,11 +591,10 @@ export default function Create(props: Props) {
                       </Link>
                     ) : (
                       <div className="flex justify-center space-x-2">
-                        {" "}
                         <Link href="login">
                           <Button variant="outline">{t("sign-in")}</Button>
                         </Link>
-                        <Link href="https://account.peyronnet.group/login">
+                        <Link href="https://account.peyronnet.group/signin/signup">
                           <Button>{t("sign-up")}</Button>
                         </Link>
                       </div>
