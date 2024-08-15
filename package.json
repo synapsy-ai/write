@@ -30,7 +30,7 @@
     "@supabase/auth-ui-shared": "^0.1.8",
     "@supabase/supabase-js": "^2.45.1",
     "@tailwindcss/typography": "^0.5.14",
-    "@tiptap/html": "^2.6.2",
+    "@tiptap/html": "^2.6.4",
     "accept-language": "^3.0.20",
     "ai": "^3.3.7",
     "class-variance-authority": "^0.7.0",
