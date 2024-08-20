@@ -8,7 +8,7 @@ import Link from "next/link";
 export default function NoSession(props: { lng: string }) {
   const { t } = useTranslation(props.lng, "common");
   return (
-    <main className="mt-2 flex min-h-full flex-col justify-center pb-16 sm:mt-16 sm:pb-0">
+    <main className="mt-2 flex min-h-full flex-col justify-center pb-16 sm:pb-0">
       <section className="m-4 flex flex-col items-center space-y-2">
         <div className="flex items-center">
           <div className="rounded-2xl border bg-white/50 p-8 shadow-lg backdrop-blur-md transition hover:border-slate-400 hover:bg-white/70 hover:shadow-xl dark:bg-slate-800/20 dark:shadow-violet-500/20 dark:hover:border-slate-500 dark:hover:bg-slate-400/20">

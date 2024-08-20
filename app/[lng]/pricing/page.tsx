@@ -28,7 +28,7 @@ export default async function PricingPage({
 
   return (
     <>
-      <main className="mt-2 min-h-full pb-16 sm:mt-16 sm:pb-0">
+      <main className="mt-2 min-h-full pb-16 sm:pb-0">
         <Pricing
           session={session}
           products={products}

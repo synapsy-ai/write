@@ -217,7 +217,7 @@ export default function Pricing({
             </Select>
           </div>
         </div>
-        <div className="mt-12 space-y-4 sm:mt-16 sm:grid sm:grid-cols-2 sm:gap-6 sm:space-y-0 lg:mx-auto lg:max-w-4xl xl:mx-0 xl:max-w-none xl:grid-cols-3">
+        <div className="mt-12 space-y-4 sm:grid sm:grid-cols-2 sm:gap-6 sm:space-y-0 lg:mx-auto lg:max-w-4xl xl:mx-0 xl:max-w-none xl:grid-cols-3">
           {products.map((product) => {
             if (!product.name?.toLowerCase().includes("write")) return <></>;
 

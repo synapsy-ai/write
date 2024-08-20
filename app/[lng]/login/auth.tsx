@@ -69,7 +69,7 @@ export default function LoginPage(props: { lng: string }) {
     },
   };
   return (
-    <main className="grid min-h-[calc(100vh-61px)] grid-rows-[auto,auto,1fr] px-2 pb-16 sm:pb-0 sm:pt-16">
+    <main className="grid min-h-[calc(100vh-61px)] grid-rows-[auto,auto,1fr] px-2 pb-16 sm:pb-0 ">
       <section className="flex items-center space-x-2">
         <CircleUser />
         <span>
