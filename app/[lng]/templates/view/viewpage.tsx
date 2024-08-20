@@ -1,6 +1,6 @@
 "use client";
 import { useTranslation } from "@/app/i18n/client";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 import { useSearchParams } from "next/navigation";
 import { getComplexEssayGlobalRecipe } from "@/lib/recipes/complex-essay-global";
 import { getComplexEssayRecipe } from "@/lib/recipes/complex-essay-literrature";
@@ -10,7 +10,6 @@ import { getTemplates, Recipe } from "@/lib/recipe";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,

@@ -1,30 +1,13 @@
 "use client";
-import Image from "next/image";
 import { useTranslation } from "../i18n/client";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import {
-  BrainCircuit,
-  Building,
-  Check,
-  Dot,
-  Github,
-  MousePointerClick,
-  PenSquare,
-  PencilRulerIcon,
-  Rocket,
-  Table,
-  TriangleAlert,
-  Variable,
-  X,
-} from "lucide-react";
+import { Building, Github, Rocket } from "lucide-react";
 import Footer from "@/components/footer";
-import { useTheme } from "next-themes";
 import { useRef } from "react";
 import Spotlight, { SpotlightCard } from "@/components/spotlight";
 import { SpotlightEffect } from "@/components/ui/spotlight-effect";
 import { BorderAnimation } from "@/components/ui/moving-border";
-import ResultDisplayer from "@/components/result-displayer";
 import { FlipWords } from "@/components/ui/flip-words";
 
 export default function Home({ params: { lng } }: { params: { lng: any } }) {

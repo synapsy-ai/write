@@ -14,8 +14,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { ReactNode } from "react";
 import ManageSubscriptionButton from "./ManageSubscriptionButton";
-import { Calendar, CircleUser, Currency, Info } from "lucide-react";
-import { Separator } from "@/components/ui/separator";
+import { Calendar, Currency, Info } from "lucide-react";
 
 export default async function Account({
   params: { lng },

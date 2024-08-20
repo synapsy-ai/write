@@ -2,12 +2,9 @@
 
 import { HistoryItem } from "@/lib/history";
 import { useSearchParams } from "next/navigation";
-import { Book, Calendar, Edit, Text } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "@/app/i18n/client";
-import { Separator } from "@/components/ui/separator";
 import { typesToString } from "@/lib/formats";
-
 import TailwindEditor from "@/components/tailwind-editor";
 import { generateJSON } from "@tiptap/html";
 import { defaultExtensions } from "@/lib/editor-extensions";

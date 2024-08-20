@@ -17,7 +17,6 @@ import {
   ArrowUpNarrowWide,
   Download,
   Eraser,
-  List,
   Upload,
 } from "lucide-react";
 import Link from "next/link";

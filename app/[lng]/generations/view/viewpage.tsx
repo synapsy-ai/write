@@ -5,12 +5,10 @@ import { HistoryItem } from "@/lib/history";
 import { useSearchParams } from "next/navigation";
 import { encode } from "gpt-token-utils";
 import { Button } from "@/components/ui/button";
-import { Book, Calendar, Copy, Edit, Printer, Text } from "lucide-react";
+import { Copy, Edit, Printer } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useTranslation } from "@/app/i18n/client";
-import { Separator } from "@/components/ui/separator";
 import { typesToString } from "@/lib/formats";
-import VariableItem from "@/components/variable-item";
 import { Variable } from "@/lib/variable";
 import VariableItemView from "@/components/variable-item-view";
 import Link from "next/link";
@@ -22,7 +20,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { type } from "os";
 
 export default function GenerationViewPage({
   params,
