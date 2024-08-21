@@ -17,7 +17,7 @@ export async function GET(request: NextRequest) {
     if (error) {
       return NextResponse.redirect(
         getErrorRedirect(
-          `https://write.peyronnet.group/signin`,
+          `https://write.peyronnet.group/signin/forgot_password`,
           error.name,
           "Sorry, we weren't able to log you in. Please try again.",
         ),
@@ -28,9 +28,9 @@ export async function GET(request: NextRequest) {
   // URL to redirect to after sign in process completes
   return NextResponse.redirect(
     getStatusRedirect(
-      `https://write.peyronnet.group/me`,
-      "Success!",
+      `https://write.peyronnet.group/signin/update_password`,
       "You are now signed in.",
+      "Please enter a new password for your account.",
     ),
   );
 }
