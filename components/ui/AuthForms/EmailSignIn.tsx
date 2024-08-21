@@ -32,7 +32,7 @@ export default function EmailSignIn({
     await handleRequest(
       e,
       signInWithEmail,
-      redirectMethod === "client" ? router : null
+      redirectMethod === "client" ? router : null,
     );
     setIsSubmitting(false);
   };
@@ -64,14 +64,17 @@ export default function EmailSignIn({
       </form>
       {allowPassword && (
         <>
-          <p className="font-light text-sm text-center underline">
+          <p className="text-center text-sm font-light underline">
             <Link href="/signin/password_signin">
               {t("sign-email-password")}
             </Link>
           </p>
-          <p className="text-center space-x-2 font-light text-sm">
+          <p className="space-x-2 text-center text-sm font-light">
             <span>{t("link-text-2")}</span>
-            <Link href="/signin/signup" className="underline">
+            <Link
+              href="https://account.peyronnet.group/signin/signup"
+              className="underline"
+            >
               {t("sign-up")}
             </Link>
           </p>

@@ -30,7 +30,7 @@ export default function PasswordSignIn({
     await handleRequest(
       e,
       signInWithPassword,
-      redirectMethod === "client" ? router : null
+      redirectMethod === "client" ? router : null,
     );
     setIsSubmitting(false);
   };
@@ -55,13 +55,13 @@ export default function PasswordSignIn({
               autoCorrect="off"
             />
             <label
-              className="flex justify-between items-center"
+              className="flex items-center justify-between"
               htmlFor="password"
             >
               <p>{t("password-label")}</p>
               <Link
-                href="/signin/forgot_password"
-                className="font-light text-sm underline"
+                href="https://account.peyronnet.group/signin/forgot_password"
+                className="text-sm font-light underline"
               >
                 {t("password-link-text")}
               </Link>
@@ -81,13 +81,16 @@ export default function PasswordSignIn({
       </form>
 
       {allowEmail && (
-        <p className="font-light text-sm text-center">
+        <p className="text-center text-sm font-light">
           <Link href="/signin/email_signin">{t("sign-in-magic")}</Link>
         </p>
       )}
-      <p className="text-center space-x-2 font-light text-sm">
+      <p className="space-x-2 text-center text-sm font-light">
         <span>{t("link-text-2")}</span>
-        <Link href="/signin/signup" className="underline">
+        <Link
+          href="https://account.peyronnet.group/signin/signup"
+          className="underline"
+        >
           {t("sign-up")}
         </Link>
       </p>

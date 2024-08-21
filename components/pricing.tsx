@@ -97,7 +97,7 @@ export default function Pricing({ user, products, subscriptions, lng }: Props) {
     setPriceIdLoading(price.id);
     if (!user) {
       setPriceIdLoading(undefined);
-      return router.push(`/${lng}/signin/signup`);
+      return router.push(`https://account.peyronnet.group/signin/signup`);
     }
 
     if (subscriptions) {

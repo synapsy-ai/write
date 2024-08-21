@@ -72,7 +72,7 @@ export default function ForgotPassword({
       )}
       <p className="text-center space-x-2 font-light text-sm">
         <span>{t("link-text-2")}</span>
-        <Link href="/signin/signup" className="underline">
+        <Link href="https://account.peyronnet.group/signin/signup" className="underline">
           {t("sign-up")}
         </Link>
       </p>
