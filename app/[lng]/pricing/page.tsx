@@ -1,12 +1,14 @@
 import { useTranslation } from "@/app/i18n";
-import {
-  getActiveProductsWithPrices,
-  getSession,
-  getSubscriptions,
-} from "@/app/supabase-server";
+
 import SiteFooter from "@/components/footer";
 import Pricing from "@/components/pricing";
 import PricingFeatureTable from "@/components/pricing-table";
+import {
+  getUser,
+  getProducts,
+  getSubscriptions,
+} from "@/utils/supabase/queries";
+import { createClient } from "@/utils/supabase/server";
 
 export const metadata = {
   title: "Pricing",
@@ -19,21 +21,21 @@ export default async function PricingPage({
 }: {
   params: { lng: any };
 }) {
-  const [session, products, subscriptions] = await Promise.all([
-    getSession(),
-    getActiveProductsWithPrices(),
-    getSubscriptions(),
+  const supabase = createClient();
+  const [user, products, subscriptions] = await Promise.all([
+    getUser(supabase),
+    getProducts(supabase),
+    getSubscriptions(supabase),
   ]);
   const { t } = await useTranslation(lng, "common");
 
   return (
     <>
-      <main className="mt-2 min-h-full pb-16 sm:mt-16 sm:pb-0">
+      <main className="mt-2 min-h-full pb-16 sm:pb-0">
         <Pricing
-          session={session}
           products={products}
           subscriptions={subscriptions}
-          user={session?.user}
+          user={user}
           lng={lng}
         />
         <section className="min-h-3xl m-5 flex flex-col items-center justify-center">

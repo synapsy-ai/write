@@ -357,5 +357,16 @@
   "delete-confirm-desc": "This action cannot be undone. This will permanently delete this template.",
   "back": "Back",
   "prompt-var": "The PROMPT variable contains the prompt provided by the user in the Create page.",
-  "var-usage": "You can use the content stored by this variable by using "
+  "var-usage": "You can use the content stored by this variable by using ",
+  "password-label": "Password",
+  "sign-in-magic": "Sign in via magic link",
+  "third-party-providers": "Third-party sign-in",
+  "email-sign-in": "Enter your email below to login to your account",
+  "sign-email-password": "Sign in with email and password",
+  "reset-password": "Reset password",
+  "update-password": "Update password",
+  "new-password": "New Password",
+  "confirm-password": "Confirm New Password",
+  "link-text-2": "Don't have an account?",
+  "sign-in-link-text-2": "Already have an account?"
 }

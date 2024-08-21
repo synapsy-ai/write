@@ -1,10 +1,8 @@
 "use client";
 
-import { Database } from "@/types_db";
-import { postData } from "@/utils/helpers";
-import { getStripe } from "@/utils/stripe-client";
-import { Session, User } from "@supabase/supabase-js";
-import { useRouter } from "next/navigation";
+import { Tables } from "@/types_db";
+import { User } from "@supabase/supabase-js";
+import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 import { Button } from "./ui/button";
 import { cn } from "@/lib/utils";
@@ -17,10 +15,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from "./ui/select";
+import { getStripe } from "@/utils/stripe/client";
+import { checkoutWithStripe } from "@/utils/stripe/server";
+import { getErrorRedirect } from "@/utils/helpers";
 
-type Subscription = Database["public"]["Tables"]["subscriptions"]["Row"];
-type Product = Database["public"]["Tables"]["products"]["Row"];
-type Price = Database["public"]["Tables"]["prices"]["Row"];
+type Subscription = Tables<"subscriptions">;
+type Product = Tables<"products">;
+type Price = Tables<"prices">;
 interface ProductWithPrices extends Product {
   prices: Price[];
 }
@@ -32,7 +33,6 @@ interface SubscriptionWithProduct extends Subscription {
 }
 
 interface Props {
-  session: Session | null;
   user: User | null | undefined;
   products: ProductWithPrices[];
   subscriptions: SubscriptionWithProduct[] | null;
@@ -41,14 +41,9 @@ interface Props {
 
 type BillingInterval = "lifetime" | "year" | "month";
 
-export default function Pricing({
-  session,
-  user,
-  products,
-  subscriptions,
-  lng,
-}: Props) {
+export default function Pricing({ user, products, subscriptions, lng }: Props) {
   const { t } = useTranslation(lng, "common");
+  const currentPath = usePathname();
   const intervals = Array.from(
     new Set(
       products.flatMap((product) =>
@@ -98,10 +93,11 @@ export default function Pricing({
     }
   }
 
-  const handleCheckout = async (price: Price, free_trial: boolean) => {
+  const handleCheckout = async (price: Price) => {
     setPriceIdLoading(price.id);
     if (!user) {
-      return router.push(`/${lng}/login`);
+      setPriceIdLoading(undefined);
+      return router.push(`https://account.peyronnet.group/signin/signup`);
     }
 
     if (subscriptions) {
@@ -111,8 +107,8 @@ export default function Pricing({
         }
       }
     }
-    let trial = free_trial;
-    if (free_trial && subscriptions) {
+    let trial = true;
+    if (subscriptions) {
       for (let i = 0; i < subscriptions.length; i++) {
         if (subscriptions[i].trial_end) {
           trial = false;
@@ -121,11 +117,26 @@ export default function Pricing({
       }
     }
     try {
-      const { sessionId } = await postData({
-        url: "/api/create-checkout-session",
-        data: { price, trial },
-      });
+      const { errorRedirect, sessionId } = await checkoutWithStripe(
+        price,
+        currentPath,
+        trial,
+      );
 
+      if (errorRedirect) {
+        setPriceIdLoading(undefined);
+        return router.push(errorRedirect);
+      }
+      if (!sessionId) {
+        setPriceIdLoading(undefined);
+        return router.push(
+          getErrorRedirect(
+            currentPath,
+            "An unknown error occurred.",
+            "Please try again later or contact a system administrator.",
+          ),
+        );
+      }
       const stripe = await getStripe();
       stripe?.redirectToCheckout({ sessionId });
     } catch (error) {
@@ -217,7 +228,7 @@ export default function Pricing({
             </Select>
           </div>
         </div>
-        <div className="mt-12 space-y-4 sm:mt-16 sm:grid sm:grid-cols-2 sm:gap-6 sm:space-y-0 lg:mx-auto lg:max-w-4xl xl:mx-0 xl:max-w-none xl:grid-cols-3">
+        <div className="mt-12 space-y-4 sm:grid sm:grid-cols-2 sm:gap-6 sm:space-y-0 lg:mx-auto lg:max-w-4xl xl:mx-0 xl:max-w-none xl:grid-cols-3">
           {products.map((product) => {
             if (!product.name?.toLowerCase().includes("write")) return <></>;
 
@@ -272,7 +283,7 @@ export default function Pricing({
                       <Button
                         type="button"
                         variant="outline"
-                        onClick={() => handleCheckout(price, true)}
+                        onClick={() => handleCheckout(price)}
                         className="block w-full rounded-md border-purple-500 bg-transparent py-2 text-center text-sm font-semibold"
                       >
                         {t("free-trial")}
@@ -282,7 +293,7 @@ export default function Pricing({
                     )}
                     <Button
                       type="button"
-                      onClick={() => handleCheckout(price, false)}
+                      onClick={() => handleCheckout(price)}
                       className="mt-2 block w-full rounded-md py-2 text-center text-sm font-semibold text-white"
                     >
                       {isSubscribedToProduct(product.id)

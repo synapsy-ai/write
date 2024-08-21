@@ -1,13 +1,13 @@
-import {
-  getActiveProductsWithPrices,
-  getSession,
-  getSubscriptions,
-  getUserDetails,
-  setUserQuotas,
-} from "@/app/supabase-server";
 import Chat from "./chat";
 import React from "react";
 import type { Metadata } from "next";
+import {
+  getUser,
+  getSubscriptions,
+  getUserDetails,
+  setUserQuotas,
+} from "@/utils/supabase/queries";
+import { createClient } from "@/utils/supabase/server";
 
 export const metadata: Metadata = {
   title: "Chat",
@@ -19,26 +19,26 @@ export default async function ChatPage({
 }: {
   params: { lng: any };
 }) {
-  const [session, products, subscriptions] = await Promise.all([
-    getSession(),
-    getActiveProductsWithPrices(),
-    getSubscriptions(),
+  const supabase = createClient();
+  const [user, userDetails, subscriptions] = await Promise.all([
+    getUser(supabase),
+    getUserDetails(supabase),
+    getSubscriptions(supabase),
   ]);
   async function getQuotas(): Promise<number> {
-    if (!session || !session.user) return 0;
-    const user = await getUserDetails();
     if (!user) return 0;
-    if (!user?.write_gpt4_quota) {
+    if (!userDetails) return 0;
+    if (!userDetails?.write_gpt4_quota) {
       if (isSubscribed()) {
         const q = getInterval() === "year" ? 120 : 10;
-        setUserQuotas(user.id, q);
+        setUserQuotas(supabase, userDetails.id, q);
         return q;
       }
     }
-    return user.write_gpt4_quota || 0;
+    return userDetails.write_gpt4_quota || 0;
   }
   function getInterval(): "month" | "year" | "none" {
-    if (!session || !subscriptions) return "none";
+    if (!user || !subscriptions) return "none";
     for (let i = 0; i < subscriptions?.length; i++) {
       if (
         subscriptions[i].prices?.products?.name?.toLowerCase().includes("write")
@@ -49,7 +49,7 @@ export default async function ChatPage({
     return "none";
   }
   function isSubscribed(): boolean {
-    if (!session || !subscriptions) return false;
+    if (!user || !subscriptions) return false;
     for (let i = 0; i < subscriptions?.length; i++) {
       if (
         subscriptions[i].prices?.products?.name?.toLowerCase().includes("write")
@@ -61,13 +61,6 @@ export default async function ChatPage({
   }
   const q = await getQuotas();
   return (
-    <Chat
-      session={session}
-      products={products}
-      subscriptions={subscriptions}
-      user={session?.user}
-      lng={lng}
-      quotas={q}
-    />
+    <Chat subscriptions={subscriptions} user={user} lng={lng} quotas={q} />
   );
 }

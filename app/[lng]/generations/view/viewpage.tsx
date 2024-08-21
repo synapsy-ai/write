@@ -5,12 +5,10 @@ import { HistoryItem } from "@/lib/history";
 import { useSearchParams } from "next/navigation";
 import { encode } from "gpt-token-utils";
 import { Button } from "@/components/ui/button";
-import { Book, Calendar, Copy, Edit, Printer, Text } from "lucide-react";
+import { Copy, Edit, Printer } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useTranslation } from "@/app/i18n/client";
-import { Separator } from "@/components/ui/separator";
 import { typesToString } from "@/lib/formats";
-import VariableItem from "@/components/variable-item";
 import { Variable } from "@/lib/variable";
 import VariableItemView from "@/components/variable-item-view";
 import Link from "next/link";
@@ -22,7 +20,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { type } from "os";
 
 export default function GenerationViewPage({
   params,
@@ -93,7 +90,7 @@ export default function GenerationViewPage({
     setContent(c);
   }
   return (
-    <main className="flex min-h-[calc(100vh_-_theme(spacing.16))] flex-1 flex-col gap-4 bg-slate-100/40 p-4 pb-16 dark:bg-transparent sm:mt-16 sm:pb-0 md:gap-8 md:p-10 print:mt-0 print:bg-white">
+    <main className="flex min-h-[calc(100vh_-_theme(spacing.16))] flex-1 flex-col gap-4 bg-slate-100/40 p-4 pb-16 dark:bg-transparent sm:pb-0 md:gap-8 md:p-10 print:mt-0 print:bg-white">
       <header className="mx-auto grid w-full max-w-6xl gap-2 print:hidden">
         <h1 className="text-3xl font-semibold">{t("generation")}</h1>
         <div className="mt-2 flex justify-center sm:justify-start print:hidden">

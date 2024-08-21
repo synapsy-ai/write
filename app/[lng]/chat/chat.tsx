@@ -13,20 +13,17 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Separator } from "@/components/ui/separator";
 import { sendChatToGpt } from "@/lib/ai-chat";
 import { ChatConversation, ChatMessage } from "@/lib/ai-completions";
-import { Database } from "@/types_db";
+import { Database, Tables } from "@/types_db";
 import { Close, DialogClose } from "@radix-ui/react-dialog";
 import { Session, User } from "@supabase/supabase-js";
 import {
   Check,
   History,
   MessageCircleMore,
-  MessageSquareMore,
   Pen,
   PenSquare,
-  PlusCircle,
   Send,
   Settings as SettingsIcon,
   Trash,
@@ -51,12 +48,10 @@ import { getModelString } from "@/lib/models";
 import { Settings } from "@/lib/settings";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
-type Subscription = Database["public"]["Tables"]["subscriptions"]["Row"];
-type Product = Database["public"]["Tables"]["products"]["Row"];
-type Price = Database["public"]["Tables"]["prices"]["Row"];
-interface ProductWithPrices extends Product {
-  prices: Price[];
-}
+type Subscription = Tables<"subscriptions">;
+type Product = Tables<"products">;
+type Price = Tables<"prices">;
+
 interface PriceWithProduct extends Price {
   products: Product | null;
 }
@@ -64,9 +59,7 @@ interface SubscriptionWithProduct extends Subscription {
   prices: PriceWithProduct | null;
 }
 interface Props {
-  session: Session | null;
   user: User | null | undefined;
-  products: ProductWithPrices[];
   subscriptions: SubscriptionWithProduct[] | null;
   lng: string;
   quotas: number;
@@ -124,7 +117,7 @@ export default function Chat(props: Props) {
   }
 
   function hasGpt4Access(): boolean {
-    if (!props.session || !props.subscriptions) return false;
+    if (!props.user || !props.subscriptions) return false;
     for (let i = 0; i < props.subscriptions?.length; i++) {
       if (
         props.subscriptions[i].prices?.products?.name
@@ -181,7 +174,7 @@ export default function Chat(props: Props) {
   }
 
   function isSubscribed(): boolean {
-    if (!props.session || !props.subscriptions) return false;
+    if (!props.user || !props.subscriptions) return false;
     for (let i = 0; i < props.subscriptions?.length; i++) {
       if (
         props.subscriptions[i].prices?.products?.name
@@ -323,7 +316,7 @@ export default function Chat(props: Props) {
   }
 
   return (
-    <main className="flex h-full min-h-[calc(100vh_-_theme(spacing.16))] flex-1 flex-col gap-4 bg-slate-100/40 p-4 pb-16 dark:bg-transparent sm:mt-16 sm:pb-0 md:gap-8 md:p-10 print:mt-0 print:bg-white">
+    <main className="flex h-full min-h-[calc(100vh_-_theme(spacing.16))] flex-1 flex-col gap-4 bg-slate-100/40 p-4 pb-16 dark:bg-transparent sm:pb-0 md:gap-8 md:p-10 print:mt-0 print:bg-white">
       <div className="mx-auto grid w-full max-w-6xl gap-2 print:hidden">
         <h1 className="text-3xl font-semibold">{t("chat")}</h1>
         <p className="text-muted-foreground">{t("chat-desc")}</p>
@@ -554,7 +547,7 @@ export default function Chat(props: Props) {
                 </DialogTrigger>
                 <DialogContent>
                   <DialogHeader>
-                    {props.session ? (
+                    {props.user ? (
                       <section className="m-4">
                         <div className="flex justify-center">
                           <PeyronnetLogo width={250} />
@@ -584,7 +577,7 @@ export default function Chat(props: Props) {
                       <DialogClose>
                         <Button variant="link">{t("close")}</Button>
                       </DialogClose>
-                      {props.session ? (
+                      {props.user ? (
                         <Link href={`/${lng}/pricing`}>
                           <Button>{t("see-pricing")}</Button>
                         </Link>

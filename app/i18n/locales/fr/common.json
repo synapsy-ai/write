@@ -174,7 +174,7 @@
   "email-input-placeholder": "Votre adresse mail",
   "password-input-placeholder": "Votre mot de passe",
   "confirmation-text": "Vérifiez votre email pour le lien de confirmation",
-  "password-button-label": "Envoyer les instructions de réinitialisation du mot de passe",
+  "password-button-label": "Envoyer les instructions",
   "password-loading-button-label": "Envoi des instructions de réinitialisation en cours...",
   "password-link-text": "Mot de passe oublié ?",
   "password-confirmation-text": "Vérifiez votre mail pour le lien de réinitialisation du mot de passe",
@@ -355,5 +355,16 @@
   "delete-confirm-desc": "Cette action ne peut pas être annulée. Cela supprimera définitivement ce modèle.",
   "back": "Retour",
   "prompt-var": "La variable PROMPT contient l'invite fournie par l'utilisateur dans la page Créer.",
-  "var-usage": "Vous pouvez utiliser le contenu stocké par cette variable en utilisant "
+  "var-usage": "Vous pouvez utiliser le contenu stocké par cette variable en utilisant ",
+  "password-label": "Mot de passe",
+  "sign-in-magic": "Se connecter avec Magic Link",
+  "third-party-providers": "Se connecter avec",
+  "email-sign-in": "Entrez votre email ci-dessous pour vous connecter à votre compte",
+  "sign-email-password": "S'identifier avec un email et un mot de passe",
+  "reset-password": "Réinitialiser le mot de passe",
+  "update-password": "Modifier le mot de passe",
+  "new-password": "Nouveau mot de passe",
+  "confirm-password": "Confirmez votre mot de passe",
+  "link-text-2": "Vous n'avez pas de compte ?",
+  "sign-in-link-text-2": "Vous avez déjà un compte ?"
 }

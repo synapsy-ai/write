@@ -1,6 +1,6 @@
 "use client";
 import { useTranslation } from "@/app/i18n/client";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 import { useSearchParams } from "next/navigation";
 import { getComplexEssayGlobalRecipe } from "@/lib/recipes/complex-essay-global";
 import { getComplexEssayRecipe } from "@/lib/recipes/complex-essay-literrature";
@@ -10,7 +10,6 @@ import { getTemplates, Recipe } from "@/lib/recipe";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -44,7 +43,7 @@ export default function ViewTemplatePage({
   );
 
   return (
-    <main className="flex min-h-[calc(100vh_-_theme(spacing.16))] flex-1 flex-col gap-4 bg-slate-100/40 p-4 pb-16 dark:bg-transparent sm:mt-16 sm:pb-0 md:gap-8 md:p-10 print:mt-0 print:bg-white">
+    <main className="flex min-h-[calc(100vh_-_theme(spacing.16))] flex-1 flex-col gap-4 bg-slate-100/40 p-4 pb-16 dark:bg-transparent sm:pb-0 md:gap-8 md:p-10 print:mt-0 print:bg-white">
       <div className="mx-auto w-full max-w-6xl">
         <div className="mx-auto grid w-full justify-start gap-2 print:hidden">
           <h1 className="text-3xl font-semibold">{t("template-view")}</h1>

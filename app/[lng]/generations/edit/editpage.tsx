@@ -2,12 +2,9 @@
 
 import { HistoryItem } from "@/lib/history";
 import { useSearchParams } from "next/navigation";
-import { Book, Calendar, Edit, Text } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "@/app/i18n/client";
-import { Separator } from "@/components/ui/separator";
 import { typesToString } from "@/lib/formats";
-
 import TailwindEditor from "@/components/tailwind-editor";
 import { generateJSON } from "@tiptap/html";
 import { defaultExtensions } from "@/lib/editor-extensions";
@@ -34,7 +31,7 @@ export default function GenerationEditPage({
   const [content, setContent] = useState(el.content);
   const c = generateJSON(content, [...defaultExtensions]);
   return (
-    <main className="flex min-h-[calc(100vh_-_theme(spacing.16))] flex-1 flex-col gap-4 bg-slate-100/40 p-4 pb-16 dark:bg-transparent sm:mt-16 sm:pb-0 md:gap-8 md:p-10 print:mt-0 print:bg-white">
+    <main className="flex min-h-[calc(100vh_-_theme(spacing.16))] flex-1 flex-col gap-4 bg-slate-100/40 p-4 pb-16 dark:bg-transparent sm:pb-0 md:gap-8 md:p-10 print:mt-0 print:bg-white">
       <header className="mx-auto grid w-full max-w-6xl gap-2 print:hidden">
         <h1 className="text-3xl font-semibold">{t("edit")}</h1>
       </header>
