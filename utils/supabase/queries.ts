@@ -48,3 +48,18 @@ export const getUserDetails = cache(async (supabase: SupabaseClient) => {
     .single();
   return userDetails;
 });
+
+export const setUserQuotas = cache(
+  async (supabase: SupabaseClient, id: string, quota: number) => {
+    try {
+      const { error } = await supabase
+        .from("users")
+        .update({ write_gpt4_quota: quota })
+        .eq("id", id);
+      if (error) throw error;
+    } catch (error) {
+      console.error("Error:", error);
+      return null;
+    }
+  },
+);
