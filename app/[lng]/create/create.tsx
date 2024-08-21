@@ -49,7 +49,7 @@ import { Variable, getVariableString } from "@/lib/variable";
 import VariableItem from "@/components/variable-item";
 import FormatDialog from "@/components/format-dialog";
 import { Textarea } from "@/components/ui/textarea";
-import { Database } from "@/types_db";
+import { Database, Tables } from "@/types_db";
 import { Session, User } from "@supabase/supabase-js";
 import Link from "next/link";
 import {
@@ -62,7 +62,6 @@ import {
 import { DialogClose } from "@radix-ui/react-dialog";
 import PeyronnetLogo from "@/components/peyronnet-logo";
 import { Checkbox } from "@/components/ui/checkbox";
-import { useSupabase } from "@/app/supabase-provider";
 import ComplexGenItem from "@/components/complex-gen";
 import GenerationStep from "@/lib/generation-step";
 import {
@@ -83,10 +82,11 @@ import { getPhiloAnalysisRecipe } from "@/lib/recipes/complex-philo-analysis";
 import { getComplexEssayGlobalRecipe } from "@/lib/recipes/complex-essay-global";
 import { getComplexEssayRecipe } from "@/lib/recipes/complex-essay-literrature";
 import { getComplexEssayPhiloRecipe } from "@/lib/recipes/complex-essay-philo";
+import { createClient } from "@/utils/supabase/client";
 
-type Subscription = Database["public"]["Tables"]["subscriptions"]["Row"];
-type Product = Database["public"]["Tables"]["products"]["Row"];
-type Price = Database["public"]["Tables"]["prices"]["Row"];
+type Subscription = Tables<"subscriptions">;
+type Product = Tables<"products">;
+type Price = Tables<"prices">;
 interface ProductWithPrices extends Product {
   prices: Price[];
 }
@@ -97,7 +97,6 @@ interface SubscriptionWithProduct extends Subscription {
   prices: PriceWithProduct | null;
 }
 interface Props {
-  session: Session | null;
   user: User | null | undefined;
   products: ProductWithPrices[];
   subscriptions: SubscriptionWithProduct[] | null;
@@ -149,7 +148,7 @@ export default function Create(props: Props) {
 
   const [gpt4Quotas, setGpt4Quotas] = useState(props.quotas);
   const [unlimited, setUnlimited] = useState(hasUnlimitedAccess());
-  const supabase = useSupabase();
+  const supabase = createClient();
   function getAvailableModels(
     availableModels: string[] | undefined,
   ): string[] | undefined {
@@ -270,14 +269,14 @@ export default function Create(props: Props) {
     // If the user has selected GPT-4, check if they have access to the model
     if (model.includes("gpt-4") && !model.includes("mini")) {
       if (gpt4Quotas <= 0) return;
-      if (props.session && props.session.user && gpt4Quotas > 0) {
+      if (props.user && props.user && gpt4Quotas > 0) {
         let q = gpt4Quotas - 1;
         setGpt4Quotas(gpt4Quotas - 1);
         try {
-          const { error } = await supabase.supabase
+          const { error } = await supabase
             .from("users")
             .update({ write_gpt4_quota: q })
-            .eq("id", props.session.user.id);
+            .eq("id", props.user.id);
           if (error) throw error;
         } catch (error) {
           console.error("Error:", error);
@@ -409,7 +408,7 @@ export default function Create(props: Props) {
   }
 
   function isSubscribed(): boolean {
-    if (!props.session || !props.subscriptions) return false;
+    if (!props.user || !props.subscriptions) return false;
     for (let i = 0; i < props.subscriptions?.length; i++) {
       if (
         props.subscriptions[i].prices?.products?.name
@@ -423,7 +422,7 @@ export default function Create(props: Props) {
   }
 
   function hasUnlimitedAccess(): boolean {
-    if (!props.session || !props.subscriptions) return false;
+    if (!props.user || !props.subscriptions) return false;
     for (let i = 0; i < props.subscriptions?.length; i++) {
       if (
         props.subscriptions[i].prices?.products?.name
@@ -440,7 +439,7 @@ export default function Create(props: Props) {
   }
 
   function hasGpt4Access(): boolean {
-    if (!props.session || !props.subscriptions) return false;
+    if (!props.user || !props.subscriptions) return false;
     for (let i = 0; i < props.subscriptions?.length; i++) {
       if (
         props.subscriptions[i].prices?.products?.name
@@ -555,7 +554,7 @@ export default function Create(props: Props) {
               </DialogTrigger>
               <DialogContent>
                 <DialogHeader>
-                  {props.session ? (
+                  {props.user ? (
                     <section className="m-4">
                       <div className="flex justify-center">
                         <PeyronnetLogo width={250} />
@@ -585,7 +584,7 @@ export default function Create(props: Props) {
                     <DialogClose>
                       <Button variant="link">{t("close")}</Button>
                     </DialogClose>
-                    {props.session ? (
+                    {props.user ? (
                       <Link href={`/${lng}/pricing`}>
                         <Button>{t("see-pricing")}</Button>
                       </Link>

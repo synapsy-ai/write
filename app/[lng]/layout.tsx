@@ -7,7 +7,6 @@ import NavBar from "@/components/navbar";
 import { ThemeProvider } from "@/components/theme-provider";
 import Script from "next/script";
 import MobileNavBar from "@/components/mobile-nav";
-import SupabaseProvider from "../supabase-provider";
 
 const manrope = Manrope({ subsets: ["latin"] });
 export async function generateStaticParams() {
@@ -88,13 +87,11 @@ export default function RootLayout({
           " overflow-x-hidden dark:bg-slate-950 dark:text-white"
         }
       >
-        <SupabaseProvider>
-          <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-            <NavBar lng={lng} />
-            {children}
-            <MobileNavBar lng={lng} />
-          </ThemeProvider>
-        </SupabaseProvider>
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          <NavBar lng={lng} />
+          {children}
+          <MobileNavBar lng={lng} />
+        </ThemeProvider>
       </body>
     </html>
   );

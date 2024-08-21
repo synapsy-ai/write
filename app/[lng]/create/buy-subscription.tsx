@@ -1,15 +1,15 @@
 "use client";
 import { useTranslation } from "@/app/i18n/client";
 import Pricing from "@/components/pricing";
-import { Button } from "@/components/ui/button";
-import { Database } from "@/types_db";
-import { Session } from "@supabase/supabase-js";
+import { Tables } from "@/types_db";
+import { User } from "@supabase/supabase-js";
 import { useTheme } from "next-themes";
 import Image from "next/image";
-import Link from "next/link";
-type Subscription = Database["public"]["Tables"]["subscriptions"]["Row"];
-type Product = Database["public"]["Tables"]["products"]["Row"];
-type Price = Database["public"]["Tables"]["prices"]["Row"];
+
+type Subscription = Tables<"subscriptions">;
+type Product = Tables<"products">;
+type Price = Tables<"prices">;
+
 interface ProductWithPrices extends Product {
   prices: Price[];
 }
@@ -20,7 +20,7 @@ interface SubscriptionWithProduct extends Subscription {
   prices: PriceWithProduct | null;
 }
 export default function BuySubscription(props: {
-  session: Session | null;
+  user: User;
   subscriptions: SubscriptionWithProduct[] | null;
   products: ProductWithPrices[];
   lng: string;
@@ -44,9 +44,8 @@ export default function BuySubscription(props: {
       <section className="flex justify-center space-x-2">
         <Pricing
           lng={props.lng}
-          user={props.session?.user}
+          user={props.user}
           products={props.products}
-          session={props.session}
           subscriptions={props.subscriptions}
         />
       </section>
