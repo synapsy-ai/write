@@ -16,7 +16,27 @@ export async function generateStaticParams() {
 
 export const metadata: Metadata = {
   title: { default: "Synapsy Write", template: "%s | Synapsy Write" },
-  description: "A new way to write text, powered by AI.",
+  description:
+    "AI-powered document generator. Generate essays, articles and complex documents using automations and AI.",
+  twitter: {
+    description:
+      "AI-powered document generator. Generate essays, articles and complex documents using automations and AI.",
+    site: "@PeyronnetGroup",
+    card: "summary_large_image",
+    images: "https://peyronnet.group/synapsy_write_social.png",
+  },
+  applicationName: "Synapsy Write",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "Synapsy Write",
+  },
+  openGraph: {
+    title: "Synapsy Write",
+    description:
+      "AI-powered document generator. Generate essays, articles and complex documents using automations and AI.",
+    images: "https://peyronnet.group/synapsy_write_social.png",
+  },
 };
 
 export default function RootLayout({
@@ -35,19 +55,9 @@ export default function RootLayout({
           name="twitter:description"
           content="A new way to write text, powered by AI."
         />
-        <meta name="twitter:site" content="@PeyronnetGroup" />
-        <meta name="twitter:title" content="Synapsy Write" />
-        <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:url" content="write.peyronnet.group/" />
         <link rel="manifest" href="/manifest.json" />
-        <meta name="application-name" content="Synapsy Write" />
-        <meta name="apple-mobile-web-app-capable" content="yes" />
-        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-        <meta name="apple-mobile-web-app-title" content="Synapsy Write" />
-        <meta
-          name="twitter:image"
-          content="https://peyronnet.group/synapsy_write_social.png"
-        />
+
         <meta
           name="theme-color"
           content="#ffffff"
@@ -57,15 +67,6 @@ export default function RootLayout({
           name="theme-color"
           content="#000014"
           media="(prefers-color-scheme: dark)"
-        />
-        <meta name="og:title" content="Synapsy Write" />
-        <meta
-          name="og:description"
-          content="A new way to write text, powered by AI."
-        />
-        <meta
-          name="og:image"
-          content="https://peyronnet.group/synapsy_write_social.png"
         />
         <Script
           id="gtag"
