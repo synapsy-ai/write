@@ -48,6 +48,7 @@ export default function NameForm({
       <CardContent>
         <form id="nameForm" onSubmit={(e) => handleSubmit(e)}>
           <Input
+            disabled
             type="text"
             name="fullName"
             defaultValue={userName}
@@ -58,7 +59,7 @@ export default function NameForm({
       </CardContent>
       <CardFooter className="flex justify-between">
         <p className="pb-4 sm:pb-0">{t("name-char")}</p>
-        <Button type="submit" form="nameForm">
+        <Button disabled type="submit" form="nameForm">
           {t("update-name")}
         </Button>
       </CardFooter>

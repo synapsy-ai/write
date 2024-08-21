@@ -49,6 +49,7 @@ export default function EmailForm({
         <form id="emailForm" onSubmit={(e) => handleSubmit(e)}>
           <Input
             type="text"
+            disabled
             name="newEmail"
             defaultValue={userEmail ?? ""}
             placeholder="Your email"
@@ -58,7 +59,7 @@ export default function EmailForm({
       </CardContent>
       <CardFooter className="flex justify-between">
         <p className="pb-4 sm:pb-0">{t("email-notify")}</p>
-        <Button type="submit" form="emailForm">
+        <Button disabled type="submit" form="emailForm">
           {t("update-email")}
         </Button>
       </CardFooter>
