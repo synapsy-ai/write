@@ -7,6 +7,8 @@ import NavBar from "@/components/navbar";
 import { ThemeProvider } from "@/components/theme-provider";
 import Script from "next/script";
 import MobileNavBar from "@/components/mobile-nav";
+import { Toaster } from "@/components/ui/toaster";
+import { Suspense } from "react";
 
 const manrope = Manrope({ subsets: ["latin"] });
 export async function generateStaticParams() {
@@ -92,6 +94,9 @@ export default function RootLayout({
           {children}
           <MobileNavBar lng={lng} />
         </ThemeProvider>
+        <Suspense>
+          <Toaster />
+        </Suspense>
       </body>
     </html>
   );
