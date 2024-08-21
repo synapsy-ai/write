@@ -1,20 +1,25 @@
 import Stripe from "stripe";
-import { stripe } from "@/utils/stripe";
+import { stripe } from "@/utils/stripe/config";
 import {
   upsertProductRecord,
   upsertPriceRecord,
   manageSubscriptionStatusChange,
-} from "@/utils/supabase-admin";
-
+  deleteProductRecord,
+  deletePriceRecord,
+  manageInvoicePaid,
+} from "@/utils/supabase/admin";
 const relevantEvents = new Set([
   "product.created",
   "product.updated",
+  "product.deleted",
   "price.created",
   "price.updated",
+  "price.deleted",
   "checkout.session.completed",
   "customer.subscription.created",
   "customer.subscription.updated",
   "customer.subscription.deleted",
+  "invoice.paid",
 ]);
 
 export async function POST(req: Request) {
@@ -24,8 +29,10 @@ export async function POST(req: Request) {
   let event: Stripe.Event;
 
   try {
-    if (!sig || !webhookSecret) return;
+    if (!sig || !webhookSecret)
+      return new Response("Webhook secret not found.", { status: 400 });
     event = stripe.webhooks.constructEvent(body, sig, webhookSecret);
+    console.log(`🔔  Webhook received: ${event.type}`);
   } catch (err: any) {
     console.log(`❌ Error message: ${err.message}`);
     return new Response(`Webhook Error: ${err.message}`, { status: 400 });
@@ -42,6 +49,12 @@ export async function POST(req: Request) {
         case "price.updated":
           await upsertPriceRecord(event.data.object as Stripe.Price);
           break;
+        case "price.deleted":
+          await deletePriceRecord(event.data.object as Stripe.Price);
+          break;
+        case "product.deleted":
+          await deleteProductRecord(event.data.object as Stripe.Product);
+          break;
         case "customer.subscription.created":
         case "customer.subscription.updated":
         case "customer.subscription.deleted":
@@ -49,7 +62,7 @@ export async function POST(req: Request) {
           await manageSubscriptionStatusChange(
             subscription.id,
             subscription.customer as string,
-            event.type === "customer.subscription.created",
+            event.type === "customer.subscription.created"
           );
           break;
         case "checkout.session.completed":
@@ -59,9 +72,15 @@ export async function POST(req: Request) {
             await manageSubscriptionStatusChange(
               subscriptionId as string,
               checkoutSession.customer as string,
-              true,
+              true
             );
           }
+          break;
+        case "invoice.paid":
+          const invoice = event.data.object as Stripe.Invoice;
+          const sub = invoice.subscription as string;
+
+          await manageInvoicePaid(sub, invoice.customer as string);
           break;
         default:
           throw new Error("Unhandled relevant event!");
@@ -69,10 +88,10 @@ export async function POST(req: Request) {
     } catch (error) {
       console.log(error);
       return new Response(
-        "Webhook handler failed. View your nextjs function logs.",
+        `Webhook handler failed. View your Next.js function logs. ${error}`,
         {
           status: 400,
-        },
+        }
       );
     }
   }
