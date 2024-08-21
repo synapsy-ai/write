@@ -61,13 +61,6 @@ export default async function ChatPage({
   }
   const q = await getQuotas();
   return (
-    <Chat
-      session={user}
-      products={products}
-      subscriptions={subscriptions}
-      user={user?.user}
-      lng={lng}
-      quotas={q}
-    />
+    <Chat subscriptions={subscriptions} user={user} lng={lng} quotas={q} />
   );
 }
