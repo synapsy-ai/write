@@ -58,7 +58,7 @@ export default function CustomerPortalForm({ subscriptions, lng }: Props) {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="mt-8 mb-4">
+        <div className="mb-4 mt-8">
           {subscriptions && subscriptions.length > 0 ? (
             <div className="space-y-2">
               {subscriptions.map((subscription) => (
@@ -77,21 +77,21 @@ export default function CustomerPortalForm({ subscriptions, lng }: Props) {
                         style: "currency",
                         currency: subscription?.prices?.currency!,
                         minimumFractionDigits: 0,
-                      }
+                      },
                     ).format(
-                      (subscription?.prices?.unit_amount || 0) / 100
+                      (subscription?.prices?.unit_amount || 0) / 100,
                     )}/${t(subscription?.prices?.interval ?? "month")}`}</p>
                     <Info size={14} />
                     <p>{t(subscription.status ?? "active")}</p>
                     <Calendar size={14} />
                     <p>
                       {new Date(
-                        subscription.current_period_end
+                        subscription.current_period_end,
                       ).toLocaleDateString(
-                        lng === "fr" ? "fr-FR" : "en-US"
+                        lng === "fr" ? "fr-FR" : "en-US",
                       )}{" "}
                       {new Date(
-                        subscription.current_period_end
+                        subscription.current_period_end,
                       ).toLocaleTimeString(lng === "fr" ? "fr-FR" : "en-US")}
                     </p>
                   </div>
@@ -99,8 +99,8 @@ export default function CustomerPortalForm({ subscriptions, lng }: Props) {
               ))}
             </div>
           ) : (
-            <div className="p-4 rounded-md border dark:border-slate-700">
-              <Link href="/products">{t("products-desc")}</Link>
+            <div className="rounded-md border p-4 dark:border-slate-700">
+              <Link href="/pricing">{t("products-desc")}</Link>
             </div>
           )}
         </div>
