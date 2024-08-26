@@ -3,10 +3,11 @@ import {
   getComplexEssayPrompts,
   getSystem,
 } from "../ai-completions";
+import { Language } from "../languages";
 import { Recipe } from "../recipe";
 
 export function getComplexEssayPhiloRecipe(
-  lng: "fr" | "en",
+  lng: Language,
   tone: string,
 ): Recipe {
   return {

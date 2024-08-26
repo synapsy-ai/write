@@ -3,9 +3,10 @@ import {
   getComplexEssayPrompts,
   getSystem,
 } from "../ai-completions";
+import { Language } from "../languages";
 import { Recipe } from "../recipe";
 
-export function getComplexEssayRecipe(lng: "fr" | "en", tone: string): Recipe {
+export function getComplexEssayRecipe(lng: Language, tone: string): Recipe {
   return {
     name: "essay",
     systemPrompt: getSystem("es_complex_outline", lng, tone),

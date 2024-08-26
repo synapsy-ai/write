@@ -3,9 +3,10 @@ import {
   getPromptComplexAnalysis,
   getSystem,
 } from "../ai-completions";
+import { Language } from "../languages";
 import { Recipe } from "../recipe";
 
-export function getPhiloAnalysisRecipe(lng: "fr" | "en", tone: string): Recipe {
+export function getPhiloAnalysisRecipe(lng: Language, tone: string): Recipe {
   return {
     name: "text-philosophy",
     systemPrompt: getSystem("ph_analysis_outline", lng, tone),
