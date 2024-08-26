@@ -1,8 +1,4 @@
-import {
-  getPromptText,
-  getPromptComplexAnalysis,
-  getSystem,
-} from "../ai-completions";
+import { getPrompt, getSystem } from "../ai-completions";
 import { Language } from "../languages";
 import { Recipe } from "../recipe";
 
@@ -13,23 +9,23 @@ export function getPhiloAnalysisRecipe(lng: Language, tone: string): Recipe {
     steps: [
       {
         name: "essay-outline",
-        userPrompt: getPromptText("ph_analysis_outline", lng),
+        userPrompt: getPrompt("ph_analysis_outline", lng),
         outputVar: "outline",
         hide: true,
       },
       {
         name: "introduction",
-        userPrompt: getPromptComplexAnalysis("ph_analysis_intro", lng),
+        userPrompt: getPrompt("ph_analysis_intro", lng),
         outputVar: "introduction",
       },
       {
         name: "main-content",
-        userPrompt: getPromptComplexAnalysis("ph_analysis_dev", lng),
+        userPrompt: getPrompt("ph_analysis_dev", lng),
         outputVar: "mainContent",
       },
       {
         name: "conclusion",
-        userPrompt: getPromptComplexAnalysis("ph_analysis_conclusion", lng),
+        userPrompt: getPrompt("ph_analysis_conclusion", lng),
         outputVar: "conclusion",
       },
     ],

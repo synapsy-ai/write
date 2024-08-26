@@ -1,5 +1,5 @@
 import {
-  getPromptText,
+  getPrompt,
   getComplexEssayPrompts,
   getSystem,
 } from "../ai-completions";
@@ -16,13 +16,13 @@ export function getComplexEssayGlobalRecipe(
     steps: [
       {
         name: "essay-outline",
-        userPrompt: getPromptText("g_es_outline", lng),
+        userPrompt: getPrompt("g_es_outline", lng),
         outputVar: "outline",
         hide: true,
       },
       {
         name: "introduction",
-        userPrompt: getPromptText("g_es_intro", lng),
+        userPrompt: getPrompt("g_es_intro", lng),
         outputVar: "introduction",
       },
       {
@@ -42,7 +42,7 @@ export function getComplexEssayGlobalRecipe(
       },
       {
         name: "conclusion",
-        userPrompt: getPromptText("g_es_conclusion", lng),
+        userPrompt: getPrompt("g_es_conclusion", lng),
         outputVar: "conclusion",
       },
     ],
