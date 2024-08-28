@@ -1,7 +1,14 @@
-import OpenAI from "openai";
 import { systemPrompts } from "./prompts/system";
 import { userPrompts } from "./prompts/user";
 import { Language } from "./languages";
+import { createOpenAI } from "@ai-sdk/openai";
+import { generateText, streamText } from "ai";
+
+const openai = createOpenAI({
+  // custom settings, e.g.
+  apiKey: process.env["OPENAI_API_KEY"],
+  compatibility: "strict",
+});
 export async function sendToGpt(
   prompt: string,
   key: string,
@@ -14,32 +21,19 @@ export async function sendToGpt(
 ): Promise<any> {
   functions.setLoading(true);
   let loading = true;
-  const openai = new OpenAI({
-    apiKey: process.env.OPENAI_API_KEY,
-    dangerouslyAllowBrowser: true, // defaults to process.env["OPENAI_API_KEY"]
+  const chatCompletion = await streamText({
+    model: openai(model),
+    system: getSystem(template, lng, tone),
+    prompt: getPrompt(template, lng, prompt),
+    temperature: options.temp,
+    topP: options.topP,
+    frequencyPenalty: options.freqP,
+    presencePenalty: options.presP,
   });
-  const chatCompletion: OpenAI.Chat.Completions.ChatCompletion | any =
-    await openai.chat.completions
-      .create({
-        messages: [
-          { role: "system", content: getSystem(template, lng, tone) },
-          { role: "user", content: getPrompt(template, lng, prompt) },
-        ],
-        model: model,
-        temperature: options.temp,
-        top_p: options.topP,
-        frequency_penalty: options.freqP,
-        presence_penalty: options.presP,
-        stream: true,
-      })
-      .catch((err: any) => {
-        return err;
-      });
 
   let result = "";
-  for await (const chunk of chatCompletion) {
-    if (chunk.choices[0].delta.content)
-      result += chunk.choices[0].delta.content;
+  for await (const chunk of chatCompletion.textStream) {
+    if (chunk) result += chunk;
     functions.setContent(result);
     if (loading) {
       functions.setLoading(false);
@@ -61,31 +55,20 @@ export async function sendToGptCustom(
   let result = content;
   let c = "";
   console.log(result);
-  const openai = new OpenAI({
-    apiKey: process.env.OPENAI_API_KEY,
-    dangerouslyAllowBrowser: true, // defaults to process.env["OPENAI_API_KEY"]
+  const chatCompletion = await streamText({
+    model: openai(model),
+    system: system,
+    prompt: prompt,
+    temperature: options.temp,
+    topP: options.topP,
+    frequencyPenalty: options.freqP,
+    presencePenalty: options.presP,
   });
 
-  const chatCompletion = await openai.chat.completions
-    .create({
-      messages: [
-        { role: "system", content: system },
-        { role: "user", content: prompt },
-      ],
-      model: model,
-      temperature: options.temp,
-      top_p: options.topP,
-      frequency_penalty: options.freqP,
-      presence_penalty: options.presP,
-      stream: true,
-    })
-    .catch((err: any) => {
-      return err;
-    });
-  for await (const chunk of chatCompletion) {
-    if (chunk.choices[0].delta.content) {
-      result += chunk.choices[0].delta.content;
-      c += chunk.choices[0].delta.content;
+  for await (const chunk of chatCompletion.textStream) {
+    if (chunk) {
+      result += chunk;
+      c += chunk;
     }
     functions.setContent(result);
   }
@@ -99,27 +82,17 @@ export async function getStandardGeneration(
   model: string,
   options: OpenAiOptions,
 ) {
-  const openai = new OpenAI({
-    apiKey: process.env.OPENAI_API_KEY,
-    dangerouslyAllowBrowser: true, // defaults to process.env["OPENAI_API_KEY"]
+  const chatCompletion = await generateText({
+    model: openai(model),
+    system: system,
+    prompt: prompt,
+    temperature: options.temp,
+    topP: options.topP,
+    frequencyPenalty: options.freqP,
+    presencePenalty: options.presP,
   });
 
-  const chatCompletion = await openai.chat.completions
-    .create({
-      messages: [
-        { role: "system", content: system },
-        { role: "user", content: prompt },
-      ],
-      model: model,
-      temperature: options.temp,
-      top_p: options.topP,
-      frequency_penalty: options.freqP,
-      presence_penalty: options.presP,
-    })
-    .catch((err: any) => {
-      return err;
-    });
-  return chatCompletion.choices[0].message.content;
+  return chatCompletion.text;
 }
 
 export function getSystem(
