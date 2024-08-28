@@ -36,6 +36,8 @@ export function getModelString(id: string) {
       return "GPT-4o Mini";
     case "gpt-4o-mini-2024-07-18":
       return "GPT-4o Mini (07/2024)";
+    case "gpt-4o-mini-2024-08-06":
+      return "GPT-4o Mini (08/2024)";
     case "gpt-3.5-turbo-16k":
       return "GPT-3.5 Turbo (16k)";
     case "gpt-3.5-turbo-0613":
