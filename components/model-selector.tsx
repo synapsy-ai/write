@@ -28,7 +28,7 @@ export default function ModelSelector({
         <SelectValue placeholder={placeholder} />
       </SelectTrigger>
       <SelectContent>
-        <Tabs defaultValue="openAI" className="w-[400px]">
+        <Tabs defaultValue="openAI">
           <TabsList>
             <TabsTrigger value="openAI">OpenAI</TabsTrigger>
           </TabsList>

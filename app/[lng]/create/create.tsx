@@ -38,7 +38,6 @@ import {
 import { Separator } from "@/components/ui/separator";
 import OpenAI from "openai";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { getModelString } from "@/lib/models";
 import {
   HoverCard,
   HoverCardContent,
@@ -49,8 +48,8 @@ import { Variable, getVariableString } from "@/lib/variable";
 import VariableItem from "@/components/variable-item";
 import FormatDialog from "@/components/format-dialog";
 import { Textarea } from "@/components/ui/textarea";
-import { Database, Tables } from "@/types_db";
-import { Session, User } from "@supabase/supabase-js";
+import { Tables } from "@/types_db";
+import { User } from "@supabase/supabase-js";
 import Link from "next/link";
 import {
   Dialog,
@@ -83,6 +82,7 @@ import { getComplexEssayGlobalRecipe } from "@/lib/recipes/complex-essay-global"
 import { getComplexEssayRecipe } from "@/lib/recipes/complex-essay-literrature";
 import { getComplexEssayPhiloRecipe } from "@/lib/recipes/complex-essay-philo";
 import { createClient } from "@/utils/supabase/client";
+import ModelSelector from "@/components/model-selector";
 
 type Subscription = Tables<"subscriptions">;
 type Product = Tables<"products">;
@@ -669,23 +669,12 @@ export default function Create(props: Props) {
                 <div className="space-y-2">
                   <label htmlFor="model">{t("model")}</label>
                   <div className="flex items-center space-x-2">
-                    <Select
-                      onValueChange={(e) => setModel(e)}
-                      defaultValue={model}
-                    >
-                      <SelectTrigger>
-                        <SelectValue placeholder={t("model")} />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <ScrollArea className="h-[200px]">
-                          {avModels.map((el, i) => (
-                            <SelectItem key={i} value={el}>
-                              {getModelString(el)}
-                            </SelectItem>
-                          ))}
-                        </ScrollArea>
-                      </SelectContent>
-                    </Select>
+                    <ModelSelector
+                      placeholder={t("model")}
+                      avModels={avModels}
+                      model={model}
+                      setModel={setModel}
+                    />
                     <TooltipProvider delayDuration={0}>
                       <Tooltip>
                         <TooltipTrigger>
