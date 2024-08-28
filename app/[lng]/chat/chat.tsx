@@ -454,7 +454,7 @@ export default function Chat(props: Props) {
           </div>
           <ScrollArea className="max-h-[calc(100vh-330px)]">
             <ChatBox isLoading={sendDisabled} lng={lng} messages={messages} />
-            {messages.length === 1 && (
+            {messages.length === 0 && (
               <div className="flex h-[calc(100vh-330px)] flex-col items-center justify-center text-center">
                 <MessageCircleMore size={36} />
                 <h3>{t("chat-placeholder")}</h3>
