@@ -225,7 +225,7 @@ export interface OpenAiOptions {
 }
 
 export interface ChatMessage {
-  role: "system" | "user" | "assistant";
+  role: "user" | "assistant";
   content: string;
 }
 
