@@ -48,6 +48,7 @@ import { getModelString } from "@/lib/models";
 import { Settings } from "@/lib/settings";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { chatSystemPrompts } from "@/lib/prompts/system";
+import ModelSelector from "@/components/model-selector";
 
 type Subscription = Tables<"subscriptions">;
 type Product = Tables<"products">;
@@ -337,20 +338,12 @@ export default function Chat(props: Props) {
           }
         >
           <div className="flex items-center space-x-2">
-            <Select onValueChange={(e) => setModel(e)} defaultValue={model}>
-              <SelectTrigger className="w-[180px]">
-                <SelectValue placeholder={t("model")} />
-              </SelectTrigger>
-              <SelectContent>
-                <ScrollArea className="h-[200px]">
-                  {avModels.map((el, i) => (
-                    <SelectItem key={i} value={el}>
-                      {getModelString(el)}
-                    </SelectItem>
-                  ))}
-                </ScrollArea>
-              </SelectContent>
-            </Select>
+            <ModelSelector
+              placeholder={t("model")}
+              avModels={avModels}
+              model={model}
+              setModel={setModel}
+            />
             {messages.length === 1 && (
               <Dialog>
                 <DialogTrigger>
