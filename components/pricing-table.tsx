@@ -8,7 +8,7 @@ export default async function PricingFeatureTable(props: { lng: string }) {
   const { t } = await useTranslation(props.lng, "common");
 
   return (
-    <ScrollArea className="w-screen max-w-6xl sm:mx-auto">
+    <ScrollArea className="mb-2 w-screen max-w-6xl sm:mx-auto">
       <table className="features text-slate-700 dark:text-slate-400">
         <tbody>
           <tr>
