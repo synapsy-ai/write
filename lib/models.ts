@@ -31,3 +31,8 @@ const modelStrings: { [key: string]: string } = {
 export function getModelString(id: string): string {
   return modelStrings[id] || id;
 }
+
+export interface ModelList {
+  openAiModels: string[];
+  mistralModels: string[];
+}
