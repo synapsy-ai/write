@@ -23,7 +23,7 @@ import {
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { useRouter } from "next/navigation";
-import { getModelString } from "@/lib/models";
+import { getModelString, ModelList } from "@/lib/models";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { getModels } from "@/lib/ai-completions";
 import {
@@ -52,6 +52,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import Link from "next/link";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 export default function SettingsPage({
   params: { lng },
@@ -66,28 +67,27 @@ export default function SettingsPage({
     s.models ??= ["gpt-3.5-turbo"];
     s.system_templates ??= [];
     s.gen_font ??= "default";
+    s.aiModels ??= {
+      openAiModels: ["gpt-4o-mini", "gpt-3.5-turbo"],
+      mistralModels: [],
+    };
     localStorage.setItem("synapsy_settings", JSON.stringify(s));
   }
   const [models, setModels] = useState(
-    s.models?.map((m) => {
-      return getModelString(m);
-    }),
+    s.aiModels ?? {
+      openAiModels: ["gpt-4o-mini", "gpt-3.5-turbo"],
+      mistralModels: [],
+    },
   );
   const [modelQuery, setModelQuery] = useState("");
-  const apiKey = process?.env?.OPENAI_API_KEY || "";
   const [templates, setTemplates] = useState(s.system_templates ?? []);
   const [anchor, setAnchor] = useState("general");
   async function refreshModels() {
-    let m = await getModels();
-    let avm: string[] = [];
-    let avm2: string[] = [];
-    for (let i = 0; i < m.length; i++) {
-      if (m[i].id.startsWith("gpt")) avm.push(getModelString(m[i].id));
-      if (m[i].id.startsWith("gpt")) avm2.push(m[i].id);
-    }
-    setModels(avm);
+    let m: ModelList = await getModels();
+
+    setModels(m);
     if (typeof window !== "undefined") {
-      s.models = avm2;
+      s.aiModels = m;
       localStorage.setItem("synapsy_settings", JSON.stringify(s));
     }
   }
@@ -241,22 +241,47 @@ export default function SettingsPage({
                     <RefreshCcw height={14} />
                   </Button>
                 </div>
-                <ScrollArea className="h-[200px]">
-                  <div>
-                    {models
-                      ?.filter((s) =>
-                        s.toLowerCase().includes(modelQuery.toLowerCase()),
-                      )
-                      .map((m, i) => (
-                        <p
-                          key={i}
-                          className="m-1 rounded-md border border-transparent p-2 hover:border-slate-300 hover:bg-slate-200/50 dark:hover:border-accent dark:hover:bg-slate-800/50"
-                        >
-                          {m}
-                        </p>
-                      ))}
-                  </div>
-                </ScrollArea>
+                <Tabs defaultValue="openAI">
+                  <TabsList>
+                    <TabsTrigger value="openAI">OpenAI</TabsTrigger>
+                    <TabsTrigger value="mistral">Mistral</TabsTrigger>
+                  </TabsList>
+                  <ScrollArea className="h-[200px]">
+                    <TabsContent value="openAI">
+                      <div>
+                        {models.openAiModels
+                          ?.filter((s) => s.toLowerCase().startsWith("gpt"))
+                          .filter((s) =>
+                            s.toLowerCase().includes(modelQuery.toLowerCase()),
+                          )
+                          .map((m, i) => (
+                            <p
+                              key={i}
+                              className="m-1 rounded-md border border-transparent p-2 hover:border-slate-300 hover:bg-slate-200/50 dark:hover:border-accent dark:hover:bg-slate-800/50"
+                            >
+                              {m}
+                            </p>
+                          ))}
+                      </div>
+                    </TabsContent>
+                    <TabsContent value="mistral">
+                      <div>
+                        {models.mistralModels
+                          ?.filter((s) =>
+                            s.toLowerCase().includes(modelQuery.toLowerCase()),
+                          )
+                          .map((m, i) => (
+                            <p
+                              key={i}
+                              className="m-1 rounded-md border border-transparent p-2 hover:border-slate-300 hover:bg-slate-200/50 dark:hover:border-accent dark:hover:bg-slate-800/50"
+                            >
+                              {m}
+                            </p>
+                          ))}
+                      </div>
+                    </TabsContent>
+                  </ScrollArea>
+                </Tabs>
               </div>
             </CardContent>
           </Card>
