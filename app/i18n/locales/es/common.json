@@ -369,5 +369,10 @@
   "confirm-password": "Confirmar nueva contraseña",
   "link-text-2": "¿No tiene una cuenta?",
   "sign-in-link-text-2": "¿Ya tiene una cuenta?",
-  "models-desc": "Ver todos los modelos disponibles para su cuenta."
+  "models-desc": "Ver todos los modelos disponibles para su cuenta.",
+  "blog-desc": "Artículos y actualizaciones del equipo",
+  "privacy-desc": "Obtén más información sobre nuestras políticas relativas a tu privacidad",
+  "youtube-desc": "Mira nuestros videos sobre nuestros productos",
+  "x-desc": "Síguenos en X para obtener las últimas actualizaciones",
+  "cgv-desc": "Descubre nuestras condiciones generales de venta"
 }
