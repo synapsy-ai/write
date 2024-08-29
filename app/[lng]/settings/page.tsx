@@ -64,7 +64,6 @@ export default function SettingsPage({
   let s: Settings = { key: "" };
   if (typeof window !== "undefined") {
     s = JSON.parse(localStorage.getItem("synapsy_settings") ?? "{}");
-    s.models ??= ["gpt-3.5-turbo"];
     s.system_templates ??= [];
     s.gen_font ??= "default";
     s.aiModels ??= {
@@ -84,7 +83,6 @@ export default function SettingsPage({
   const [anchor, setAnchor] = useState("general");
   async function refreshModels() {
     let m: ModelList = await getModels();
-
     setModels(m);
     if (typeof window !== "undefined") {
       s.aiModels = m;
@@ -114,7 +112,7 @@ export default function SettingsPage({
             onClick={() => setAnchor("models")}
             prefetch={false}
           >
-            {t("openai-models")}
+            {t("models")}
           </Link>
           <Link
             href="#templates"
@@ -226,8 +224,8 @@ export default function SettingsPage({
           </Card>
           <Card id="models">
             <CardHeader>
-              <CardTitle>{t("openai-models")}</CardTitle>
-              <CardDescription>{t("openai-models-desc")}</CardDescription>
+              <CardTitle>{t("models")}</CardTitle>
+              <CardDescription>{t("models-desc")}</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="rounded-md border p-2">

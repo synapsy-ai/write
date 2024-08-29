@@ -366,5 +366,6 @@
   "new-password": "Nouveau mot de passe",
   "confirm-password": "Confirmez votre mot de passe",
   "link-text-2": "Vous n'avez pas de compte ?",
-  "sign-in-link-text-2": "Vous avez déjà un compte ?"
+  "sign-in-link-text-2": "Vous avez déjà un compte ?",
+  "models-desc": "Voir tous les modèles disponibles pour votre compte."
 }
