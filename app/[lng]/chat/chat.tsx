@@ -41,6 +41,7 @@ import { Settings } from "@/lib/settings";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { chatSystemPrompts } from "@/lib/prompts/system";
 import ModelSelector from "@/components/model-selector";
+import { ModelList } from "@/lib/models";
 
 type Subscription = Tables<"subscriptions">;
 type Product = Tables<"products">;
@@ -88,18 +89,21 @@ export default function Chat(props: Props) {
   const [model, setModel] = useState("gpt-3.5-turbo");
 
   const defaultModels = () =>
-    hasGpt4Access() ? ["gpt-3.5-turbo", "gpt-4"] : ["gpt-3.5-turbo"];
+    hasGpt4Access()
+      ? { openAiModels: ["gpt-3.5-turbo", "gpt-4"], mistralModels: [] }
+      : { openAiModels: ["gpt-3.5-turbo"], mistralModels: [] };
 
   function getAvailableModels(
-    availableModels: string[] | undefined,
-  ): string[] | undefined {
-    if (!availableModels) return [];
-    let models = [];
+    availableModels: ModelList | undefined,
+  ): ModelList {
+    if (!availableModels) return { openAiModels: [], mistralModels: [] };
+    let models: ModelList = { openAiModels: [], mistralModels: [] };
     let gpt4 = hasGpt4Access();
-    for (let i = 0; i < availableModels.length; i++) {
-      if (availableModels[i].includes("gpt-4") && !gpt4) continue;
-      models?.push(availableModels[i]);
+    for (let i = 0; i < availableModels.openAiModels.length; i++) {
+      if (availableModels.openAiModels[i].includes("gpt-4") && !gpt4) continue;
+      models.openAiModels.push(availableModels.openAiModels[i]);
     }
+    models.mistralModels = models.mistralModels;
     return models;
   }
 
@@ -118,7 +122,7 @@ export default function Chat(props: Props) {
   }
 
   const [avModels, setAvModels] = useState(
-    getAvailableModels(s.models) ?? defaultModels(),
+    getAvailableModels(s.aiModels) ?? defaultModels(),
   );
   let userMsg = userInput;
   const [convIndex, setConvIndex] = useState(0);
