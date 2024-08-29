@@ -7,7 +7,7 @@ const openai = new OpenAI({
 });
 
 const mistral = new Mistral({
-  apiKey: process.env["MISTRAL_API_KEY"] ?? "",
+  apiKey: process.env.MISTRAL_API_KEY,
 });
 
 export async function GET(req: Request) {
