@@ -1,24 +1,25 @@
 import {
-  getPromptText,
+  getPrompt,
   getComplexEssayPrompts,
   getSystem,
 } from "../ai-completions";
+import { Language } from "../languages";
 import { Recipe } from "../recipe";
 
-export function getComplexEssayRecipe(lng: "fr" | "en", tone: string): Recipe {
+export function getComplexEssayRecipe(lng: Language, tone: string): Recipe {
   return {
     name: "essay",
     systemPrompt: getSystem("es_complex_outline", lng, tone),
     steps: [
       {
         name: "essay-outline",
-        userPrompt: getPromptText("es_outline", lng),
+        userPrompt: getPrompt("es_outline", lng),
         outputVar: "outline",
         hide: true,
       },
       {
         name: "introduction",
-        userPrompt: getPromptText("es_intro", lng),
+        userPrompt: getPrompt("es_intro", lng),
         outputVar: "introduction",
       },
       {
@@ -38,7 +39,7 @@ export function getComplexEssayRecipe(lng: "fr" | "en", tone: string): Recipe {
       },
       {
         name: "conclusion",
-        userPrompt: getPromptText("es_conclusion", lng),
+        userPrompt: getPrompt("es_conclusion", lng),
         outputVar: "conclusion",
       },
     ],

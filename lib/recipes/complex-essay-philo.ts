@@ -1,12 +1,13 @@
 import {
-  getPromptText,
+  getPrompt,
   getComplexEssayPrompts,
   getSystem,
 } from "../ai-completions";
+import { Language } from "../languages";
 import { Recipe } from "../recipe";
 
 export function getComplexEssayPhiloRecipe(
-  lng: "fr" | "en",
+  lng: Language,
   tone: string,
 ): Recipe {
   return {
@@ -15,14 +16,14 @@ export function getComplexEssayPhiloRecipe(
     steps: [
       {
         name: "essay-outline",
-        userPrompt: getPromptText("ph_outline", lng),
+        userPrompt: getPrompt("ph_outline", lng),
         systemPrompt: getSystem("ph_visual_outline", lng, tone),
         outputVar: "outline",
         hide: true,
       },
       {
         name: "introduction",
-        userPrompt: getPromptText("ph_intro", lng),
+        userPrompt: getPrompt("ph_intro", lng),
         outputVar: "introduction",
       },
       {
@@ -42,7 +43,7 @@ export function getComplexEssayPhiloRecipe(
       },
       {
         name: "conclusion",
-        userPrompt: getPromptText("ph_conclusion", lng),
+        userPrompt: getPrompt("ph_conclusion", lng),
         outputVar: "conclusion",
       },
     ],

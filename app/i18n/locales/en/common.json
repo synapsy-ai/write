@@ -368,5 +368,11 @@
   "new-password": "New Password",
   "confirm-password": "Confirm New Password",
   "link-text-2": "Don't have an account?",
-  "sign-in-link-text-2": "Already have an account?"
+  "sign-in-link-text-2": "Already have an account?",
+  "models-desc": "See all available models for your account.",
+  "blog-desc": "Articles and updates from the team",
+  "privacy-desc": "Learn more about our policies relative to your privacy",
+  "youtube-desc": "Watch our videos about our products",
+  "x-desc": "Follow us on X to get te latest updates",
+  "cgv-desc": "Find out more about our general terms and conditions of sale"
 }

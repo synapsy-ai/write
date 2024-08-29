@@ -12,69 +12,67 @@ export default function SiteFooter({
 }) {
   const { t } = useTranslation(lng, "common");
   return (
-    <footer className="pb-16 sm:pb-0">
-      <div className="flex flex-col justify-center space-y-2 px-5 py-10 sm:grid sm:grid-cols-3">
-        <div className="flex items-center justify-center sm:justify-normal">
-          <Link href="/">
-            <Logo width={256} height={64} />
-          </Link>
-        </div>
-        <div className="m-4 sm:m-0">
-          <h3 className="text-lg">{t("links")}</h3>
-          <div className="flex flex-col">
-            <Link
-              target="_blank"
-              rel="noreferrer"
-              className="hover:underline"
-              href={"https://blog.peyronnet.group"}
-            >
-              Blog
-            </Link>
-            <Link
-              className="hover:underline"
-              target="_blank"
-              rel="noreferrer"
-              href={"https://peyronnet.group/privacy"}
-            >
-              {t("privacy-policy")}
-            </Link>
-            <Link
-              className="hover:underline"
-              target="_blank"
-              rel="noreferrer"
-              href={"https://peyronnet.group/cgv"}
-            >
-              {t("terms-sell")}
-            </Link>
-          </div>
-        </div>
-        <div className="m-4 sm:m-0">
-          <h3 className="text-lg">{t("socials")}</h3>
-          <div className="flex flex-col">
-            <Link
-              target="_blank"
-              rel="noreferrer"
-              className="hover:underline"
-              href={"https://twitter.com/PeyronnetGroup"}
-            >
-              Twitter
-            </Link>
-            <Link
-              target="_blank"
-              rel="noreferrer"
-              className="hover:underline"
-              href={"https://www.youtube.com/@PeyronnetGroup"}
-            >
-              YouTube
-            </Link>
-          </div>
-        </div>
+    <footer className="flex flex-col justify-center space-y-2 border-t px-5 py-10 sm:grid sm:grid-cols-2 print:hidden">
+      <div className="flex items-center justify-center sm:justify-normal">
+        <Link href="https://peyronnet.group">
+          <Logo width={256} height={64} />
+        </Link>
       </div>
-      <div className="mx-4 flex flex-col items-center pb-4 sm:mx-0">
-        <p className="text-center">
-          v{version} - © {new Date().getFullYear()} Peyronnet Group and Synapsy
-        </p>
+      <div className="m-4 flex flex-wrap justify-center sm:m-0 sm:justify-normal">
+        <FooterLink
+          title="Blog"
+          description={t("blog-desc")}
+          link="https://blog.peyronnet.group"
+        />
+        <FooterLink
+          title={t("privacy-policy")}
+          description={t("privacy-desc")}
+          link="https://peyronnet.group/privacy"
+        />
+
+        <FooterLink
+          title={t("terms-sell")}
+          description={t("cgv-desc")}
+          link="https://peyronnet.group/cgv"
+        />
+
+        <FooterLink
+          title="X"
+          description={t("x-desc")}
+          link="https://twitter.com/PeyronnetGroup"
+        />
+
+        <FooterLink
+          title="YouTube"
+          description={t("youtube-desc")}
+          link="https://www.youtube.com/@PeyronnetGroup"
+        />
+        <FooterLink
+          title={t("about")}
+          description={`v${version} - © ${new Date().getFullYear()} Peyronnet Group and Synapsy`}
+          link="/settings"
+        />
       </div>
     </footer>
+  );
+}
+
+interface FooterLinkProps {
+  title: string;
+  description: string;
+  link: string;
+}
+
+function FooterLink(props: FooterLinkProps) {
+  return (
+    <Link
+      href={props.link}
+      className="block w-64 rounded-md border border-transparent p-4 transition-all hover:border-muted-foreground/50 hover:bg-muted"
+    >
+      <h3 className="text-lg font-bold leading-tight tracking-tighter">
+        {props.title}
+      </h3>
+      <p className="text-muted-foreground">{props.description}</p>
+    </Link>
   );
 }

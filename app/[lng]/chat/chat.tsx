@@ -15,9 +15,9 @@ import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { sendChatToGpt } from "@/lib/ai-chat";
 import { ChatConversation, ChatMessage } from "@/lib/ai-completions";
-import { Database, Tables } from "@/types_db";
+import { Tables } from "@/types_db";
 import { Close, DialogClose } from "@radix-ui/react-dialog";
-import { Session, User } from "@supabase/supabase-js";
+import { User } from "@supabase/supabase-js";
 import {
   Check,
   History,
@@ -37,16 +37,11 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { Drawer, DrawerContent, DrawerTrigger } from "@/components/ui/drawer";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { getModelString } from "@/lib/models";
 import { Settings } from "@/lib/settings";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { chatSystemPrompts } from "@/lib/prompts/system";
+import ModelSelector from "@/components/model-selector";
+import { getModelProvider, ModelList } from "@/lib/models";
 
 type Subscription = Tables<"subscriptions">;
 type Product = Tables<"products">;
@@ -84,15 +79,8 @@ export default function Chat(props: Props) {
   const [selectedTemplateId, setSelectedTemplateId] = useState<
     number | undefined
   >();
-  const defaultMsg: ChatMessage[] = [
-    {
-      role: "system",
-      content:
-        lng === "en"
-          ? "You are a highly skilled AI assistant specializing in document creation, information extraction, and essay writing. You help users generate well-structured documents, summarize and extract key information from texts, and craft high-quality essays based on provided topics. Format response: HTML (use headers only when necessary, otherwise, only provide text)."
-          : "Vous êtes un assistant IA hautement qualifié, spécialisé dans la création de documents, l'extraction d'informations et la rédaction d'essais. Vous aidez les utilisateurs à générer des documents bien structurés, à résumer et à extraire des informations clés de textes, et à rédiger des essais de haute qualité sur la base de sujets fournis. Format de réponse : HTML (utiliser les titres seulement si nécessaire, sinon, utiliser du texte simple).",
-    },
-  ];
+  const [system, setSystem] = useState(chatSystemPrompts[lng]);
+
   const [conversations, setConversations] =
     useState<ChatConversation[]>(getConvs());
   const [messages, setMessages] = useState<ChatMessage[]>(
@@ -101,18 +89,21 @@ export default function Chat(props: Props) {
   const [model, setModel] = useState("gpt-3.5-turbo");
 
   const defaultModels = () =>
-    hasGpt4Access() ? ["gpt-3.5-turbo", "gpt-4"] : ["gpt-3.5-turbo"];
+    hasGpt4Access()
+      ? { openAiModels: ["gpt-3.5-turbo", "gpt-4"], mistralModels: [] }
+      : { openAiModels: ["gpt-3.5-turbo"], mistralModels: [] };
 
   function getAvailableModels(
-    availableModels: string[] | undefined,
-  ): string[] | undefined {
-    if (!availableModels) return [];
-    let models = [];
+    availableModels: ModelList | undefined,
+  ): ModelList {
+    if (!availableModels) return { openAiModels: [], mistralModels: [] };
+    let models: ModelList = { openAiModels: [], mistralModels: [] };
     let gpt4 = hasGpt4Access();
-    for (let i = 0; i < availableModels.length; i++) {
-      if (availableModels[i].includes("gpt-4") && !gpt4) continue;
-      models?.push(availableModels[i]);
+    for (let i = 0; i < availableModels.openAiModels.length; i++) {
+      if (availableModels.openAiModels[i].includes("gpt-4") && !gpt4) continue;
+      models.openAiModels.push(availableModels.openAiModels[i]);
     }
+    models.mistralModels = models.mistralModels;
     return models;
   }
 
@@ -131,7 +122,7 @@ export default function Chat(props: Props) {
   }
 
   const [avModels, setAvModels] = useState(
-    getAvailableModels(s.models) ?? defaultModels(),
+    getAvailableModels(s.aiModels) ?? defaultModels(),
   );
   let userMsg = userInput;
   const [convIndex, setConvIndex] = useState(0);
@@ -154,7 +145,13 @@ export default function Chat(props: Props) {
       setMessages([...msgs2]);
     }
     setUserInput("");
-    let newMsg = await sendChatToGpt(model, { setContent: setContent }, msgs);
+    let newMsg = await sendChatToGpt(
+      model,
+      { setContent: setContent },
+      msgs,
+      system,
+      getModelProvider(model, avModels),
+    );
     return newMsg;
   }
 
@@ -193,12 +190,12 @@ export default function Chat(props: Props) {
         localStorage.getItem("synapsy_write_conversations") ?? "[]",
       );
       if (convs === undefined || convs.length === 0) {
-        saveConvs([{ name: t("new-conv"), messages: [...defaultMsg] }]);
-        return [{ name: t("new-conv"), messages: [...defaultMsg] }];
+        saveConvs([{ name: t("new-conv"), messages: [] }]);
+        return [{ name: t("new-conv"), messages: [] }];
       }
       return convs;
     }
-    return [{ name: t("new-convs"), messages: [...defaultMsg] }];
+    return [{ name: t("new-convs"), messages: [] }];
   }
 
   function saveConvs(convs: ChatConversation[]): void {
@@ -288,10 +285,10 @@ export default function Chat(props: Props) {
                           c = [
                             {
                               name: t("new-conv"),
-                              messages: [...defaultMsg],
+                              messages: [],
                             },
                           ];
-                          setMessages([...defaultMsg]);
+                          setMessages([]);
                         }
 
                         setConversations(c);
@@ -338,20 +335,12 @@ export default function Chat(props: Props) {
           }
         >
           <div className="flex items-center space-x-2">
-            <Select onValueChange={(e) => setModel(e)} defaultValue={model}>
-              <SelectTrigger className="w-[180px]">
-                <SelectValue placeholder={t("model")} />
-              </SelectTrigger>
-              <SelectContent>
-                <ScrollArea className="h-[200px]">
-                  {avModels.map((el, i) => (
-                    <SelectItem key={i} value={el}>
-                      {getModelString(el)}
-                    </SelectItem>
-                  ))}
-                </ScrollArea>
-              </SelectContent>
-            </Select>
+            <ModelSelector
+              placeholder={t("model")}
+              avModels={avModels}
+              model={model}
+              setModel={setModel}
+            />
             {messages.length === 1 && (
               <Dialog>
                 <DialogTrigger>
@@ -372,16 +361,14 @@ export default function Chat(props: Props) {
                               onClick={() => {
                                 if (selectedTemplateId === i) {
                                   setSelectedTemplateId(undefined);
-                                  setMessages(defaultMsg);
+                                  setMessages([]);
                                   let c = [...conversations];
-                                  c[convIndex].messages = defaultMsg;
+                                  c[convIndex].messages = [];
                                   setConversations(c);
                                   return;
                                 }
                                 setSelectedTemplateId(i);
-                                setMessages([
-                                  { role: "system", content: template.prompt },
-                                ]);
+                                setSystem(template.prompt);
                                 let c = [...conversations];
                                 c[convIndex].messages = messages;
                                 setConversations(c);
@@ -457,7 +444,7 @@ export default function Chat(props: Props) {
           </div>
           <ScrollArea className="max-h-[calc(100vh-330px)]">
             <ChatBox isLoading={sendDisabled} lng={lng} messages={messages} />
-            {messages.length === 1 && (
+            {messages.length === 0 && (
               <div className="flex h-[calc(100vh-330px)] flex-col items-center justify-center text-center">
                 <MessageCircleMore size={36} />
                 <h3>{t("chat-placeholder")}</h3>
@@ -503,10 +490,10 @@ export default function Chat(props: Props) {
                   <Button
                     onClick={() => {
                       if (messages.length === 1) return; // If there are no messages
-                      setMessages(defaultMsg);
+                      setMessages([]);
                       setConversations([
                         ...conversations,
-                        { name: t("new-conv"), messages: [...defaultMsg] },
+                        { name: t("new-conv"), messages: [] },
                       ]);
                       setConvIndex(conversations.length);
                       saveConvs(conversations);

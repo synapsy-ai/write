@@ -5,7 +5,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
       - name: Create .env with Github Secrets
         run: |
           touch .env
@@ -13,13 +13,15 @@ jobs:
           echo NEXT_PUBLIC_SUPABASE_ANON_KEY=$ENV_VAR_2 >> .env
           echo SUPABASE_SERVICE_ROLE_KEY=$ENV_VAR_3 >> .env
           echo OPENAI_API_KEY=$ENV_VAR_4 >> .env
+          echo MISTRAL_API_KEY=$ENV_VAR_5 >> .env
         env:
           ENV_VAR_1: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
           ENV_VAR_2: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
           ENV_VAR_3: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
           ENV_VAR_4: ${{ secrets.OPENAI_API_KEY }}
+          ENV_VAR_5: ${{ secrets.MISTRAL_API_KEY }}
       - name: Setup Node.js
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v4
         with:
           node-version: 18.x
 

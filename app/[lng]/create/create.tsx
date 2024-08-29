@@ -38,7 +38,6 @@ import {
 import { Separator } from "@/components/ui/separator";
 import OpenAI from "openai";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { getModelString } from "@/lib/models";
 import {
   HoverCard,
   HoverCardContent,
@@ -49,8 +48,8 @@ import { Variable, getVariableString } from "@/lib/variable";
 import VariableItem from "@/components/variable-item";
 import FormatDialog from "@/components/format-dialog";
 import { Textarea } from "@/components/ui/textarea";
-import { Database, Tables } from "@/types_db";
-import { Session, User } from "@supabase/supabase-js";
+import { Tables } from "@/types_db";
+import { User } from "@supabase/supabase-js";
 import Link from "next/link";
 import {
   Dialog,
@@ -83,6 +82,8 @@ import { getComplexEssayGlobalRecipe } from "@/lib/recipes/complex-essay-global"
 import { getComplexEssayRecipe } from "@/lib/recipes/complex-essay-literrature";
 import { getComplexEssayPhiloRecipe } from "@/lib/recipes/complex-essay-philo";
 import { createClient } from "@/utils/supabase/client";
+import ModelSelector from "@/components/model-selector";
+import { getModelProvider, ModelList } from "@/lib/models";
 
 type Subscription = Tables<"subscriptions">;
 type Product = Tables<"products">;
@@ -113,7 +114,10 @@ export default function Create(props: Props) {
   const apiKey: string = process?.env?.OPENAI_API_KEY || "";
   if (typeof window !== "undefined") {
     s = JSON.parse(localStorage.getItem("synapsy_settings") ?? "{}");
-    s.models ??= ["gpt-3.5-turbo", "gpt-4"];
+    s.aiModels ??= {
+      openAiModels: ["gpt-4o-mini", "gpt-3.5-turbo"],
+      mistralModels: [],
+    };
     localStorage.setItem("synapsy_settings", JSON.stringify(s));
   }
 
@@ -135,10 +139,10 @@ export default function Create(props: Props) {
   const [expandInput, setExpandInput] = useState(false);
   const defaultModels = () =>
     hasGpt4Access()
-      ? ["gpt-3.5-turbo", "gpt-4", "gpt-4o-mini"]
-      : ["gpt-3.5-turbo", "gpt-4o-mini"];
+      ? { openAiModels: ["gpt-3.5-turbo", "gpt-4"], mistralModels: [] }
+      : { openAiModels: ["gpt-3.5-turbo"], mistralModels: [] };
   const [avModels, setAvModels] = useState(
-    getAvailableModels(s.models) ?? defaultModels(),
+    getAvailableModels(s.aiModels) ?? defaultModels(),
   );
 
   const [templateId, setTemplateId] = useState<number | undefined>();
@@ -150,40 +154,39 @@ export default function Create(props: Props) {
   const [unlimited, setUnlimited] = useState(hasUnlimitedAccess());
   const supabase = createClient();
   function getAvailableModels(
-    availableModels: string[] | undefined,
-  ): string[] | undefined {
-    if (!availableModels) return [];
-    let models = [];
+    availableModels: ModelList | undefined,
+  ): ModelList {
+    if (!availableModels) return { openAiModels: [], mistralModels: [] };
+    let models: ModelList = { openAiModels: [], mistralModels: [] };
     let gpt4 = hasGpt4Access();
-    for (let i = 0; i < availableModels.length; i++) {
-      if (
-        availableModels[i].includes("gpt-4") &&
-        !availableModels[i].includes("mini") &&
-        !gpt4
-      )
-        continue;
-      models?.push(availableModels[i]);
+    for (let i = 0; i < availableModels.openAiModels.length; i++) {
+      if (availableModels.openAiModels[i].includes("gpt-4") && !gpt4) continue;
+      models.openAiModels.push(availableModels.openAiModels[i]);
     }
+    models.mistralModels = availableModels.mistralModels;
     return models;
   }
 
   async function getMs() {
-    let m = await getModels();
-    let avm: string[] = [];
-    for (let i = 0; i < m.length; i++) {
-      if (m[i].id.startsWith("gpt")) {
-        if (
-          m[i].id.includes("gpt-4") &&
-          !m[i].id.includes("mini") &&
-          !hasGpt4Access()
-        )
-          continue;
-        avm.push(m[i].id);
+    let m: ModelList = await getModels();
+    let models: ModelList = {
+      openAiModels: [],
+      mistralModels: m.mistralModels,
+    };
+    for (let i = 0; i < m.openAiModels.length; i++) {
+      if (
+        m.openAiModels[i].includes("gpt-4") &&
+        !m.openAiModels[i].includes("mini") &&
+        !hasGpt4Access()
+      ) {
+        continue;
       }
+      models.openAiModels.push(m.openAiModels[i]);
     }
-    setAvModels(avm);
+
+    setAvModels(models);
     if (typeof window !== "undefined") {
-      s.models = avm;
+      s.aiModels = models;
       localStorage.setItem("synapsy_settings", JSON.stringify(s));
     }
   }
@@ -207,6 +210,7 @@ export default function Create(props: Props) {
       },
       { setContent: setRes, setLoading: setInProgress },
       tone,
+      getModelProvider(model, avModels),
     );
     if (r instanceof OpenAI.APIError) {
       setErrorMsg(r);
@@ -245,6 +249,7 @@ export default function Create(props: Props) {
       },
       { setContent: setRes, setLoading: setInProgress },
       tone,
+      getModelProvider(model, avModels),
     );
     if (r instanceof OpenAI.APIError) {
       setErrorMsg(r);
@@ -345,6 +350,7 @@ export default function Create(props: Props) {
         },
         final,
         { setContent: step.hide ? () => {} : setRes },
+        getModelProvider(model, avModels),
       );
 
       if (result instanceof OpenAI.APIError) {
@@ -669,23 +675,12 @@ export default function Create(props: Props) {
                 <div className="space-y-2">
                   <label htmlFor="model">{t("model")}</label>
                   <div className="flex items-center space-x-2">
-                    <Select
-                      onValueChange={(e) => setModel(e)}
-                      defaultValue={model}
-                    >
-                      <SelectTrigger>
-                        <SelectValue placeholder={t("model")} />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <ScrollArea className="h-[200px]">
-                          {avModels.map((el, i) => (
-                            <SelectItem key={i} value={el}>
-                              {getModelString(el)}
-                            </SelectItem>
-                          ))}
-                        </ScrollArea>
-                      </SelectContent>
-                    </Select>
+                    <ModelSelector
+                      placeholder={t("model")}
+                      avModels={avModels}
+                      model={model}
+                      setModel={setModel}
+                    />
                     <TooltipProvider delayDuration={0}>
                       <Tooltip>
                         <TooltipTrigger>
