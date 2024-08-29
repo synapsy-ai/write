@@ -272,6 +272,52 @@ export default async function PricingFeatureTable(props: { lng: string }) {
             </td>
           </tr>
           <tr>
+            <td>Mistral Small</td>
+            <td>
+              <span className="flex justify-center">
+                <X size={16} />
+              </span>
+            </td>
+            <td>
+              <span className="flex justify-center">
+                <Check size={16} />
+              </span>
+            </td>
+            <td>
+              <span className="flex justify-center">
+                <Check size={16} />
+              </span>
+            </td>
+            <td>
+              <span className="flex justify-center">
+                <Check size={16} />
+              </span>
+            </td>
+          </tr>
+          <tr>
+            <td>Codestral</td>
+            <td>
+              <span className="flex justify-center">
+                <X size={16} />
+              </span>
+            </td>
+            <td>
+              <span className="flex justify-center">
+                <Check size={16} />
+              </span>
+            </td>
+            <td>
+              <span className="flex justify-center">
+                <Check size={16} />
+              </span>
+            </td>
+            <td>
+              <span className="flex justify-center">
+                <Check size={16} />
+              </span>
+            </td>
+          </tr>
+          <tr>
             <td className="font-bold text-slate-900 dark:text-slate-300">
               {t("chat")}
             </td>
