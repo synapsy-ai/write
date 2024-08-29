@@ -257,7 +257,7 @@ export default function SettingsPage({
                               key={i}
                               className="m-1 rounded-md border border-transparent p-2 hover:border-slate-300 hover:bg-slate-200/50 dark:hover:border-accent dark:hover:bg-slate-800/50"
                             >
-                              {m}
+                              {getModelString(m)}
                             </p>
                           ))}
                       </div>
@@ -273,7 +273,7 @@ export default function SettingsPage({
                               key={i}
                               className="m-1 rounded-md border border-transparent p-2 hover:border-slate-300 hover:bg-slate-200/50 dark:hover:border-accent dark:hover:bg-slate-800/50"
                             >
-                              {m}
+                              {getModelString(m)}
                             </p>
                           ))}
                       </div>
