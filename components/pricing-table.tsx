@@ -272,7 +272,7 @@ export default async function PricingFeatureTable(props: { lng: string }) {
             </td>
           </tr>
           <tr>
-            <td>Mistral Small</td>
+            <td>Mistral AI</td>
             <td>
               <span className="flex justify-center">
                 <X size={16} />
