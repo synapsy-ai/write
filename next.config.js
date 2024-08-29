@@ -8,6 +8,7 @@ const withPWA = require("next-pwa")({
 const nextConfig = {
   env: {
     OPENAI_API_KEY: process.env.OPENAI_API_KEY,
+    MISTRAL_API_KEY: process.env.MISTRAL_API_KEY,
   },
 };
 

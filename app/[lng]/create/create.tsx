@@ -83,7 +83,7 @@ import { getComplexEssayRecipe } from "@/lib/recipes/complex-essay-literrature";
 import { getComplexEssayPhiloRecipe } from "@/lib/recipes/complex-essay-philo";
 import { createClient } from "@/utils/supabase/client";
 import ModelSelector from "@/components/model-selector";
-import { ModelList } from "@/lib/models";
+import { getModelProvider, ModelList } from "@/lib/models";
 
 type Subscription = Tables<"subscriptions">;
 type Product = Tables<"products">;
@@ -163,7 +163,7 @@ export default function Create(props: Props) {
       if (availableModels.openAiModels[i].includes("gpt-4") && !gpt4) continue;
       models.openAiModels.push(availableModels.openAiModels[i]);
     }
-    models.mistralModels = models.mistralModels;
+    models.mistralModels = availableModels.mistralModels;
     return models;
   }
 
@@ -210,6 +210,7 @@ export default function Create(props: Props) {
       },
       { setContent: setRes, setLoading: setInProgress },
       tone,
+      getModelProvider(model, avModels),
     );
     if (r instanceof OpenAI.APIError) {
       setErrorMsg(r);
@@ -248,6 +249,7 @@ export default function Create(props: Props) {
       },
       { setContent: setRes, setLoading: setInProgress },
       tone,
+      getModelProvider(model, avModels),
     );
     if (r instanceof OpenAI.APIError) {
       setErrorMsg(r);
@@ -348,6 +350,7 @@ export default function Create(props: Props) {
         },
         final,
         { setContent: step.hide ? () => {} : setRes },
+        getModelProvider(model, avModels),
       );
 
       if (result instanceof OpenAI.APIError) {

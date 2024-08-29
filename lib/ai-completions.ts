@@ -3,12 +3,19 @@ import { userPrompts } from "./prompts/user";
 import { Language } from "./languages";
 import { createOpenAI } from "@ai-sdk/openai";
 import { generateText, streamText } from "ai";
+import { AiProviders } from "./models";
+import { createMistral } from "@ai-sdk/mistral";
 
 const openai = createOpenAI({
   // custom settings, e.g.
   apiKey: process.env["OPENAI_API_KEY"],
   compatibility: "strict",
 });
+
+const mistral = createMistral({
+  apiKey: process.env.MISTRAL_API_KEY,
+});
+
 export async function sendToGpt(
   prompt: string,
   key: string,
@@ -18,11 +25,12 @@ export async function sendToGpt(
   options: OpenAiOptions,
   functions: { setContent: Function; setLoading: Function },
   tone: string,
+  provider: AiProviders,
 ): Promise<any> {
   functions.setLoading(true);
   let loading = true;
   const chatCompletion = await streamText({
-    model: openai(model),
+    model: provider === "openAI" ? openai(model) : mistral(model),
     system: getSystem(template, lng, tone),
     prompt: getPrompt(template, lng, prompt),
     temperature: options.temp,
@@ -51,12 +59,13 @@ export async function sendToGptCustom(
   options: OpenAiOptions,
   content: string,
   functions: { setContent: Function },
+  provider: AiProviders,
 ): Promise<any> {
   let result = content;
   let c = "";
   console.log(result);
   const chatCompletion = await streamText({
-    model: openai(model),
+    model: provider === "openAI" ? openai(model) : mistral(model),
     system: system,
     prompt: prompt,
     temperature: options.temp,
@@ -81,9 +90,10 @@ export async function getStandardGeneration(
   key: string,
   model: string,
   options: OpenAiOptions,
+  provider: AiProviders,
 ) {
   const chatCompletion = await generateText({
-    model: openai(model),
+    model: provider === "openAI" ? openai(model) : mistral(model),
     system: system,
     prompt: prompt,
     temperature: options.temp,

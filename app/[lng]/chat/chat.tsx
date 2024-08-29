@@ -41,7 +41,7 @@ import { Settings } from "@/lib/settings";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { chatSystemPrompts } from "@/lib/prompts/system";
 import ModelSelector from "@/components/model-selector";
-import { ModelList } from "@/lib/models";
+import { getModelProvider, ModelList } from "@/lib/models";
 
 type Subscription = Tables<"subscriptions">;
 type Product = Tables<"products">;
@@ -150,6 +150,7 @@ export default function Chat(props: Props) {
       { setContent: setContent },
       msgs,
       system,
+      getModelProvider(model, avModels),
     );
     return newMsg;
   }
