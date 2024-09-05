@@ -86,7 +86,7 @@ export default function RootLayout({
       <body
         className={
           manrope.className +
-          " overflow-x-hidden dark:bg-slate-950 dark:text-white"
+          " h-auto overflow-x-hidden dark:bg-slate-950 dark:text-white"
         }
       >
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
