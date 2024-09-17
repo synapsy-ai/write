@@ -36,7 +36,7 @@
     "@supabase/ssr": "^0.5.1",
     "@supabase/supabase-js": "^2.45.4",
     "@tailwindcss/typography": "^0.5.15",
-    "@tiptap/html": "^2.6.6",
+    "@tiptap/html": "^2.7.1",
     "accept-language": "^3.0.20",
     "ai": "^3.3.37",
     "class-variance-authority": "^0.7.0",
