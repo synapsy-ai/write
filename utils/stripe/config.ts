@@ -1,3 +1,4 @@
+import { version } from "@/lib/version";
 import Stripe from "stripe";
 
 export const stripe = new Stripe(
@@ -10,9 +11,9 @@ export const stripe = new Stripe(
     // Register this as an official Stripe plugin.
     // https://stripe.com/docs/building-plugins#setappinfo
     appInfo: {
-      name: "Peyronnet Account",
-      version: "2.0.0",
-      url: "https://github.com/peyronnet-group/account",
+      name: "Synapsy Write",
+      version: version,
+      url: "https://github.com/synapsy-ai/write",
     },
   },
 );
