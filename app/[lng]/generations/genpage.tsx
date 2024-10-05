@@ -2,7 +2,17 @@
 import { useTranslation } from "@/app/i18n/client";
 import { GenerationItem } from "@/components/generation-item";
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import {
   Tooltip,
@@ -17,6 +27,7 @@ import {
   ArrowUpNarrowWide,
   Download,
   Eraser,
+  Filter,
   Upload,
 } from "lucide-react";
 import Link from "next/link";
@@ -37,6 +48,8 @@ export default function GenerationsPage({
   const [history, setHistory] = useState(
     groupAndSortHistoryItems(histo, ascend),
   );
+  const formats = Array.from(new Set(histo.map((e) => e.template)));
+  const [selectedFormats, setSelectedFormats] = useState([...formats]);
 
   function Import(event: any) {
     let file = event.target.files[0]; // get the selected file
@@ -131,6 +144,39 @@ export default function GenerationsPage({
                 </TooltipContent>
               </Tooltip>
             </TooltipProvider>
+            <Dialog>
+              <DialogTrigger>
+                <Button variant="outline">
+                  <Filter size={16} />
+                </Button>
+              </DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>{t("filter")}</DialogTitle>
+                  <DialogDescription>{t("filter-desc")}</DialogDescription>
+                </DialogHeader>
+                <ScrollArea className="max-h-[200px]">
+                  {formats.map((format, i) => (
+                    <div className="flex items-center space-x-2 py-2" key={i}>
+                      <Checkbox
+                        onCheckedChange={() => {
+                          if (selectedFormats.includes(format)) {
+                            setSelectedFormats(
+                              selectedFormats.filter((item) => item != format),
+                            );
+                          } else {
+                            setSelectedFormats([...selectedFormats, format]);
+                          }
+                        }}
+                        checked={selectedFormats.includes(format)}
+                        id={format}
+                      />
+                      <label htmlFor={format}>{t(typesToString(format))}</label>
+                    </div>
+                  ))}
+                </ScrollArea>
+              </DialogContent>
+            </Dialog>
           </span>
         </header>
         {!(history.length === 0) ? (
@@ -139,7 +185,8 @@ export default function GenerationsPage({
               const filteredItems = el.items.filter((historyItem) =>
                 historyItem.prompt.toLowerCase().includes(query.toLowerCase()),
               );
-              return filteredItems.length > 0 ? (
+              return filteredItems.length > 0 &&
+                selectedFormats.includes(el.template) ? (
                 <div className="p-2" key={i}>
                   <span className="flex items-center space-x-2">
                     <h3>{t(typesToString(el.template))}</h3>

@@ -15,6 +15,7 @@ import {
   ArrowLeft,
   ArrowUpIcon,
   Edit,
+  Info,
   Plus,
   Save,
 } from "lucide-react";
@@ -313,6 +314,12 @@ function EditDialog(props: {
               onChange={(e) => setUserPrompt(e.target.value)}
             />
           </div>
+          {!userPrompt.includes("[[PROMPT]]") && (
+            <div className="my-2 grid grid-cols-[auto,1fr] items-center space-x-2 rounded-md border border-indigo-500 bg-indigo-200 p-2 text-indigo-600 dark:bg-indigo-900/50 dark:text-indigo-400">
+              <Info size={14} />
+              <p>{t("prompt-var-missing")}</p>
+            </div>
+          )}
           <div className="my-2">
             <h4 className="font-medium">{t("sys-prompt")}</h4>
             <Textarea
