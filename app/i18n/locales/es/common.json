@@ -375,5 +375,7 @@
   "youtube-desc": "Mira nuestros videos sobre nuestros productos",
   "x-desc": "Síguenos en X para obtener las últimas actualizaciones",
   "cgv-desc": "Descubre nuestras condiciones generales de venta",
-  "prompt-var-missing": "Falta la variable [[PROMPT]]. El prompt proporcionado por el usuario no será proporcionado al modelo."
+  "prompt-var-missing": "Falta la variable [[PROMPT]]. El prompt proporcionado por el usuario no será proporcionado al modelo.",
+  "filtro": "Filtro",
+  "filter-desc": "Seleccionar categorías de formato para mostrar."
 }

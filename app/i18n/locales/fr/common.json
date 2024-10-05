@@ -373,5 +373,7 @@
   "youtube-desc": "Regardez nos vidéos sur nos produits",
   "x-desc": "Suivez-nous sur X pour obtenir les dernières mises à jour",
   "cgv-desc": "Découvrez nos conditions générales de vente",
-  "prompt-var-missing": "La variable [[PROMPT]] est manquante. L'invite fournie par l'utilisateur ne sera pas transmise au modèle."
+  "prompt-var-missing": "La variable [[PROMPT]] est manquante. L'invite fournie par l'utilisateur ne sera pas transmise au modèle.",
+  "filtro": "Filtrer",
+  "filter-desc": "Sélectionner les catégories de format à afficher"
 }
