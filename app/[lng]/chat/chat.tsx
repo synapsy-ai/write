@@ -103,7 +103,7 @@ export default function Chat(props: Props) {
       if (availableModels.openAiModels[i].includes("gpt-4") && !gpt4) continue;
       models.openAiModels.push(availableModels.openAiModels[i]);
     }
-    models.mistralModels = models.mistralModels;
+    models.mistralModels = availableModels.mistralModels;
     return models;
   }
 
