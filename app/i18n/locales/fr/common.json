@@ -372,5 +372,6 @@
   "privacy-desc": "En savoir plus sur nos politiques relatives à votre vie privée",
   "youtube-desc": "Regardez nos vidéos sur nos produits",
   "x-desc": "Suivez-nous sur X pour obtenir les dernières mises à jour",
-  "cgv-desc": "Découvrez nos conditions générales de vente"
+  "cgv-desc": "Découvrez nos conditions générales de vente",
+  "prompt-var-missing": "La variable [[PROMPT]] est manquante. L'invite fournie par l'utilisateur ne sera pas transmise au modèle."
 }

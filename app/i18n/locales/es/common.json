@@ -374,5 +374,6 @@
   "privacy-desc": "Obtén más información sobre nuestras políticas relativas a su privacidad",
   "youtube-desc": "Mira nuestros videos sobre nuestros productos",
   "x-desc": "Síguenos en X para obtener las últimas actualizaciones",
-  "cgv-desc": "Descubre nuestras condiciones generales de venta"
+  "cgv-desc": "Descubre nuestras condiciones generales de venta",
+  "prompt-var-missing": "Falta la variable [[PROMPT]]. El prompt proporcionado por el usuario no será proporcionado al modelo."
 }
