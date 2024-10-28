@@ -1,8 +1,8 @@
 import { useTranslation } from "@/app/i18n";
-
 import SiteFooter from "@/components/footer";
 import Pricing from "@/components/pricing";
 import PricingFeatureTable from "@/components/pricing-table";
+import { DefaultLanguageParams } from "@/lib/languages";
 import {
   getUser,
   getProducts,
@@ -17,11 +17,12 @@ export const metadata = {
 };
 
 export default async function PricingPage({
-  params: { lng },
+  params,
 }: {
-  params: { lng: any };
+  params: DefaultLanguageParams;
 }) {
-  const supabase = createClient();
+  const { lng } = await params;
+  const supabase = await createClient();
   const [user, products, subscriptions] = await Promise.all([
     getUser(supabase),
     getProducts(supabase),

@@ -17,7 +17,7 @@ export default async function PricingFeatureTable(props: { lng: string }) {
             </td>
             <td className="text-lg font-bold text-black dark:text-white">
               Free
-            </td>{" "}
+            </td>
             <td className="text-lg font-bold text-black dark:text-white">
               Basic
             </td>
@@ -66,7 +66,7 @@ export default async function PricingFeatureTable(props: { lng: string }) {
               <span className="flex justify-center">
                 <X size={16} />
               </span>
-            </td>{" "}
+            </td>
             <td>
               <span className="flex justify-center">
                 <Check size={16} />
@@ -124,12 +124,12 @@ export default async function PricingFeatureTable(props: { lng: string }) {
               <span className="flex justify-center">
                 <Check size={16} />
               </span>
-            </td>{" "}
+            </td>
             <td>
               <span className="flex justify-center">
                 <Check size={16} />
               </span>
-            </td>{" "}
+            </td>
             <td>
               <span className="flex justify-center">
                 <Check size={16} />
@@ -229,7 +229,7 @@ export default async function PricingFeatureTable(props: { lng: string }) {
             </td>
             <td>
               <span className="flex justify-center">{t("unlimited")}</span>
-            </td>{" "}
+            </td>
           </tr>
           <tr>
             <td>OpenAI GPT-4o Mini</td>
@@ -246,7 +246,7 @@ export default async function PricingFeatureTable(props: { lng: string }) {
             </td>
             <td>
               <span className="flex justify-center">{t("unlimited")}</span>
-            </td>{" "}
+            </td>
           </tr>
           <tr>
             <td>OpenAI GPT-3.5</td>

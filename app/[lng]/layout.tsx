@@ -8,7 +8,8 @@ import { ThemeProvider } from "@/components/theme-provider";
 import Script from "next/script";
 import MobileNavBar from "@/components/mobile-nav";
 import { Toaster } from "@/components/ui/toaster";
-import { Suspense } from "react";
+import { Suspense, use } from "react";
+import { DefaultLanguageParams } from "@/lib/languages";
 
 const manrope = Manrope({ subsets: ["latin"] });
 export async function generateStaticParams() {
@@ -42,11 +43,12 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-  params: { lng },
+  params,
 }: {
   children: React.ReactNode;
-  params: { lng: any };
+  params: DefaultLanguageParams;
 }) {
+  const { lng } = use(params);
   return (
     <html lang={lng} dir={dir(lng)}>
       <head>

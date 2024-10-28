@@ -26,15 +26,17 @@ import { getComplexEssayPhiloRecipe } from "@/lib/recipes/complex-essay-philo";
 import { getPhiloAnalysisRecipe } from "@/lib/recipes/complex-philo-analysis";
 import { Eye, Plus, Trash } from "lucide-react";
 import Link from "next/link";
-import { useState } from "react";
+import { use, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Close } from "@radix-ui/react-dialog";
+import { DefaultLanguageParams } from "@/lib/languages";
 
 export default function TemplatesPage({
-  params: { lng },
+  params,
 }: {
-  params: { lng: any };
+  params: DefaultLanguageParams;
 }) {
+  const { lng } = use(params);
   const { t } = useTranslation(lng, "common");
   const defaultTemplates = [
     getComplexEssayGlobalRecipe(lng, "none"),

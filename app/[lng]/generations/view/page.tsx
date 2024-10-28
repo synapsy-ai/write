@@ -2,8 +2,13 @@
 import { Suspense } from "react";
 import GenerationViewPage from "./viewpage";
 import { Skeleton } from "@/components/ui/skeleton";
+import { DefaultLanguageParams } from "@/lib/languages";
 
-export default function ViewPage({ params }: { params: { lng: string } }) {
+export default function ViewPage({
+  params,
+}: {
+  params: DefaultLanguageParams;
+}) {
   return (
     <Suspense fallback={LoadingUI()}>
       <GenerationViewPage params={params} />
