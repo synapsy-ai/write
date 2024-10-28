@@ -18,14 +18,16 @@ import { ArrowLeft, NotepadText } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { HighlightedVariable } from "@/components/variable-highlight";
-import { useState } from "react";
+import { use, useState } from "react";
 import Link from "next/link";
+import { DefaultLanguageParams } from "@/lib/languages";
 
 export default function ViewTemplatePage({
-  params: { lng },
+  params,
 }: {
-  params: { lng: any };
+  params: DefaultLanguageParams;
 }) {
+  const { lng } = use(params);
   const { t } = useTranslation(lng, "common");
   const searchParams = useSearchParams();
   const id: string | number = searchParams.get("id") || 0;

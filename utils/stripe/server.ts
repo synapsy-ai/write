@@ -25,7 +25,7 @@ export async function checkoutWithStripe(
 ): Promise<CheckoutResponse> {
   try {
     // Get the user from Supabase auth
-    const supabase = createClient();
+    const supabase = await createClient();
     const {
       error,
       data: { user },
@@ -124,7 +124,7 @@ export async function checkoutWithStripe(
 
 export async function createStripePortal(currentPath: string) {
   try {
-    const supabase = createClient();
+    const supabase = await createClient();
     const {
       error,
       data: { user },

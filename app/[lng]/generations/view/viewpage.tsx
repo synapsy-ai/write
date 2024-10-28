@@ -6,7 +6,7 @@ import { useSearchParams } from "next/navigation";
 import { encode } from "gpt-token-utils";
 import { Button } from "@/components/ui/button";
 import { Copy, Edit, Printer } from "lucide-react";
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import { useTranslation } from "@/app/i18n/client";
 import { typesToString } from "@/lib/formats";
 import { Variable } from "@/lib/variable";
@@ -20,12 +20,14 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { DefaultLanguageParams } from "@/lib/languages";
 
 export default function GenerationViewPage({
   params,
 }: {
-  params: { lng: string };
+  params: DefaultLanguageParams;
 }) {
+  const { lng } = use(params);
   const searchParams = useSearchParams();
   const id = searchParams.get("id") ?? 0;
   let el: HistoryItem = {
@@ -38,7 +40,7 @@ export default function GenerationViewPage({
     el = JSON.parse(localStorage.getItem("synapsy_write_history") ?? "[]")[id];
   }
 
-  const { t } = useTranslation(params.lng, "common");
+  const { t } = useTranslation(lng, "common");
 
   let s: Settings = { key: "" };
   s = JSON.parse(localStorage.getItem("synapsy_settings") ?? "{}");
@@ -120,7 +122,7 @@ export default function GenerationViewPage({
             <span>{t("copy")}</span>
           </Button>
           {el.template !== "ideas" && el.template !== "ph_visual_outline" && (
-            <Link href={`/${params.lng}/generations/edit?id=${id}`}>
+            <Link href={`/${lng}/generations/edit?id=${id}`}>
               <Button className="flex space-x-2" variant="link">
                 <span>
                   <Edit size={16} />
@@ -234,7 +236,7 @@ export default function GenerationViewPage({
                             setVar: editVariable,
                           }}
                           key={i}
-                          lng={params.lng}
+                          lng={lng}
                           index={i}
                           item={el}
                         />

@@ -48,8 +48,8 @@ import { Variable, getVariableString } from "@/lib/variable";
 import VariableItem from "@/components/variable-item";
 import FormatDialog from "@/components/format-dialog";
 import { Textarea } from "@/components/ui/textarea";
-import { Tables } from "@/types_db";
-import { User } from "@supabase/supabase-js";
+import { Database, Tables } from "@/types_db";
+import { SupabaseClient, User } from "@supabase/supabase-js";
 import Link from "next/link";
 import {
   Dialog,
@@ -84,6 +84,7 @@ import { getComplexEssayPhiloRecipe } from "@/lib/recipes/complex-essay-philo";
 import { createClient } from "@/utils/supabase/client";
 import ModelSelector from "@/components/model-selector";
 import { getModelProvider, ModelList } from "@/lib/models";
+import updateQuotas from "@/utils/update-quotas";
 
 type Subscription = Tables<"subscriptions">;
 type Product = Tables<"products">;
@@ -109,7 +110,6 @@ export default function Create(props: Props) {
   const { t } = useTranslation(lng, "common");
   const [type, setType] = useState("para");
   const [cat, setCat] = useState("regular-category");
-
   let s: Settings = { key: "" };
   const apiKey: string = process?.env?.OPENAI_API_KEY || "";
   if (typeof window !== "undefined") {
@@ -152,7 +152,6 @@ export default function Create(props: Props) {
 
   const [gpt4Quotas, setGpt4Quotas] = useState(props.quotas);
   const [unlimited, setUnlimited] = useState(hasUnlimitedAccess());
-  const supabase = createClient();
   function getAvailableModels(
     availableModels: ModelList | undefined,
   ): ModelList {
@@ -278,11 +277,7 @@ export default function Create(props: Props) {
         let q = gpt4Quotas - 1;
         setGpt4Quotas(gpt4Quotas - 1);
         try {
-          const { error } = await supabase
-            .from("users")
-            .update({ write_gpt4_quota: q })
-            .eq("id", props.user.id);
-          if (error) throw error;
+          await updateQuotas(q, props.user.id);
         } catch (error) {
           console.error("Error:", error);
           return null;

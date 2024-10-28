@@ -8,6 +8,7 @@ import {
   setUserQuotas,
 } from "@/utils/supabase/queries";
 import { createClient } from "@/utils/supabase/server";
+import { DefaultLanguageParams } from "@/lib/languages";
 
 export const metadata: Metadata = {
   title: "Chat",
@@ -15,11 +16,12 @@ export const metadata: Metadata = {
     "Chat with Synapsy Assistant to improve your documents or get information about them.",
 };
 export default async function ChatPage({
-  params: { lng },
+  params,
 }: {
-  params: { lng: any };
+  params: DefaultLanguageParams;
 }) {
-  const supabase = createClient();
+  const { lng } = await params;
+  const supabase = await createClient();
   const [user, userDetails, subscriptions] = await Promise.all([
     getUser(supabase),
     getUserDetails(supabase),
