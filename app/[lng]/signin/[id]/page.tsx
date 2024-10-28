@@ -26,6 +26,7 @@ export default async function SignIn({
 }) {
   const { id, lng } = await params;
   const searchPa = await searchParams;
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   const { t } = await useTranslation(lng, "common");
   const { allowOauth, allowEmail, allowPassword } = getAuthTypes();
   const viewTypes = getViewTypes();

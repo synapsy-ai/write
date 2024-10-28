@@ -20,6 +20,7 @@ export default async function Account({
   params: DefaultLanguageParams;
 }) {
   const { lng } = await params;
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   const { t } = await useTranslation(lng, "common");
   const supabase = await createClient();
   const [user, userDetails, subscription] = await Promise.all([

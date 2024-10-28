@@ -28,6 +28,7 @@ export default async function PricingPage({
     getProducts(supabase),
     getSubscriptions(supabase),
   ]);
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   const { t } = await useTranslation(lng, "common");
 
   return (
