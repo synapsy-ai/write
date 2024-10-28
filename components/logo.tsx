@@ -12,12 +12,12 @@ export default function Logo(props: { width: number; height: number }) {
           <use href="#path_1" />
         </clipPath>
       </defs>
-      <g id="Long Logo Light" clip-path="url(#clip_1)">
+      <g id="Long Logo Light" clipPath="url(#clip_1)">
         <path
           d="M0 0L1437 0L1437 355L0 355L0 0Z"
           id="Long-Logo-Light"
           fill="none"
-          fill-rule="evenodd"
+          fillRule="evenodd"
           stroke="none"
         />
         <g id="Group" transform="translate(181 65)">
