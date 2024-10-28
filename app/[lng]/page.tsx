@@ -4,13 +4,15 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Building, Github, Rocket } from "lucide-react";
 import Footer from "@/components/footer";
-import { useRef } from "react";
+import { use, useRef } from "react";
 import Spotlight, { SpotlightCard } from "@/components/spotlight";
 import { SpotlightEffect } from "@/components/ui/spotlight-effect";
 import { BorderAnimation } from "@/components/ui/moving-border";
 import { FlipWords } from "@/components/ui/flip-words";
+import { DefaultLanguageParams } from "@/lib/languages";
 
-export default function Home({ params: { lng } }: { params: { lng: any } }) {
+export default function Home({ params }: { params: DefaultLanguageParams }) {
+  const { lng } = use(params);
   const { t } = useTranslation(lng, "common");
   const sectionRef = useRef<HTMLElement | null>(null);
   const handleClick = () => {

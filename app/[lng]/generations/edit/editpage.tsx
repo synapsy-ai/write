@@ -2,19 +2,21 @@
 
 import { HistoryItem } from "@/lib/history";
 import { useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { use, useState } from "react";
 import { useTranslation } from "@/app/i18n/client";
 import { typesToString } from "@/lib/formats";
 import TailwindEditor from "@/components/tailwind-editor";
 import { generateJSON } from "@tiptap/html";
 import { defaultExtensions } from "@/lib/editor-extensions";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { DefaultLanguageParams } from "@/lib/languages";
 
 export default function GenerationEditPage({
   params,
 }: {
-  params: { lng: string };
+  params: DefaultLanguageParams;
 }) {
+  const { lng } = use(params);
   const searchParams = useSearchParams();
   const id = searchParams.get("id") ?? 0;
   let el: HistoryItem = {
@@ -27,7 +29,7 @@ export default function GenerationEditPage({
     el = JSON.parse(localStorage.getItem("synapsy_write_history") ?? "[]")[id];
   }
 
-  const { t } = useTranslation(params.lng, "common");
+  const { t } = useTranslation(lng, "common");
   const [content, setContent] = useState(el.content);
   const c = generateJSON(content, [...defaultExtensions]);
   return (
@@ -37,7 +39,7 @@ export default function GenerationEditPage({
       </header>
 
       <section className="mx-auto grid w-full max-w-6xl items-start gap-6 md:grid-cols-[1fr_300px] lg:grid-cols-[1fr_350px]">
-        <TailwindEditor id={+id} lng={params.lng} content={c} />
+        <TailwindEditor id={+id} lng={lng} content={c} />
         <div className="grid gap-6 print:hidden">
           <Card>
             <CardHeader>

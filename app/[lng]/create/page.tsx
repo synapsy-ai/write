@@ -7,13 +7,15 @@ import {
 } from "@/utils/supabase/queries";
 import Create from "./create";
 import { createClient } from "@/utils/supabase/server";
+import { DefaultLanguageParams } from "@/lib/languages";
 
 export default async function CreatePage({
-  params: { lng },
+  params,
 }: {
-  params: { lng: any };
+  params: DefaultLanguageParams;
 }) {
-  const supabase = createClient();
+  const { lng } = await params;
+  const supabase = await createClient();
   const [user, userDetails, products, subscriptions] = await Promise.all([
     getUser(supabase),
     getUserDetails(supabase),

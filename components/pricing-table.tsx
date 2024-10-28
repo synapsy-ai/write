@@ -1,11 +1,12 @@
-import { useTranslation } from "@/app/i18n";
+"use client";
+import { useTranslation } from "@/app/i18n/client";
 import formats from "@/lib/formats";
 import { Check, X } from "lucide-react";
 import React from "react";
 import { ScrollArea, ScrollBar } from "./ui/scroll-area";
 
-export default async function PricingFeatureTable(props: { lng: string }) {
-  const { t } = await useTranslation(props.lng, "common");
+export default function PricingFeatureTable(props: { lng: string }) {
+  const { t } = useTranslation(props.lng, "common");
 
   return (
     <ScrollArea className="mb-2 w-screen max-w-6xl sm:mx-auto">
@@ -17,7 +18,7 @@ export default async function PricingFeatureTable(props: { lng: string }) {
             </td>
             <td className="text-lg font-bold text-black dark:text-white">
               Free
-            </td>{" "}
+            </td>
             <td className="text-lg font-bold text-black dark:text-white">
               Basic
             </td>
@@ -66,7 +67,7 @@ export default async function PricingFeatureTable(props: { lng: string }) {
               <span className="flex justify-center">
                 <X size={16} />
               </span>
-            </td>{" "}
+            </td>
             <td>
               <span className="flex justify-center">
                 <Check size={16} />
@@ -124,12 +125,12 @@ export default async function PricingFeatureTable(props: { lng: string }) {
               <span className="flex justify-center">
                 <Check size={16} />
               </span>
-            </td>{" "}
+            </td>
             <td>
               <span className="flex justify-center">
                 <Check size={16} />
               </span>
-            </td>{" "}
+            </td>
             <td>
               <span className="flex justify-center">
                 <Check size={16} />
@@ -229,7 +230,7 @@ export default async function PricingFeatureTable(props: { lng: string }) {
             </td>
             <td>
               <span className="flex justify-center">{t("unlimited")}</span>
-            </td>{" "}
+            </td>
           </tr>
           <tr>
             <td>OpenAI GPT-4o Mini</td>
@@ -246,7 +247,7 @@ export default async function PricingFeatureTable(props: { lng: string }) {
             </td>
             <td>
               <span className="flex justify-center">{t("unlimited")}</span>
-            </td>{" "}
+            </td>
           </tr>
           <tr>
             <td>OpenAI GPT-3.5</td>

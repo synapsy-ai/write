@@ -30,6 +30,7 @@ export async function sendToGpt(
   functions.setLoading(true);
   let loading = true;
   const chatCompletion = await streamText({
+    // @ts-ignore
     model: provider === "openAI" ? openai(model) : mistral(model),
     system: getSystem(template, lng, tone),
     prompt: getPrompt(template, lng, prompt),
@@ -65,6 +66,7 @@ export async function sendToGptCustom(
   let c = "";
   console.log(result);
   const chatCompletion = await streamText({
+    // @ts-ignore
     model: provider === "openAI" ? openai(model) : mistral(model),
     system: system,
     prompt: prompt,
@@ -93,6 +95,7 @@ export async function getStandardGeneration(
   provider: AiProviders,
 ) {
   const chatCompletion = await generateText({
+    // @ts-ignore
     model: provider === "openAI" ? openai(model) : mistral(model),
     system: system,
     prompt: prompt,

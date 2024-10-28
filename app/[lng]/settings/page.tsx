@@ -20,7 +20,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useState } from "react";
+import { use, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { useRouter } from "next/navigation";
 import { getModelString, ModelList } from "@/lib/models";
@@ -53,12 +53,14 @@ import {
 } from "@/components/ui/card";
 import Link from "next/link";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { DefaultLanguageParams } from "@/lib/languages";
 
 export default function SettingsPage({
-  params: { lng },
+  params,
 }: {
-  params: { lng: any };
+  params: DefaultLanguageParams;
 }) {
+  const { lng } = use(params);
   const { t } = useTranslation(lng, "common");
   const { setTheme } = useTheme();
   let s: Settings = { key: "" };

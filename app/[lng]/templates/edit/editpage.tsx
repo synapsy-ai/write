@@ -23,16 +23,18 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { HighlightedVariable } from "@/components/variable-highlight";
 import { Input } from "@/components/ui/input";
-import { useState } from "react";
+import { use, useState } from "react";
 import { Textarea } from "@/components/ui/textarea";
 import { Close } from "@radix-ui/react-dialog";
 import Link from "next/link";
+import { DefaultLanguageParams } from "@/lib/languages";
 
 export default function EditTemplatePage({
-  params: { lng },
+  params,
 }: {
-  params: { lng: any };
+  params: DefaultLanguageParams;
 }) {
+  const { lng } = use(params);
   const { t } = useTranslation(lng, "common");
   const searchParams = useSearchParams();
   const id: string | number = searchParams.get("id") || 0;

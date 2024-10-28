@@ -22,6 +22,7 @@ import {
 } from "@/components/ui/tooltip";
 import { typesToString } from "@/lib/formats";
 import { groupAndSortHistoryItems, HistoryItem } from "@/lib/history";
+import { DefaultLanguageParams } from "@/lib/languages";
 import {
   ArrowDownNarrowWide,
   ArrowUpNarrowWide,
@@ -31,13 +32,14 @@ import {
   Upload,
 } from "lucide-react";
 import Link from "next/link";
-import { useState } from "react";
+import { use, useState } from "react";
 
 export default function GenerationsPage({
-  params: { lng },
+  params,
 }: {
-  params: { lng: any };
+  params: DefaultLanguageParams;
 }) {
+  const { lng } = use(params);
   const { t } = useTranslation(lng, "common");
   let histo: HistoryItem[] = [];
   if (typeof window !== "undefined") {

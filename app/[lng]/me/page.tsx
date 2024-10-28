@@ -1,10 +1,7 @@
 import { useTranslation } from "@/app/i18n";
-import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { ReactNode } from "react";
-import { ExternalLink } from "lucide-react";
-import Image from "next/image";
+import { use } from "react";
 import {
   getUserDetails,
   getSubscriptions,
@@ -14,22 +11,18 @@ import { createClient } from "@/utils/supabase/server";
 import CustomerPortalForm from "@/components/ui/AccountForms/CustomerPortalForm";
 import EmailForm from "@/components/ui/AccountForms/EmailForm";
 import NameForm from "@/components/ui/AccountForms/NameForm";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import SignOutForm from "@/components/ui/AccountForms/SignOutForm";
+import { DefaultLanguageParams, Language } from "@/lib/languages";
 
 export default async function Account({
-  params: { lng },
+  params,
 }: {
-  params: { lng: any };
+  params: DefaultLanguageParams;
 }) {
+  const { lng } = await params;
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   const { t } = await useTranslation(lng, "common");
-  const supabase = createClient();
+  const supabase = await createClient();
   const [user, userDetails, subscription] = await Promise.all([
     getUser(supabase),
     getUserDetails(supabase),
