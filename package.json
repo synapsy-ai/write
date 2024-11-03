@@ -41,7 +41,7 @@
     "ai": "^3.4.32",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
-    "cmdk": "^1.0.0",
+    "cmdk": "^1.0.3",
     "framer-motion": "^11.11.10",
     "gpt-token-utils": "^1.2.0",
     "html-react-parser": "^5.1.18",
