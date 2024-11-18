@@ -38,7 +38,7 @@
     "@tailwindcss/typography": "^0.5.15",
     "@tiptap/html": "^2.9.1",
     "accept-language": "^3.0.20",
-    "ai": "^3.4.33",
+    "ai": "^4.0.0",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "cmdk": "^1.0.4",
