@@ -29,7 +29,7 @@ export async function sendToGpt(
 ): Promise<any> {
   functions.setLoading(true);
   let loading = true;
-  const chatCompletion = await streamText({
+  const chatCompletion = streamText({
     // @ts-ignore
     model: provider === "openAI" ? openai(model) : mistral(model),
     system: getSystem(template, lng, tone),
@@ -65,7 +65,7 @@ export async function sendToGptCustom(
   let result = content;
   let c = "";
   console.log(result);
-  const chatCompletion = await streamText({
+  const chatCompletion = streamText({
     // @ts-ignore
     model: provider === "openAI" ? openai(model) : mistral(model),
     system: system,

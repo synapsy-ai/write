@@ -21,7 +21,7 @@ export async function sendChatToGpt(
   system: string,
   provider: AiProviders,
 ): Promise<any> {
-  const chatCompletion = await streamText({
+  const chatCompletion = streamText({
     // @ts-ignore
     model: provider === "openAI" ? openai(model) : mistral(model),
     system: system,
