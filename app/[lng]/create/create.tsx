@@ -159,7 +159,11 @@ export default function Create(props: Props) {
     let models: ModelList = { openAiModels: [], mistralModels: [] };
     let gpt4 = hasGpt4Access();
     for (let i = 0; i < availableModels.openAiModels.length; i++) {
-      if (availableModels.openAiModels[i].includes("gpt-4") && !gpt4) continue;
+      if (
+        availableModels.openAiModels[i].includes("gpt-4") ||
+        (availableModels.openAiModels[i].includes("o1") && !gpt4)
+      )
+        continue;
       models.openAiModels.push(availableModels.openAiModels[i]);
     }
     models.mistralModels = availableModels.mistralModels;
@@ -174,7 +178,8 @@ export default function Create(props: Props) {
     };
     for (let i = 0; i < m.openAiModels.length; i++) {
       if (
-        m.openAiModels[i].includes("gpt-4") &&
+        (m.openAiModels[i].includes("gpt-4") ||
+          m.openAiModels[i].includes("o1")) &&
         !m.openAiModels[i].includes("mini") &&
         !hasGpt4Access()
       ) {
@@ -271,7 +276,10 @@ export default function Create(props: Props) {
     setRes("");
 
     // If the user has selected GPT-4, check if they have access to the model
-    if (model.includes("gpt-4") && !model.includes("mini")) {
+    if (
+      (model.includes("gpt-4") && !model.includes("mini")) ||
+      model.includes("o1")
+    ) {
       if (gpt4Quotas <= 0) return;
       if (props.user && props.user && gpt4Quotas > 0) {
         let q = gpt4Quotas - 1;
