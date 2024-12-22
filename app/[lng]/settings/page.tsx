@@ -9,7 +9,6 @@ import {
   Trash,
 } from "lucide-react";
 import { useTranslation } from "../../i18n/client";
-import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import { useTheme } from "next-themes";
 import { FontType, Settings } from "@/lib/settings";
@@ -43,7 +42,6 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { m } from "framer-motion";
 import {
   Card,
   CardContent,
@@ -250,7 +248,11 @@ export default function SettingsPage({
                     <TabsContent value="openAI">
                       <div>
                         {models.openAiModels
-                          ?.filter((s) => s.toLowerCase().startsWith("gpt"))
+                          ?.filter(
+                            (s) =>
+                              s.toLowerCase().startsWith("gpt") ||
+                              s.toLowerCase().startsWith("o1"),
+                          )
                           .filter((s) =>
                             s.toLowerCase().includes(modelQuery.toLowerCase()),
                           )
@@ -267,7 +269,10 @@ export default function SettingsPage({
                     <TabsContent value="mistral">
                       <div>
                         {models.mistralModels
-                          ?.filter((s) =>
+                          ?.filter(
+                            (s) => !s.toLowerCase().startsWith("pixtral"),
+                          )
+                          .filter((s) =>
                             s.toLowerCase().includes(modelQuery.toLowerCase()),
                           )
                           .map((m, i) => (

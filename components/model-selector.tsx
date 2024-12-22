@@ -43,18 +43,20 @@ export default function ModelSelector({
           <ScrollArea className="h-[200px]">
             {tab === "openAI" &&
               avModels.openAiModels
-                .filter((m) => m.startsWith("gpt"))
+                .filter((m) => m.startsWith("gpt") || m.startsWith("o1"))
                 .map((el, i) => (
                   <SelectItem key={i} value={el}>
                     {getModelString(el)}
                   </SelectItem>
                 ))}
             {tab === "mistral" &&
-              avModels.mistralModels.map((el, i) => (
-                <SelectItem key={i} value={el}>
-                  {getModelString(el)}
-                </SelectItem>
-              ))}
+              avModels.mistralModels
+                .filter((m) => !m.includes("pixtral"))
+                .map((el, i) => (
+                  <SelectItem key={i} value={el}>
+                    {getModelString(el)}
+                  </SelectItem>
+                ))}
             <TabsContent value="mistral"></TabsContent>
           </ScrollArea>
         </Tabs>
