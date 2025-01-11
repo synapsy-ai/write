@@ -42,7 +42,7 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cmdk": "^1.0.4",
-    "framer-motion": "^11.16.4",
+    "framer-motion": "^11.17.0",
     "gpt-token-utils": "^1.2.0",
     "html-react-parser": "^5.2.2",
     "i18next": "^24.2.1",
