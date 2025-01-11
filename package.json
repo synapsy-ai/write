@@ -64,7 +64,7 @@
     "styled-jsx": "^5.1.6",
     "tailwind-merge": "^2.6.0",
     "tailwindcss-animate": "^1.0.7",
-    "uuid": "^11.0.4",
+    "uuid": "^11.0.5",
     "vaul": "^1.1.2"
   },
   "devDependencies": {
