@@ -1,9 +1,9 @@
 "use client";
 import Link from "next/link";
 
-import Logo from "./logo";
 import { useTranslation } from "@/app/i18n/client";
 import { version } from "@/lib/version";
+import PeyronnetLogo from "./peyronnet-logo";
 
 export default function SiteFooter({
   params: { lng },
@@ -15,7 +15,7 @@ export default function SiteFooter({
     <footer className="flex flex-col justify-center space-y-2 border-t px-5 py-10 sm:grid sm:grid-cols-2 print:hidden">
       <div className="flex items-center justify-center sm:justify-normal">
         <Link href="https://peyronnet.group">
-          <Logo width={256} height={64} />
+          <PeyronnetLogo width={256} height={64} />
         </Link>
       </div>
       <div className="m-4 flex flex-wrap justify-center sm:m-0 sm:justify-normal">
@@ -49,7 +49,7 @@ export default function SiteFooter({
         />
         <FooterLink
           title={t("about")}
-          description={`v${version} - © ${new Date().getFullYear()} Peyronnet Group and Synapsy`}
+          description={`v${version} - © ${new Date().getFullYear()} GRP and Synapsy`}
           link="/settings"
         />
       </div>
