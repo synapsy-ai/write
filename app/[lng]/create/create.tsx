@@ -160,8 +160,10 @@ export default function Create(props: Props) {
     let gpt4 = hasGpt4Access();
     for (let i = 0; i < availableModels.openAiModels.length; i++) {
       if (
-        availableModels.openAiModels[i].includes("gpt-4") ||
-        (availableModels.openAiModels[i].includes("o1") && !gpt4)
+        (availableModels.openAiModels[i].includes("gpt-4") ||
+          availableModels.openAiModels[i].includes("o1")) &&
+        !gpt4 &&
+        !availableModels.openAiModels[i].includes("mini")
       )
         continue;
       models.openAiModels.push(availableModels.openAiModels[i]);

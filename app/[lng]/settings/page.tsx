@@ -360,7 +360,7 @@ export default function SettingsPage({
                     <DialogTitle>{t("about-long")}</DialogTitle>
                     <p>
                       Version {version} <br />© {new Date().getFullYear()}{" "}
-                      Synapsy by Peyronnet
+                      Synapsy by GRP
                     </p>
                     <p>
                       NextJS - MIT License - © 2024 Vercel, Inc.

@@ -100,7 +100,13 @@ export default function Chat(props: Props) {
     let models: ModelList = { openAiModels: [], mistralModels: [] };
     let gpt4 = hasGpt4Access();
     for (let i = 0; i < availableModels.openAiModels.length; i++) {
-      if (availableModels.openAiModels[i].includes("gpt-4") && !gpt4) continue;
+      if (
+        (availableModels.openAiModels[i].includes("gpt-4") ||
+          availableModels.openAiModels[i].includes("o1")) &&
+        !gpt4 &&
+        !availableModels.openAiModels[i].includes("mini")
+      )
+        continue;
       models.openAiModels.push(availableModels.openAiModels[i]);
     }
     models.mistralModels = availableModels.mistralModels;
