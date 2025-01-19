@@ -1,0 +1,20 @@
+{
+  "name": "Synapsy Write Dev Container",
+  "image": "mcr.microsoft.com/vscode/devcontainers/typescript-node:latest",
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "terminal.integrated.shell.linux": "/bin/bash"
+      },
+      "extensions": [
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "github.vscode-github-actions",
+        "bradlc.vscode-tailwindcss"
+      ]
+    }
+  },
+  "postCreateCommand": "npm install",
+  "forwardPorts": [3000],
+  "remoteUser": "node"
+}

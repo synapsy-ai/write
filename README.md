@@ -97,6 +97,48 @@ We welcome contributions to enhance Synapsy Write! If you'd like to contribute, 
    ```
 7. **Open a Pull Request**: Submit your pull request for review.
 
+## Using Dev Containers for Local Development
+
+To facilitate a consistent development environment, the Synapsy Write project includes support for development containers. This allows you to quickly set up a fully functional development environment with all necessary dependencies and tools.
+
+### Prerequisites
+
+Before you begin, ensure you have the following installed:
+
+- [Docker](https://www.docker.com/get-started) (to run containers)
+- [Visual Studio Code](https://code.visualstudio.com/) (for a powerful code editor)
+- [Remote - Containers extension for VS Code](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)
+
+### Setting Up the Dev Container
+
+Follow these steps to set up and use the development container:
+
+1. **Clone the Repository**:
+
+   ```bash
+   git clone https://github.com/synapsy-ai/write.git
+   cd write
+   ```
+
+2. **Open the Project in VS Code**:
+
+   - Open Visual Studio Code.
+   - Use the `File > Open Folder...` menu to open the `write` folder you just cloned.
+
+3. **Open the Dev Container**:
+
+   - Open the Command Palette (F1) and select `Remote-Containers: Open Folder in Container...`.
+   - Select the root folder of your project (`write`).
+
+4. **Wait for the Container to Build**:
+
+   - VS Code will automatically build the development container using the configuration in the `.devcontainer` folder.
+   - This may take a few minutes the first time as it installs all necessary dependencies.
+
+5. **Start Developing**:
+   - Once the container is ready, you can start coding immediately.
+   - The container comes pre-installed with necessary extensions such as Prettier and Tailwind CSS IntelliSense.
+
 ## License
 
 Synapsy Write is available under the [MIT License](LICENSE). Feel free to use, modify, and distribute the code as needed, in compliance with the license terms.
