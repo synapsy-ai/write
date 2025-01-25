@@ -24,8 +24,8 @@ import {
   Text,
   TextQuote,
 } from "lucide-react";
-import { SuggestionItem, handleCommandNavigation } from "novel/extensions";
-import { Command, renderItems } from "novel/extensions";
+import { SuggestionItem, handleCommandNavigation } from "novel";
+import { Command, renderItems } from "novel";
 import { defaultExtensions } from "@/lib/editor-extensions";
 import { NodeSelector } from "./selectors/node-selector";
 import { LinkSelector } from "./selectors/link-selector";
@@ -40,7 +40,7 @@ import {
 } from "./ui/tooltip";
 import { useTranslation } from "@/app/i18n/client";
 import { HistoryItem } from "@/lib/history";
-import { handleImageDrop, handleImagePaste } from "novel/plugins";
+import { handleImageDrop, handleImagePaste } from "novel";
 import { uploadFn } from "@/lib/image-upload";
 interface EditorProps {
   content: JSONContent;
@@ -114,7 +114,7 @@ export default function TailwindEditor(props: EditorProps) {
                 <EditorCommandItem
                   value={item.title}
                   onCommand={(val) => item.command?.(val)}
-                  className={`grid w-full grid-cols-[auto,1fr] items-center space-x-2 rounded-md px-2 py-1 text-left text-sm hover:bg-accent aria-selected:bg-accent `}
+                  className={`grid w-full grid-cols-[auto,1fr] items-center space-x-2 rounded-md px-2 py-1 text-left text-sm hover:bg-accent aria-selected:bg-accent`}
                   key={item.title}
                 >
                   <div className="flex size-10 items-center justify-center rounded-md border border-muted bg-background">

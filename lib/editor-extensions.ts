@@ -7,8 +7,8 @@ import {
   HorizontalRule,
   StarterKit,
   Placeholder,
-} from "novel/extensions";
-import { UploadImagesPlugin } from "novel/plugins";
+} from "novel";
+import { UploadImagesPlugin } from "novel";
 
 import { cx } from "class-variance-authority";
 
