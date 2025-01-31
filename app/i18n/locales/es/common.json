@@ -377,5 +377,7 @@
   "cgv-desc": "Descubre nuestras condiciones generales de venta",
   "prompt-var-missing": "Falta la variable [[PROMPT]]. El prompt proporcionado por el usuario no será proporcionado al modelo.",
   "filtro": "Filtro",
-  "filter-desc": "Seleccionar categorías de formato para mostrar."
+  "filter-desc": "Seleccionar categorías de formato para mostrar.",
+  "reset-data": "Restablecer datos",
+  "reset-data-desc": "Esto restablecerá todos tus datos y configuraciones. ¿Está seguro?"
 }

@@ -375,5 +375,7 @@
   "cgv-desc": "Découvrez nos conditions générales de vente",
   "prompt-var-missing": "La variable [[PROMPT]] est manquante. L'invite fournie par l'utilisateur ne sera pas transmise au modèle.",
   "filtro": "Filtrer",
-  "filter-desc": "Sélectionner les catégories de format à afficher"
+  "filter-desc": "Sélectionner les catégories de format à afficher",
+  "reset-data": "Réinitialiser les paramètres",
+  "reset-data-desc": "Ceci réinitialisera toutes vos données et tous vos paramètres. Êtes-vous sûr ?"
 }

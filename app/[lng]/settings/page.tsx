@@ -90,6 +90,20 @@ export default function SettingsPage({
     }
   }
 
+  function resetData() {
+    s = {
+      aiModels: {
+        openAiModels: ["gpt-4o-mini", "gpt-3.5-turbo"],
+        mistralModels: [],
+      },
+      gen_font: "default",
+      key: "",
+      system_templates: [],
+    };
+    localStorage.setItem("synapsy_settings", JSON.stringify(s));
+    window.location.reload();
+  }
+
   const router = useRouter();
   return (
     <main className="flex min-h-[calc(100vh_-_theme(spacing.16))] flex-1 flex-col gap-4 bg-slate-100/40 p-4 px-2 pb-20 dark:bg-transparent sm:pb-0 md:gap-8 md:p-10">
@@ -347,7 +361,7 @@ export default function SettingsPage({
               <CardTitle>{t("misc")}</CardTitle>
               <CardDescription>{t("other-settings")}</CardDescription>
             </CardHeader>
-            <CardContent>
+            <CardContent className="flex flex-col items-start">
               <Dialog>
                 <DialogTrigger>
                   <Button variant="link" className="space-x-2">
@@ -373,6 +387,30 @@ export default function SettingsPage({
                     </p>
                   </DialogHeader>
                   <DialogFooter>
+                    <DialogClose>
+                      <Button variant="outline">{t("close")}</Button>
+                    </DialogClose>
+                  </DialogFooter>
+                </DialogContent>
+              </Dialog>
+              <Dialog>
+                <DialogTrigger>
+                  <Button variant="link" className="space-x-2">
+                    <ArrowUpRightFromSquare size={16} />
+                    <span>{t("reset-data")}</span>
+                  </Button>
+                </DialogTrigger>
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle>{t("reset-data")}</DialogTitle>
+                  </DialogHeader>
+                  <p>{t("reset-data-desc")}</p>
+                  <DialogFooter>
+                    <DialogClose>
+                      <Button onClick={resetData} variant="destructive">
+                        {t("delete")}
+                      </Button>
+                    </DialogClose>
                     <DialogClose>
                       <Button variant="outline">{t("close")}</Button>
                     </DialogClose>
