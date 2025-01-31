@@ -62,7 +62,7 @@
     "sonner": "^1.7.3",
     "stripe": "^17.6.0",
     "styled-jsx": "^5.1.6",
-    "tailwind-merge": "^3.0.0",
+    "tailwind-merge": "^3.0.1",
     "tailwindcss-animate": "^1.0.7",
     "uuid": "^11.0.5",
     "vaul": "^1.1.2"
