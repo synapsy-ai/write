@@ -81,7 +81,6 @@ import { getPhiloAnalysisRecipe } from "@/lib/recipes/complex-philo-analysis";
 import { getComplexEssayGlobalRecipe } from "@/lib/recipes/complex-essay-global";
 import { getComplexEssayRecipe } from "@/lib/recipes/complex-essay-literrature";
 import { getComplexEssayPhiloRecipe } from "@/lib/recipes/complex-essay-philo";
-import { createClient } from "@/utils/supabase/client";
 import ModelSelector from "@/components/model-selector";
 import { getModelProvider, ModelList } from "@/lib/models";
 import updateQuotas from "@/utils/update-quotas";
@@ -685,8 +684,10 @@ export default function Create(props: Props) {
                     <ModelSelector
                       placeholder={t("model")}
                       avModels={avModels}
+                      premium={hasGpt4Access()}
                       model={model}
                       setModel={setModel}
+                      lng={lng}
                     />
                     <TooltipProvider delayDuration={0}>
                       <Tooltip>

@@ -343,6 +343,8 @@ export default function Chat(props: Props) {
           <div className="flex items-center space-x-2">
             <ModelSelector
               placeholder={t("model")}
+              lng={lng}
+              premium={hasGpt4Access()}
               avModels={avModels}
               model={model}
               setModel={setModel}

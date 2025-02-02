@@ -379,5 +379,6 @@
   "filter": "Filter",
   "filter-desc": "Select format categories to display.",
   "reset-data": "Reset data",
-  "reset-data-desc": "This will reset all your data and settings. Are you sure?"
+  "reset-data-desc": "This will reset all your data and settings. Are you sure?",
+  "ai-providers": "AI Providers"
 }
