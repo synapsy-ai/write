@@ -24,7 +24,7 @@ import { getComplexEssayGlobalRecipe } from "@/lib/recipes/complex-essay-global"
 import { getComplexEssayRecipe } from "@/lib/recipes/complex-essay-literrature";
 import { getComplexEssayPhiloRecipe } from "@/lib/recipes/complex-essay-philo";
 import { getPhiloAnalysisRecipe } from "@/lib/recipes/complex-philo-analysis";
-import { Copy, Eye, Plus, Trash } from "lucide-react";
+import { Copy, Eye, MoreHorizontal, Plus, Trash } from "lucide-react";
 import Link from "next/link";
 import { use, useState } from "react";
 import { useRouter } from "next/navigation";
@@ -36,6 +36,12 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 export default function TemplatesPage({
   params,
@@ -78,7 +84,13 @@ export default function TemplatesPage({
       setTemplates([...templates, template]);
     } else {
       let template = templates[index];
-      template = { ...template, name: duplicateName };
+      template = {
+        ...template,
+        name:
+          duplicateName === ""
+            ? `${template.name} (${t("copy-title")})`
+            : duplicateName,
+      };
       addToTemplates(template);
       setTemplates([...templates, template]);
     }
@@ -222,11 +234,6 @@ export default function TemplatesPage({
                           {t("template-edit")}
                         </Button>
                       </Link>
-                      <Link href={`/${lng}/templates/view?id=${i}`}>
-                        <Button variant="outline">
-                          <Eye size={14} />
-                        </Button>
-                      </Link>
                       <Dialog>
                         <DialogTrigger>
                           <Button variant="outline">
@@ -255,6 +262,33 @@ export default function TemplatesPage({
                           </DialogFooter>
                         </DialogContent>
                       </Dialog>
+                      <DropdownMenu>
+                        <DropdownMenuTrigger>
+                          <Button variant="outline">
+                            <MoreHorizontal size={14} />
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent>
+                          <Link href={`/${lng}/templates/view?id=${i}`}>
+                            <DropdownMenuItem className="w-full items-center space-x-2">
+                              <Eye size={14} />
+                              <span>{t("template-view")}</span>
+                            </DropdownMenuItem>
+                          </Link>
+                          <DropdownMenuItem
+                            onClick={() => {
+                              setDuplicateName(
+                                `${templateItem.name} (${t("copy-title")})`,
+                              );
+                              duplicate(i);
+                            }}
+                            className="w-full items-center space-x-2"
+                          >
+                            <Copy size={14} />
+                            <span>{t("duplicate")}</span>
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
                     </div>
                   </CardContent>
                 </Card>
