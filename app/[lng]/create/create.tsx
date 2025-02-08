@@ -348,7 +348,7 @@ export default function Create(props: Props) {
       }
       if (!step.hide || step.type !== "utility") setInProgress(false);
       let result;
-      if (step.type === "utility" || step.type === "static") {
+      if (step.type === "utility" || step.type === "static" || step.hide) {
         result = await getStandardGeneration(
           step.systemPrompt ?? recipe.systemPrompt,
           step.userPrompt,
@@ -386,7 +386,7 @@ export default function Create(props: Props) {
         setInProgress(false);
         return;
       }
-      if (!step.hide || step.type !== "utility") final += result;
+      if (!step.hide && step.type !== "utility") final += result;
 
       // Store the result in the context
       if (step.outputVar) context[step.outputVar] = result;
@@ -546,6 +546,7 @@ export default function Create(props: Props) {
               )}
             </CardContent>
           </Card>
+          <Button onClick={createButton}>DEV CREATE BUTTON</Button>
           {isSubscribed() ? (
             <>
               {!inProgress ? (
