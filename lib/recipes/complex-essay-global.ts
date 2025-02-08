@@ -18,32 +18,37 @@ export function getComplexEssayGlobalRecipe(
         name: "essay-outline",
         userPrompt: getPrompt("g_es_outline", lng),
         outputVar: "outline",
-        hide: true,
+        type: "utility",
       },
       {
         name: "introduction",
         userPrompt: getPrompt("g_es_intro", lng),
         outputVar: "introduction",
+        type: "dynamic",
       },
       {
         name: "part-1",
         userPrompt: getComplexEssayPrompts(1, lng),
         outputVar: "part1",
+        type: "dynamic",
       },
       {
         name: "part-2",
         userPrompt: getComplexEssayPrompts(2, lng),
         outputVar: "part2",
+        type: "dynamic",
       },
       {
         name: "part-3",
         userPrompt: getComplexEssayPrompts(3, lng),
         outputVar: "part3",
+        type: "dynamic",
       },
       {
         name: "conclusion",
         userPrompt: getPrompt("g_es_conclusion", lng),
         outputVar: "conclusion",
+        type: "dynamic",
       },
     ],
   };

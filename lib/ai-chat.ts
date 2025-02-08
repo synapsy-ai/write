@@ -2,7 +2,7 @@ import { streamText } from "ai";
 import { ChatMessage } from "./ai-completions";
 import { createOpenAI } from "@ai-sdk/openai";
 import { createMistral } from "@ai-sdk/mistral";
-import { AiProviders } from "./models";
+import { AiProvider } from "./models";
 
 const openai = createOpenAI({
   // custom settings, e.g.
@@ -19,7 +19,7 @@ export async function sendChatToGpt(
   functions: { setContent: Function },
   messages: ChatMessage[],
   system: string,
-  provider: AiProviders,
+  provider: AiProvider,
 ): Promise<any> {
   const chatCompletion = streamText({
     // @ts-ignore

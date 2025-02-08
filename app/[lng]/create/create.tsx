@@ -14,7 +14,12 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import { Settings } from "@/lib/settings";
-import { getModels, sendToGpt, sendToGptCustom } from "@/lib/ai-completions";
+import {
+  getModels,
+  getStandardGeneration,
+  sendToGpt,
+  sendToGptCustom,
+} from "@/lib/ai-completions";
 import { addToHistory } from "@/lib/history";
 import {
   Sheet,
@@ -76,7 +81,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { getTemplates, Recipe } from "@/lib/recipe";
+import { getTemplates, migrateRecipes, Recipe } from "@/lib/recipe";
 import { getPhiloAnalysisRecipe } from "@/lib/recipes/complex-philo-analysis";
 import { getComplexEssayGlobalRecipe } from "@/lib/recipes/complex-essay-global";
 import { getComplexEssayRecipe } from "@/lib/recipes/complex-essay-literrature";
@@ -316,6 +321,7 @@ export default function Create(props: Props) {
   }
 
   async function executeRecipe(recipe: Recipe) {
+    migrateRecipes(getTemplates());
     setInProgress(true);
     setErrorVis(false);
     setIsGen(false);
@@ -340,22 +346,39 @@ export default function Create(props: Props) {
           context[Object.keys(context)[j]],
         );
       }
-      if (!step.hide) setInProgress(false);
-      const result = await sendToGptCustom(
-        step.systemPrompt ?? recipe.systemPrompt,
-        step.userPrompt,
-        apiKey,
-        model,
-        {
-          temp: temp,
-          presP: presP,
-          topP: topp,
-          freqP: freqP,
-        },
-        final,
-        { setContent: step.hide ? () => {} : setRes },
-        getModelProvider(model, avModels),
-      );
+      if (!step.hide || step.type !== "utility") setInProgress(false);
+      let result;
+      if (step.type === "utility" || step.type === "static") {
+        result = await getStandardGeneration(
+          step.systemPrompt ?? recipe.systemPrompt,
+          step.userPrompt,
+          apiKey,
+          model,
+          {
+            temp: temp,
+            presP: presP,
+            topP: topp,
+            freqP: freqP,
+          },
+          getModelProvider(model, avModels),
+        );
+      } else {
+        result = await sendToGptCustom(
+          step.systemPrompt ?? recipe.systemPrompt,
+          step.userPrompt,
+          apiKey,
+          model,
+          {
+            temp: temp,
+            presP: presP,
+            topP: topp,
+            freqP: freqP,
+          },
+          final,
+          { setContent: step.hide ? () => {} : setRes },
+          getModelProvider(model, avModels),
+        );
+      }
 
       if (result instanceof OpenAI.APIError) {
         setErrorMsg(result);
@@ -363,7 +386,7 @@ export default function Create(props: Props) {
         setInProgress(false);
         return;
       }
-      if (!step.hide) final += result;
+      if (!step.hide || step.type !== "utility") final += result;
 
       // Store the result in the context
       if (step.outputVar) context[step.outputVar] = result;

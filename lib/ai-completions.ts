@@ -3,7 +3,7 @@ import { userPrompts } from "./prompts/user";
 import { Language } from "./languages";
 import { createOpenAI } from "@ai-sdk/openai";
 import { generateText, streamText } from "ai";
-import { AiProviders } from "./models";
+import { AiProvider } from "./models";
 import { createMistral } from "@ai-sdk/mistral";
 
 const openai = createOpenAI({
@@ -25,7 +25,7 @@ export async function sendToGpt(
   options: OpenAiOptions,
   functions: { setContent: Function; setLoading: Function },
   tone: string,
-  provider: AiProviders,
+  provider: AiProvider,
 ): Promise<any> {
   functions.setLoading(true);
   let loading = true;
@@ -60,7 +60,7 @@ export async function sendToGptCustom(
   options: OpenAiOptions,
   content: string,
   functions: { setContent: Function },
-  provider: AiProviders,
+  provider: AiProvider,
 ): Promise<any> {
   let result = content;
   let c = "";
@@ -92,7 +92,7 @@ export async function getStandardGeneration(
   key: string,
   model: string,
   options: OpenAiOptions,
-  provider: AiProviders,
+  provider: AiProvider,
 ) {
   const chatCompletion = await generateText({
     // @ts-ignore
