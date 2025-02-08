@@ -8,6 +8,8 @@ import {
 import Create from "./create";
 import { createClient } from "@/utils/supabase/server";
 import { DefaultLanguageParams } from "@/lib/languages";
+import { Suspense } from "react";
+import LoadingUI from "@/components/loading";
 
 export default async function CreatePage({
   params,
@@ -58,12 +60,14 @@ export default async function CreatePage({
   }
   const q = await getQuotas();
   return (
-    <Create
-      products={products}
-      subscriptions={subscriptions}
-      user={user}
-      lng={lng}
-      quotas={q}
-    />
+    <Suspense fallback={<LoadingUI />}>
+      <Create
+        products={products}
+        subscriptions={subscriptions}
+        user={user}
+        lng={lng}
+        quotas={q}
+      />
+    </Suspense>
   );
 }
