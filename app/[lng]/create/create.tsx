@@ -546,7 +546,6 @@ export default function Create(props: Props) {
               )}
             </CardContent>
           </Card>
-          <Button onClick={createButton}>DEV CREATE BUTTON</Button>
           {isSubscribed() ? (
             <>
               {!inProgress ? (
@@ -713,18 +712,7 @@ export default function Create(props: Props) {
                       setModel={setModel}
                       lng={lng}
                     />
-                    <TooltipProvider delayDuration={0}>
-                      <Tooltip>
-                        <TooltipTrigger>
-                          <Button variant="outline" onClick={getMs}>
-                            <RefreshCcw height={14} />
-                          </Button>
-                        </TooltipTrigger>
-                        <TooltipContent>
-                          <p>{t("refresh-models")}</p>
-                        </TooltipContent>
-                      </Tooltip>
-                    </TooltipProvider>
+
                     <Sheet>
                       <TooltipProvider delayDuration={0}>
                         <Tooltip>
