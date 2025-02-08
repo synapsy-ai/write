@@ -7,6 +7,7 @@ import {
   HorizontalRule,
   StarterKit,
   Placeholder,
+  Mathematics,
 } from "novel";
 import { UploadImagesPlugin } from "novel";
 
@@ -103,6 +104,15 @@ const starterKit = StarterKit.configure({
   gapcursor: false,
 });
 
+const mathematics = Mathematics.configure({
+  HTMLAttributes: {
+    class: cx("text-foreground rounded p-1 hover:bg-accent cursor-pointer"),
+  },
+  katexOptions: {
+    throwOnError: false,
+  },
+});
+
 export const defaultExtensions = [
   starterKit,
   placeholder,
@@ -112,4 +122,5 @@ export const defaultExtensions = [
   taskList,
   taskItem,
   horizontalRule,
+  mathematics,
 ];

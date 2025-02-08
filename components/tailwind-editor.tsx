@@ -42,6 +42,7 @@ import { useTranslation } from "@/app/i18n/client";
 import { HistoryItem } from "@/lib/history";
 import { handleImageDrop, handleImagePaste } from "novel";
 import { uploadFn } from "@/lib/image-upload";
+import { MathSelector } from "./selectors/math-selector";
 interface EditorProps {
   content: JSONContent;
   lng: string;
@@ -84,7 +85,7 @@ export default function TailwindEditor(props: EditorProps) {
       </div>
       <EditorRoot>
         <EditorContent
-          className="relative min-h-[500px] w-full max-w-screen-lg border-muted bg-background sm:mb-[calc(20vh)] sm:rounded-lg sm:border sm:shadow-lg"
+          className="relative min-h-[500px] w-full max-w-screen-lg border bg-background sm:mb-[calc(20vh)] sm:rounded-lg"
           extensions={extensions}
           editorProps={{
             handleDOMEvents: {
@@ -95,7 +96,7 @@ export default function TailwindEditor(props: EditorProps) {
             handleDrop: (view, event, _slice, moved) =>
               handleImageDrop(view, event, moved, uploadFn),
             attributes: {
-              class: `prose-lg prose-stone dark:prose-invert prose-headings:font-title font-default focus:outline-none max-w-full`,
+              class: `prose-lg prose-stone dark:prose-invert prose-headings:font-title font-default focus:outline-none max-w-full `,
             },
           }}
           initialContent={content}
@@ -141,6 +142,7 @@ export default function TailwindEditor(props: EditorProps) {
               open={openNode}
               onOpenChange={setOpenNode}
             />
+            <MathSelector />
             <LinkSelector
               lng={props.lng}
               open={openLink}
