@@ -383,5 +383,12 @@
   "ai-providers": "Proveedores de IA",
   "duplicate": "Duplicar",
   "select-new-name": "Seleccione un nuevo nombre",
-  "copy-title": "Copia"
+  "copy-title": "Copia",
+  "dynamic": "Dinámico",
+  "dynamic-desc": "Las generaciones dinámicas se generan en tiempo real.",
+  "static": "Estático",
+  "static-desc": "Las generaciones estáticas se generan en una sola solicitud.",
+  "utility": "Utilidad",
+  "utility-desc": "Las generaciones de utilidad se generan estáticamente y no aparecen en la generación final.",
+  "type-gen": "Tipo de generación"
 }
