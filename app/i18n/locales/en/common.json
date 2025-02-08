@@ -380,5 +380,8 @@
   "filter-desc": "Select format categories to display.",
   "reset-data": "Reset data",
   "reset-data-desc": "This will reset all your data and settings. Are you sure?",
-  "ai-providers": "AI Providers"
+  "ai-providers": "AI Providers",
+  "duplicate": "Duplicate",
+  "select-new-name": "Select a new name",
+  "copy-title": "Copy"
 }

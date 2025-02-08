@@ -24,12 +24,18 @@ import { getComplexEssayGlobalRecipe } from "@/lib/recipes/complex-essay-global"
 import { getComplexEssayRecipe } from "@/lib/recipes/complex-essay-literrature";
 import { getComplexEssayPhiloRecipe } from "@/lib/recipes/complex-essay-philo";
 import { getPhiloAnalysisRecipe } from "@/lib/recipes/complex-philo-analysis";
-import { Eye, Plus, Trash } from "lucide-react";
+import { Copy, Eye, Plus, Trash } from "lucide-react";
 import Link from "next/link";
 import { use, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Close } from "@radix-ui/react-dialog";
 import { DefaultLanguageParams } from "@/lib/languages";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 export default function TemplatesPage({
   params,
@@ -50,7 +56,7 @@ export default function TemplatesPage({
   const [templates, setTemplates] = useState(getTemplates());
   const [name, setName] = useState("");
   const [prompt, setPrompt] = useState("");
-
+  const [duplicateName, setDuplicateName] = useState("");
   function createTemplate() {
     let template: Recipe = { name: name, systemPrompt: prompt, steps: [] };
     addToTemplates(template);
@@ -62,6 +68,20 @@ export default function TemplatesPage({
     templates.splice(index, 1);
     saveTemplates(templates);
     setTemplates([...templates]);
+  }
+
+  function duplicate(index: number, system: boolean = false) {
+    if (system) {
+      let template = defaultTemplates[index];
+      template = { ...template, name: duplicateName };
+      addToTemplates(template);
+      setTemplates([...templates, template]);
+    } else {
+      let template = templates[index];
+      template = { ...template, name: duplicateName };
+      addToTemplates(template);
+      setTemplates([...templates, template]);
+    }
   }
 
   return (
@@ -86,11 +106,58 @@ export default function TemplatesPage({
                       {t(templateItem.name)}
                     </h3>
                   </div>
-                  <Link href={`/${lng}/templates/view?id=${templateItem.name}`}>
-                    <Button variant="outline" className="w-full">
-                      {t("template-view")}
-                    </Button>
-                  </Link>
+                  <div className="grid w-full grid-cols-[1fr,auto,auto] items-center space-x-2">
+                    <Link
+                      href={`/${lng}/templates/view?id=${templateItem.name}`}
+                    >
+                      <Button variant="outline" className="w-full">
+                        {t("template-view")}
+                      </Button>
+                    </Link>
+                    <Dialog>
+                      <DialogTrigger>
+                        <TooltipProvider>
+                          <Tooltip delayDuration={0}>
+                            <TooltipTrigger>
+                              <Button
+                                onClick={() => {
+                                  setDuplicateName(
+                                    `${t(templateItem.name)} (${t("copy-title")})`,
+                                  );
+                                }}
+                                variant="outline"
+                              >
+                                <Copy size={14} />
+                              </Button>
+                            </TooltipTrigger>
+                            <TooltipContent>{t("duplicate")}</TooltipContent>
+                          </Tooltip>
+                        </TooltipProvider>
+                      </DialogTrigger>
+                      <DialogContent>
+                        <DialogHeader>
+                          <DialogTitle>{t("duplicate")}</DialogTitle>
+                          <DialogDescription>
+                            {t("select-new-name")}
+                          </DialogDescription>
+                          <Input
+                            value={duplicateName}
+                            onChange={(e) => setDuplicateName(e.target.value)}
+                          />
+                        </DialogHeader>
+                        <DialogFooter>
+                          <Close>
+                            <Button onClick={() => duplicate(i, true)}>
+                              {t("duplicate")}
+                            </Button>
+                          </Close>
+                          <Close>
+                            <Button variant="outline">{t("cancel")}</Button>
+                          </Close>
+                        </DialogFooter>
+                      </DialogContent>
+                    </Dialog>
+                  </div>
                 </CardContent>
               </Card>
             ))}

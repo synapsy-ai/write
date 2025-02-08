@@ -378,5 +378,8 @@
   "filter-desc": "Sélectionner les catégories de format à afficher",
   "reset-data": "Réinitialiser les paramètres",
   "reset-data-desc": "Ceci réinitialisera toutes vos données et tous vos paramètres. Êtes-vous sûr ?",
-  "ai-providers": "Fournisseurs d'IA"
+  "ai-providers": "Fournisseurs d'IA",
+  "duplicate": "Dupliquer",
+  "select-new-name": "Sélectionner un nouveau nom",
+  "copy-title": "Copie"
 }

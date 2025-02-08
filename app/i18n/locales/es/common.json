@@ -380,5 +380,8 @@
   "filter-desc": "Seleccionar categorías de formato para mostrar.",
   "reset-data": "Restablecer datos",
   "reset-data-desc": "Esto restablecerá todos tus datos y configuraciones. ¿Está seguro?",
-  "ai-providers": "Proveedores de IA"
+  "ai-providers": "Proveedores de IA",
+  "duplicate": "Duplicar",
+  "select-new-name": "Seleccione un nuevo nombre",
+  "copy-title": "Copia"
 }
