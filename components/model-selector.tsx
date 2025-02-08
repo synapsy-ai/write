@@ -74,7 +74,13 @@ export default function ModelSelector({
     },
     {
       name: "Mistral",
-      models: ["mistral-large-latest", "mistral-medium", "mistral-small"],
+      models: [
+        "mistral-large-latest",
+        "mistral-medium",
+        "mistral-small",
+        "codestral-latest",
+        "codestral-mamba-latest",
+      ],
     },
   ];
 
