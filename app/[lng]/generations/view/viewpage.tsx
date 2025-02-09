@@ -135,7 +135,7 @@ export default function GenerationViewPage({
       </header>
       <section className="mx-auto grid w-full max-w-6xl items-start gap-6 md:grid-cols-[1fr_300px] lg:grid-cols-[1fr_350px]">
         <div
-          className="max-w-[800px] rounded-md border bg-white pb-4 text-justify shadow-sm dark:bg-slate-900 dark:bg-slate-900/50 print:border-0 print:text-black print:shadow-none"
+          className="edit max-w-[800px] rounded-md border bg-white p-0 text-justify shadow-sm dark:bg-slate-900 dark:bg-slate-900/50 print:border-0 print:text-black print:shadow-none"
           id="ct"
         >
           <ResultDisplayer

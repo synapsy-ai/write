@@ -116,6 +116,55 @@ h3 {
   line-height: 1.75rem; /* 28px */
 }
 
+.ProseMirror {
+  h1 {
+    font-size: 1.5rem; /* 24px */
+    line-height: 2rem; /* 32px */
+  }
+
+  h2 {
+    font-size: 1.25rem; /* 20px */
+    line-height: 1.75rem; /* 28px */
+  }
+
+  h3 {
+    font-size: 1.125rem; /* 18px */
+    line-height: 1.75rem; /* 28px */
+  }
+
+  p {
+    font-size: 1rem;
+  }
+}
+
+/* Print view */
+@media print {
+  body {
+    font-size: 12px;
+  }
+
+  .ProseMirror {
+    h1 {
+      font-size: 1.5rem; /* 24px */
+      line-height: 2rem; /* 32px */
+    }
+
+    h2 {
+      font-size: 1.25rem; /* 20px */
+      line-height: 1.75rem; /* 28px */
+    }
+
+    h3 {
+      font-size: 1.125rem; /* 18px */
+      line-height: 1.75rem; /* 28px */
+    }
+
+    p {
+      font-size: 1rem;
+    }
+  }
+}
+
 .bg-mesh {
   background: url("/MeshLight.svg");
   background-size: cover;
@@ -233,7 +282,7 @@ html.dark table.features td:not(:first-child) {
   border-left: 1px solid rgb(15 23 42);
 }
 
-.ProseMirror {
+.edit .ProseMirror {
   @apply p-12 px-8 sm:px-12;
 }
 

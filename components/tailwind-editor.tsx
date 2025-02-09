@@ -47,6 +47,8 @@ interface EditorProps {
   content: JSONContent;
   lng: string;
   id: number;
+  enabled?: boolean;
+  editorOnly?: boolean;
 }
 
 export default function TailwindEditor(props: EditorProps) {
@@ -71,21 +73,26 @@ export default function TailwindEditor(props: EditorProps) {
   }
   return (
     <div className="space-y-2">
-      <div className="mx-2 flex rounded-md border sm:mx-0 sm:rounded-lg">
-        <TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger>
-              <Button onClick={saveContent} variant="ghost">
-                <Save size={15} />
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent>{t("save")}</TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
-      </div>
+      {props.editorOnly ? (
+        <></>
+      ) : (
+        <div className="mx-2 flex rounded-md border sm:mx-0 sm:rounded-lg">
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger>
+                <Button onClick={saveContent} variant="ghost">
+                  <Save size={15} />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>{t("save")}</TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        </div>
+      )}
       <EditorRoot>
         <EditorContent
-          className="relative min-h-[500px] w-full max-w-screen-lg border bg-background sm:mb-[calc(20vh)] sm:rounded-lg"
+          editable={props.enabled ?? true}
+          className={`relative w-full max-w-screen-lg ${!props.editorOnly && "min-h-[500px] border bg-background sm:mb-[calc(20vh)]"} sm:rounded-lg`}
           extensions={extensions}
           editorProps={{
             handleDOMEvents: {
