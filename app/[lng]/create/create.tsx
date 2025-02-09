@@ -16,9 +16,9 @@ import { useState } from "react";
 import { Settings } from "@/lib/settings";
 import {
   getModels,
-  getStandardGeneration,
-  sendToGpt,
-  sendToGptCustom,
+  getStaticAiGeneration,
+  getDynamicAiGeneration,
+  getDynamicAiGenerationCustom,
 } from "@/lib/ai-completions";
 import { addToHistory } from "@/lib/history";
 import {
@@ -212,7 +212,7 @@ export default function Create(props: Props) {
     setErrorVis(false);
     setProgressBarVis(false);
     setIsGen(true);
-    let r = await sendToGpt(
+    let r = await getDynamicAiGeneration(
       prompt + getVariableString(variables),
       apiKey,
       type,
@@ -251,7 +251,7 @@ export default function Create(props: Props) {
     setErrorVis(false);
     setProgressBarVis(false);
     setIsGen(true);
-    let r = await sendToGpt(
+    let r = await getDynamicAiGeneration(
       textToAnalyse + "\n" + prompt + getVariableString(variables),
       apiKey,
       type,
@@ -355,7 +355,7 @@ export default function Create(props: Props) {
       if (!step.hide || step.type !== "utility") setInProgress(false);
       let result;
       if (step.type === "utility" || step.type === "static" || step.hide) {
-        result = await getStandardGeneration(
+        result = await getStaticAiGeneration(
           step.systemPrompt ?? recipe.systemPrompt,
           step.userPrompt,
           apiKey,
@@ -369,7 +369,7 @@ export default function Create(props: Props) {
           getModelProvider(model, avModels),
         );
       } else {
-        result = await sendToGptCustom(
+        result = await getDynamicAiGenerationCustom(
           step.systemPrompt ?? recipe.systemPrompt,
           step.userPrompt,
           apiKey,
