@@ -375,5 +375,18 @@
   "cgv-desc": "Découvrez nos conditions générales de vente",
   "prompt-var-missing": "La variable [[PROMPT]] est manquante. L'invite fournie par l'utilisateur ne sera pas transmise au modèle.",
   "filtro": "Filtrer",
-  "filter-desc": "Sélectionner les catégories de format à afficher"
+  "filter-desc": "Sélectionner les catégories de format à afficher",
+  "reset-data": "Réinitialiser les paramètres",
+  "reset-data-desc": "Ceci réinitialisera toutes vos données et tous vos paramètres. Êtes-vous sûr ?",
+  "ai-providers": "Fournisseurs d'IA",
+  "duplicate": "Dupliquer",
+  "select-new-name": "Sélectionner un nouveau nom",
+  "copy-title": "Copie",
+  "dynamic": "Dynamique",
+  "dynamic-desc": "Les générations dynamiques sont générées en temps réel.",
+  "static": "Statique",
+  "static-desc": "Les générations statiques sont générées en une seule requête.",
+  "utility": "Utilitaire",
+  "utility-desc": "Les générations utilitaires sont générées statiquement et n'apparaissent pas dans la génération finale.",
+  "type-gen": "Type de génération"
 }

@@ -6,7 +6,7 @@ import { getComplexEssayGlobalRecipe } from "@/lib/recipes/complex-essay-global"
 import { getComplexEssayRecipe } from "@/lib/recipes/complex-essay-literrature";
 import { getComplexEssayPhiloRecipe } from "@/lib/recipes/complex-essay-philo";
 import { getPhiloAnalysisRecipe } from "@/lib/recipes/complex-philo-analysis";
-import { getTemplates, Recipe } from "@/lib/recipe";
+import { getTemplates, Recipe, StepType } from "@/lib/recipe";
 import {
   Dialog,
   DialogContent,
@@ -16,11 +16,23 @@ import {
 } from "@/components/ui/dialog";
 import { ArrowLeft, NotepadText } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
 import { HighlightedVariable } from "@/components/variable-highlight";
 import { use, useState } from "react";
 import Link from "next/link";
 import { DefaultLanguageParams } from "@/lib/languages";
+import { Select } from "@radix-ui/react-select";
+import {
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 export default function ViewTemplatePage({
   params,
@@ -44,6 +56,27 @@ export default function ViewTemplatePage({
     Number.isFinite(+id) ? templates[+id] : defaultTemplates[id],
   );
 
+  function getTypeColor(type: StepType, bg: boolean = false) {
+    if (bg) {
+      switch (type) {
+        case "utility":
+          return "bg-purple-500";
+        case "dynamic":
+          return "bg-blue-500";
+        default:
+          return "bg-green-500";
+      }
+    } else {
+      switch (type) {
+        case "utility":
+          return "border-purple-500";
+        case "dynamic":
+          return "border-blue-500";
+        default:
+          return "border-green-500";
+      }
+    }
+  }
   return (
     <main className="flex min-h-[calc(100vh_-_theme(spacing.16))] flex-1 flex-col gap-4 bg-slate-100/40 p-4 pb-16 dark:bg-transparent sm:pb-0 md:gap-8 md:p-10 print:mt-0 print:bg-white">
       <div className="mx-auto w-full max-w-6xl">
@@ -109,13 +142,51 @@ export default function ViewTemplatePage({
                             text={step.systemPrompt || t("none")}
                           />
                         </div>
-                        <div className="my-2 flex items-center space-x-2">
-                          <Checkbox
-                            disabled
-                            checked={step.hide || false}
-                            id="hideChk"
-                          />
-                          <label htmlFor="hideChk">{t("hide-content")}</label>
+                        <div className="my-2 space-y-2">
+                          <h4>{t("type-gen")}</h4>
+                          <TooltipProvider delayDuration={0}>
+                            <Tooltip>
+                              <TooltipTrigger className="cursor-auto select-text">
+                                <span
+                                  className={`inline-block select-none rounded-full border px-2 font-bold ${getTypeColor(step.type ?? "dynamic")}`}
+                                >
+                                  <span
+                                    className={`mr-2 inline-block size-3 rounded-full ${getTypeColor(step.type ?? "dynamic", true)}`}
+                                  />
+                                  {t(step.type ?? "dynamic")}
+                                </span>
+                              </TooltipTrigger>
+                              <TooltipContent className="max-w-[350px] p-2">
+                                <p className="flex items-center font-bold">
+                                  <span
+                                    className={`mr-1 inline-block size-3 rounded-full ${getTypeColor("dynamic", true)}`}
+                                  />
+                                  {t("dynamic")}
+                                </p>
+                                <p className="text-muted-foreground">
+                                  {t("dynamic-desc")}
+                                </p>
+                                <p className="flex items-center font-bold">
+                                  <span
+                                    className={`mr-1 inline-block size-3 rounded-full ${getTypeColor("static", true)}`}
+                                  />
+                                  {t("static")}
+                                </p>
+                                <p className="text-muted-foreground">
+                                  {t("static-desc")}
+                                </p>
+                                <p className="flex items-center font-bold">
+                                  <span
+                                    className={`mr-1 inline-block size-3 rounded-full ${getTypeColor("utility", true)}`}
+                                  />
+                                  {t("utility")}
+                                </p>
+                                <p className="text-muted-foreground">
+                                  {t("utility-desc")}
+                                </p>
+                              </TooltipContent>
+                            </Tooltip>
+                          </TooltipProvider>
                         </div>
                       </div>
                     </DialogContent>

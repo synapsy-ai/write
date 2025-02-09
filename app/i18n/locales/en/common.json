@@ -377,5 +377,18 @@
   "cgv-desc": "Find out more about our general terms and conditions of sale",
   "prompt-var-missing": "The [[PROMPT]] variable is missing. The prompt provided by the user will not be provided to the model.",
   "filter": "Filter",
-  "filter-desc": "Select format categories to display."
+  "filter-desc": "Select format categories to display.",
+  "reset-data": "Reset data",
+  "reset-data-desc": "This will reset all your data and settings. Are you sure?",
+  "ai-providers": "AI Providers",
+  "duplicate": "Duplicate",
+  "select-new-name": "Select a new name",
+  "copy-title": "Copy",
+  "dynamic": "Dynamic",
+  "dynamic-desc": "Dynamic generations are generated in real-time.",
+  "static": "Static",
+  "static-desc": "Static generations are generated in a single request.",
+  "utility": "Utility",
+  "utility-desc": "Utility generations are generated statically and do not appear in the final generation.",
+  "type-gen": "Type of generation"
 }

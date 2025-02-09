@@ -3,6 +3,9 @@ import { Check } from "lucide-react";
 import parse, { HTMLReactParserOptions, Element } from "html-react-parser";
 import { OutlineItem } from "@/lib/formats";
 import { FontType } from "@/lib/settings";
+import { defaultExtensions } from "@/lib/editor-extensions";
+import { generateJSON } from "@tiptap/html";
+import TailwindEditor from "./tailwind-editor";
 
 export default function ResultDisplayer(props: {
   res: string;
@@ -120,30 +123,55 @@ export default function ResultDisplayer(props: {
       }
     default:
       return (
-        <p
-          className={`${props.no_padding ? "" : "p-4"} ${props.font && props.font !== "default" ? "font-" + props.font : ""} print:text-black`}
-          id="contentp"
-        >
-          {parse(
-            props.res
-              .replaceAll("<body>", "")
-              .replaceAll("</body>", "")
-              .replaceAll("<html>", "")
-              .replaceAll("</html>", "")
-              .replaceAll("<!DOCTYPE html>", "")
-              .replaceAll("\n\n", "<br>")
-              .replaceAll("\n\n\n", "\n")
-              .replaceAll("\n    \n", "<br>")
-              .replaceAll("\n", "<br>")
-              .replaceAll("```html", "")
-              .replaceAll("```", "")
-              .replaceAll("<br><br>", ""),
-            options,
+        <>
+          {props.is_generating ? (
+            <p
+              className={`${props.no_padding ? "" : "p-4"} ${props.font && props.font !== "default" ? "font-" + props.font : ""} print:text-black`}
+              id="contentp"
+            >
+              {parse(
+                props.res
+                  .replaceAll("<body>", "")
+                  .replaceAll("</body>", "")
+                  .replaceAll("<html>", "")
+                  .replaceAll("</html>", "")
+                  .replaceAll("<!DOCTYPE html>", "")
+                  .replaceAll("\n\n", "<br>")
+                  .replaceAll("\n\n\n", "\n")
+                  .replaceAll("\n    \n", "<br>")
+                  .replaceAll("\n", "<br>")
+                  .replaceAll("```html", "")
+                  .replaceAll("```", "")
+                  .replaceAll("<br><br>", ""),
+              )}
+              <span className="inline-block h-[14px] w-[7px] animate-pulse self-baseline bg-black duration-500 dark:bg-white"></span>
+            </p>
+          ) : (
+            <TailwindEditor
+              lng={"en"}
+              id={-1}
+              content={generateJSON(
+                props.res
+                  .replaceAll("<body>", "")
+                  .replaceAll("</body>", "")
+                  .replaceAll("<html>", "")
+                  .replaceAll("</html>", "")
+                  .replaceAll("<!DOCTYPE html>", "")
+                  .replaceAll("\n\n", "<br>")
+                  .replaceAll("\n\n\n", "\n")
+                  .replaceAll("\n    \n", "<br>")
+                  .replaceAll("\n", "<br>")
+                  .replaceAll("```html", "")
+                  .replaceAll("```", "")
+                  .replaceAll("<br><br>", ""),
+                [...defaultExtensions],
+                {},
+              )}
+              enabled={false}
+              editorOnly={true}
+            />
           )}
-          {props.is_generating && (
-            <span className="inline-block h-[14px] w-[7px] animate-pulse self-baseline bg-black duration-500 dark:bg-white"></span>
-          )}
-        </p>
+        </>
       );
   }
 }

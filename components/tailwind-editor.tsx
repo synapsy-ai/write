@@ -24,8 +24,8 @@ import {
   Text,
   TextQuote,
 } from "lucide-react";
-import { SuggestionItem, handleCommandNavigation } from "novel/extensions";
-import { Command, renderItems } from "novel/extensions";
+import { SuggestionItem, handleCommandNavigation } from "novel";
+import { Command, renderItems } from "novel";
 import { defaultExtensions } from "@/lib/editor-extensions";
 import { NodeSelector } from "./selectors/node-selector";
 import { LinkSelector } from "./selectors/link-selector";
@@ -40,12 +40,15 @@ import {
 } from "./ui/tooltip";
 import { useTranslation } from "@/app/i18n/client";
 import { HistoryItem } from "@/lib/history";
-import { handleImageDrop, handleImagePaste } from "novel/plugins";
+import { handleImageDrop, handleImagePaste } from "novel";
 import { uploadFn } from "@/lib/image-upload";
+import { MathSelector } from "./selectors/math-selector";
 interface EditorProps {
   content: JSONContent;
   lng: string;
   id: number;
+  enabled?: boolean;
+  editorOnly?: boolean;
 }
 
 export default function TailwindEditor(props: EditorProps) {
@@ -70,21 +73,26 @@ export default function TailwindEditor(props: EditorProps) {
   }
   return (
     <div className="space-y-2">
-      <div className="mx-2 flex rounded-md border sm:mx-0 sm:rounded-lg">
-        <TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger>
-              <Button onClick={saveContent} variant="ghost">
-                <Save size={15} />
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent>{t("save")}</TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
-      </div>
+      {props.editorOnly ? (
+        <></>
+      ) : (
+        <div className="mx-2 flex rounded-md border sm:mx-0 sm:rounded-lg">
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger>
+                <Button onClick={saveContent} variant="ghost">
+                  <Save size={15} />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>{t("save")}</TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        </div>
+      )}
       <EditorRoot>
         <EditorContent
-          className="relative min-h-[500px] w-full max-w-screen-lg border-muted bg-background sm:mb-[calc(20vh)] sm:rounded-lg sm:border sm:shadow-lg"
+          editable={props.enabled ?? true}
+          className={`relative w-full max-w-screen-lg ${!props.editorOnly && "min-h-[500px] border bg-background sm:mb-[calc(20vh)]"} sm:rounded-lg`}
           extensions={extensions}
           editorProps={{
             handleDOMEvents: {
@@ -95,7 +103,7 @@ export default function TailwindEditor(props: EditorProps) {
             handleDrop: (view, event, _slice, moved) =>
               handleImageDrop(view, event, moved, uploadFn),
             attributes: {
-              class: `prose-lg prose-stone dark:prose-invert prose-headings:font-title font-default focus:outline-none max-w-full`,
+              class: `prose-lg prose-stone dark:prose-invert prose-headings:font-title font-default focus:outline-none max-w-full `,
             },
           }}
           initialContent={content}
@@ -114,7 +122,7 @@ export default function TailwindEditor(props: EditorProps) {
                 <EditorCommandItem
                   value={item.title}
                   onCommand={(val) => item.command?.(val)}
-                  className={`grid w-full grid-cols-[auto,1fr] items-center space-x-2 rounded-md px-2 py-1 text-left text-sm hover:bg-accent aria-selected:bg-accent `}
+                  className={`grid w-full grid-cols-[auto,1fr] items-center space-x-2 rounded-md px-2 py-1 text-left text-sm hover:bg-accent aria-selected:bg-accent`}
                   key={item.title}
                 >
                   <div className="flex size-10 items-center justify-center rounded-md border border-muted bg-background">
@@ -141,6 +149,7 @@ export default function TailwindEditor(props: EditorProps) {
               open={openNode}
               onOpenChange={setOpenNode}
             />
+            <MathSelector />
             <LinkSelector
               lng={props.lng}
               open={openLink}

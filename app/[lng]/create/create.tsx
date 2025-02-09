@@ -14,7 +14,12 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import { Settings } from "@/lib/settings";
-import { getModels, sendToGpt, sendToGptCustom } from "@/lib/ai-completions";
+import {
+  getModels,
+  getStaticAiGeneration,
+  getDynamicAiGeneration,
+  getDynamicAiGenerationCustom,
+} from "@/lib/ai-completions";
 import { addToHistory } from "@/lib/history";
 import {
   Sheet,
@@ -76,12 +81,11 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { getTemplates, Recipe } from "@/lib/recipe";
+import { getTemplates, migrateRecipes, Recipe } from "@/lib/recipe";
 import { getPhiloAnalysisRecipe } from "@/lib/recipes/complex-philo-analysis";
 import { getComplexEssayGlobalRecipe } from "@/lib/recipes/complex-essay-global";
 import { getComplexEssayRecipe } from "@/lib/recipes/complex-essay-literrature";
 import { getComplexEssayPhiloRecipe } from "@/lib/recipes/complex-essay-philo";
-import { createClient } from "@/utils/supabase/client";
 import ModelSelector from "@/components/model-selector";
 import { getModelProvider, ModelList } from "@/lib/models";
 import updateQuotas from "@/utils/update-quotas";
@@ -116,7 +120,13 @@ export default function Create(props: Props) {
     s = JSON.parse(localStorage.getItem("synapsy_settings") ?? "{}");
     s.aiModels ??= {
       openAiModels: ["gpt-4o-mini", "gpt-3.5-turbo"],
-      mistralModels: [],
+      mistralModels: [
+        "mistral-large-latest",
+        "mistral-medium",
+        "mistral-small",
+        "codestral-latest",
+        "codestral-mamba-latest",
+      ],
     };
     localStorage.setItem("synapsy_settings", JSON.stringify(s));
   }
@@ -202,7 +212,7 @@ export default function Create(props: Props) {
     setErrorVis(false);
     setProgressBarVis(false);
     setIsGen(true);
-    let r = await sendToGpt(
+    let r = await getDynamicAiGeneration(
       prompt + getVariableString(variables),
       apiKey,
       type,
@@ -241,7 +251,7 @@ export default function Create(props: Props) {
     setErrorVis(false);
     setProgressBarVis(false);
     setIsGen(true);
-    let r = await sendToGpt(
+    let r = await getDynamicAiGeneration(
       textToAnalyse + "\n" + prompt + getVariableString(variables),
       apiKey,
       type,
@@ -317,9 +327,10 @@ export default function Create(props: Props) {
   }
 
   async function executeRecipe(recipe: Recipe) {
+    migrateRecipes(getTemplates());
     setInProgress(true);
     setErrorVis(false);
-    setIsGen(false);
+    setIsGen(true);
     setComplexSectionVis(true);
 
     const context: { [key: string]: string } = {};
@@ -341,22 +352,39 @@ export default function Create(props: Props) {
           context[Object.keys(context)[j]],
         );
       }
-      if (!step.hide) setInProgress(false);
-      const result = await sendToGptCustom(
-        step.systemPrompt ?? recipe.systemPrompt,
-        step.userPrompt,
-        apiKey,
-        model,
-        {
-          temp: temp,
-          presP: presP,
-          topP: topp,
-          freqP: freqP,
-        },
-        final,
-        { setContent: step.hide ? () => {} : setRes },
-        getModelProvider(model, avModels),
-      );
+      if (!step.hide || step.type !== "utility") setInProgress(false);
+      let result;
+      if (step.type === "utility" || step.type === "static" || step.hide) {
+        result = await getStaticAiGeneration(
+          step.systemPrompt ?? recipe.systemPrompt,
+          step.userPrompt,
+          apiKey,
+          model,
+          {
+            temp: temp,
+            presP: presP,
+            topP: topp,
+            freqP: freqP,
+          },
+          getModelProvider(model, avModels),
+        );
+      } else {
+        result = await getDynamicAiGenerationCustom(
+          step.systemPrompt ?? recipe.systemPrompt,
+          step.userPrompt,
+          apiKey,
+          model,
+          {
+            temp: temp,
+            presP: presP,
+            topP: topp,
+            freqP: freqP,
+          },
+          final,
+          { setContent: step.hide ? () => {} : setRes },
+          getModelProvider(model, avModels),
+        );
+      }
 
       if (result instanceof OpenAI.APIError) {
         setErrorMsg(result);
@@ -364,7 +392,7 @@ export default function Create(props: Props) {
         setInProgress(false);
         return;
       }
-      if (!step.hide) final += result;
+      if (!step.hide && step.type !== "utility") final += result;
 
       // Store the result in the context
       if (step.outputVar) context[step.outputVar] = result;
@@ -685,21 +713,12 @@ export default function Create(props: Props) {
                     <ModelSelector
                       placeholder={t("model")}
                       avModels={avModels}
+                      premium={hasGpt4Access()}
                       model={model}
                       setModel={setModel}
+                      lng={lng}
                     />
-                    <TooltipProvider delayDuration={0}>
-                      <Tooltip>
-                        <TooltipTrigger>
-                          <Button variant="outline" onClick={getMs}>
-                            <RefreshCcw height={14} />
-                          </Button>
-                        </TooltipTrigger>
-                        <TooltipContent>
-                          <p>{t("refresh-models")}</p>
-                        </TooltipContent>
-                      </Tooltip>
-                    </TooltipProvider>
+
                     <Sheet>
                       <TooltipProvider delayDuration={0}>
                         <Tooltip>

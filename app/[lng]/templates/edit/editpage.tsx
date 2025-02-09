@@ -15,12 +15,12 @@ import {
   ArrowLeft,
   ArrowUpIcon,
   Edit,
+  HelpCircle,
   Info,
   Plus,
   Save,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
 import { HighlightedVariable } from "@/components/variable-highlight";
 import { Input } from "@/components/ui/input";
 import { use, useState } from "react";
@@ -28,6 +28,20 @@ import { Textarea } from "@/components/ui/textarea";
 import { Close } from "@radix-ui/react-dialog";
 import Link from "next/link";
 import { DefaultLanguageParams } from "@/lib/languages";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { StepType } from "@/lib/recipe";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 export default function EditTemplatePage({
   params,
@@ -218,6 +232,9 @@ function EditDialog(props: {
   const [userPrompt, setUserPrompt] = useState(props.step.userPrompt);
   const [systemPrompt, setSystemPrompt] = useState(props.step.systemPrompt);
   const [hide, setHide] = useState(props.step.hide);
+  const [type, setType] = useState<StepType>(
+    props.step.type ?? (hide ? "utility" : "dynamic"),
+  );
   const recipes = getTemplates();
 
   function applyEdit() {
@@ -232,7 +249,7 @@ function EditDialog(props: {
             outputVar: outputVar,
             userPrompt: userPrompt,
             systemPrompt: systemPrompt,
-            hide: hide,
+            type: type,
           },
         ],
       };
@@ -251,7 +268,7 @@ function EditDialog(props: {
       outputVar: outputVar,
       userPrompt: userPrompt,
       systemPrompt: systemPrompt,
-      hide: hide,
+      type: type,
     };
     props.setRecipe(r);
     recipes[props.id] = r;
@@ -270,6 +287,28 @@ function EditDialog(props: {
     recipes[props.id] = r;
     saveTemplates(recipes);
   }
+
+  function getTypeColor(type: StepType, bg: boolean = false) {
+    if (bg) {
+      switch (type) {
+        case "utility":
+          return "bg-purple-500";
+        case "dynamic":
+          return "bg-blue-500";
+        default:
+          return "bg-green-500";
+      }
+    } else {
+      switch (type) {
+        case "utility":
+          return "border-purple-500";
+        case "dynamic":
+          return "border-blue-500";
+        default:
+          return "border-green-500";
+      }
+    }
+  }
   return (
     <Dialog>
       <DialogTrigger
@@ -280,6 +319,7 @@ function EditDialog(props: {
           setSystemPrompt("");
           setUserPrompt("");
           setHide(undefined);
+          setType("dynamic");
         }}
       >
         {props.isEdit ? (
@@ -329,13 +369,76 @@ function EditDialog(props: {
               onChange={(e) => setSystemPrompt(e.target.value)}
             />
           </div>
-          <div className="my-2 flex items-center space-x-2">
-            <Checkbox
-              onCheckedChange={(c) => setHide(c === true)}
-              checked={hide || false}
-              id="hideChk"
-            />
-            <label htmlFor="hideChk">{t("hide-content")}</label>
+          <div className="my-2 space-y-2">
+            <div className="flex space-x-2">
+              <h4>{t("type-gen")}</h4>
+              <TooltipProvider delayDuration={0}>
+                <Tooltip>
+                  <TooltipTrigger className="cursor-auto select-text">
+                    <HelpCircle size={14} />
+                  </TooltipTrigger>
+                  <TooltipContent className="max-w-[350px] p-2">
+                    <p className="flex items-center font-bold">
+                      <span
+                        className={`mr-1 inline-block size-3 rounded-full ${getTypeColor("dynamic", true)}`}
+                      />
+                      {t("dynamic")}
+                    </p>
+                    <p className="text-muted-foreground">{t("dynamic-desc")}</p>
+                    <p className="flex items-center font-bold">
+                      <span
+                        className={`mr-1 inline-block size-3 rounded-full ${getTypeColor("static", true)}`}
+                      />
+                      {t("static")}
+                    </p>
+                    <p className="text-muted-foreground">{t("static-desc")}</p>
+                    <p className="flex items-center font-bold">
+                      <span
+                        className={`mr-1 inline-block size-3 rounded-full ${getTypeColor("utility", true)}`}
+                      />
+                      {t("utility")}
+                    </p>
+                    <p className="text-muted-foreground">{t("utility-desc")}</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            </div>
+            <Select
+              onValueChange={(val) => {
+                setType(val as StepType);
+              }}
+              defaultValue={type || (hide ? "utility" : "dynamic")}
+            >
+              <SelectTrigger className="w-[180px]">
+                <SelectValue placeholder={t("type-gen")} />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="dynamic" className="flex items-center gap-2">
+                  <p>
+                    <span
+                      className={`mr-2 inline-block size-3 rounded-full ${getTypeColor("dynamic", true)}`}
+                    />
+                    {t("dynamic")}
+                  </p>
+                </SelectItem>
+                <SelectItem value="static">
+                  <p>
+                    <span
+                      className={`mr-2 inline-block size-3 rounded-full ${getTypeColor("static", true)}`}
+                    />
+                    {t("static")}
+                  </p>
+                </SelectItem>
+                <SelectItem value="utility">
+                  <p>
+                    <span
+                      className={`mr-2 inline-block size-3 rounded-full ${getTypeColor("utility", true)}`}
+                    />
+                    {t("utility")}
+                  </p>
+                </SelectItem>
+              </SelectContent>
+            </Select>
           </div>
           <div className="flex justify-center space-x-2">
             <Close>

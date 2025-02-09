@@ -10,6 +10,7 @@ import MobileNavBar from "@/components/mobile-nav";
 import { Toaster } from "@/components/ui/toaster";
 import { Suspense, use } from "react";
 import { DefaultLanguageParams } from "@/lib/languages";
+import LoadingUI from "@/components/loading";
 
 const manrope = Manrope({ subsets: ["latin"] });
 export async function generateStaticParams() {
@@ -93,7 +94,7 @@ export default function RootLayout({
       >
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <NavBar lng={lng} />
-          {children}
+          <Suspense fallback={<LoadingUI />}>{children}</Suspense>
           <MobileNavBar lng={lng} />
         </ThemeProvider>
         <Suspense>

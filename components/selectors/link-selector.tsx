@@ -2,13 +2,7 @@
 import { cn } from "@/lib/utils";
 import { useEditor } from "novel";
 import { Check, Trash } from "lucide-react";
-import {
-  type Dispatch,
-  type FC,
-  type SetStateAction,
-  useEffect,
-  useRef,
-} from "react";
+import { useEffect, useRef } from "react";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { Button } from "../ui/button";
 import { useTranslation } from "@/app/i18n/client";
@@ -75,7 +69,7 @@ export const LinkSelector = ({
             const url = getUrlFromString(input.value);
             url && editor.chain().focus().setLink({ href: url }).run();
           }}
-          className="flex  p-1 "
+          className="flex p-1"
         >
           <input
             ref={inputRef}

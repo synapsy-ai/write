@@ -83,7 +83,7 @@ export function getModelString(id: string): string {
   return modelStrings[id] || id;
 }
 
-export function getModelProvider(id: string, models: ModelList): AiProviders {
+export function getModelProvider(id: string, models: ModelList): AiProvider {
   if (models.mistralModels.includes(id)) return "mistral";
   return "openAI";
 }
@@ -93,4 +93,4 @@ export interface ModelList {
   mistralModels: string[];
 }
 
-export type AiProviders = "mistral" | "openAI";
+export type AiProvider = "mistral" | "openAI";

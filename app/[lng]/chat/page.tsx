@@ -1,5 +1,5 @@
 import Chat from "./chat";
-import React from "react";
+import React, { Suspense } from "react";
 import type { Metadata } from "next";
 import {
   getUser,
@@ -9,6 +9,7 @@ import {
 } from "@/utils/supabase/queries";
 import { createClient } from "@/utils/supabase/server";
 import { DefaultLanguageParams } from "@/lib/languages";
+import LoadingUI from "@/components/loading";
 
 export const metadata: Metadata = {
   title: "Chat",
@@ -63,6 +64,8 @@ export default async function ChatPage({
   }
   const q = await getQuotas();
   return (
-    <Chat subscriptions={subscriptions} user={user} lng={lng} quotas={q} />
+    <Suspense fallback={<LoadingUI />}>
+      <Chat subscriptions={subscriptions} user={user} lng={lng} quotas={q} />
+    </Suspense>
   );
 }

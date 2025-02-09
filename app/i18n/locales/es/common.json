@@ -377,5 +377,18 @@
   "cgv-desc": "Descubre nuestras condiciones generales de venta",
   "prompt-var-missing": "Falta la variable [[PROMPT]]. El prompt proporcionado por el usuario no será proporcionado al modelo.",
   "filtro": "Filtro",
-  "filter-desc": "Seleccionar categorías de formato para mostrar."
+  "filter-desc": "Seleccionar categorías de formato para mostrar.",
+  "reset-data": "Restablecer datos",
+  "reset-data-desc": "Esto restablecerá todos tus datos y configuraciones. ¿Está seguro?",
+  "ai-providers": "Proveedores de IA",
+  "duplicate": "Duplicar",
+  "select-new-name": "Seleccione un nuevo nombre",
+  "copy-title": "Copia",
+  "dynamic": "Dinámico",
+  "dynamic-desc": "Las generaciones dinámicas se generan en tiempo real.",
+  "static": "Estático",
+  "static-desc": "Las generaciones estáticas se generan en una sola solicitud.",
+  "utility": "Utilidad",
+  "utility-desc": "Las generaciones de utilidad se generan estáticamente y no aparecen en la generación final.",
+  "type-gen": "Tipo de generación"
 }

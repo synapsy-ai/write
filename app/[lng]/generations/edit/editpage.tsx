@@ -38,7 +38,7 @@ export default function GenerationEditPage({
         <h1 className="text-3xl font-semibold">{t("edit")}</h1>
       </header>
 
-      <section className="mx-auto grid w-full max-w-6xl items-start gap-6 md:grid-cols-[1fr_300px] lg:grid-cols-[1fr_350px]">
+      <section className="edit mx-auto grid w-full max-w-6xl items-start gap-6 md:grid-cols-[1fr_300px] lg:grid-cols-[1fr_350px]">
         <TailwindEditor id={+id} lng={lng} content={c} />
         <div className="grid gap-6 print:hidden">
           <Card>
