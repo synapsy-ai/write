@@ -120,7 +120,13 @@ export default function Create(props: Props) {
     s = JSON.parse(localStorage.getItem("synapsy_settings") ?? "{}");
     s.aiModels ??= {
       openAiModels: ["gpt-4o-mini", "gpt-3.5-turbo"],
-      mistralModels: [],
+      mistralModels: [
+        "mistral-large-latest",
+        "mistral-medium",
+        "mistral-small",
+        "codestral-latest",
+        "codestral-mamba-latest",
+      ],
     };
     localStorage.setItem("synapsy_settings", JSON.stringify(s));
   }
@@ -324,7 +330,7 @@ export default function Create(props: Props) {
     migrateRecipes(getTemplates());
     setInProgress(true);
     setErrorVis(false);
-    setIsGen(false);
+    setIsGen(true);
     setComplexSectionVis(true);
 
     const context: { [key: string]: string } = {};

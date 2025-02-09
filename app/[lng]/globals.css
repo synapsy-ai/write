@@ -135,6 +135,9 @@ h3 {
   p {
     font-size: 1rem;
   }
+  br {
+    display: none;
+  }
 }
 
 /* Print view */
@@ -162,6 +165,17 @@ h3 {
     p {
       font-size: 1rem;
     }
+
+    padding: 0;
+  }
+
+  table {
+    border: 1px solid black;
+    color: black;
+  }
+  table th {
+    color: black;
+    border-bottom: 1px solid black;
   }
 }
 
@@ -236,17 +250,6 @@ html.dark table td {
 }
 html.dark table td:not(:first-child) {
   border-left: 1px solid #334155;
-}
-
-@media print {
-  table {
-    border: 1px solid black;
-    color: black;
-  }
-  table th {
-    color: black;
-    border-bottom: 1px solid black;
-  }
 }
 
 table.features {

@@ -94,7 +94,13 @@ export default function SettingsPage({
     s = {
       aiModels: {
         openAiModels: ["gpt-4o-mini", "gpt-3.5-turbo"],
-        mistralModels: [],
+        mistralModels: [
+          "mistral-large-latest",
+          "mistral-medium",
+          "mistral-small",
+          "codestral-latest",
+          "codestral-mamba-latest",
+        ],
       },
       gen_font: "default",
       key: "",
