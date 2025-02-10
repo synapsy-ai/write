@@ -46,11 +46,12 @@ export default function GenerationViewPage({
   s = JSON.parse(localStorage.getItem("synapsy_settings") ?? "{}");
 
   const [nbTokens, setNbTokens] = useState(0);
-  const [nbWords, setNbWords] = useState(el.content.split(" ").length);
-  const [nbChars, setNbChars] = useState(el.content.length);
+  const [nbWords] = useState(el.content.split(" ").length);
+  const [nbChars] = useState(el.content.length);
   const [variables, setVariables] = useState<Variable[]>([]);
   const [price, setPrice] = useState("$0");
   const [content, setContent] = useState(el.content);
+  const [toggle, setToggle] = useState(false);
   useEffect(() => {
     try {
       if (typeof window !== "undefined") {
@@ -88,8 +89,8 @@ export default function GenerationViewPage({
       c = c.replaceAll(`[${variables[i].name}]`, variables[i].value);
       console.log(`[${variables[i].name}]`);
     }
-    console.log(c);
     setContent(c);
+    setToggle(!toggle);
   }
   return (
     <main className="flex min-h-[calc(100vh_-_theme(spacing.16))] flex-1 flex-col gap-4 bg-slate-100/40 p-4 pb-16 dark:bg-transparent sm:pb-0 md:gap-8 md:p-10 print:mt-0 print:bg-white">
@@ -138,12 +139,25 @@ export default function GenerationViewPage({
           className="edit max-w-[800px] rounded-md border bg-white p-0 text-justify shadow-sm dark:bg-slate-900 dark:bg-slate-900/50 print:border-0 print:text-black print:shadow-none"
           id="ct"
         >
-          <ResultDisplayer
-            is_generating={false}
-            res={content}
-            type={el.template}
-            font={s.gen_font ?? "default"}
-          />
+          {toggle ? (
+            <ResultDisplayer
+              is_generating={false}
+              res={content}
+              type={el.template}
+              lng={lng}
+              font={s.gen_font ?? "default"}
+            />
+          ) : (
+            <div>
+              <ResultDisplayer
+                is_generating={false}
+                res={content}
+                type={el.template}
+                lng={lng}
+                font={s.gen_font ?? "default"}
+              />
+            </div>
+          )}
         </div>
 
         <div className="grid gap-6 print:hidden">

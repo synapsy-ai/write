@@ -60,7 +60,6 @@ export default function TailwindEditor(props: EditorProps) {
   const [openColor, setOpenColor] = useState<boolean>(false);
   const [htmlContent, setHtmlContent] = useState("");
   const { t } = useTranslation(props.lng, "common");
-
   function saveContent() {
     if (typeof window !== "undefined") {
       let history: HistoryItem[] = [];
@@ -71,6 +70,7 @@ export default function TailwindEditor(props: EditorProps) {
       localStorage.setItem("synapsy_write_history", JSON.stringify(history));
     }
   }
+
   return (
     <div className="space-y-2">
       {props.editorOnly ? (

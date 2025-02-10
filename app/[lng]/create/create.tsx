@@ -657,6 +657,7 @@ export default function Create(props: Props) {
                   <ResultDisplayer
                     font={s.gen_font ?? "default"}
                     is_generating={isGen}
+                    lng={lng}
                     res={res}
                     type={type}
                   />
