@@ -6,6 +6,8 @@ import { FontType } from "@/lib/settings";
 import { defaultExtensions } from "@/lib/editor-extensions";
 import { generateJSON } from "@tiptap/html";
 import TailwindEditor from "./tailwind-editor";
+import { Language } from "@/lib/languages";
+import { useState } from "react";
 
 export default function ResultDisplayer(props: {
   res: string;
@@ -13,7 +15,9 @@ export default function ResultDisplayer(props: {
   is_generating: boolean;
   no_padding?: boolean;
   font?: FontType;
+  lng: Language;
 }) {
+  const [content] = useState(props.res);
   const options: HTMLReactParserOptions = {
     replace: (domNode) => {
       if (domNode instanceof Element && domNode.tagName === "body") {
@@ -21,13 +25,14 @@ export default function ResultDisplayer(props: {
       }
     },
   };
+
   if (
     (props.is_generating && props.type === "ideas") ||
     (props.is_generating && props.type === "ph_visual_outline")
   ) {
     return (
       <p id="contentp" className={props.no_padding ? "" : "p-4"}>
-        {props.res}
+        {content}
         <span className="inline-block h-[14px] w-[7px] animate-pulse self-baseline bg-black duration-500 dark:bg-white"></span>
       </p>
     );
@@ -35,7 +40,7 @@ export default function ResultDisplayer(props: {
   switch (props.type) {
     case "ideas":
       try {
-        let json: string[] = JSON.parse(props.res);
+        let json: string[] = JSON.parse(content);
         return (
           <div id="contentp">
             {json.map((el, i) => (
@@ -52,7 +57,7 @@ export default function ResultDisplayer(props: {
         return (
           <div id="contentp">
             {parse(
-              props.res.replaceAll("<body>", "").replaceAll("</body>", ""),
+              content.replaceAll("<body>", "").replaceAll("</body>", ""),
               options,
             )}
           </div>
@@ -65,7 +70,7 @@ export default function ResultDisplayer(props: {
           id="contentp"
         >
           {parse(
-            props.res
+            content
               .replaceAll("<body>", "")
               .replaceAll("</body>", "")
               .replaceAll("<html>", "")
@@ -80,7 +85,7 @@ export default function ResultDisplayer(props: {
       );
     case "ph_visual_outline":
       try {
-        const outline: OutlineItem[] = JSON.parse(props.res);
+        const outline: OutlineItem[] = JSON.parse(content);
         return (
           <div>
             {outline.map((el, i) => (
@@ -105,7 +110,7 @@ export default function ResultDisplayer(props: {
         return (
           <p className="p-4 print:text-black" id="contentp">
             {parse(
-              props.res
+              content
                 .replaceAll("<body>", "")
                 .replaceAll("</body>", "")
                 .replaceAll("<html>", "")
@@ -130,7 +135,7 @@ export default function ResultDisplayer(props: {
               id="contentp"
             >
               {parse(
-                props.res
+                content
                   .replaceAll("<body>", "")
                   .replaceAll("</body>", "")
                   .replaceAll("<html>", "")
@@ -148,10 +153,10 @@ export default function ResultDisplayer(props: {
             </p>
           ) : (
             <TailwindEditor
-              lng={"en"}
+              lng={props.lng}
               id={-1}
               content={generateJSON(
-                props.res
+                content
                   .replaceAll("<body>", "")
                   .replaceAll("</body>", "")
                   .replaceAll("<html>", "")
@@ -164,11 +169,10 @@ export default function ResultDisplayer(props: {
                   .replaceAll("```html", "")
                   .replaceAll("```", "")
                   .replaceAll("<br><br>", ""),
-                [...defaultExtensions],
-                {},
+                defaultExtensions,
               )}
               enabled={false}
-              editorOnly={true}
+              editorOnly
             />
           )}
         </>
