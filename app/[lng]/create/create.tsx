@@ -11,7 +11,7 @@ import {
   Settings as SettingsLogo,
   Sparkles,
 } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Settings } from "@/lib/settings";
 import {
   getStaticAiGeneration,
@@ -173,8 +173,7 @@ export default function Create(props: Props) {
   function getAvailableModels(
     availableModels: ModelList | undefined,
   ): ModelList {
-    if (!availableModels)
-      return { openAiModels: [], mistralModels: [], anthropicModels: [] };
+    if (!availableModels) return defaultModels() as ModelList;
     let models: ModelList = {
       openAiModels: [],
       mistralModels: [],
@@ -191,10 +190,21 @@ export default function Create(props: Props) {
         continue;
       models.openAiModels.push(availableModels.openAiModels[i]);
     }
+
     models.mistralModels = availableModels.mistralModels;
     models.anthropicModels = availableModels.anthropicModels;
     return models;
   }
+
+  useEffect(() => {
+    if (
+      s.aiModels &&
+      (!s.aiModels.anthropicModels || s.aiModels.anthropicModels.length === 0)
+    ) {
+      s.aiModels.anthropicModels = defaultModels().anthropicModels;
+      localStorage.setItem("synapsy_settings", JSON.stringify(s));
+    }
+  }, []);
 
   async function create() {
     setInProgress(false);
