@@ -204,7 +204,7 @@ export default function Create(props: Props) {
       s.aiModels.anthropicModels = defaultModels().anthropicModels;
       localStorage.setItem("synapsy_settings", JSON.stringify(s));
     }
-  }, []);
+  }, [defaultModels, s]);
 
   async function create() {
     setInProgress(false);
