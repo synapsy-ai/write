@@ -77,6 +77,16 @@ const modelStrings: { [key: string]: string } = {
   "ministral-8b-latest": "Ministral 8B (Latest)",
   "mistral-moderation-2411": "Mistral Moderation (2411)",
   "mistral-moderation-latest": "Mistral Moderation (Latest)",
+
+  // Anthropic Models
+  "claude-2.0": "Claude 2.0",
+  "claude-2.1": "Claude 2.1",
+  "claude-3-5-sonnet-20240620": "Claude 3.5 Sonnet (06/2024)",
+  "claude-3-5-sonnet-20241022": "Claude 3.5 Sonnet (10/2024)",
+  "claude-3-sonnet-20240229": "Claude 3 Sonnet (02/2024)",
+  "claude-3-opus-20240229": "Claude 3 Opus (02/2024)",
+  "claude-3-5-haiku-20241022": "Claude 3.5 Haiku (10/2024)",
+  "claude-3-haiku-20240307": "Claude 3 Haiku (03/2024)",
 };
 
 export function getModelString(id: string): string {
@@ -85,12 +95,14 @@ export function getModelString(id: string): string {
 
 export function getModelProvider(id: string, models: ModelList): AiProvider {
   if (models.mistralModels.includes(id)) return "mistral";
+  if (models.anthropicModels.includes(id)) return "anthropic";
   return "openAI";
 }
 
 export interface ModelList {
   openAiModels: string[];
   mistralModels: string[];
+  anthropicModels: string[];
 }
 
-export type AiProvider = "mistral" | "openAI";
+export type AiProvider = "mistral" | "openAI" | "anthropic";

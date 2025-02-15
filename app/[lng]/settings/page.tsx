@@ -69,6 +69,7 @@ export default function SettingsPage({
     s.aiModels ??= {
       openAiModels: ["gpt-4o-mini", "gpt-3.5-turbo"],
       mistralModels: [],
+      anthropicModels: [],
     };
     localStorage.setItem("synapsy_settings", JSON.stringify(s));
   }
@@ -76,6 +77,7 @@ export default function SettingsPage({
     s.aiModels ?? {
       openAiModels: ["gpt-4o-mini", "gpt-3.5-turbo"],
       mistralModels: [],
+      anthropicModels: [],
     },
   );
   const [modelQuery, setModelQuery] = useState("");
@@ -101,6 +103,7 @@ export default function SettingsPage({
           "codestral-latest",
           "codestral-mamba-latest",
         ],
+        anthropicModels: [],
       },
       gen_font: "default",
       key: "",
@@ -263,6 +266,7 @@ export default function SettingsPage({
                   <TabsList>
                     <TabsTrigger value="openAI">OpenAI</TabsTrigger>
                     <TabsTrigger value="mistral">Mistral</TabsTrigger>
+                    <TabsTrigger value="anthropic">Anthropic</TabsTrigger>
                   </TabsList>
                   <ScrollArea className="h-[200px]">
                     <TabsContent value="openAI">
@@ -293,6 +297,22 @@ export default function SettingsPage({
                             (s) => !s.toLowerCase().startsWith("pixtral"),
                           )
                           .filter((s) =>
+                            s.toLowerCase().includes(modelQuery.toLowerCase()),
+                          )
+                          .map((m, i) => (
+                            <p
+                              key={i}
+                              className="m-1 rounded-md border border-transparent p-2 hover:border-slate-300 hover:bg-slate-200/50 dark:hover:border-accent dark:hover:bg-slate-800/50"
+                            >
+                              {getModelString(m)}
+                            </p>
+                          ))}
+                      </div>
+                    </TabsContent>
+                    <TabsContent value="anthropic">
+                      <div>
+                        {models.anthropicModels
+                          ?.filter((s) =>
                             s.toLowerCase().includes(modelQuery.toLowerCase()),
                           )
                           .map((m, i) => (
