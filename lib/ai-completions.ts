@@ -19,6 +19,7 @@ const mistral = createMistral({
 
 const anthropic = createAnthropic({
   apiKey: process.env.ANTHROPIC_API_KEY,
+  headers: { "anthropic-dangerous-direct-browser-access": "true" },
 });
 
 export function getLanguageModel(
