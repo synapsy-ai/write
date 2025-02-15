@@ -30,7 +30,7 @@ export function getLanguageModel(
       return mistral(model);
     case "anthropic":
       return anthropic(model);
-    default:
+    case "openAI":
       return openai(model);
   }
 }
@@ -48,6 +48,7 @@ export async function getDynamicAiGeneration(
 ): Promise<any> {
   functions.setLoading(true);
   let loading = true;
+
   const chatCompletion = streamText({
     model: getLanguageModel(provider, model),
     system: getSystem(template, lng, tone),
