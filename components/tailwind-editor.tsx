@@ -43,6 +43,7 @@ import { HistoryItem } from "@/lib/history";
 import { handleImageDrop, handleImagePaste } from "novel";
 import { uploadFn } from "@/lib/image-upload";
 import { MathSelector } from "./selectors/math-selector";
+import { generateHTML } from "@tiptap/html";
 interface EditorProps {
   content: JSONContent;
   lng: string;
@@ -58,7 +59,9 @@ export default function TailwindEditor(props: EditorProps) {
   const [openNode, setOpenNode] = useState<boolean>(false);
   const [openLink, setOpenLink] = useState<boolean>(false);
   const [openColor, setOpenColor] = useState<boolean>(false);
-  const [htmlContent, setHtmlContent] = useState("");
+  const [htmlContent, setHtmlContent] = useState(
+    generateHTML(content, extensions),
+  );
   const { t } = useTranslation(props.lng, "common");
   function saveContent() {
     if (typeof window !== "undefined") {
