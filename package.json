@@ -11,7 +11,7 @@
   "dependencies": {
     "@ai-sdk/anthropic": "^1.1.8",
     "@ai-sdk/mistral": "^1.1.11",
-    "@ai-sdk/openai": "^1.1.11",
+    "@ai-sdk/openai": "^1.1.12",
     "@anthropic-ai/sdk": "^0.36.3",
     "@mistralai/mistralai": "^1.5.0",
     "@radix-ui/react-accordion": "^1.2.3",
@@ -70,7 +70,7 @@
     "vaul": "^1.1.2"
   },
   "devDependencies": {
-    "@tailwindcss/postcss": "^4.0.0",
+    "@tailwindcss/postcss": "^4.0.6",
     "@types/node": "latest",
     "@types/react": "latest",
     "@types/react-dom": "latest",
@@ -80,7 +80,7 @@
     "postcss": "latest",
     "prettier": "^3.5.1",
     "prettier-plugin-tailwindcss": "^0.6.11",
-    "tailwindcss": "^4.0.0",
+    "tailwindcss": "^4.0.6",
     "typescript": "latest"
   }
 }
