@@ -70,17 +70,17 @@
     "vaul": "^1.1.2"
   },
   "devDependencies": {
+    "@tailwindcss/postcss": "^4.0.0",
     "@types/node": "latest",
     "@types/react": "latest",
     "@types/react-dom": "latest",
     "@types/uuid": "^10.0.0",
-    "autoprefixer": "latest",
     "eslint": "latest",
     "eslint-config-next": "latest",
     "postcss": "latest",
     "prettier": "^3.5.1",
     "prettier-plugin-tailwindcss": "^0.6.11",
-    "tailwindcss": "latest",
+    "tailwindcss": "^4.0.0",
     "typescript": "latest"
   }
 }

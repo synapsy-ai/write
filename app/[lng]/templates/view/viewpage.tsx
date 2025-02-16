@@ -78,7 +78,7 @@ export default function ViewTemplatePage({
     }
   }
   return (
-    <main className="flex min-h-[calc(100vh_-_theme(spacing.16))] flex-1 flex-col gap-4 bg-slate-100/40 p-4 pb-16 dark:bg-transparent sm:pb-0 md:gap-8 md:p-10 print:mt-0 print:bg-white">
+    <main className="flex min-h-[calc(100vh-(--spacing(16)))] flex-1 flex-col gap-4 bg-slate-100/40 p-4 pb-16 dark:bg-transparent sm:pb-0 md:gap-8 md:p-10 print:mt-0 print:bg-white">
       <div className="mx-auto w-full max-w-6xl">
         <div className="mx-auto grid w-full justify-start gap-2 print:hidden">
           <h1 className="text-3xl font-semibold">{t("template-view")}</h1>
@@ -100,7 +100,7 @@ export default function ViewTemplatePage({
             <h3 className="text-lg font-semibold">{t("steps")}</h3>
             <div className="grid gap-4">
               {recipe?.steps.map((step, i) => (
-                <Card key={i} className="grid grid-cols-[1fr,auto] gap-2 p-4">
+                <Card key={i} className="grid grid-cols-[1fr_auto] gap-2 p-4">
                   <div className="flex flex-col gap-4">
                     <h4 className="font-medium">{t(step.name)}</h4>
                     <p className="text-sm text-muted-foreground">

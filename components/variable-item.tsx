@@ -21,7 +21,7 @@ export default function VariableItem(props: {
     setValue(props.item.value);
   }, [props.item, setName, setValue]);
   return (
-    <div className="m-2 grid grid-cols-[1fr,auto] items-center space-x-2 rounded-md border border-slate-200 p-2 dark:border-slate-800">
+    <div className="m-2 grid grid-cols-[1fr_auto] items-center space-x-2 rounded-md border border-slate-200 p-2 dark:border-slate-800">
       <div
         className={
           props.small

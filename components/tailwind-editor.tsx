@@ -95,7 +95,7 @@ export default function TailwindEditor(props: EditorProps) {
       <EditorRoot>
         <EditorContent
           editable={props.enabled ?? true}
-          className={`relative w-full max-w-screen-lg ${!props.editorOnly && "min-h-[500px] border bg-background sm:mb-[calc(20vh)]"} sm:rounded-lg`}
+          className={`relative w-full max-w-(--breakpoint-lg) ${!props.editorOnly && "min-h-[500px] border bg-background sm:mb-[calc(20vh)]"} sm:rounded-lg`}
           extensions={extensions}
           editorProps={{
             handleDOMEvents: {
@@ -106,7 +106,7 @@ export default function TailwindEditor(props: EditorProps) {
             handleDrop: (view, event, _slice, moved) =>
               handleImageDrop(view, event, moved, uploadFn),
             attributes: {
-              class: `prose-lg prose-stone dark:prose-invert prose-headings:font-title font-default focus:outline-none max-w-full `,
+              class: `prose-lg prose-stone dark:prose-invert prose-headings:font-title font-default focus:outline-hidden max-w-full `,
             },
           }}
           initialContent={content}
@@ -125,7 +125,7 @@ export default function TailwindEditor(props: EditorProps) {
                 <EditorCommandItem
                   value={item.title}
                   onCommand={(val) => item.command?.(val)}
-                  className={`grid w-full grid-cols-[auto,1fr] items-center space-x-2 rounded-md px-2 py-1 text-left text-sm hover:bg-accent aria-selected:bg-accent`}
+                  className={`grid w-full grid-cols-[auto_1fr] items-center space-x-2 rounded-md px-2 py-1 text-left text-sm hover:bg-accent aria-selected:bg-accent`}
                   key={item.title}
                 >
                   <div className="flex size-10 items-center justify-center rounded-md border border-muted bg-background">

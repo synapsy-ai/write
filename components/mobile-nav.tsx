@@ -46,7 +46,7 @@ export default function MobileNavBar(props: { lng: string }) {
         <div className="flex justify-center">
           <Dialog>
             <DialogTrigger>
-              <div className="group flex w-16 -translate-y-2 items-center justify-center rounded-full border border-violet-400 bg-gradient-to-r from-violet-500 to-indigo-500 p-5 shadow-md shadow-violet-500/50 hover:from-violet-500 hover:to-violet-500">
+              <div className="group flex w-16 -translate-y-2 items-center justify-center rounded-full border border-violet-400 bg-linear-to-r from-violet-500 to-indigo-500 p-5 shadow-md shadow-violet-500/50 hover:from-violet-500 hover:to-violet-500">
                 <Pen
                   className="transition-all ease-in-out group-hover:scale-125"
                   color="white"
@@ -61,7 +61,7 @@ export default function MobileNavBar(props: { lng: string }) {
                     <Close>
                       <button
                         onClick={() => push(`/${props.lng}/create`)}
-                        className="grid grid-cols-[auto,1fr] items-center space-x-2 p-2"
+                        className="grid grid-cols-[auto_1fr] items-center space-x-2 p-2"
                       >
                         <Lightbulb size={48} className="mx-2 h-16" />
                         <div className="text-left">
@@ -75,7 +75,7 @@ export default function MobileNavBar(props: { lng: string }) {
                     <Close>
                       <button
                         onClick={() => push(`/${props.lng}/chat`)}
-                        className="grid grid-cols-[auto,1fr] items-center space-x-2 p-2"
+                        className="grid grid-cols-[auto_1fr] items-center space-x-2 p-2"
                       >
                         <MessageCircleMore size={48} className="mx-2 h-16" />
                         <div className="text-left">

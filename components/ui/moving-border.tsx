@@ -32,7 +32,7 @@ export function BorderAnimation({
   return (
     <Component
       className={cn(
-        "relative overflow-hidden bg-transparent p-[1px] text-xl ",
+        "relative overflow-hidden bg-transparent p-[1px] text-xl",
         containerClassName,
       )}
       {...otherProps}
@@ -44,7 +44,7 @@ export function BorderAnimation({
         <MovingBorder duration={duration} rx="10%" ry="10%">
           <div
             className={cn(
-              "h-56 w-56 bg-[radial-gradient(var(--indigo-500)_40%,transparent_60%)] opacity-[0.8]",
+              "h-56 w-56 bg-[radial-gradient(var(--color-indigo-500)_40%,transparent_60%)] opacity-[0.8]",
               borderClassName,
             )}
           />

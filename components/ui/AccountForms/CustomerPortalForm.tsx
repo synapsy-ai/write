@@ -69,7 +69,7 @@ export default function CustomerPortalForm({ subscriptions, lng }: Props) {
                   <h3 className="text-xl font-bold">
                     {subscription?.prices?.products?.name}
                   </h3>
-                  <div className="grid grid-cols-[auto,1fr] items-center gap-x-1">
+                  <div className="grid grid-cols-[auto_1fr] items-center gap-x-1">
                     <Currency size={14} />
                     <p>{`${new Intl.NumberFormat(
                       lng === "fr" ? "fr-FR" : "en-US",

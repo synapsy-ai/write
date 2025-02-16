@@ -23,12 +23,12 @@ export default function Home({ params }: { params: DefaultLanguageParams }) {
   return (
     <>
       <main>
-        <section className="flex min-h-screen flex-col items-center justify-center rounded-lg p-4 text-center bg-grid-slate-300/[0.2] dark:bg-grid-slate-700/[0.2]">
+        <section className="bg-grid-slate-300/[0.2] dark:bg-grid-slate-700/[0.2] flex min-h-screen flex-col items-center justify-center rounded-lg p-4 text-center">
           <SpotlightEffect
             className="-top-40 left-0 md:-top-20 md:left-60"
             fill="#7d54e0"
           />
-          <h2 className="mt-8 bg-gradient-to-br from-slate-500 to-slate-800 bg-clip-text text-4xl tracking-tighter text-transparent dark:from-slate-100 dark:to-slate-400 sm:text-7xl">
+          <h2 className="mt-8 bg-linear-to-br from-slate-500 to-slate-800 bg-clip-text text-4xl font-bold tracking-tighter text-transparent sm:text-7xl dark:from-slate-100 dark:to-slate-400">
             {t("introducing-synapsy")}
           </h2>
           <p className="text-lg text-slate-700 dark:text-slate-300">
@@ -77,7 +77,7 @@ export default function Home({ params }: { params: DefaultLanguageParams }) {
         <section
           ref={sectionRef}
           id="features"
-          className="w-full bg-slate-100 py-12 dark:bg-slate-900 md:py-24 lg:py-32"
+          className="w-full bg-slate-100 py-12 md:py-24 lg:py-32 dark:bg-slate-900"
         >
           <div className="container px-4 md:px-6">
             <div className="flex flex-col items-center justify-center space-y-4 text-center">
@@ -88,13 +88,13 @@ export default function Home({ params }: { params: DefaultLanguageParams }) {
                 <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">
                   {t("unlock-potential")}
                 </h2>
-                <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
+                <p className="text-muted-foreground max-w-[900px] md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
                   {t("unlock-potential-desc")}
                 </p>
               </div>
             </div>
             <div className="mx-auto grid max-w-5xl items-center gap-6 py-12 lg:grid-cols-2 lg:gap-12">
-              <div className="mx-auto hidden aspect-video max-w-96 items-center justify-center overflow-hidden rounded-xl border object-cover object-center dark:border-slate-700 sm:flex sm:w-full lg:order-last">
+              <div className="mx-auto hidden aspect-video max-w-96 items-center justify-center overflow-hidden rounded-xl border object-cover object-center sm:flex sm:w-full lg:order-last dark:border-slate-700">
                 <p className="text-5xl font-bold">
                   <FlipWords
                     words={[
@@ -148,21 +148,21 @@ export default function Home({ params }: { params: DefaultLanguageParams }) {
               <h2 className="text-3xl font-bold tracking-tighter md:text-4xl/tight">
                 {t("productivity")}
               </h2>
-              <p className="max-w-[600px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
+              <p className="text-muted-foreground max-w-[600px] md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
                 {t("productivity-desc")}
               </p>
             </div>
             <div className="flex flex-col gap-2 min-[400px]:flex-row lg:justify-end">
               <Link
                 href="create"
-                className="inline-flex h-10 items-center justify-center rounded-md bg-primary px-8 text-sm font-bold text-primary-foreground shadow transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
+                className="bg-primary text-primary-foreground hover:bg-primary/90 focus-visible:ring-ring inline-flex h-10 items-center justify-center rounded-md px-8 text-sm font-bold shadow-sm transition-colors focus-visible:ring-1 focus-visible:outline-hidden disabled:pointer-events-none disabled:opacity-50"
                 prefetch={false}
               >
                 {t("try-synapsy")}
               </Link>
               <Link
                 href="pricing"
-                className="inline-flex h-10 items-center justify-center rounded-md border border-input bg-background px-8 text-sm font-bold shadow-sm transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
+                className="border-input bg-background hover:bg-accent hover:text-accent-foreground focus-visible:ring-ring inline-flex h-10 items-center justify-center rounded-md border px-8 text-sm font-bold shadow-xs transition-colors focus-visible:ring-1 focus-visible:outline-hidden disabled:pointer-events-none disabled:opacity-50"
                 prefetch={false}
               >
                 {t("learn-more")}
@@ -171,7 +171,7 @@ export default function Home({ params }: { params: DefaultLanguageParams }) {
           </div>
         </section>
 
-        <section className="w-full bg-slate-100 py-12 dark:bg-slate-900 md:py-24 lg:py-32">
+        <section className="w-full bg-slate-100 py-12 md:py-24 lg:py-32 dark:bg-slate-900">
           <div className="container px-4 md:px-6">
             <div className="flex flex-col items-center justify-center space-y-2 text-center">
               <div className="inline-block rounded-full border bg-slate-100 px-3 py-1 text-sm dark:border-slate-700 dark:bg-slate-900">
@@ -180,7 +180,7 @@ export default function Home({ params }: { params: DefaultLanguageParams }) {
               <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">
                 {t("features-desc")}
               </h2>
-              <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
+              <p className="text-muted-foreground max-w-[900px] md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
                 {t("why-synapsy-desc")}
               </p>
             </div>
@@ -254,7 +254,7 @@ export default function Home({ params }: { params: DefaultLanguageParams }) {
                 <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">
                   {t("open-source-title")}
                 </h2>
-                <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
+                <p className="text-muted-foreground max-w-[900px] md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
                   {t("open-source-desc")}
                 </p>
                 <div>
@@ -266,7 +266,7 @@ export default function Home({ params }: { params: DefaultLanguageParams }) {
                           className="pointer-events-none absolute bottom-0 left-1/2 -z-10 aspect-square w-1/2 -translate-x-1/2 translate-y-1/2"
                           aria-hidden="true"
                         >
-                          <div className="translate-z-0 absolute inset-0 rounded-full bg-slate-200 blur-[80px] dark:bg-slate-800"></div>
+                          <div className="absolute inset-0 translate-z-0 rounded-full bg-slate-200 blur-[80px] dark:bg-slate-800"></div>
                         </div>
                         <div className="flex h-full flex-col items-center text-center">
                           {/* Image */}
@@ -289,7 +289,7 @@ export default function Home({ params }: { params: DefaultLanguageParams }) {
                             </p>
                           </div>
                           <Link
-                            className="inline-flex items-center justify-center whitespace-nowrap rounded-lg border border-slate-700 px-3 py-1.5 text-sm font-medium transition-colors duration-150 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-900 dark:focus-visible:ring-slate-600"
+                            className="inline-flex items-center justify-center rounded-lg border border-slate-700 px-3 py-1.5 text-sm font-medium whitespace-nowrap transition-colors duration-150 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-900 dark:focus-visible:ring-slate-600"
                             href="https://github.com/synapsy-ai/"
                           >
                             <svg
@@ -312,7 +312,7 @@ export default function Home({ params }: { params: DefaultLanguageParams }) {
                           className="pointer-events-none absolute bottom-0 left-1/2 -z-10 aspect-square w-1/2 -translate-x-1/2 translate-y-1/2"
                           aria-hidden="true"
                         >
-                          <div className="translate-z-0 absolute inset-0 rounded-full bg-slate-200 blur-[80px] dark:bg-slate-800"></div>
+                          <div className="absolute inset-0 translate-z-0 rounded-full bg-slate-200 blur-[80px] dark:bg-slate-800"></div>
                         </div>
                         <div className="flex h-full flex-col items-center text-center">
                           {/* Image */}
@@ -335,7 +335,7 @@ export default function Home({ params }: { params: DefaultLanguageParams }) {
                             </p>
                           </div>
                           <Link
-                            className="inline-flex items-center justify-center whitespace-nowrap rounded-lg border border-slate-700 px-3 py-1.5 text-sm font-medium transition-colors duration-150 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-900 dark:focus-visible:ring-slate-600"
+                            className="inline-flex items-center justify-center rounded-lg border border-slate-700 px-3 py-1.5 text-sm font-medium whitespace-nowrap transition-colors duration-150 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-900 dark:focus-visible:ring-slate-600"
                             href="https://github.com/synapsy-ai/write/"
                           >
                             <svg

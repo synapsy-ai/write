@@ -20,7 +20,7 @@ export default function VariableItemView(props: {
   const [name, setName] = useState<string>();
   const [value, setValue] = useState<string>();
   return (
-    <div className="m-2 grid grid-cols-[1fr,auto] items-center space-x-2 rounded-md p-2">
+    <div className="m-2 grid grid-cols-[1fr_auto] items-center space-x-2 rounded-md p-2">
       <div className="items-cente">
         <p>{t("name")}</p>
         <Input className="h-auto" disabled value={name} />

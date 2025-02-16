@@ -102,7 +102,7 @@ export default function EditTemplatePage({
   }
 
   return (
-    <main className="flex min-h-[calc(100vh_-_theme(spacing.16))] flex-1 flex-col gap-4 bg-slate-100/40 p-4 pb-16 dark:bg-transparent sm:pb-0 md:gap-8 md:p-10 print:mt-0 print:bg-white">
+    <main className="flex min-h-[calc(100vh-(--spacing(16)))] flex-1 flex-col gap-4 bg-slate-100/40 p-4 pb-16 dark:bg-transparent sm:pb-0 md:gap-8 md:p-10 print:mt-0 print:bg-white">
       <div className="mx-auto w-full max-w-6xl">
         <div className="mx-auto grid w-full gap-2 print:hidden">
           <h1 className="text-3xl font-semibold">{t("template-edit")}</h1>
@@ -169,7 +169,7 @@ export default function EditTemplatePage({
             />
             <div className="grid gap-4">
               {recipe?.steps.map((step, i) => (
-                <Card key={i} className="grid grid-cols-[1fr,auto] gap-2 p-4">
+                <Card key={i} className="grid grid-cols-[1fr_auto] gap-2 p-4">
                   <div className="flex flex-col gap-4">
                     <h4 className="font-medium">{t(step.name)}</h4>
                     <p className="text-sm text-muted-foreground">
@@ -357,7 +357,7 @@ function EditDialog(props: {
             />
           </div>
           {!userPrompt.includes("[[PROMPT]]") && (
-            <div className="my-2 grid grid-cols-[auto,1fr] items-center space-x-2 rounded-md border border-indigo-500 bg-indigo-200 p-2 text-indigo-600 dark:bg-indigo-900/50 dark:text-indigo-400">
+            <div className="my-2 grid grid-cols-[auto_1fr] items-center space-x-2 rounded-md border border-indigo-500 bg-indigo-200 p-2 text-indigo-600 dark:bg-indigo-900/50 dark:text-indigo-400">
               <Info size={14} />
               <p>{t("prompt-var-missing")}</p>
             </div>

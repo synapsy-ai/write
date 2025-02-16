@@ -263,7 +263,7 @@ export default function Chat(props: Props) {
                 setSelectedTemplateId(undefined);
               }}
               variant="ghost"
-              className={`grid grid-cols-[1fr,auto,auto] items-center ${i == convIndex ? "border-slate-300 bg-accent/50 text-accent-foreground dark:border-slate-700" : ""}`}
+              className={`grid grid-cols-[1fr_auto_auto] items-center ${i == convIndex ? "border-slate-300 bg-accent/50 text-accent-foreground dark:border-slate-700" : ""}`}
             >
               <span className="text-left">{el.name}</span>
               <Dialog>
@@ -353,12 +353,12 @@ export default function Chat(props: Props) {
   }
 
   return (
-    <main className="flex h-full min-h-[calc(100vh_-_theme(spacing.16))] flex-1 flex-col gap-4 bg-slate-100/40 p-4 pb-16 dark:bg-transparent sm:pb-0 md:gap-8 md:p-10 print:mt-0 print:bg-white">
+    <main className="flex h-full min-h-[calc(100vh-(--spacing(16)))] flex-1 flex-col gap-4 bg-slate-100/40 p-4 pb-16 dark:bg-transparent sm:pb-0 md:gap-8 md:p-10 print:mt-0 print:bg-white">
       <div className="mx-auto grid w-full max-w-6xl gap-2 print:hidden">
         <h1 className="text-3xl font-semibold">{t("chat")}</h1>
         <p className="text-muted-foreground">{t("chat-desc")}</p>
       </div>
-      <section className="mx-auto grid h-full w-full max-w-6xl grid-cols-[auto,1fr] sm:space-x-2">
+      <section className="mx-auto grid h-full w-full max-w-6xl grid-cols-[auto_1fr] sm:space-x-2">
         <Card className="hidden sm:block">
           <CardHeader>
             <CardTitle>{t("history")}</CardTitle>
@@ -371,7 +371,7 @@ export default function Chat(props: Props) {
         </Card>
         <section
           className={
-            "grid h-full grid-rows-[auto,1fr,auto] space-y-2 rounded-md border bg-card p-2 text-justify shadow-sm print:border-0 print:shadow-none"
+            "grid h-full grid-rows-[auto_1fr_auto] space-y-2 rounded-md border bg-card p-2 text-justify shadow-xs print:border-0 print:shadow-none"
           }
         >
           <div className="flex items-center space-x-2">
@@ -421,7 +421,7 @@ export default function Chat(props: Props) {
                               className="h-auto w-full px-1 text-left"
                             >
                               <div
-                                className="grid w-full grid-cols-[auto,1fr,auto] items-center"
+                                className="grid w-full grid-cols-[auto_1fr_auto] items-center"
                                 key={i}
                               >
                                 {selectedTemplateId === i ? (
