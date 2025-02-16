@@ -17,6 +17,7 @@ export default function ResultDisplayer(props: {
   font?: FontType;
   lng: Language;
 }) {
+  const [content] = useState(props.res);
   const options: HTMLReactParserOptions = {
     replace: (domNode) => {
       if (domNode instanceof Element && domNode.tagName === "body") {
@@ -31,7 +32,7 @@ export default function ResultDisplayer(props: {
   ) {
     return (
       <p id="contentp" className={props.no_padding ? "" : "p-4"}>
-        {props.res}
+        {content}
         <span className="inline-block h-[14px] w-[7px] animate-pulse self-baseline bg-black duration-500 dark:bg-white"></span>
       </p>
     );
@@ -39,7 +40,7 @@ export default function ResultDisplayer(props: {
   switch (props.type) {
     case "ideas":
       try {
-        let json: string[] = JSON.parse(props.res);
+        let json: string[] = JSON.parse(content);
         return (
           <div id="contentp">
             {json.map((el, i) => (
@@ -56,7 +57,7 @@ export default function ResultDisplayer(props: {
         return (
           <div id="contentp" className="edit">
             {parse(
-              props.res.replaceAll("<body>", "").replaceAll("</body>", ""),
+              content.replaceAll("<body>", "").replaceAll("</body>", ""),
               options,
             )}
           </div>
@@ -69,7 +70,7 @@ export default function ResultDisplayer(props: {
           id="contentp"
         >
           {parse(
-            props.res
+            content
               .replaceAll("<body>", "")
               .replaceAll("</body>", "")
               .replaceAll("<html>", "")
@@ -84,7 +85,7 @@ export default function ResultDisplayer(props: {
       );
     case "ph_visual_outline":
       try {
-        const outline: OutlineItem[] = JSON.parse(props.res);
+        const outline: OutlineItem[] = JSON.parse(content);
         return (
           <div>
             {outline.map((el, i) => (
@@ -109,7 +110,7 @@ export default function ResultDisplayer(props: {
         return (
           <p className="edit p-4 print:text-black" id="contentp">
             {parse(
-              props.res
+              content
                 .replaceAll("<body>", "")
                 .replaceAll("</body>", "")
                 .replaceAll("<html>", "")
@@ -134,7 +135,7 @@ export default function ResultDisplayer(props: {
               id="contentp"
             >
               {parse(
-                props.res
+                content
                   .replaceAll("<body>", "")
                   .replaceAll("</body>", "")
                   .replaceAll("<html>", "")
@@ -155,7 +156,7 @@ export default function ResultDisplayer(props: {
               lng={props.lng}
               id={-1}
               content={generateJSON(
-                props.res
+                content
                   .replaceAll("<body>", "")
                   .replaceAll("</body>", "")
                   .replaceAll("<html>", "")
