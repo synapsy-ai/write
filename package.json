@@ -61,7 +61,7 @@
     "react-cookie": "^7.2.2",
     "react-dom": "latest",
     "react-i18next": "^15.4.0",
-    "sonner": "^1.7.4",
+    "sonner": "^2.0.0",
     "stripe": "^17.6.0",
     "styled-jsx": "^5.1.6",
     "tailwind-merge": "^3.0.1",
