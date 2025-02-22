@@ -23,7 +23,7 @@ export default function Home({ params }: { params: DefaultLanguageParams }) {
   return (
     <>
       <main>
-        <section className="bg-grid-slate-300/[0.2] dark:bg-grid-slate-700/[0.2] flex min-h-screen flex-col items-center justify-center rounded-lg p-4 text-center">
+        <section className="flex min-h-screen flex-col items-center justify-center rounded-lg p-4 text-center">
           <SpotlightEffect
             className="-top-40 left-0 md:-top-20 md:left-60"
             fill="#7d54e0"
