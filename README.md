@@ -28,45 +28,57 @@
 
 ## Overview
 
-Synapsy Write is a Next.js web application that leverages the power of OpenAI's GPT Generative AI models to assist users in effortlessly generating text content. Whether you need paragraphs for your website, blog posts, essays, or any other written content, Synapsy Write has got you covered. With a user-friendly interface and advanced AI capabilities, creating text has never been easier!
+Synapsy Write is a Next.js web application that leverages the power of advanced AI models from various providers to assist users in effortlessly generating text content. Whether you need paragraphs for your website, blog posts, essays, or any other written content, Synapsy Write has got you covered. With a user-friendly interface and advanced AI capabilities, creating text has never been easier!
 
 ## Features
 
-### OpenAI's GPT Generative AI
+### Advanced AI Models
 
-Synapsy Write harnesses the power of OpenAI's advanced AI models, including GPT-4, GPT-3.5, GPT-4o, and GPT-4o mini. These models are at the forefront of natural language processing, delivering high-quality text generation based on your input. Whether you're looking for precise, informative paragraphs or creative, engaging narratives, these state-of-the-art models provide reliable and contextually accurate content, ensuring your text meets the highest standards of quality and coherence.
+![The Create page of Synapsy Write with its AI Provider and Model selector](.github/images/1.png)
+
+Synapsy Write harnesses the power of advanced AI models from multiple providers, including OpenAI, Mistral, and Anthropic. These models are at the forefront of natural language processing, delivering high-quality text generation based on your input. Whether you're looking for precise, informative paragraphs or creative, engaging narratives, these state-of-the-art models provide reliable and contextually accurate content, ensuring your text meets the highest standards of quality and coherence.
 
 ### Versatile Output
+
+![The template selector of Synapsy Write](.github/images/2.png)
 
 One of the standout features of Synapsy Write is its versatility in content creation. With just a few clicks, you can generate various forms of written content such as paragraphs, blog posts, essays, and more. This flexibility allows users to produce different types of content without needing multiple tools, making it an all-in-one solution for your writing needs. The AI's adaptability ensures that the content generated is suitable for various purposes, from professional documentation to creative storytelling.
 
 ### Templates
 
+![The template editor of Synapsy Write](.github/images/3.png)
+
 The template feature in Synapsy Write allows users to create and utilize custom templates for generating complex documents. This functionality enables you to define the structure and format of your documents, breaking down the generation process into manageable parts and assigning different models to specific sections. By doing so, you ensure better output quality and coherence, especially for lengthy or detailed documents. This feature is ideal for users who frequently produce similar types of documents and want to streamline their workflow.
 
 ### Conversation
+
+![The conversation mode of Synapsy Write](.github/images/4.png)
 
 Synapsy Write includes a conversation mode that mimics the interactive experience of ChatGPT. This feature allows users to engage in a dialogue with the AI, providing a more dynamic and interactive content generation process. Additionally, users can customize the system prompt, tailoring the AI's responses to better fit their needs. This adaptability makes the conversation feature a powerful tool for brainstorming, refining ideas, or simply exploring different perspectives on a topic.
 
 ### Easy to Use
 
+![The text editor of Synapsy Write](.github/images/5.png)
+
 The intuitive user interface of Synapsy Write ensures that even non-technical users can get started quickly and efficiently. The design is user-centric, prioritizing ease of use and accessibility. Clear instructions, straightforward navigation, and responsive design elements all contribute to a seamless user experience. Whether you're a novice or an experienced user, Synapsy Write's interface is designed to facilitate effortless interaction with its powerful AI capabilities.
 
-### Customizable
+### Highly Customizable
 
-Customization is a key feature of Synapsy Write, allowing users to tailor the application to their specific needs. Various settings can be adjusted to enhance the user experience, such as selecting preferred AI models, adjusting text output length, and customizing system prompts. This level of personalization ensures that the application can be adapted to suit different writing styles, requirements, and preferences, providing a more personalized and effective content generation experience.
+![Synapsy Write with dark theme toggled](.github/images/6.png)
+
+Tailor Synapsy Write to your specific needs with a range of customization options. Select your preferred AI models, adjust text output length, and customize system prompts to suit your writing style and requirements. This level of personalization ensures that Synapsy Write adapts to you, providing a more effective and enjoyable writing experience.
 
 ## Getting Started
 
-To use Synapsy Write, follow these simple steps:
+Ready to elevate your writing with Synapsy Write? Follow these simple steps to get started:
 
-1. **Visit the Website**: Go to [https://write.peyronnet.group](https://write.peyronnet.group) to access the application.
+1. **Visit the Website**: Head over to [https://write.peyronnet.group](https://write.peyronnet.group) to access the application.
 
-2. **Choose Your Output**: Select the type of text you want to generate, such as paragraphs, blog posts, or essays.
+2. **Choose Your Content Type**: Select the type of text you want to generate, whether it's paragraphs, blog posts, essays, or something else.
 
-3. **Generate Text**: Click the "Create" button, and Synapsy Write will create the text for you, powered by OpenAI's GPT Generative AI.
+3. **Generate Your Text**: Click the "Create" button, and let Synapsy Write's advanced AI models work their magic to generate your content.
 
-4. **View Your Generations**: Click on the "My generations" button on the navigation bar at the top to see your previous generations.
+4. **Review Your Generations**: Access your previous generations by clicking on the "My generations" button in the navigation bar.
 
 ## System Requirements
 
