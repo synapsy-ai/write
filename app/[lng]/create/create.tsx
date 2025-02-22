@@ -8,14 +8,12 @@ import {
   Info,
   Loader2,
   LucideFileWarning,
-  RefreshCcw,
   Settings as SettingsLogo,
   Sparkles,
 } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Settings } from "@/lib/settings";
 import {
-  getModels,
   getStaticAiGeneration,
   getDynamicAiGeneration,
   getDynamicAiGenerationCustom,
@@ -53,8 +51,8 @@ import { Variable, getVariableString } from "@/lib/variable";
 import VariableItem from "@/components/variable-item";
 import FormatDialog from "@/components/format-dialog";
 import { Textarea } from "@/components/ui/textarea";
-import { Database, Tables } from "@/types_db";
-import { SupabaseClient, User } from "@supabase/supabase-js";
+import { Tables } from "@/types_db";
+import { User } from "@supabase/supabase-js";
 import Link from "next/link";
 import {
   Dialog,
@@ -89,6 +87,7 @@ import { getComplexEssayPhiloRecipe } from "@/lib/recipes/complex-essay-philo";
 import ModelSelector from "@/components/model-selector";
 import { getModelProvider, ModelList } from "@/lib/models";
 import updateQuotas from "@/utils/update-quotas";
+import { Plans } from "@/utils/helpers";
 
 type Subscription = Tables<"subscriptions">;
 type Product = Tables<"products">;
@@ -127,6 +126,7 @@ export default function Create(props: Props) {
         "codestral-latest",
         "codestral-mamba-latest",
       ],
+      anthropicModels: ["claude-3-5-haiku-20241022"],
     };
     localStorage.setItem("synapsy_settings", JSON.stringify(s));
   }
@@ -148,9 +148,17 @@ export default function Create(props: Props) {
   const [textToAnalyse, setTextToAnalyse] = useState("");
   const [expandInput, setExpandInput] = useState(false);
   const defaultModels = () =>
-    hasGpt4Access()
-      ? { openAiModels: ["gpt-3.5-turbo", "gpt-4"], mistralModels: [] }
-      : { openAiModels: ["gpt-3.5-turbo"], mistralModels: [] };
+    getSubscriptionPlan() !== "free"
+      ? {
+          openAiModels: ["gpt-3.5-turbo", "gpt-4"],
+          mistralModels: ["mistral-small"],
+          anthropicModels: ["claude-3-5-haiku-20241022"],
+        }
+      : {
+          openAiModels: ["gpt-3.5-turbo", "gpt-4o-mini"],
+          mistralModels: ["mistral-small"],
+          anthropicModels: ["claude-3-5-haiku-20241022"],
+        };
   const [avModels, setAvModels] = useState(
     getAvailableModels(s.aiModels) ?? defaultModels(),
   );
@@ -161,13 +169,17 @@ export default function Create(props: Props) {
   const [complexSectionVis, setComplexSectionVis] = useState(false);
 
   const [gpt4Quotas, setGpt4Quotas] = useState(props.quotas);
-  const [unlimited, setUnlimited] = useState(hasUnlimitedAccess());
+  const [unlimited, setUnlimited] = useState(getSubscriptionPlan() === "pro");
   function getAvailableModels(
     availableModels: ModelList | undefined,
   ): ModelList {
-    if (!availableModels) return { openAiModels: [], mistralModels: [] };
-    let models: ModelList = { openAiModels: [], mistralModels: [] };
-    let gpt4 = hasGpt4Access();
+    if (!availableModels) return defaultModels() as ModelList;
+    let models: ModelList = {
+      openAiModels: [],
+      mistralModels: [],
+      anthropicModels: [],
+    };
+    let gpt4 = getSubscriptionPlan() !== "free";
     for (let i = 0; i < availableModels.openAiModels.length; i++) {
       if (
         (availableModels.openAiModels[i].includes("gpt-4") ||
@@ -178,34 +190,21 @@ export default function Create(props: Props) {
         continue;
       models.openAiModels.push(availableModels.openAiModels[i]);
     }
+
     models.mistralModels = availableModels.mistralModels;
+    models.anthropicModels = availableModels.anthropicModels;
     return models;
   }
 
-  async function getMs() {
-    let m: ModelList = await getModels();
-    let models: ModelList = {
-      openAiModels: [],
-      mistralModels: m.mistralModels,
-    };
-    for (let i = 0; i < m.openAiModels.length; i++) {
-      if (
-        (m.openAiModels[i].includes("gpt-4") ||
-          m.openAiModels[i].includes("o1")) &&
-        !m.openAiModels[i].includes("mini") &&
-        !hasGpt4Access()
-      ) {
-        continue;
-      }
-      models.openAiModels.push(m.openAiModels[i]);
-    }
-
-    setAvModels(models);
-    if (typeof window !== "undefined") {
-      s.aiModels = models;
+  useEffect(() => {
+    if (
+      s.aiModels &&
+      (!s.aiModels.anthropicModels || s.aiModels.anthropicModels.length === 0)
+    ) {
+      s.aiModels.anthropicModels = defaultModels().anthropicModels;
       localStorage.setItem("synapsy_settings", JSON.stringify(s));
     }
-  }
+  }, [defaultModels, s]);
 
   async function create() {
     setInProgress(false);
@@ -446,53 +445,41 @@ export default function Create(props: Props) {
     setVariables([...variables]);
   }
 
-  function isSubscribed(): boolean {
-    if (!props.user || !props.subscriptions) return false;
+  function getSubscriptionPlan(): Plans {
+    if (!props.user || !props.subscriptions) return "free";
     for (let i = 0; i < props.subscriptions?.length; i++) {
       if (
         props.subscriptions[i].prices?.products?.name
           ?.toLowerCase()
           .includes("write")
       ) {
-        return true;
+        if (
+          props.subscriptions[i].prices?.products?.name
+            ?.toLowerCase()
+            .includes("pro")
+        ) {
+          return "pro";
+        } else if (
+          props.subscriptions[i].prices?.products?.name
+            ?.toLowerCase()
+            .includes("premium")
+        ) {
+          return "premium";
+        } else if (
+          props.subscriptions[i].prices?.products?.name
+            ?.toLowerCase()
+            .includes("basic")
+        ) {
+          return "basic";
+        }
+        return "free";
       }
     }
-    return false;
-  }
-
-  function hasUnlimitedAccess(): boolean {
-    if (!props.user || !props.subscriptions) return false;
-    for (let i = 0; i < props.subscriptions?.length; i++) {
-      if (
-        props.subscriptions[i].prices?.products?.name
-          ?.toLowerCase()
-          .includes("write") &&
-        props.subscriptions[i].prices?.products?.name
-          ?.toLowerCase()
-          .includes("pro")
-      ) {
-        return true;
-      }
-    }
-    return false;
-  }
-
-  function hasGpt4Access(): boolean {
-    if (!props.user || !props.subscriptions) return false;
-    for (let i = 0; i < props.subscriptions?.length; i++) {
-      if (
-        props.subscriptions[i].prices?.products?.name
-          ?.toLowerCase()
-          .includes("write")
-      ) {
-        return props.subscriptions[i].status === "active";
-      }
-    }
-    return false;
+    return "free";
   }
 
   return (
-    <main className="flex min-h-[calc(100vh_-_theme(spacing.16))] flex-1 flex-col gap-4 bg-slate-100/40 p-4 pb-16 dark:bg-transparent sm:pb-0 md:gap-8 md:p-10 print:mt-0 print:bg-white">
+    <main className="flex min-h-[calc(100vh-(--spacing(16)))] flex-1 flex-col gap-4 bg-slate-100/40 p-4 pb-16 dark:bg-transparent sm:pb-0 md:gap-8 md:p-10 print:mt-0 print:bg-white">
       <div className="mx-auto grid w-full max-w-6xl gap-2 print:hidden">
         <h1 className="text-3xl font-semibold">{t("create")}</h1>
         <p className="text-muted-foreground">{t("create-desc")}</p>
@@ -552,7 +539,7 @@ export default function Create(props: Props) {
               )}
             </CardContent>
           </Card>
-          {isSubscribed() ? (
+          {getSubscriptionPlan() !== "free" ? (
             <>
               {!inProgress ? (
                 <Button
@@ -666,7 +653,7 @@ export default function Create(props: Props) {
               {!errorVis && !res && (
                 <section
                   className={
-                    "m-2 flex grow items-center justify-center rounded-md border bg-white p-2 py-[34px] shadow-sm dark:bg-slate-900/50 print:text-black print:shadow-none"
+                    "m-2 flex grow items-center justify-center rounded-md border bg-white p-2 py-[34px] shadow-xs dark:bg-slate-900/50 print:text-black print:shadow-none"
                   }
                 >
                   <div className="flex flex-col items-center justify-center">
@@ -714,7 +701,7 @@ export default function Create(props: Props) {
                     <ModelSelector
                       placeholder={t("model")}
                       avModels={avModels}
-                      premium={hasGpt4Access()}
+                      plan={getSubscriptionPlan()}
                       model={model}
                       setModel={setModel}
                       lng={lng}

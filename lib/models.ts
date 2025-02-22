@@ -47,6 +47,9 @@ const modelStrings: { [key: string]: string } = {
   "codestral-latest": "Codestral (Latest)",
   "codestral-mamba-2407": "Codestral Mamba (2407)",
   "codestral-mamba-latest": "Codestral Mamba (Latest)",
+  "codestral-2411-rc5": "Codestral (2411-rc5)",
+  "codestral-2412": "Codestral (2412)",
+  "codestral-2501": "Codestral (2501)",
   "mistral-embed": "Mistral Embed",
   "mistral-large-2402": "Mistral Large (2402)",
   "mistral-large-2407": "Mistral Large (2407)",
@@ -77,6 +80,19 @@ const modelStrings: { [key: string]: string } = {
   "ministral-8b-latest": "Ministral 8B (Latest)",
   "mistral-moderation-2411": "Mistral Moderation (2411)",
   "mistral-moderation-latest": "Mistral Moderation (Latest)",
+  "mistral-small-2501": "Mistral Small (2501)",
+  "mistral-large-2502-15-1-rc2": "Mistral Large (2502.15.1-rc2)",
+  "mistral-large-pixtral-2411": "Mistral Large Pixtral (2411)",
+
+  // Anthropic Models
+  "claude-2.0": "Claude 2.0",
+  "claude-2.1": "Claude 2.1",
+  "claude-3-5-sonnet-20240620": "Claude 3.5 Sonnet (06/2024)",
+  "claude-3-5-sonnet-20241022": "Claude 3.5 Sonnet (10/2024)",
+  "claude-3-sonnet-20240229": "Claude 3 Sonnet (02/2024)",
+  "claude-3-opus-20240229": "Claude 3 Opus (02/2024)",
+  "claude-3-5-haiku-20241022": "Claude 3.5 Haiku (10/2024)",
+  "claude-3-haiku-20240307": "Claude 3 Haiku (03/2024)",
 };
 
 export function getModelString(id: string): string {
@@ -85,12 +101,14 @@ export function getModelString(id: string): string {
 
 export function getModelProvider(id: string, models: ModelList): AiProvider {
   if (models.mistralModels.includes(id)) return "mistral";
-  return "openAI";
+  else if (models.anthropicModels.includes(id)) return "anthropic";
+  else return "openAI";
 }
 
 export interface ModelList {
   openAiModels: string[];
   mistralModels: string[];
+  anthropicModels: string[];
 }
 
-export type AiProvider = "mistral" | "openAI";
+export type AiProvider = "mistral" | "openAI" | "anthropic";

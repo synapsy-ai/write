@@ -27,7 +27,7 @@ export default function ComplexGenItem(props: ComplexGenItemProps) {
         </p>
         <p className="text-center sm:text-left">{t("complex-gen-desc")}</p>
       </div>
-      <div className="grid grid-cols-[auto,1fr] items-center gap-x-2">
+      <div className="grid grid-cols-[auto_1fr] items-center gap-x-2">
         {steps &&
           steps.map((s, i) => (
             <>

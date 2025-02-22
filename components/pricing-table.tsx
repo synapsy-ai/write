@@ -216,7 +216,7 @@ export default function PricingFeatureTable(props: { lng: string }) {
             <td></td>
           </tr>
           <tr>
-            <td>OpenAI GPT-4 + GPT-4o</td>
+            <td>OpenAI GPT-4 + GPT-4o + o1</td>
             <td>
               <span className="flex justify-center">
                 <X size={16} />
@@ -295,8 +295,26 @@ export default function PricingFeatureTable(props: { lng: string }) {
               </span>
             </td>
           </tr>
+
           <tr>
-            <td>Codestral</td>
+            <td>Claude 3.5 Haiku</td>
+            <td>
+              <span className="flex justify-center">
+                <X size={16} />
+              </span>
+            </td>
+            <td>
+              <span className="flex justify-center">{t("unlimited")}</span>
+            </td>
+            <td>
+              <span className="flex justify-center">{t("unlimited")}</span>
+            </td>
+            <td>
+              <span className="flex justify-center">{t("unlimited")}</span>
+            </td>
+          </tr>
+          <tr>
+            <td>Claude 3.5 Sonnet</td>
             <td>
               <span className="flex justify-center">
                 <X size={16} />
@@ -304,18 +322,37 @@ export default function PricingFeatureTable(props: { lng: string }) {
             </td>
             <td>
               <span className="flex justify-center">
-                <Check size={16} />
+                <span className="flex justify-center">
+                  <X size={16} />
+                </span>
+              </span>
+            </td>
+            <td>
+              <span className="flex justify-center">{t("unlimited")}</span>
+            </td>
+            <td>
+              <span className="flex justify-center">{t("unlimited")}</span>
+            </td>
+          </tr>
+          <tr>
+            <td>Claude 3 Opus</td>
+            <td>
+              <span className="flex justify-center">
+                <X size={16} />
               </span>
             </td>
             <td>
               <span className="flex justify-center">
-                <Check size={16} />
+                <span className="flex justify-center">
+                  <X size={16} />
+                </span>
               </span>
             </td>
             <td>
-              <span className="flex justify-center">
-                <Check size={16} />
-              </span>
+              <span className="flex justify-center">{t("unlimited")}</span>
+            </td>
+            <td>
+              <span className="flex justify-center">{t("unlimited")}</span>
             </td>
           </tr>
           <tr>

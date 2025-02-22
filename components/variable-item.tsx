@@ -3,7 +3,7 @@ import { Variable } from "@/lib/variable";
 import { Input } from "./ui/input";
 import { useTranslation } from "@/app/i18n/client";
 import { Button } from "./ui/button";
-import { Delete, Trash2 } from "lucide-react";
+import { Trash2 } from "lucide-react";
 import { useEffect, useState } from "react";
 
 export default function VariableItem(props: {
@@ -14,14 +14,14 @@ export default function VariableItem(props: {
   small?: boolean;
 }) {
   const { t } = useTranslation(props.lng, "common");
+  const [name, setName] = useState<string>();
+  const [value, setValue] = useState<string>();
   useEffect(() => {
     setName(props.item.name);
     setValue(props.item.value);
-  });
-  const [name, setName] = useState<string>();
-  const [value, setValue] = useState<string>();
+  }, [props.item, setName, setValue]);
   return (
-    <div className="m-2 grid grid-cols-[1fr,auto] items-center space-x-2 rounded-md border border-slate-200 p-2 dark:border-slate-800">
+    <div className="m-2 grid grid-cols-[1fr_auto] items-center space-x-2 rounded-md border border-slate-200 p-2 dark:border-slate-800">
       <div
         className={
           props.small

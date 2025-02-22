@@ -5,8 +5,7 @@ import { createOpenAI } from "@ai-sdk/openai";
 import { generateText, LanguageModelV1, streamText } from "ai";
 import { AiProvider } from "./models";
 import { createMistral } from "@ai-sdk/mistral";
-import { open } from "inspector";
-import { get } from "https";
+import { createAnthropic } from "@ai-sdk/anthropic";
 
 const openai = createOpenAI({
   // custom settings, e.g.
@@ -18,6 +17,11 @@ const mistral = createMistral({
   apiKey: process.env.MISTRAL_API_KEY,
 });
 
+const anthropic = createAnthropic({
+  apiKey: process.env.ANTHROPIC_API_KEY,
+  headers: { "anthropic-dangerous-direct-browser-access": "true" },
+});
+
 export function getLanguageModel(
   provider: AiProvider,
   model: string,
@@ -25,7 +29,9 @@ export function getLanguageModel(
   switch (provider) {
     case "mistral":
       return mistral(model);
-    default:
+    case "anthropic":
+      return anthropic(model);
+    case "openAI":
       return openai(model);
   }
 }
@@ -43,6 +49,7 @@ export async function getDynamicAiGeneration(
 ): Promise<any> {
   functions.setLoading(true);
   let loading = true;
+
   const chatCompletion = streamText({
     model: getLanguageModel(provider, model),
     system: getSystem(template, lng, tone),

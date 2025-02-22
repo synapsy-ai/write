@@ -42,6 +42,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { chatSystemPrompts } from "@/lib/prompts/system";
 import ModelSelector from "@/components/model-selector";
 import { getModelProvider, ModelList } from "@/lib/models";
+import { Plans } from "@/utils/helpers";
 
 type Subscription = Tables<"subscriptions">;
 type Product = Tables<"products">;
@@ -89,16 +90,29 @@ export default function Chat(props: Props) {
   const [model, setModel] = useState("gpt-3.5-turbo");
 
   const defaultModels = () =>
-    hasGpt4Access()
-      ? { openAiModels: ["gpt-3.5-turbo", "gpt-4"], mistralModels: [] }
-      : { openAiModels: ["gpt-3.5-turbo"], mistralModels: [] };
+    getSubscriptionPlan() !== "free"
+      ? {
+          openAiModels: ["gpt-3.5-turbo", "gpt-4"],
+          mistralModels: [],
+          anthropicModels: [],
+        }
+      : {
+          openAiModels: ["gpt-3.5-turbo"],
+          mistralModels: [],
+          anthropicModels: [],
+        };
 
   function getAvailableModels(
     availableModels: ModelList | undefined,
   ): ModelList {
-    if (!availableModels) return { openAiModels: [], mistralModels: [] };
-    let models: ModelList = { openAiModels: [], mistralModels: [] };
-    let gpt4 = hasGpt4Access();
+    if (!availableModels)
+      return { openAiModels: [], mistralModels: [], anthropicModels: [] };
+    let models: ModelList = {
+      openAiModels: [],
+      mistralModels: [],
+      anthropicModels: [],
+    };
+    let gpt4 = getSubscriptionPlan() !== "free";
     for (let i = 0; i < availableModels.openAiModels.length; i++) {
       if (
         (availableModels.openAiModels[i].includes("gpt-4") ||
@@ -110,21 +124,8 @@ export default function Chat(props: Props) {
       models.openAiModels.push(availableModels.openAiModels[i]);
     }
     models.mistralModels = availableModels.mistralModels;
+    models.anthropicModels = availableModels.anthropicModels;
     return models;
-  }
-
-  function hasGpt4Access(): boolean {
-    if (!props.user || !props.subscriptions) return false;
-    for (let i = 0; i < props.subscriptions?.length; i++) {
-      if (
-        props.subscriptions[i].prices?.products?.name
-          ?.toLowerCase()
-          .includes("write")
-      ) {
-        return props.subscriptions[i].status === "active";
-      }
-    }
-    return false;
   }
 
   const [avModels, setAvModels] = useState(
@@ -159,6 +160,39 @@ export default function Chat(props: Props) {
       getModelProvider(model, avModels),
     );
     return newMsg;
+  }
+
+  function getSubscriptionPlan(): Plans {
+    if (!props.user || !props.subscriptions) return "free";
+    for (let i = 0; i < props.subscriptions?.length; i++) {
+      if (
+        props.subscriptions[i].prices?.products?.name
+          ?.toLowerCase()
+          .includes("write")
+      ) {
+        if (
+          props.subscriptions[i].prices?.products?.name
+            ?.toLowerCase()
+            .includes("pro")
+        ) {
+          return "pro";
+        } else if (
+          props.subscriptions[i].prices?.products?.name
+            ?.toLowerCase()
+            .includes("premium")
+        ) {
+          return "premium";
+        } else if (
+          props.subscriptions[i].prices?.products?.name
+            ?.toLowerCase()
+            .includes("basic")
+        ) {
+          return "basic";
+        }
+        return "free";
+      }
+    }
+    return "free";
   }
 
   async function sendBtn() {
@@ -229,7 +263,7 @@ export default function Chat(props: Props) {
                 setSelectedTemplateId(undefined);
               }}
               variant="ghost"
-              className={`grid grid-cols-[1fr,auto,auto] items-center ${i == convIndex ? "border-slate-300 bg-accent/50 text-accent-foreground dark:border-slate-700" : ""}`}
+              className={`grid grid-cols-[1fr_auto_auto] items-center ${i == convIndex ? "border-slate-300 bg-accent/50 text-accent-foreground dark:border-slate-700" : ""}`}
             >
               <span className="text-left">{el.name}</span>
               <Dialog>
@@ -319,12 +353,12 @@ export default function Chat(props: Props) {
   }
 
   return (
-    <main className="flex h-full min-h-[calc(100vh_-_theme(spacing.16))] flex-1 flex-col gap-4 bg-slate-100/40 p-4 pb-16 dark:bg-transparent sm:pb-0 md:gap-8 md:p-10 print:mt-0 print:bg-white">
+    <main className="flex h-full min-h-[calc(100vh-(--spacing(16)))] flex-1 flex-col gap-4 bg-slate-100/40 p-4 pb-16 dark:bg-transparent sm:pb-0 md:gap-8 md:p-10 print:mt-0 print:bg-white">
       <div className="mx-auto grid w-full max-w-6xl gap-2 print:hidden">
         <h1 className="text-3xl font-semibold">{t("chat")}</h1>
         <p className="text-muted-foreground">{t("chat-desc")}</p>
       </div>
-      <section className="mx-auto grid h-full w-full max-w-6xl grid-cols-[auto,1fr] sm:space-x-2">
+      <section className="mx-auto grid h-full w-full max-w-6xl grid-cols-[auto_1fr] sm:space-x-2">
         <Card className="hidden sm:block">
           <CardHeader>
             <CardTitle>{t("history")}</CardTitle>
@@ -337,7 +371,7 @@ export default function Chat(props: Props) {
         </Card>
         <section
           className={
-            "grid h-full grid-rows-[auto,1fr,auto] space-y-2 rounded-md border bg-card p-2 text-justify shadow-sm print:border-0 print:shadow-none"
+            "grid h-full grid-rows-[auto_1fr_auto] space-y-2 rounded-md border bg-card p-2 text-justify shadow-xs print:border-0 print:shadow-none"
           }
         >
           <div className="flex items-center space-x-2">
@@ -345,7 +379,7 @@ export default function Chat(props: Props) {
               <ModelSelector
                 placeholder={t("model")}
                 lng={lng}
-                premium={hasGpt4Access()}
+                plan={getSubscriptionPlan()}
                 avModels={avModels}
                 model={model}
                 setModel={setModel}
@@ -387,7 +421,7 @@ export default function Chat(props: Props) {
                               className="h-auto w-full px-1 text-left"
                             >
                               <div
-                                className="grid w-full grid-cols-[auto,1fr,auto] items-center"
+                                className="grid w-full grid-cols-[auto_1fr_auto] items-center"
                                 key={i}
                               >
                                 {selectedTemplateId === i ? (

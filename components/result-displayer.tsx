@@ -45,7 +45,7 @@ export default function ResultDisplayer(props: {
           <div id="contentp">
             {json.map((el, i) => (
               <li
-                className="my-2 grid grid-cols-[auto,1fr] space-x-2 rounded-md bg-slate-200 p-1 dark:bg-slate-800"
+                className="my-2 grid grid-cols-[auto_1fr] space-x-2 rounded-md bg-slate-200 p-1 dark:bg-slate-800"
                 key={i}
               >
                 <Check className="w-6" /> <p>{el}</p>
@@ -55,7 +55,7 @@ export default function ResultDisplayer(props: {
         );
       } catch {
         return (
-          <div id="contentp">
+          <div id="contentp" className="edit">
             {parse(
               content.replaceAll("<body>", "").replaceAll("</body>", ""),
               options,
@@ -66,7 +66,7 @@ export default function ResultDisplayer(props: {
     case "table":
       return (
         <p
-          className="max-w-[100vw] overflow-auto p-4 print:text-black"
+          className="edit max-w-[100vw] overflow-auto p-4 print:text-black"
           id="contentp"
         >
           {parse(
@@ -108,7 +108,7 @@ export default function ResultDisplayer(props: {
         );
       } catch {
         return (
-          <p className="p-4 print:text-black" id="contentp">
+          <p className="edit p-4 print:text-black" id="contentp">
             {parse(
               content
                 .replaceAll("<body>", "")

@@ -51,7 +51,7 @@ export default function SystemTemplateCreator(props: {
               {t("system-template-creator-desc")}
             </DialogDescription>
           </DialogHeader>
-          <div className="grid h-auto grid-cols-[auto,1fr] grid-rows-[auto,auto] gap-2">
+          <div className="grid h-auto grid-cols-[auto_1fr] grid-rows-[auto_auto] gap-2">
             <p>{t("name")}</p>
             <Input value={name} onChange={(v) => setName(v.target.value)} />
             <p>{t("prompt")}</p>

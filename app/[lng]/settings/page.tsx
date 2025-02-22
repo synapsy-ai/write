@@ -69,6 +69,7 @@ export default function SettingsPage({
     s.aiModels ??= {
       openAiModels: ["gpt-4o-mini", "gpt-3.5-turbo"],
       mistralModels: [],
+      anthropicModels: [],
     };
     localStorage.setItem("synapsy_settings", JSON.stringify(s));
   }
@@ -76,6 +77,7 @@ export default function SettingsPage({
     s.aiModels ?? {
       openAiModels: ["gpt-4o-mini", "gpt-3.5-turbo"],
       mistralModels: [],
+      anthropicModels: [],
     },
   );
   const [modelQuery, setModelQuery] = useState("");
@@ -101,6 +103,7 @@ export default function SettingsPage({
           "codestral-latest",
           "codestral-mamba-latest",
         ],
+        anthropicModels: [],
       },
       gen_font: "default",
       key: "",
@@ -112,7 +115,7 @@ export default function SettingsPage({
 
   const router = useRouter();
   return (
-    <main className="flex min-h-[calc(100vh_-_theme(spacing.16))] flex-1 flex-col gap-4 bg-slate-100/40 p-4 px-2 pb-20 dark:bg-transparent sm:pb-0 md:gap-8 md:p-10">
+    <main className="flex min-h-[calc(100vh-(--spacing(16)))] flex-1 flex-col gap-4 bg-slate-100/40 p-4 px-2 pb-20 dark:bg-transparent sm:pb-0 md:gap-8 md:p-10">
       <div className="mx-auto grid w-full max-w-6xl gap-2">
         <h1 className="mx-2 text-3xl font-semibold">{t("settings")}</h1>
       </div>
@@ -166,7 +169,7 @@ export default function SettingsPage({
                   variant="outline"
                   className="px-10 py-8"
                 >
-                  <div className="my-2 grid grid-cols-[auto,1fr] items-center space-x-2">
+                  <div className="my-2 grid grid-cols-[auto_1fr] items-center space-x-2">
                     <Sun />
                     <p>{t("light")}</p>
                   </div>
@@ -176,7 +179,7 @@ export default function SettingsPage({
                   className="px-10 py-8"
                   onClick={() => setTheme("dark")}
                 >
-                  <div className="my-2 grid grid-cols-[auto,1fr] items-center space-x-2">
+                  <div className="my-2 grid grid-cols-[auto_1fr] items-center space-x-2">
                     <Moon />
                     <p>{t("dark")}</p>
                   </div>
@@ -186,7 +189,7 @@ export default function SettingsPage({
                   className="px-10 py-8"
                   onClick={() => setTheme("system")}
                 >
-                  <div className="my-2 grid grid-cols-[auto,1fr] items-center space-x-2">
+                  <div className="my-2 grid grid-cols-[auto_1fr] items-center space-x-2">
                     <Laptop />
                     <p>{t("system")}</p>
                   </div>
@@ -263,6 +266,7 @@ export default function SettingsPage({
                   <TabsList>
                     <TabsTrigger value="openAI">OpenAI</TabsTrigger>
                     <TabsTrigger value="mistral">Mistral</TabsTrigger>
+                    <TabsTrigger value="anthropic">Anthropic</TabsTrigger>
                   </TabsList>
                   <ScrollArea className="h-[200px]">
                     <TabsContent value="openAI">
@@ -305,6 +309,22 @@ export default function SettingsPage({
                           ))}
                       </div>
                     </TabsContent>
+                    <TabsContent value="anthropic">
+                      <div>
+                        {models.anthropicModels
+                          ?.filter((s) =>
+                            s.toLowerCase().includes(modelQuery.toLowerCase()),
+                          )
+                          .map((m, i) => (
+                            <p
+                              key={i}
+                              className="m-1 rounded-md border border-transparent p-2 hover:border-slate-300 hover:bg-slate-200/50 dark:hover:border-accent dark:hover:bg-slate-800/50"
+                            >
+                              {getModelString(m)}
+                            </p>
+                          ))}
+                      </div>
+                    </TabsContent>
                   </ScrollArea>
                 </Tabs>
               </div>
@@ -322,7 +342,7 @@ export default function SettingsPage({
                   <ScrollArea className="h-[200px]">
                     {templates.map((template, i) => (
                       <div
-                        className="m-1 grid grid-cols-[1fr,auto] rounded-md border border-transparent p-2 hover:border-slate-300 hover:bg-slate-200/50 dark:hover:border-accent dark:hover:bg-slate-800/50"
+                        className="m-1 grid grid-cols-[1fr_auto] rounded-md border border-transparent p-2 hover:border-slate-300 hover:bg-slate-200/50 dark:hover:border-accent dark:hover:bg-slate-800/50"
                         key={i}
                       >
                         <span>

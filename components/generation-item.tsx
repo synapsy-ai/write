@@ -27,13 +27,13 @@ export function GenerationItem(props: {
   const { t } = useTranslation(props.lng, "common");
   function getRandomGradient() {
     const gradients = [
-      "bg-gradient-to-r from-yellow-400 to-pink-500",
-      "bg-gradient-to-r from-green-400 to-blue-500",
-      "bg-gradient-to-r from-purple-400 to-red-500",
-      "bg-gradient-to-r from-pink-400 to-blue-500",
-      "bg-gradient-to-r from-indigo-500 to-purple-600",
-      "bg-gradient-to-r from-pink-500 to-indigo-600",
-      "bg-gradient-to-r from-red-500 to-yellow-500",
+      "bg-linear-to-r from-yellow-400 to-pink-500",
+      "bg-linear-to-r from-green-400 to-blue-500",
+      "bg-linear-to-r from-purple-400 to-red-500",
+      "bg-linear-to-r from-pink-400 to-blue-500",
+      "bg-linear-to-r from-indigo-500 to-purple-600",
+      "bg-linear-to-r from-pink-500 to-indigo-600",
+      "bg-linear-to-r from-red-500 to-yellow-500",
     ];
     return gradients[Math.floor(Math.random() * gradients.length)];
   }
@@ -44,7 +44,7 @@ export function GenerationItem(props: {
         <TooltipTrigger>
           <div
             onClick={() => {}}
-            className="m-2 flex w-[380px] flex-col overflow-hidden rounded-md border border-slate-200 bg-white shadow-sm transition hover:-translate-y-2 hover:shadow-md dark:border-slate-700 dark:bg-slate-900 sm:w-[360px]"
+            className="m-2 flex w-[380px] flex-col overflow-hidden rounded-md border border-slate-200 bg-white shadow-xs transition hover:-translate-y-2 hover:shadow-md dark:border-slate-700 dark:bg-slate-900 sm:w-[360px]"
           >
             <Link
               href={"generations/view?id=" + props.id.toString()}
@@ -61,7 +61,7 @@ export function GenerationItem(props: {
                 <Calendar height={12} />
                 <span>{new Date(props.item.date).toLocaleString()}</span>
               </Link>
-              <span className="grid grid-cols-[1fr,auto]">
+              <span className="grid grid-cols-[1fr_auto]">
                 <Link
                   href={"generations/view?id=" + props.id.toString()}
                   className="p-2 text-left font-bold"

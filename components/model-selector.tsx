@@ -15,8 +15,8 @@ import {
   CommandItem,
   CommandList,
 } from "./ui/command";
-import Image from "next/image";
-import { ChatGPTIcon, ProviderIcon } from "./icons";
+import { ProviderIcon } from "./icons";
+import { Plans } from "@/utils/helpers";
 
 interface ModelSelectorProps {
   avModels: ModelList;
@@ -24,7 +24,7 @@ interface ModelSelectorProps {
   model: string;
   placeholder: string;
   lng: string;
-  premium: boolean;
+  plan: Plans;
 }
 
 interface Provider {
@@ -52,7 +52,7 @@ const slideVariants = {
 };
 
 export default function ModelSelector({
-  premium,
+  plan,
   setModel,
   model,
   placeholder,
@@ -68,9 +68,10 @@ export default function ModelSelector({
   const providers: Provider[] = [
     {
       name: "OpenAI",
-      models: premium
-        ? ["gpt-3.5-turbo", "gpt-4o-mini", "gpt-4o", "o1-mini"]
-        : ["gpt-3.5-turbo", "gpt-4o-mini"],
+      models:
+        plan !== "free"
+          ? ["gpt-3.5-turbo", "gpt-4o-mini", "gpt-4o", "o1-mini"]
+          : ["gpt-3.5-turbo", "gpt-4o-mini"],
     },
     {
       name: "Mistral",
@@ -81,6 +82,17 @@ export default function ModelSelector({
         "codestral-latest",
         "codestral-mamba-latest",
       ],
+    },
+    {
+      name: "Anthropic",
+      models:
+        plan === "pro" || plan === "premium"
+          ? [
+              "claude-3-5-haiku-20241022",
+              "claude-3-opus-20240229",
+              "claude-3-5-sonnet-20240620",
+            ]
+          : ["claude-3-5-haiku-20241022"],
     },
   ];
 
