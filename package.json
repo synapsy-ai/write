@@ -80,7 +80,7 @@
     "postcss": "latest",
     "prettier": "^3.5.2",
     "prettier-plugin-tailwindcss": "^0.6.11",
-    "tailwindcss": "^4.0.9",
+    "tailwindcss": "^4.0.12",
     "typescript": "latest"
   },
   "optionalDependencies": {
