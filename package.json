@@ -50,7 +50,7 @@
     "i18next": "^24.2.2",
     "i18next-browser-languagedetector": "^8.0.4",
     "i18next-resources-to-backend": "^1.2.1",
-    "lucide-react": "^0.479.0",
+    "lucide-react": "^0.482.0",
     "mini-svg-data-uri": "^1.4.4",
     "next": "^15.2.1",
     "next-pwa": "^5.6.0",
