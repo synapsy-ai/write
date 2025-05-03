@@ -62,7 +62,7 @@
     "react-dom": "latest",
     "react-i18next": "^15.5.1",
     "sonner": "^2.0.3",
-    "stripe": "^17.7.0",
+    "stripe": "^18.1.0",
     "styled-jsx": "^5.1.6",
     "tailwind-merge": "^3.2.0",
     "tailwindcss-animate": "^1.0.7",
