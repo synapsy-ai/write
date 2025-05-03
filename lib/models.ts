@@ -21,6 +21,7 @@ const modelStrings: { [key: string]: string } = {
   "gpt-4o-2024-08-06": "GPT-4o (08/2024)",
   "gpt-4o-2024-11-20": "GPT-4o (11/2024)",
   "gpt-4o-audio-preview-2024-10-01": "GPT-4o Audio Preview (10/2024)",
+  "gpt-4o-audio-preview-2024-12-17": "GPT-4o Audio Preview (12/2024)",
   "gpt-4o-audio-preview": "GPT-4o Audio Preview",
   "gpt-4o-mini-audio-preview-2024-12-17": "GPT-4o Mini Audio Preview (12/2024)",
   "gpt-4o-mini-audio-preview": "GPT-4o Mini Audio Preview",
@@ -33,6 +34,8 @@ const modelStrings: { [key: string]: string } = {
   "o1-mini": "o1 Mini",
   "o1-preview-2024-09-12": "o1 Preview (09/2024)",
   "o1-preview": "o1 Preview",
+  "o1-pro": "o1 Pro",
+  "o1-pro-2025-03-19": "o1 Pro (03/2025)",
   "gpt-3.5-turbo-16k": "GPT-3.5 Turbo (16k)",
   "gpt-3.5-turbo-0613": "GPT-3.5 Turbo (06/2023)",
   "gpt-3.5-turbo-16k-0613": "GPT-3.5 Turbo (16k - 06/2023)",
@@ -41,6 +44,14 @@ const modelStrings: { [key: string]: string } = {
   "gpt-3.5-turbo-0125": "GPT-3.5 Turbo (01/2024)",
   "gpt-3.5-turbo-instruct": "GPT-3.5 Turbo Instruct",
   "gpt-3.5-turbo-instruct-0914": "GPT-3.5 Turbo Instruct (09/2023)",
+  "gpt-4.1": "GPT-4.1",
+  "gpt-4.1-2025-04-14": "GPT-4.1 (04/2025)",
+  "gpt-4.1-mini": "GPT-4.1 Mini",
+  "gpt-4.1-mini-2025-04-14": "GPT-4.1 Mini (04/2025)",
+  "gpt-4.5-preview": "GPT-4.5 Preview",
+  "gpt-4.5-preview-2025-02-27": "GPT-4.5 Preview (02/2025)",
+  "gpt-4.1-nano-2025-04-14": "GPT-4.1 Nano (04/2025)",
+  "gpt-4.1-nano": "GPT-4.1 Nano",
 
   // Mistral Models
   "codestral-2405": "Codestral (2405)",
@@ -83,6 +94,11 @@ const modelStrings: { [key: string]: string } = {
   "mistral-small-2501": "Mistral Small (2501)",
   "mistral-large-2502-15-1-rc2": "Mistral Large (2502.15.1-rc2)",
   "mistral-large-pixtral-2411": "Mistral Large Pixtral (2411)",
+  "mistral-saba-2502": "Mistral Saba (2502)",
+  "mistral-saba-latest": "Mistral Saba",
+  "mistral-ocr-latest": "Mistral OCR (Latest)",
+  "mistral-ocr-2502": "Mistral OCR (2502)",
+  "mistral-ocr-2503": "Mistral OCR (2503)",
 
   // Anthropic Models
   "claude-2.0": "Claude 2.0",
@@ -93,6 +109,7 @@ const modelStrings: { [key: string]: string } = {
   "claude-3-opus-20240229": "Claude 3 Opus (02/2024)",
   "claude-3-5-haiku-20241022": "Claude 3.5 Haiku (10/2024)",
   "claude-3-haiku-20240307": "Claude 3 Haiku (03/2024)",
+  "claude-3-7-sonnet-20250219": "Claude 3.7 Sonnet (02/2025)",
 };
 
 export function getModelString(id: string): string {

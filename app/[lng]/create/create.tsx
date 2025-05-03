@@ -479,7 +479,7 @@ export default function Create(props: Props) {
   }
 
   return (
-    <main className="flex min-h-[calc(100vh-(--spacing(16)))] flex-1 flex-col gap-4 bg-slate-100/40 p-4 pb-16 dark:bg-transparent sm:pb-0 md:gap-8 md:p-10 print:mt-0 print:bg-white">
+    <main className="flex min-h-[calc(100vh-(--spacing(16)))] flex-1 flex-col gap-4 bg-slate-100/40 p-4 pb-16 sm:pb-0 md:gap-8 md:p-10 dark:bg-transparent print:mt-0 print:bg-white">
       <div className="mx-auto grid w-full max-w-6xl gap-2 print:hidden">
         <h1 className="text-3xl font-semibold">{t("create")}</h1>
         <p className="text-muted-foreground">{t("create-desc")}</p>
@@ -539,6 +539,17 @@ export default function Create(props: Props) {
               )}
             </CardContent>
           </Card>
+          <Button
+            className="group space-x-1 print:hidden"
+            onClick={createButton}
+          >
+            <Sparkles
+              className="group-hover:animate-pulse group-hover:duration-700"
+              height={16}
+              width={16}
+            />
+            <p className="font-bold">CREATE DEV</p>
+          </Button>
           {getSubscriptionPlan() !== "free" ? (
             <>
               {!inProgress ? (
@@ -688,7 +699,7 @@ export default function Create(props: Props) {
           </Card>
         </div>
 
-        <div className="grid gap-6 text-sm text-muted-foreground print:hidden">
+        <div className="text-muted-foreground grid gap-6 text-sm print:hidden">
           <Card>
             <CardHeader>
               <CardTitle>{t("options")}</CardTitle>
@@ -831,7 +842,7 @@ export default function Create(props: Props) {
               <CardHeader>
                 <CardTitle className="flex items-center space-x-2">
                   <span>{t("variables")}</span>
-                  <span className="rounded-full border bg-muted/40 px-2 text-sm text-muted-foreground">
+                  <span className="bg-muted/40 text-muted-foreground rounded-full border px-2 text-sm">
                     {variables.length}
                   </span>
                 </CardTitle>
