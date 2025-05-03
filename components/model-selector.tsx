@@ -70,7 +70,14 @@ export default function ModelSelector({
       name: "OpenAI",
       models:
         plan !== "free"
-          ? ["gpt-3.5-turbo", "gpt-4o-mini", "gpt-4o", "o1-mini"]
+          ? [
+              "gpt-3.5-turbo",
+              "gpt-4o-mini",
+              "gpt-4o",
+              "gpt-4.1-mini",
+              "gpt-4.1-nano",
+              "o1-mini",
+            ]
           : ["gpt-3.5-turbo", "gpt-4o-mini"],
     },
     {
@@ -79,6 +86,7 @@ export default function ModelSelector({
         "mistral-large-latest",
         "mistral-medium",
         "mistral-small",
+        "mistral-saba-latest",
         "codestral-latest",
         "codestral-mamba-latest",
       ],
@@ -129,7 +137,7 @@ export default function ModelSelector({
       </PopoverTrigger>
       <PopoverContent className="min-w-full p-0 sm:w-[220px]">
         <Command>
-          <CommandList className="h-[200px] overflow-hidden">
+          <CommandList className="h-[200px]">
             <CommandEmpty>No results found.</CommandEmpty>
             <div className="relative h-full">
               <AnimatePresence initial={false} custom={direction}>
@@ -145,7 +153,7 @@ export default function ModelSelector({
                       x: { type: "spring", stiffness: 300, damping: 30 },
                       opacity: { duration: 0.2 },
                     }}
-                    className="absolute left-0 top-0 h-full w-full"
+                    className="absolute top-0 left-0 h-full w-full"
                   >
                     <ProviderModels
                       provider={currentProvider!}
@@ -166,7 +174,7 @@ export default function ModelSelector({
                       x: { type: "spring", stiffness: 300, damping: 30 },
                       opacity: { duration: 0.2 },
                     }}
-                    className="absolute left-0 top-0 h-full w-full"
+                    className="absolute top-0 left-0 h-full w-full"
                   >
                     <ProviderList
                       providers={providers}
@@ -227,7 +235,7 @@ function ProviderModels({
         variant="ghost"
         size={"sm"}
         onClick={onBack}
-        className="-mb-2 flex items-center text-sm text-muted-foreground"
+        className="text-muted-foreground -mb-2 flex items-center text-sm"
       >
         <ChevronLeft className="mr-2 h-4 w-4" />
         <span>{t("back")}</span>
