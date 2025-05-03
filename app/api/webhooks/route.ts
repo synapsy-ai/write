@@ -6,7 +6,6 @@ import {
   manageSubscriptionStatusChange,
   deleteProductRecord,
   deletePriceRecord,
-  manageInvoicePaid,
 } from "@/utils/supabase/admin";
 const relevantEvents = new Set([
   "product.created",
@@ -62,7 +61,7 @@ export async function POST(req: Request) {
           await manageSubscriptionStatusChange(
             subscription.id,
             subscription.customer as string,
-            event.type === "customer.subscription.created"
+            event.type === "customer.subscription.created",
           );
           break;
         case "checkout.session.completed":
@@ -72,15 +71,9 @@ export async function POST(req: Request) {
             await manageSubscriptionStatusChange(
               subscriptionId as string,
               checkoutSession.customer as string,
-              true
+              true,
             );
           }
-          break;
-        case "invoice.paid":
-          const invoice = event.data.object as Stripe.Invoice;
-          const sub = invoice.subscription as string;
-
-          await manageInvoicePaid(sub, invoice.customer as string);
           break;
         default:
           throw new Error("Unhandled relevant event!");
@@ -91,7 +84,7 @@ export async function POST(req: Request) {
         `Webhook handler failed. View your Next.js function logs. ${error}`,
         {
           status: 400,
-        }
+        },
       );
     }
   }
