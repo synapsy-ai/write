@@ -3,7 +3,7 @@ import { useTranslation } from "@/app/i18n/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { v4 as uuidv4 } from "uuid";
-
+import parse from "html-react-parser";
 import {
   Info,
   Loader2,
@@ -131,11 +131,10 @@ export default function Create(props: Props) {
     localStorage.setItem("synapsy_settings", JSON.stringify(s));
   }
 
-  const [res, setRes] = useState<string | null>("");
+  const [content, setContent] = useState<string | null>("");
   const [prompt, setPrompt] = useState("");
   const [inProgress, setInProgress] = useState(false);
-  const [progressBarVis, setProgressBarVis] = useState(false);
-  const [model, setModel] = useState("gpt-3.5-turbo");
+  const [model, setModel] = useState("gpt-4o-mini");
   const [errorMsg, setErrorMsg] = useState<any>({ message: "", name: "" });
   const [errorVis, setErrorVis] = useState(false);
   const [temp, setTemp] = useState(1);
@@ -150,7 +149,7 @@ export default function Create(props: Props) {
   const defaultModels = () =>
     getSubscriptionPlan() !== "free"
       ? {
-          openAiModels: ["gpt-3.5-turbo", "gpt-4"],
+          openAiModels: ["gpt-3.5-turbo", "gpt-4.1", "gpt-4o-mini"],
           mistralModels: ["mistral-small"],
           anthropicModels: ["claude-3-5-haiku-20241022"],
         }
@@ -159,7 +158,7 @@ export default function Create(props: Props) {
           mistralModels: ["mistral-small"],
           anthropicModels: ["claude-3-5-haiku-20241022"],
         };
-  const [avModels, setAvModels] = useState(
+  const [avModels] = useState(
     getAvailableModels(s.aiModels) ?? defaultModels(),
   );
 
@@ -169,7 +168,7 @@ export default function Create(props: Props) {
   const [complexSectionVis, setComplexSectionVis] = useState(false);
 
   const [gpt4Quotas, setGpt4Quotas] = useState(props.quotas);
-  const [unlimited, setUnlimited] = useState(getSubscriptionPlan() === "pro");
+  const [unlimited] = useState(getSubscriptionPlan() === "pro");
   function getAvailableModels(
     availableModels: ModelList | undefined,
   ): ModelList {
@@ -209,9 +208,8 @@ export default function Create(props: Props) {
   async function create() {
     setInProgress(false);
     setErrorVis(false);
-    setProgressBarVis(false);
     setIsGen(true);
-    let r = await getDynamicAiGeneration(
+    const response = await getDynamicAiGeneration(
       prompt + getVariableString(variables),
       apiKey,
       type,
@@ -223,12 +221,12 @@ export default function Create(props: Props) {
         topP: topp,
         freqP: freqP,
       },
-      { setContent: setRes, setLoading: setInProgress },
+      { setContent: setContent, setLoading: setInProgress },
       tone,
       getModelProvider(model, avModels),
     );
-    if (r instanceof OpenAI.APIError) {
-      setErrorMsg(r);
+    if (response instanceof OpenAI.APIError) {
+      setErrorMsg(response);
       setErrorVis(true);
       setInProgress(false);
       setIsGen(false);
@@ -238,17 +236,18 @@ export default function Create(props: Props) {
 
     addToHistory({
       prompt: prompt,
-      content: r ?? res ?? "An error occurred when saving the generation",
+      content:
+        response ?? content ?? "An error occurred when saving the generation",
       template: type,
       date: new Date(),
     });
     setIsGen(false);
+    setContent(response ?? content);
   }
 
   async function createAnalysis() {
     setInProgress(false);
     setErrorVis(false);
-    setProgressBarVis(false);
     setIsGen(true);
     let r = await getDynamicAiGeneration(
       textToAnalyse + "\n" + prompt + getVariableString(variables),
@@ -262,7 +261,7 @@ export default function Create(props: Props) {
         topP: topp,
         freqP: freqP,
       },
-      { setContent: setRes, setLoading: setInProgress },
+      { setContent: setContent, setLoading: setInProgress },
       tone,
       getModelProvider(model, avModels),
     );
@@ -277,14 +276,14 @@ export default function Create(props: Props) {
 
     addToHistory({
       prompt: textToAnalyse,
-      content: r ?? res ?? "An error occurred when saving the generation",
+      content: r ?? content ?? "An error occurred when saving the generation",
       template: type,
       date: new Date(),
     });
     setIsGen(false);
   }
   async function createButton() {
-    setRes("");
+    setContent("");
 
     // If the user has selected GPT-4, check if they have access to the model
     if (
@@ -380,7 +379,7 @@ export default function Create(props: Props) {
             freqP: freqP,
           },
           final,
-          { setContent: step.hide ? () => {} : setRes },
+          { setContent: step.hide ? () => {} : setContent },
           getModelProvider(model, avModels),
         );
       }
@@ -402,7 +401,7 @@ export default function Create(props: Props) {
           done: index <= i,
         })),
       );
-      setRes(final);
+      setContent(final);
     }
 
     addToHistory({
@@ -539,17 +538,6 @@ export default function Create(props: Props) {
               )}
             </CardContent>
           </Card>
-          <Button
-            className="group space-x-1 print:hidden"
-            onClick={createButton}
-          >
-            <Sparkles
-              className="group-hover:animate-pulse group-hover:duration-700"
-              height={16}
-              width={16}
-            />
-            <p className="font-bold">CREATE DEV</p>
-          </Button>
           {getSubscriptionPlan() !== "free" ? (
             <>
               {!inProgress ? (
@@ -650,18 +638,42 @@ export default function Create(props: Props) {
               <CardTitle>{t("generation")}</CardTitle>
             </CardHeader>
             <CardContent>
-              {!errorVis && res && (
+              {!errorVis && content && (
                 <section className={"grow text-justify"}>
-                  <ResultDisplayer
-                    font={s.gen_font ?? "default"}
-                    is_generating={isGen}
-                    lng={lng}
-                    res={res}
-                    type={type}
-                  />
+                  {isGen ? (
+                    <p
+                      className={`${s.gen_font && s.gen_font !== "default" ? "font-" + s.gen_font : ""} print:text-black`}
+                      id="contentp"
+                    >
+                      {parse(
+                        content
+                          .replaceAll("<body>", "")
+                          .replaceAll("</body>", "")
+                          .replaceAll("<html>", "")
+                          .replaceAll("</html>", "")
+                          .replaceAll("<!DOCTYPE html>", "")
+                          .replaceAll("\n\n", "<br>")
+                          .replaceAll("\n\n\n", "\n")
+                          .replaceAll("\n    \n", "<br>")
+                          .replaceAll("\n", "<br>")
+                          .replaceAll("```html", "")
+                          .replaceAll("```", "")
+                          .replaceAll("<br><br>", ""),
+                      )}
+                      <span className="inline-block h-[14px] w-[7px] animate-pulse self-baseline bg-black duration-500 dark:bg-white"></span>
+                    </p>
+                  ) : (
+                    <ResultDisplayer
+                      font={s.gen_font ?? "default"}
+                      is_generating={isGen}
+                      lng={lng}
+                      content={content}
+                      type={type}
+                    />
+                  )}
                 </section>
               )}
-              {!errorVis && !res && (
+              {!errorVis && !content && (
                 <section
                   className={
                     "m-2 flex grow items-center justify-center rounded-md border bg-white p-2 py-[34px] shadow-xs dark:bg-slate-900/50 print:text-black print:shadow-none"

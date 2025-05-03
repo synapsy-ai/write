@@ -93,7 +93,7 @@ export default function GenerationViewPage({
     setToggle(!toggle);
   }
   return (
-    <main className="flex min-h-[calc(100vh-(--spacing(16)))] flex-1 flex-col gap-4 bg-slate-100/40 p-4 pb-16 dark:bg-transparent sm:pb-0 md:gap-8 md:p-10 print:mt-0 print:bg-white">
+    <main className="flex min-h-[calc(100vh-(--spacing(16)))] flex-1 flex-col gap-4 bg-slate-100/40 p-4 pb-16 sm:pb-0 md:gap-8 md:p-10 dark:bg-transparent print:mt-0 print:bg-white">
       <header className="mx-auto grid w-full max-w-6xl gap-2 print:hidden">
         <h1 className="text-3xl font-semibold">{t("generation")}</h1>
         <div className="mt-2 flex justify-center sm:justify-start print:hidden">
@@ -142,7 +142,7 @@ export default function GenerationViewPage({
           {toggle ? (
             <ResultDisplayer
               is_generating={false}
-              res={content}
+              content={content}
               type={el.template}
               lng={lng}
               font={s.gen_font ?? "default"}
@@ -151,7 +151,7 @@ export default function GenerationViewPage({
             <div>
               <ResultDisplayer
                 is_generating={false}
-                res={content}
+                content={content}
                 type={el.template}
                 lng={lng}
                 font={s.gen_font ?? "default"}

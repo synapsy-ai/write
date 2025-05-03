@@ -9,15 +9,23 @@ import TailwindEditor from "./tailwind-editor";
 import { Language } from "@/lib/languages";
 import { useState } from "react";
 
-export default function ResultDisplayer(props: {
-  res: string;
+interface ResultDisplayerProps {
+  content: string;
   type: Template | string;
   is_generating: boolean;
   no_padding?: boolean;
   font?: FontType;
   lng: Language;
-}) {
-  const [content] = useState(props.res);
+}
+
+export default function ResultDisplayer({
+  content,
+  is_generating,
+  type,
+  no_padding,
+  font,
+  lng,
+}: ResultDisplayerProps) {
   const options: HTMLReactParserOptions = {
     replace: (domNode) => {
       if (domNode instanceof Element && domNode.tagName === "body") {
@@ -27,17 +35,17 @@ export default function ResultDisplayer(props: {
   };
 
   if (
-    (props.is_generating && props.type === "ideas") ||
-    (props.is_generating && props.type === "ph_visual_outline")
+    (is_generating && type === "ideas") ||
+    (is_generating && type === "ph_visual_outline")
   ) {
     return (
-      <p id="contentp" className={props.no_padding ? "" : "p-4"}>
+      <p id="contentp" className={no_padding ? "" : "p-4"}>
         {content}
         <span className="inline-block h-[14px] w-[7px] animate-pulse self-baseline bg-black duration-500 dark:bg-white"></span>
       </p>
     );
   }
-  switch (props.type) {
+  switch (type) {
     case "ideas":
       try {
         let json: string[] = JSON.parse(content);
@@ -78,7 +86,7 @@ export default function ResultDisplayer(props: {
               .replaceAll("<!DOCTYPE html>", ""),
             options,
           )}
-          {props.is_generating && (
+          {is_generating && (
             <span className="inline-block h-[14px] w-[7px] animate-pulse self-baseline bg-black duration-500 dark:bg-white"></span>
           )}
         </p>
@@ -120,7 +128,7 @@ export default function ResultDisplayer(props: {
                 .replaceAll("\n", "<br>"),
               options,
             )}
-            {props.is_generating && (
+            {is_generating && (
               <span className="inline-block h-[14px] w-[7px] animate-pulse self-baseline bg-black duration-500 dark:bg-white"></span>
             )}
           </p>
@@ -128,54 +136,30 @@ export default function ResultDisplayer(props: {
       }
     default:
       return (
-        <>
-          {props.is_generating ? (
-            <p
-              className={`${props.no_padding ? "" : "p-4"} ${props.font && props.font !== "default" ? "font-" + props.font : ""} print:text-black`}
-              id="contentp"
-            >
-              {parse(
-                content
-                  .replaceAll("<body>", "")
-                  .replaceAll("</body>", "")
-                  .replaceAll("<html>", "")
-                  .replaceAll("</html>", "")
-                  .replaceAll("<!DOCTYPE html>", "")
-                  .replaceAll("\n\n", "<br>")
-                  .replaceAll("\n\n\n", "\n")
-                  .replaceAll("\n    \n", "<br>")
-                  .replaceAll("\n", "<br>")
-                  .replaceAll("```html", "")
-                  .replaceAll("```", "")
-                  .replaceAll("<br><br>", ""),
-              )}
-              <span className="inline-block h-[14px] w-[7px] animate-pulse self-baseline bg-black duration-500 dark:bg-white"></span>
-            </p>
-          ) : (
-            <TailwindEditor
-              lng={props.lng}
-              id={-1}
-              content={generateJSON(
-                content
-                  .replaceAll("<body>", "")
-                  .replaceAll("</body>", "")
-                  .replaceAll("<html>", "")
-                  .replaceAll("</html>", "")
-                  .replaceAll("<!DOCTYPE html>", "")
-                  .replaceAll("\n\n", "<br>")
-                  .replaceAll("\n\n\n", "\n")
-                  .replaceAll("\n    \n", "<br>")
-                  .replaceAll("\n", "<br>")
-                  .replaceAll("```html", "")
-                  .replaceAll("```", "")
-                  .replaceAll("<br><br>", ""),
-                defaultExtensions,
-              )}
-              enabled={false}
-              editorOnly
-            />
-          )}
-        </>
+        <div className={font !== "default" ? `font-${font}` : ""}>
+          <TailwindEditor
+            lng={lng}
+            id={-1}
+            content={generateJSON(
+              content
+                .replaceAll("<body>", "")
+                .replaceAll("</body>", "")
+                .replaceAll("<html>", "")
+                .replaceAll("</html>", "")
+                .replaceAll("<!DOCTYPE html>", "")
+                .replaceAll("\n\n", "<br>")
+                .replaceAll("\n\n\n", "\n")
+                .replaceAll("\n    \n", "<br>")
+                .replaceAll("\n", "<br>")
+                .replaceAll("```html", "")
+                .replaceAll("```", "")
+                .replaceAll("<br><br>", ""),
+              defaultExtensions,
+            )}
+            enabled={false}
+            editorOnly
+          />
+        </div>
       );
   }
 }
