@@ -49,16 +49,13 @@ export default function GenerationViewPage({
   const [nbWords] = useState(el.content.split(" ").length);
   const [nbChars] = useState(el.content.length);
   const [variables, setVariables] = useState<Variable[]>([]);
-  const [price, setPrice] = useState("$0");
   const [content, setContent] = useState(el.content);
   const [toggle, setToggle] = useState(false);
   useEffect(() => {
     try {
       if (typeof window !== "undefined") {
         let e = encode(el.content);
-        let price = `\$${((e.length / 1000) * 0.06).toFixed(4)}`;
         setNbTokens(e.length);
-        setPrice(price.toString());
       }
       getVariables();
     } catch (error) {}
@@ -93,7 +90,7 @@ export default function GenerationViewPage({
     setToggle(!toggle);
   }
   return (
-    <main className="flex min-h-[calc(100vh-(--spacing(16)))] flex-1 flex-col gap-4 bg-slate-100/40 p-4 pb-16 dark:bg-transparent sm:pb-0 md:gap-8 md:p-10 print:mt-0 print:bg-white">
+    <main className="flex min-h-[calc(100vh-(--spacing(16)))] flex-1 flex-col gap-4 bg-slate-100/40 p-4 pb-16 sm:pb-0 md:gap-8 md:p-10 dark:bg-transparent print:mt-0 print:bg-white">
       <header className="mx-auto grid w-full max-w-6xl gap-2 print:hidden">
         <h1 className="text-3xl font-semibold">{t("generation")}</h1>
         <div className="mt-2 flex justify-center sm:justify-start print:hidden">
@@ -142,7 +139,7 @@ export default function GenerationViewPage({
           {toggle ? (
             <ResultDisplayer
               is_generating={false}
-              res={content}
+              content={content}
               type={el.template}
               lng={lng}
               font={s.gen_font ?? "default"}
@@ -151,7 +148,7 @@ export default function GenerationViewPage({
             <div>
               <ResultDisplayer
                 is_generating={false}
-                res={content}
+                content={content}
                 type={el.template}
                 lng={lng}
                 font={s.gen_font ?? "default"}
@@ -196,14 +193,6 @@ export default function GenerationViewPage({
             </CardHeader>
             <CardContent>
               <section className="flex w-full flex-col items-center justify-center gap-2 px-2 pb-5 md:p-0">
-                <div className="w-full">
-                  <h2 className="text-sm font-normal text-slate-400 dark:text-slate-500">
-                    {t("price")}
-                  </h2>
-                  <p id="price" className="text-xl font-semibold">
-                    {price}
-                  </p>
-                </div>
                 <div className="hover:bg-whit w-full">
                   <h2 className="text-sm font-normal text-slate-400 dark:text-slate-500">
                     {t("tokens")}

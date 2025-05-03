@@ -11,6 +11,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "./ui/tooltip";
+import parse from "html-react-parser";
 
 interface ChatBoxProps {
   lng: string;
@@ -43,13 +44,34 @@ export default function ChatBox(props: ChatBoxProps) {
             </span>
             {m.role === "assistant" && <Sparkles size={14} color="#6366f1" />}
           </p>
-          <ResultDisplayer
-            lng={lng}
-            type="para"
-            is_generating={i === msg.length - 1 && loading}
-            res={m.content}
-            no_padding
-          />
+          {i === msg.length - 1 && loading ? (
+            <p className="print:text-black" id="contentp">
+              {parse(
+                m.content
+                  .replaceAll("<body>", "")
+                  .replaceAll("</body>", "")
+                  .replaceAll("<html>", "")
+                  .replaceAll("</html>", "")
+                  .replaceAll("<!DOCTYPE html>", "")
+                  .replaceAll("\n\n", "<br>")
+                  .replaceAll("\n\n\n", "\n")
+                  .replaceAll("\n    \n", "<br>")
+                  .replaceAll("\n", "<br>")
+                  .replaceAll("```html", "")
+                  .replaceAll("```", "")
+                  .replaceAll("<br><br>", ""),
+              )}
+              <span className="inline-block h-[14px] w-[7px] animate-pulse self-baseline bg-black duration-500 dark:bg-white"></span>
+            </p>
+          ) : (
+            <ResultDisplayer
+              lng={lng}
+              type="para"
+              is_generating={i === msg.length - 1 && loading}
+              content={m.content}
+              no_padding
+            />
+          )}
           <div className="hidden group-hover:block">
             <TooltipProvider delayDuration={0}>
               <Tooltip>
