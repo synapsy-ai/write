@@ -49,16 +49,13 @@ export default function GenerationViewPage({
   const [nbWords] = useState(el.content.split(" ").length);
   const [nbChars] = useState(el.content.length);
   const [variables, setVariables] = useState<Variable[]>([]);
-  const [price, setPrice] = useState("$0");
   const [content, setContent] = useState(el.content);
   const [toggle, setToggle] = useState(false);
   useEffect(() => {
     try {
       if (typeof window !== "undefined") {
         let e = encode(el.content);
-        let price = `\$${((e.length / 1000) * 0.06).toFixed(4)}`;
         setNbTokens(e.length);
-        setPrice(price.toString());
       }
       getVariables();
     } catch (error) {}
@@ -196,14 +193,6 @@ export default function GenerationViewPage({
             </CardHeader>
             <CardContent>
               <section className="flex w-full flex-col items-center justify-center gap-2 px-2 pb-5 md:p-0">
-                <div className="w-full">
-                  <h2 className="text-sm font-normal text-slate-400 dark:text-slate-500">
-                    {t("price")}
-                  </h2>
-                  <p id="price" className="text-xl font-semibold">
-                    {price}
-                  </p>
-                </div>
                 <div className="hover:bg-whit w-full">
                   <h2 className="text-sm font-normal text-slate-400 dark:text-slate-500">
                     {t("tokens")}
