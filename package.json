@@ -60,7 +60,7 @@
     "react": "latest",
     "react-cookie": "^7.2.2",
     "react-dom": "latest",
-    "react-i18next": "^15.5.1",
+    "react-i18next": "^15.5.2",
     "sonner": "^2.0.3",
     "stripe": "^18.1.1",
     "styled-jsx": "^5.1.7",
