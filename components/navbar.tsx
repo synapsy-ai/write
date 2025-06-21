@@ -38,7 +38,7 @@ export default function NavBar(props: { lng: string }) {
     push(`/${props.lng}/generations/edit?id=${generations.length - 1}`);
   }
   return (
-    <nav className="sticky top-0 z-50 hidden w-full grid-cols-[auto_1fr_auto] bg-white/50 px-4 py-1 shadow-xs saturate-[1.1] backdrop-blur-md dark:bg-slate-900/30 sm:grid print:hidden">
+    <nav className="sticky top-0 z-50 hidden w-full grid-cols-[auto_1fr_auto] bg-white/50 px-4 py-1 shadow-xs saturate-[1.1] backdrop-blur-md sm:grid dark:bg-slate-900/30 print:hidden">
       <div className="m-2 flex items-center">
         <Link className="mr-2 flex space-x-2" href={"/" + props.lng}>
           <Image alt="SynapsyLogo" height={25} width={25} src={"/logo.svg"} />

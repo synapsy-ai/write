@@ -67,9 +67,9 @@ function FooterLink(props: FooterLinkProps) {
   return (
     <Link
       href={props.link}
-      className="block w-64 rounded-md border border-transparent p-4 transition-all hover:border-muted-foreground/50 hover:bg-muted"
+      className="hover:border-muted-foreground/50 hover:bg-muted block w-64 rounded-md border border-transparent p-4 transition-all"
     >
-      <h3 className="text-lg font-bold leading-tight tracking-tighter">
+      <h3 className="text-lg leading-tight font-bold tracking-tighter">
         {props.title}
       </h3>
       <p className="text-muted-foreground">{props.description}</p>

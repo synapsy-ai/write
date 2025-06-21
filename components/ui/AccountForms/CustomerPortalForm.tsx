@@ -58,7 +58,7 @@ export default function CustomerPortalForm({ subscriptions, lng }: Props) {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="mb-4 mt-8">
+        <div className="mt-8 mb-4">
           {subscriptions && subscriptions.length > 0 ? (
             <div className="space-y-2">
               {subscriptions.map((subscription) => (

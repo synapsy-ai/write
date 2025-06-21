@@ -127,7 +127,7 @@ export function NodeSelector({ open, onOpenChange, lng }: NodeSelectorProps) {
     <Popover modal={true} open={open} onOpenChange={onOpenChange}>
       <PopoverTrigger asChild className="gap-2 focus:ring-0">
         <Button variant="ghost" className="gap-2">
-          <span className="whitespace-nowrap text-sm">
+          <span className="text-sm whitespace-nowrap">
             {t(activeItem.translation)}
           </span>
           <ChevronDown className="h-4 w-4" />
@@ -141,7 +141,7 @@ export function NodeSelector({ open, onOpenChange, lng }: NodeSelectorProps) {
               item.command(editor);
               onOpenChange(false);
             }}
-            className="flex cursor-pointer items-center justify-between rounded-sm px-2 py-1 text-sm hover:bg-accent"
+            className="hover:bg-accent flex cursor-pointer items-center justify-between rounded-sm px-2 py-1 text-sm"
           >
             <div className="flex items-center space-x-2">
               <div className="rounded-sm border p-1">
