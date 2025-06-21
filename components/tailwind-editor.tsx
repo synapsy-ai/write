@@ -95,7 +95,7 @@ export default function TailwindEditor(props: EditorProps) {
       <EditorRoot>
         <EditorContent
           editable={props.enabled ?? true}
-          className={`relative w-full max-w-(--breakpoint-lg) ${!props.editorOnly && "min-h-[500px] border bg-background sm:mb-[calc(20vh)]"} sm:rounded-lg`}
+          className={`relative w-full max-w-(--breakpoint-lg) ${!props.editorOnly && "bg-background min-h-[500px] border sm:mb-[calc(20vh)]"} sm:rounded-lg`}
           extensions={extensions}
           editorProps={{
             handleDOMEvents: {
@@ -116,8 +116,8 @@ export default function TailwindEditor(props: EditorProps) {
             setContent(json);
           }}
         >
-          <EditorCommand className="z-50 h-auto max-h-[330px] w-72 overflow-y-auto rounded-md border border-muted bg-background px-1 py-2 shadow-md transition-all">
-            <EditorCommandEmpty className="px-2 text-muted-foreground">
+          <EditorCommand className="border-muted bg-background z-50 h-auto max-h-[330px] w-72 overflow-y-auto rounded-md border px-1 py-2 shadow-md transition-all">
+            <EditorCommandEmpty className="text-muted-foreground px-2">
               {t("no-results")}
             </EditorCommandEmpty>
             <EditorCommandList>
@@ -125,15 +125,15 @@ export default function TailwindEditor(props: EditorProps) {
                 <EditorCommandItem
                   value={item.title}
                   onCommand={(val) => item.command?.(val)}
-                  className={`grid w-full grid-cols-[auto_1fr] items-center space-x-2 rounded-md px-2 py-1 text-left text-sm hover:bg-accent aria-selected:bg-accent`}
+                  className={`hover:bg-accent aria-selected:bg-accent grid w-full grid-cols-[auto_1fr] items-center space-x-2 rounded-md px-2 py-1 text-left text-sm`}
                   key={item.title}
                 >
-                  <div className="flex size-10 items-center justify-center rounded-md border border-muted bg-background">
+                  <div className="border-muted bg-background flex size-10 items-center justify-center rounded-md border">
                     {item.icon}
                   </div>
                   <div>
                     <p className="font-medium">{t(item.translation)}</p>
-                    <p className="text-xs text-muted-foreground">
+                    <p className="text-muted-foreground text-xs">
                       {t(item.translation + "-desc")}
                     </p>
                   </div>
@@ -145,7 +145,7 @@ export default function TailwindEditor(props: EditorProps) {
             tippyOptions={{
               placement: openAI ? "bottom-start" : "top",
             }}
-            className="flex w-fit max-w-[90vw] overflow-hidden rounded-md border border-muted bg-background shadow-xl"
+            className="border-muted bg-background flex w-fit max-w-[90vw] overflow-hidden rounded-md border shadow-xl"
           >
             <NodeSelector
               lng={props.lng}

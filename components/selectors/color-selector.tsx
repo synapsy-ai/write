@@ -149,11 +149,11 @@ export const ColorSelector = ({
 
       <PopoverContent
         sideOffset={5}
-        className="my-1 flex max-h-80 w-48 flex-col overflow-hidden overflow-y-auto rounded border p-1 shadow-xl "
+        className="my-1 flex max-h-80 w-48 flex-col overflow-hidden overflow-y-auto rounded border p-1 shadow-xl"
         align="start"
       >
         <div className="flex flex-col">
-          <div className="my-1 px-2 text-sm font-semibold text-muted-foreground">
+          <div className="text-muted-foreground my-1 px-2 text-sm font-semibold">
             {t("color")}
           </div>
           {TEXT_COLORS.map(({ name, color, translate }, index) => (
@@ -168,7 +168,7 @@ export const ColorSelector = ({
                     .setColor(color || "")
                     .run();
               }}
-              className="flex cursor-pointer items-center justify-between px-2 py-1 text-sm hover:bg-accent"
+              className="hover:bg-accent flex cursor-pointer items-center justify-between px-2 py-1 text-sm"
             >
               <div className="flex items-center gap-2">
                 <div
@@ -183,7 +183,7 @@ export const ColorSelector = ({
           ))}
         </div>
         <div>
-          <div className="my-1 px-2 text-sm font-semibold text-muted-foreground">
+          <div className="text-muted-foreground my-1 px-2 text-sm font-semibold">
             {t("background")}
           </div>
           {HIGHLIGHT_COLORS.map(({ name, color, translate }, index) => (
@@ -193,7 +193,7 @@ export const ColorSelector = ({
                 editor.commands.unsetHighlight();
                 name !== "Default" && editor.commands.setHighlight({ color });
               }}
-              className="flex cursor-pointer items-center justify-between px-2 py-1 text-sm hover:bg-accent"
+              className="hover:bg-accent flex cursor-pointer items-center justify-between px-2 py-1 text-sm"
             >
               <div className="flex items-center gap-2">
                 <div

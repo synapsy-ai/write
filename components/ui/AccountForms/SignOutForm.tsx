@@ -28,7 +28,7 @@ export default function SignOutForm({ lng }: { lng: string }) {
             handleRequest(
               e,
               SignOut,
-              getRedirectMethod() === "client" ? router : null
+              getRedirectMethod() === "client" ? router : null,
             )
           }
         >

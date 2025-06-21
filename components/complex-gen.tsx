@@ -18,9 +18,9 @@ export default function ComplexGenItem(props: ComplexGenItemProps) {
   }, [props.steps]);
 
   return (
-    <section className="flex flex-col items-center rounded-md border border-green-700 bg-green-100 p-2 text-green-700 dark:border-green-600 dark:bg-green-900/70 dark:text-green-500 sm:block">
+    <section className="flex flex-col items-center rounded-md border border-green-700 bg-green-100 p-2 text-green-700 sm:block dark:border-green-600 dark:bg-green-900/70 dark:text-green-500">
       <div>
-        <p className="flex flex-col items-center font-bold sm:flex-row sm:space-x-1 sm:space-y-0">
+        <p className="flex flex-col items-center font-bold sm:flex-row sm:space-y-0 sm:space-x-1">
           <PencilLineIcon size={16} className="hidden sm:block" />
           <PencilLineIcon className="sm:hidden" />
           <span>{t("complex-gen")}</span>

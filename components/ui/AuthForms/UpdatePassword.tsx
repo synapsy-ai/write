@@ -26,7 +26,7 @@ export default function UpdatePassword({
     await handleRequest(
       e,
       updatePassword,
-      redirectMethod === "client" ? router : null
+      redirectMethod === "client" ? router : null,
     );
     setIsSubmitting(false);
   };
