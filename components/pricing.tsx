@@ -163,7 +163,7 @@ export default function Pricing({ user, products, subscriptions, lng }: Props) {
             {t("available-products")}
           </h2>
           <p className="text-center">{t("synapsy-available-products-desc")}</p>
-          <div className="relative mt-6 flex self-center rounded-lg border p-0.5 dark:border-slate-800 dark:bg-slate-900 sm:mt-8">
+          <div className="relative mt-6 flex self-center rounded-lg border p-0.5 sm:mt-8 dark:border-slate-800 dark:bg-slate-900">
             {intervals.includes("month") && (
               <button
                 onClick={() => setBillingInterval("month")}
@@ -172,7 +172,7 @@ export default function Pricing({ user, products, subscriptions, lng }: Props) {
                   billingInterval === "month"
                     ? "relative w-1/2 border-slate-200 bg-slate-100 shadow-xs dark:border-slate-800 dark:bg-slate-700 dark:text-white"
                     : "relative ml-0.5 w-1/2 border border-transparent text-slate-400"
-                } m-1 whitespace-nowrap rounded-md py-2 text-sm font-medium focus:z-10 focus:outline-hidden focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50 sm:w-auto sm:px-8`}
+                } focus:ring-opacity-50 m-1 rounded-md py-2 text-sm font-medium whitespace-nowrap focus:z-10 focus:ring-2 focus:ring-indigo-500 focus:outline-hidden sm:w-auto sm:px-8`}
               >
                 {t("monthly-billing")}
               </button>
@@ -185,7 +185,7 @@ export default function Pricing({ user, products, subscriptions, lng }: Props) {
                   billingInterval === "year"
                     ? "relative w-1/2 border-slate-200 bg-slate-100 shadow-xs dark:border-slate-800 dark:bg-slate-700 dark:text-white"
                     : "relative ml-0.5 w-1/2 border border-transparent text-slate-400"
-                } m-1 whitespace-nowrap rounded-md py-2 text-sm font-medium focus:z-10 focus:outline-hidden focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50 sm:w-auto sm:px-8`}
+                } focus:ring-opacity-50 m-1 rounded-md py-2 text-sm font-medium whitespace-nowrap focus:z-10 focus:ring-2 focus:ring-indigo-500 focus:outline-hidden sm:w-auto sm:px-8`}
               >
                 {t("yearly-billing")}
               </button>
@@ -261,7 +261,7 @@ export default function Pricing({ user, products, subscriptions, lng }: Props) {
               >
                 <div className="p-6">
                   <span className="flex items-center space-x-2">
-                    <h2 className="text-2xl font-semibold leading-6 dark:text-white">
+                    <h2 className="text-2xl leading-6 font-semibold dark:text-white">
                       {product.name}
                     </h2>
                   </span>
