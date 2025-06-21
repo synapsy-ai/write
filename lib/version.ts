@@ -1,1 +1,4 @@
-export const version = "3.4.3";
+// @ts-ignore
+import packageJson from "../package.json";
+
+export const version = packageJson.version;
