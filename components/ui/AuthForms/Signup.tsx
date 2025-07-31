@@ -2,14 +2,12 @@
 
 import { Button } from "@/components/ui/button";
 import React from "react";
-import Link from "next/link";
 import { signUp } from "@/utils/auth-helpers/server";
 import { handleRequest } from "@/utils/auth-helpers/client";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useTranslation } from "@/app/i18n/client";
 import { Input } from "../input";
-import Separator from "./Separator";
 
 // Define prop type with allowEmail boolean
 interface SignUpProps {
