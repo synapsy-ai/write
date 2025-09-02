@@ -34,12 +34,17 @@ export default async function PricingPage({
   return (
     <>
       <main className="mt-2 min-h-full pb-16 sm:pb-0">
-        <Pricing
+        <section className="p-10">
+          <h2 className="text-center text-xl font-bold">
+            Buying a Synapsy Write Plan is no longer available for now.
+          </h2>
+        </section>
+        {/* <Pricing
           products={products}
           subscriptions={subscriptions}
           user={user}
           lng={lng}
-        />
+        /> */}
         <section className="min-h-3xl m-5 flex flex-col items-center justify-center">
           <h2 className="text-2xl font-bold">{t("features")}</h2>
           <p> {t("features-desc")}</p>
