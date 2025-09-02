@@ -21,7 +21,7 @@ type CheckoutResponse = {
 export async function checkoutWithStripe(
   price: Price,
   redirectPath: string = "/me",
-  trial: boolean
+  trial: boolean,
 ): Promise<CheckoutResponse> {
   try {
     // Get the user from Supabase auth
@@ -67,7 +67,7 @@ export async function checkoutWithStripe(
 
     console.log(
       "Trial end:",
-      calculateTrialEndUnixTimestamp(trial ? 2 : price.trial_period_days)
+      calculateTrialEndUnixTimestamp(trial ? 2 : price.trial_period_days),
     );
     if (price.type === "recurring") {
       params = {
@@ -75,7 +75,7 @@ export async function checkoutWithStripe(
         mode: "subscription",
         subscription_data: {
           trial_end: calculateTrialEndUnixTimestamp(
-            trial ? 2 : price.trial_period_days
+            trial ? 2 : price.trial_period_days,
           ),
         },
       };
@@ -107,7 +107,7 @@ export async function checkoutWithStripe(
         errorRedirect: getErrorRedirect(
           redirectPath,
           error.message,
-          "Please try again later or contact a system administrator."
+          "Please try again later or contact a system administrator.",
         ),
       };
     } else {
@@ -115,7 +115,7 @@ export async function checkoutWithStripe(
         errorRedirect: getErrorRedirect(
           redirectPath,
           "An unknown error occurred.",
-          "Please try again later or contact a system administrator."
+          "Please try again later or contact a system administrator.",
         ),
       };
     }
@@ -171,13 +171,13 @@ export async function createStripePortal(currentPath: string) {
       return getErrorRedirect(
         currentPath,
         error.message,
-        "Please try again later or contact a system administrator."
+        "Please try again later or contact a system administrator.",
       );
     } else {
       return getErrorRedirect(
         currentPath,
         "An unknown error occurred.",
-        "Please try again later or contact a system administrator."
+        "Please try again later or contact a system administrator.",
       );
     }
   }

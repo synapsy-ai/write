@@ -102,7 +102,7 @@ export default function EditTemplatePage({
   }
 
   return (
-    <main className="flex min-h-[calc(100vh-(--spacing(16)))] flex-1 flex-col gap-4 bg-slate-100/40 p-4 pb-16 dark:bg-transparent sm:pb-0 md:gap-8 md:p-10 print:mt-0 print:bg-white">
+    <main className="flex min-h-[calc(100vh-(--spacing(16)))] flex-1 flex-col gap-4 bg-slate-100/40 p-4 pb-16 sm:pb-0 md:gap-8 md:p-10 dark:bg-transparent print:mt-0 print:bg-white">
       <div className="mx-auto w-full max-w-6xl">
         <div className="mx-auto grid w-full gap-2 print:hidden">
           <h1 className="text-3xl font-semibold">{t("template-edit")}</h1>
@@ -172,7 +172,7 @@ export default function EditTemplatePage({
                 <Card key={i} className="grid grid-cols-[1fr_auto] gap-2 p-4">
                   <div className="flex flex-col gap-4">
                     <h4 className="font-medium">{t(step.name)}</h4>
-                    <p className="text-sm text-muted-foreground">
+                    <p className="text-muted-foreground text-sm">
                       <HighlightedVariable lng={lng} text={step.userPrompt} />
                     </p>
                   </div>

@@ -133,17 +133,14 @@ Follow these steps to set up and use the development container:
    ```
 
 2. **Open the Project in VS Code**:
-
    - Open Visual Studio Code.
    - Use the `File > Open Folder...` menu to open the `write` folder you just cloned.
 
 3. **Open the Dev Container**:
-
    - Open the Command Palette (F1) and select `Remote-Containers: Open Folder in Container...`.
    - Select the root folder of your project (`write`).
 
 4. **Wait for the Container to Build**:
-
    - VS Code will automatically build the development container using the configuration in the `.devcontainer` folder.
    - This may take a few minutes the first time as it installs all necessary dependencies.
 

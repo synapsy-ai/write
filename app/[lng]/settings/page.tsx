@@ -115,23 +115,23 @@ export default function SettingsPage({
 
   const router = useRouter();
   return (
-    <main className="flex min-h-[calc(100vh-(--spacing(16)))] flex-1 flex-col gap-4 bg-slate-100/40 p-4 px-2 pb-20 dark:bg-transparent sm:pb-0 md:gap-8 md:p-10">
+    <main className="flex min-h-[calc(100vh-(--spacing(16)))] flex-1 flex-col gap-4 bg-slate-100/40 p-4 px-2 pb-20 sm:pb-0 md:gap-8 md:p-10 dark:bg-transparent">
       <div className="mx-auto grid w-full max-w-6xl gap-2">
         <h1 className="mx-2 text-3xl font-semibold">{t("settings")}</h1>
       </div>
       <div className="mx-auto grid w-full max-w-6xl items-start gap-6 md:grid-cols-[180px_1fr] lg:grid-cols-[250px_1fr]">
-        <nav className="grid gap-4 p-2 text-sm text-muted-foreground">
+        <nav className="text-muted-foreground grid gap-4 p-2 text-sm">
           <Link
             href="#"
             onClick={() => setAnchor("general")}
-            className={anchor === "general" ? "font-semibold text-primary" : ""}
+            className={anchor === "general" ? "text-primary font-semibold" : ""}
             prefetch={false}
           >
             {t("general")}
           </Link>
           <Link
             href="#models"
-            className={anchor === "models" ? "font-semibold text-primary" : ""}
+            className={anchor === "models" ? "text-primary font-semibold" : ""}
             onClick={() => setAnchor("models")}
             prefetch={false}
           >
@@ -140,7 +140,7 @@ export default function SettingsPage({
           <Link
             href="#templates"
             className={
-              anchor === "templates" ? "font-semibold text-primary" : ""
+              anchor === "templates" ? "text-primary font-semibold" : ""
             }
             onClick={() => setAnchor("templates")}
             prefetch={false}
@@ -149,7 +149,7 @@ export default function SettingsPage({
           </Link>
           <Link
             href="#misc"
-            className={anchor === "misc" ? "font-semibold text-primary" : ""}
+            className={anchor === "misc" ? "text-primary font-semibold" : ""}
             onClick={() => setAnchor("misc")}
             prefetch={false}
           >
@@ -163,7 +163,7 @@ export default function SettingsPage({
               <CardDescription>{t("theme-desc")}</CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="flex flex-col items-stretch space-y-2 sm:grid sm:grid-cols-3 sm:space-x-2 sm:space-y-0">
+              <div className="flex flex-col items-stretch space-y-2 sm:grid sm:grid-cols-3 sm:space-y-0 sm:space-x-2">
                 <Button
                   onClick={() => setTheme("light")}
                   variant="outline"
@@ -283,7 +283,7 @@ export default function SettingsPage({
                           .map((m, i) => (
                             <p
                               key={i}
-                              className="m-1 rounded-md border border-transparent p-2 hover:border-slate-300 hover:bg-slate-200/50 dark:hover:border-accent dark:hover:bg-slate-800/50"
+                              className="dark:hover:border-accent m-1 rounded-md border border-transparent p-2 hover:border-slate-300 hover:bg-slate-200/50 dark:hover:bg-slate-800/50"
                             >
                               {getModelString(m)}
                             </p>
@@ -302,7 +302,7 @@ export default function SettingsPage({
                           .map((m, i) => (
                             <p
                               key={i}
-                              className="m-1 rounded-md border border-transparent p-2 hover:border-slate-300 hover:bg-slate-200/50 dark:hover:border-accent dark:hover:bg-slate-800/50"
+                              className="dark:hover:border-accent m-1 rounded-md border border-transparent p-2 hover:border-slate-300 hover:bg-slate-200/50 dark:hover:bg-slate-800/50"
                             >
                               {getModelString(m)}
                             </p>
@@ -318,7 +318,7 @@ export default function SettingsPage({
                           .map((m, i) => (
                             <p
                               key={i}
-                              className="m-1 rounded-md border border-transparent p-2 hover:border-slate-300 hover:bg-slate-200/50 dark:hover:border-accent dark:hover:bg-slate-800/50"
+                              className="dark:hover:border-accent m-1 rounded-md border border-transparent p-2 hover:border-slate-300 hover:bg-slate-200/50 dark:hover:bg-slate-800/50"
                             >
                               {getModelString(m)}
                             </p>
@@ -342,7 +342,7 @@ export default function SettingsPage({
                   <ScrollArea className="h-[200px]">
                     {templates.map((template, i) => (
                       <div
-                        className="m-1 grid grid-cols-[1fr_auto] rounded-md border border-transparent p-2 hover:border-slate-300 hover:bg-slate-200/50 dark:hover:border-accent dark:hover:bg-slate-800/50"
+                        className="dark:hover:border-accent m-1 grid grid-cols-[1fr_auto] rounded-md border border-transparent p-2 hover:border-slate-300 hover:bg-slate-200/50 dark:hover:bg-slate-800/50"
                         key={i}
                       >
                         <span>
