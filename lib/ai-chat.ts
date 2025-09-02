@@ -1,4 +1,4 @@
-import { LanguageModelV1, streamText } from "ai";
+import { LanguageModel, streamText } from "ai";
 import { ChatMessage } from "./ai-completions";
 import { createOpenAI } from "@ai-sdk/openai";
 import { createMistral } from "@ai-sdk/mistral";
@@ -6,9 +6,7 @@ import { AiProvider } from "./models";
 import { createAnthropic } from "@ai-sdk/anthropic";
 
 const openai = createOpenAI({
-  // custom settings, e.g.
   apiKey: process.env["OPENAI_API_KEY"],
-  compatibility: "strict",
 });
 
 const mistral = createMistral({
@@ -17,6 +15,7 @@ const mistral = createMistral({
 
 const anthropic = createAnthropic({
   apiKey: process.env["ANTHROPIC_API_KEY"],
+  headers: { "anthropic-dangerous-direct-browser-access": "true" },
 });
 
 export async function sendChatToGpt(
@@ -38,10 +37,7 @@ export async function sendChatToGpt(
   }
   return result;
 }
-function getLanguageModel(
-  provider: AiProvider,
-  model: string,
-): LanguageModelV1 {
+function getLanguageModel(provider: AiProvider, model: string): LanguageModel {
   switch (provider) {
     case "mistral":
       return mistral(model);
