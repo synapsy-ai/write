@@ -21,5 +21,5 @@ export async function POST(req: Request) {
     presencePenalty: presence_penalty,
   });
 
-  return res.toDataStreamResponse();
+  return res.toTextStreamResponse();
 }

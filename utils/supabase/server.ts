@@ -38,6 +38,6 @@ export const createClient = async () => {
           }
         },
       },
-    }
+    },
   );
 };

@@ -8,8 +8,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import Script from "next/script";
 import MobileNavBar from "@/components/mobile-nav";
 import { Toaster } from "@/components/ui/toaster";
-import { Suspense, use } from "react";
-import { DefaultLanguageParams } from "@/lib/languages";
+import { Suspense } from "react";
 import LoadingUI from "@/components/loading";
 
 const manrope = Manrope({ subsets: ["latin"] });
@@ -42,14 +41,14 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
   params,
 }: {
   children: React.ReactNode;
-  params: DefaultLanguageParams;
+  params: Promise<{ lng: string }>;
 }) {
-  const { lng } = use(params);
+  const { lng } = await params;
   return (
     <html lang={lng} dir={dir(lng)}>
       <head>

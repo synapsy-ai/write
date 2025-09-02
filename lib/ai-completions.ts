@@ -2,15 +2,13 @@ import { systemPrompts } from "./prompts/system";
 import { userPrompts } from "./prompts/user";
 import { Language } from "./languages";
 import { createOpenAI } from "@ai-sdk/openai";
-import { generateText, LanguageModelV1, streamText } from "ai";
+import { generateText, LanguageModel, streamText } from "ai";
 import { AiProvider } from "./models";
 import { createMistral } from "@ai-sdk/mistral";
 import { createAnthropic } from "@ai-sdk/anthropic";
 
 const openai = createOpenAI({
-  // custom settings, e.g.
   apiKey: process.env["OPENAI_API_KEY"],
-  compatibility: "strict",
 });
 
 const mistral = createMistral({
@@ -25,7 +23,7 @@ const anthropic = createAnthropic({
 export function getLanguageModel(
   provider: AiProvider,
   model: string,
-): LanguageModelV1 {
+): LanguageModel {
   switch (provider) {
     case "mistral":
       return mistral(model);

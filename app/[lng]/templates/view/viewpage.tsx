@@ -78,7 +78,7 @@ export default function ViewTemplatePage({
     }
   }
   return (
-    <main className="flex min-h-[calc(100vh-(--spacing(16)))] flex-1 flex-col gap-4 bg-slate-100/40 p-4 pb-16 dark:bg-transparent sm:pb-0 md:gap-8 md:p-10 print:mt-0 print:bg-white">
+    <main className="flex min-h-[calc(100vh-(--spacing(16)))] flex-1 flex-col gap-4 bg-slate-100/40 p-4 pb-16 sm:pb-0 md:gap-8 md:p-10 dark:bg-transparent print:mt-0 print:bg-white">
       <div className="mx-auto w-full max-w-6xl">
         <div className="mx-auto grid w-full justify-start gap-2 print:hidden">
           <h1 className="text-3xl font-semibold">{t("template-view")}</h1>
@@ -103,7 +103,7 @@ export default function ViewTemplatePage({
                 <Card key={i} className="grid grid-cols-[1fr_auto] gap-2 p-4">
                   <div className="flex flex-col gap-4">
                     <h4 className="font-medium">{t(step.name)}</h4>
-                    <p className="text-sm text-muted-foreground">
+                    <p className="text-muted-foreground text-sm">
                       <HighlightedVariable lng={lng} text={step.userPrompt} />
                     </p>
                   </div>
@@ -124,7 +124,7 @@ export default function ViewTemplatePage({
                         </div>
                         <div className="my-2">
                           <h4>{t("output-var")}</h4>
-                          <p className="w-fit rounded-full border px-2 text-muted-foreground transition hover:border-indigo-500 hover:bg-indigo-500/20 hover:text-indigo-500">
+                          <p className="text-muted-foreground w-fit rounded-full border px-2 transition hover:border-indigo-500 hover:bg-indigo-500/20 hover:text-indigo-500">
                             {step.outputVar}
                           </p>
                         </div>
@@ -148,7 +148,7 @@ export default function ViewTemplatePage({
                             <Tooltip>
                               <TooltipTrigger className="cursor-auto select-text">
                                 <span
-                                  className={`inline-block select-none rounded-full border px-2 font-bold ${getTypeColor(step.type ?? "dynamic")}`}
+                                  className={`inline-block rounded-full border px-2 font-bold select-none ${getTypeColor(step.type ?? "dynamic")}`}
                                 >
                                   <span
                                     className={`mr-2 inline-block size-3 rounded-full ${getTypeColor(step.type ?? "dynamic", true)}`}
