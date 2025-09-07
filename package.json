@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@ai-sdk/anthropic": "^2.0.12",
-    "@ai-sdk/mistral": "^2.0.12",
+    "@ai-sdk/mistral": "^2.0.13",
     "@ai-sdk/openai": "^2.0.24",
     "@anthropic-ai/sdk": "^0.60.0",
     "@mistralai/mistralai": "^1.10.0",
