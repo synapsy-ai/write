@@ -11,7 +11,7 @@
   "dependencies": {
     "@ai-sdk/anthropic": "^2.0.9",
     "@ai-sdk/mistral": "^2.0.12",
-    "@ai-sdk/openai": "^2.0.23",
+    "@ai-sdk/openai": "^2.0.24",
     "@anthropic-ai/sdk": "^0.60.0",
     "@mistralai/mistralai": "^1.9.19",
     "@stripe/stripe-js": "^7.9.0",
