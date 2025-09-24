@@ -59,7 +59,7 @@
     "@types/node": "latest",
     "@types/react": "latest",
     "@types/react-dom": "latest",
-    "@types/uuid": "^10.0.0",
+    "@types/uuid": "^11.0.0",
     "eslint": "latest",
     "eslint-config-next": "latest",
     "postcss": "latest",
