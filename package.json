@@ -9,7 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@ai-sdk/anthropic": "^2.0.20",
+    "@ai-sdk/anthropic": "^2.0.31",
     "@ai-sdk/mistral": "^2.0.17",
     "@ai-sdk/openai": "^2.0.37",
     "@anthropic-ai/sdk": "^0.63.1",
