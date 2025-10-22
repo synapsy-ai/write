@@ -55,7 +55,7 @@
     "zod": "^4.1.12"
   },
   "devDependencies": {
-    "@tailwindcss/postcss": "^4.1.13",
+    "@tailwindcss/postcss": "^4.1.15",
     "@types/node": "latest",
     "@types/react": "latest",
     "@types/react-dom": "latest",
