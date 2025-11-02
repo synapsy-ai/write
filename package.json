@@ -12,7 +12,7 @@
     "@ai-sdk/anthropic": "^2.0.40",
     "@ai-sdk/mistral": "^2.0.19",
     "@ai-sdk/openai": "^2.0.59",
-    "@anthropic-ai/sdk": "^0.67.0",
+    "@anthropic-ai/sdk": "^0.68.0",
     "@mistralai/mistralai": "^1.10.0",
     "@stripe/stripe-js": "^7.9.0",
     "@supabase/auth-helpers-nextjs": "^0.10.0",
