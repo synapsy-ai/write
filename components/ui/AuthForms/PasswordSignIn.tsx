@@ -54,18 +54,6 @@ export default function PasswordSignIn({
               autoComplete="email"
               autoCorrect="off"
             />
-            <label
-              className="flex items-center justify-between"
-              htmlFor="password"
-            >
-              <p>{t("password-label")}</p>
-              <Link
-                href="https://account.peyronnet.group/signin/forgot_password"
-                className="text-sm font-light underline"
-              >
-                {t("password-link-text")}
-              </Link>
-            </label>
             <Input
               id="password"
               placeholder={t("password-input-placeholder")}
@@ -85,15 +73,6 @@ export default function PasswordSignIn({
           <Link href="/signin/email_signin">{t("sign-in-magic")}</Link>
         </p>
       )}
-      <p className="space-x-2 text-center text-sm font-light">
-        <span>{t("link-text-2")}</span>
-        <Link
-          href="https://account.peyronnet.group/signin/signup"
-          className="underline"
-        >
-          {t("sign-up")}
-        </Link>
-      </p>
     </div>
   );
 }

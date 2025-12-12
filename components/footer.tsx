@@ -49,7 +49,7 @@ export default function SiteFooter({
         />
         <FooterLink
           title={t("about")}
-          description={`v${version} - © ${new Date().getFullYear()} GRP and Synapsy`}
+          description={`v${version} - © ${new Date().getFullYear()} Léo Peyronnet and contributors.`}
           link="/settings"
         />
       </div>

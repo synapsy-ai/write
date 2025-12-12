@@ -140,11 +140,6 @@ export default function NavBar(props: { lng: string }) {
             )}
           </DialogContent>
         </Dialog>
-        <Link href={"/" + props.lng + "/me"} className="group">
-          <Button variant="ghost" size="icon">
-            <UserCircle2 className="h-[1.2rem] w-[1.2rem] transition-all group-hover:scale-105" />
-          </Button>
-        </Link>
         <Link href={"/" + props.lng + "/settings"} className="group">
           <Button variant="ghost" size="icon">
             <Settings className="h-[1.2rem] w-[1.2rem] transition-all group-hover:rotate-90" />
