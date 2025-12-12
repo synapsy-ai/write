@@ -69,15 +69,6 @@ export default function EmailSignIn({
               {t("sign-email-password")}
             </Link>
           </p>
-          <p className="space-x-2 text-center text-sm font-light">
-            <span>{t("link-text-2")}</span>
-            <Link
-              href="https://account.peyronnet.group/signin/signup"
-              className="underline"
-            >
-              {t("sign-up")}
-            </Link>
-          </p>
         </>
       )}
     </div>

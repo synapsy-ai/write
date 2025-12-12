@@ -92,42 +92,16 @@ export default function MobileNavBar(props: { lng: string }) {
         </div>
         <Link
           className="flex items-center justify-center rounded-md border border-transparent p-5 hover:border-slate-200 hover:bg-slate-100/25 dark:hover:border-slate-700 dark:hover:bg-slate-800/25"
-          href={"/" + props.lng + "/me"}
+          href={"/" + props.lng + "/templates"}
         >
-          <User2 />
+          <Sheet />
         </Link>
-
-        <Dialog>
-          <DialogTrigger className="flex items-center justify-center rounded-md border border-transparent p-5 hover:border-slate-200 hover:bg-slate-100/25 dark:hover:border-slate-700 dark:hover:bg-slate-800/25">
-            <MoreHorizontal />
-          </DialogTrigger>
-          <DialogContent>
-            <Close>
-              <Button
-                onClick={() => push(`/${props.lng}/settings`)}
-                className="flex w-full items-center justify-start space-x-2"
-                variant="ghost"
-              >
-                <span>
-                  <Settings />
-                </span>
-                <span className="text-lg font-bold">{t("settings")}</span>
-              </Button>
-            </Close>
-            <Close>
-              <Button
-                onClick={() => push(`/${props.lng}/templates`)}
-                className="flex w-full items-center justify-start space-x-2"
-                variant="ghost"
-              >
-                <span>
-                  <Sheet />
-                </span>
-                <span className="text-lg font-bold">{t("templates")}</span>
-              </Button>
-            </Close>
-          </DialogContent>
-        </Dialog>
+        <Link
+          className="flex items-center justify-center rounded-md border border-transparent p-5 hover:border-slate-200 hover:bg-slate-100/25 dark:hover:border-slate-700 dark:hover:bg-slate-800/25"
+          href={"/" + props.lng + "/settings"}
+        >
+          <Settings />
+        </Link>
       </nav>
     </div>
   );

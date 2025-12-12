@@ -35,37 +35,9 @@ export default function SignUp({
 
   return (
     <div>
-      <form
-        noValidate={true}
-        className="mb-1"
-        onSubmit={(e) => handleSubmit(e)}
-      >
-        <div className="grid gap-2">
-          <div className="grid gap-1">
-            <label htmlFor="email">{t("email-label")}</label>
-            <Input
-              id="email"
-              placeholder={t("email-input-placeholder")}
-              type="email"
-              name="email"
-              autoCapitalize="none"
-              autoComplete="email"
-              autoCorrect="off"
-            />
-            <label htmlFor="password">{t("password-label")}</label>
-            <Input
-              id="password"
-              placeholder={t("password-input-placeholder")}
-              type="password"
-              name="password"
-              autoComplete="current-password"
-            />
-          </div>
-          <Button type="submit" className="mt-1">
-            {t("sign-up")}
-          </Button>
-        </div>
-      </form>
+      <h2 className="text-4xl font-bold">
+        It is no longer possible to signup for Synapsy Write.
+      </h2>
     </div>
   );
 }
