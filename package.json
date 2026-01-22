@@ -27,7 +27,7 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cmdk": "^1.1.1",
-    "framer-motion": "^12.25.0",
+    "framer-motion": "^12.29.0",
     "gpt-token-utils": "^1.2.0",
     "html-react-parser": "^5.2.11",
     "i18next": "^25.7.4",
