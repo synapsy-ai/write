@@ -41,7 +41,7 @@
     "novel": "^1.0.2",
     "openai": "^6.17.0",
     "radix-ui": "^1.4.3",
-    "react": "^19.2.3",
+    "react": "^19.2.4",
     "react-cookie": "^7.2.2",
     "react-dom": "^19.2.3",
     "react-i18next": "^16.5.4",
