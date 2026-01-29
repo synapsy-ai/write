@@ -14,17 +14,13 @@
 
   <p align="center">
     A new way to create text, powered by AI.
-    <br />
-    <a href="https://write.peyronnet.group"><strong>Launch »</strong></a>
-    <br />
-    <a href="https://github.com/synapsy-ai/write/issues/new?assignees=&labels=bug&template=bug-report.yml&title=%5BBug%5D+">Report Bug</a>
-    ·
-    <a href="https://github.com/synapsy-ai/write/issues/new?assignees=&labels=enhancement&template=feature-request.yml&title=%5BEnhancement%5D+">Request Feature</a>
-    ·
-    <a href="https://github.com/synapsy-ai/write/issues?q=is%3Aopen+is%3Aissue+label%3Abug">Known Issues</a>
+
 
   </p>
 </p>
+
+> [!WARNING]
+> This project is no longer actively maintained. It is provided "as-is" for educational and reference purposes only. Users are advised to exercise caution when using this software in production environments.
 
 ## Overview
 
